@@ -1,0 +1,14 @@
+<ion-view ng-controller="PanelPostView as PanelPostCtrl">
+  <ion-content class="post-panel-content has-tabs">
+    <div class="list ionic">
+      <div class="item item-avatar" ng-repeat="post in PanelPostCtrl.posts track by post._id" on-tap="PanelPostCtrl.openPost(post._id)">
+        <img ng-src="{{post.creatorAvatar}}">
+        <p ng-bind="::post.creatorName"></p>
+        <p class="post-title" ng-bind="::post.title"></p>
+        <p class="post-content" ng-bind-html="::post.content"></p>
+        <time ng-bind="::post.updated | formatDate : 'MM-DD'"></time>
+      </div>
+    </div>
+  </ion-content>
+  <div ng-if="!PanelPostCtrl.posts.length" class="empty-warn project-post"></div>
+</ion-view>

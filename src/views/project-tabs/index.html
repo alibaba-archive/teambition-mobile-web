@@ -1,0 +1,17 @@
+<ion-tabs class="tabs-icon-top tabs-bottom panel-tabs" ng-controller="TabsView as TabsCtrl">
+  <ion-tab title="主页" icon="icon-home" on-select="TabsCtrl.openView('home')">
+    <ion-nav-view name="project-home"></ion-nav-view>
+  </ion-tab>
+  <ion-tab title="任务" icon="icon-board" on-select="TabsCtrl.openView('tasklist')">
+    <ion-nav-view name="project-task"></ion-nav-view>
+  </ion-tab>
+  <ion-tab title="分享" icon="icon-wall" on-select="TabsCtrl.openView('post')">
+    <ion-nav-view name="project-post"></ion-nav-view>
+  </ion-tab>
+  <ion-tab title="文件" icon="icon-folder" on-select="TabsCtrl.openView('work')">
+    <ion-nav-view name="project-work"></ion-nav-view>
+  </ion-tab>
+  <ion-tab title="日程" icon="icon-td-calendar" on-select="TabsCtrl.openView('event')">
+    <ion-nav-view name="project-event"></ion-nav-view>
+  </ion-tab>
+</ion-tabs>

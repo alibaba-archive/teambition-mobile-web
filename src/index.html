@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="teambition">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, width=device-width, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta content="telephone=no" name="format-detection" />
+    <title ng-bind="global.title"></title>
+    <link href="/css/lib.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <style type="text/css">
+    #wechat-share-img {
+      position: absolute;
+      z-index: -2333;
+      display: none;
+    }
+    .loading-init {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: #383838;
+      -webkit-transition: all 218ms;
+      transition: all 218ms;
+      z-index: 2333;
+    }
+    .loading-init.loaded-init {
+      opacity: 0;
+      -webkit-transform: scale(1.5);
+          -ms-transform: scale(1.5);
+              transform: scale(1.5);
+    }
+    .loading-init .init-logo,
+    .loading-init .init-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -60px;
+      margin-top: -60px;
+      width: 120px;
+      height: 120px;
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAADwCAYAAADLh6BnAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA+hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCkiIHhtcDpDcmVhdGVEYXRlPSIyMDE1LTA0LTI5VDExOjI4OjAxKzA4OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAxNS0wNC0zMFQwNjozMzo1NyswODowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxNS0wNC0zMFQwNjozMzo1NyswODowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODY0ODkxRkFFNkIyMTFFNEJCMDc4QUI2N0REMzVDNTAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODY0ODkxRkJFNkIyMTFFNEJCMDc4QUI2N0REMzVDNTAiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6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');
+      background-repeat: no-repeat;
+      background-size: 120px 240px;
+      z-index: 2333;
+    }
+    .loading-init .init-logo {
+      background-position: 0 0;
+    }
+    .loading-init .init-circle {
+      background-position: 0 -120px;
+      -webkit-animation: spin 1s infinite linear;
+              animation: spin 1s infinite linear;
+    }
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+      }
+    }
+    @keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <ion-nav-view></ion-nav-view>
+    <img src="/images/teambition.png" id="wechat-share-img" width="400" height="400"/>
+    <div class="loading-init" ng-if="!loaded">
+      <div class="init-logo"></div>
+      <div class="init-circle"></div>
+    </div>
+    <script id="tabs.html" type="text/ng-template">
+      <ion-tabs class="tabs-light tabs-icon-top tabs-bottom">
+        <ion-tab title="我" icon="ion-ios-person-outline" href="#/main/me">
+          <ion-nav-view name="main-me"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="收件箱" icon="ion-ios-filing-outline" href="#/main/inbox">
+          <ion-nav-view name="main-inbox"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="设置" icon="ion-ios-gear-outline" href="#/main/setting">
+          <ion-nav-view name="main-setting"></ion-nav-view>
+        </ion-tab>
+      </ion-tabs>
+    </script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script id="teambition-config"
+            data-clientid="8fadf360-fe9d-11e4-b300-55a8b3ba5938"
+            data-clientSecret="55b93a33-952d-413c-8985-7b74c1a01a83"
+            data-host="http://m.wx.project.ci"
+            data-wxid="wx48744c9444d9824a"
+            data-apihost="http://project.ci/api"
+            data-accounthost="http://account.project.ci"
+            data-strikerhost="https://striker.teambition.net/"
+            data-wechathost="https://open.weixin.qq.com/connect/oauth2/authorize"
+            data-cdnhost="https://dn-st.teambition.net"
+    >
+    </script>
+    <script id="gta-main" data-google="UA-41231871-5" data-piwik="2" data-piwik-script="https://dn-st.teambition.net/libs/piwik/v2/piwik.js" data-piwik-track="https://piwik.teambition.com/piwik.php"></script>
+    <script src="/js/lib.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

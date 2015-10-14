@@ -1,0 +1,14 @@
+{
+  "version": "1.6.2",
+  "compilerOptions": {
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "target": "es5",
+      "module": "umd",
+      "declaration": false,
+      "noImplicitAny": false,
+      "removeComments": true,
+      "noLib": false,
+      "outDir": "www/js/"
+  }
+}

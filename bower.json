@@ -1,0 +1,17 @@
+{
+  "name": "account-wx-service",
+  "private": true,
+  "dependencies": {
+    "UI": "git@code.teambition.com:components/tb-ui.git#~0.12.x",
+    "gta": "~0.5.0",
+    "angular-resource": "~1.5.0",
+    "angular-ui-router": "~0.2.15",
+    "marked": "~0.3.2",
+    "moment": "~2.8.1",
+    "ionic": "driftyco/ionic",
+    "ng-file-upload": "~5.0.9",
+    "zone.js": "angular/zone.js#~0.5.5"
+  },
+  "devDependencies": {
+  }
+}

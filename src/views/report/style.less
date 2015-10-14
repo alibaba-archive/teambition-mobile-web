@@ -1,0 +1,97 @@
+// Global reference
+@import "../../reference.less";
+
+.report-view {
+  .padding{
+    padding: 15px;
+    .report-card {
+      background: #EBEBEB;
+      text-align: center;
+      height: 100px;
+      border-radius: 3px;
+      .report-title {
+        color: #808080;
+        font-size: 14px;
+        line-height: 14px;
+        padding: 15px 0 0;
+      }
+      .report-count {
+        .col {
+          font-size: 40px;
+          position: relative;
+          line-height: 49px;
+        }
+        .col:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          width: 1px;
+          background: rgba(0,0,0,.08);
+          height: 55px;
+          right: 0;
+          bottom: 0;
+        }
+      }
+    }
+    .list {
+      color: #383838;
+      margin-bottom: 0;
+      .list-title {
+        color: #000000;
+        padding-left: 0;
+        font-size: 17px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        height: auto;
+        margin-bottom: 1px;
+      }
+      .item {
+        font-size: 17px;
+        padding-left: 0;
+      }
+    }
+
+    .report-avatar {
+      position: absolute;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      top: 15px;
+    }
+
+    .counts-done, .conuts-expire {
+      .task-info {
+        margin-left: 60px;
+      }
+      .report-avatar {
+        left: 36px;
+      }
+      .report-list-marker {
+        margin-left: 5px;
+      }
+    }
+
+    .tasks-done, .tasks-expire {
+      i {
+        left: -5px;
+        color: #aaaaaa;
+      }
+      .task-content {
+        margin-left: 36px;
+      }
+      .report-avatar {
+        right: 5px;
+      }
+      .project-name {
+        color: #a6a6a6;
+        margin-left: 5px;
+      }
+      .due-data {
+        font-size: 11px;
+        display: block;
+        padding-left: 40px;
+      }
+    }
+  }
+}

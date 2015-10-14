@@ -1,0 +1,22 @@
+<ion-view ng-controller="PanelEventView as PanelEventCtrl">
+  <ion-content class="event-panel-content has-tabs">
+    <div class="list ionic">
+      <div class="item-wrapper" ng-repeat="(date, events) in PanelEventCtrl.eventGroup track by $index">
+        <divider class="item item-divider">
+          <span class="event-group-date" ng-bind="date | formatDate : 'MM-DD'"></span>
+        </divider>
+        <a class="item" ng-repeat="event in events track by event._id" on-tap="PanelEventCtrl.openEvent(event._id)">
+          <div class="event-time">
+            <span>开始</span>
+            <span ng-bind="::event.startDate | formatDate : 'H:mm '"></span>
+          </div>
+          <div class="event-content">
+            <p ng-bind="::event.title"></p>
+            <p ng-bind="::event.originContent"></p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </ion-content>
+  <div ng-if="!PanelEventCtrl.counter" class="empty-warn project-event"></div>
+</ion-view>

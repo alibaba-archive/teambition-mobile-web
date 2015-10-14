@@ -1,0 +1,16 @@
+<div class="entry-detail list" ng-controller="EntryCtrl">
+  <div class="item entry-content">
+    <h1 ng-bind="entry.content"></h1>
+    <p ng-bind="entry.date | formatDate"></p>
+    <div class="entry-detail">
+      <span class="entry-wrap">
+        <span><span ng-bind="entry.title"></span>: </span>
+        <span ng-class="{'balanced': entry.type, 'assertive': !entry.type}">
+          <span class="entry-currency">￥</span>
+          <span class="entry-amount" ng-bind="entry.amount"></span>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+<div ng-include="'activities/index.html'"></div>

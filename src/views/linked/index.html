@@ -1,0 +1,16 @@
+<ion-view class="linked-selected-view" ng-controller="LinkedCtrl">
+  <ion-header-bar>
+    <h1 class="title">关联的对象</h1>
+  </ion-header-bar>
+  <ion-content class="task-list-content">
+    <div class="list">
+      <label class="item item-icon-left" ng-repeat="item in linked" on-tap="conjunction(item)">
+        <span class="item-icon-circle"></span>
+        <i class="icon" ng-class="item.icon"></i>
+        <div class="item-content">
+          {{item.title}}
+        </div>
+      </label>
+    </div>
+  </ion-content>
+</ion-view>

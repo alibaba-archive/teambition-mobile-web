@@ -1,0 +1,105 @@
+<ion-view ng-controller="PanelHomeView as PanelHomeCtrl" class="pane">
+  <ion-content class="panel-content has-tabs" on-scroll-complete="PanelHomeCtrl.scrollHandler()">
+    <div class="activity-filter-wrap ion-wrap">
+        <span class="project-filter" on-tap="PanelHomeCtrl.openMembersFilterModal()">{{PanelHomeCtrl.selectedMembers.text}}<i class="icon icon-chevron-down"></i></span>
+
+        <span class="project-filter" on-tap="PanelHomeCtrl.openTasksFilterModal()">{{PanelHomeCtrl.selectedTypes.text}}<i class="icon icon-chevron-down"></i></span>
+    </div>
+
+    <div class="ion-wrap" ng-if="PanelHomeCtrl.noneExecutorTasks.length">
+      <div class="list ionic list-none-executor">
+        <div-title class="item item-title">
+          <span class="item-title-icon">
+            <i class="icon icon-alert-clock"></i>
+          </span>
+          待认领的任务
+        </div-title>
+        <a class="item item-icon-left item-task" ng-repeat="task in PanelHomeCtrl.noneExecutorTasks track by task._id" ng-href="/#/detail/task/{{task._id}}">
+          <i class="icon icon-checkbox-thin"></i>
+          <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div>
+          <span class="task-content" ng-bind="::task.content"></span>
+        </a>
+        <a class="item item-icon-left item-more" ng-if="PanelHomeCtrl.noneExecutorTasks.length !== PanelHomeCtrl._noneExecutorTasks.length" on-tap="PanelHomeCtrl.loadNoneExecutor()">
+          <i class="icon ion-more positive"></i>
+          <p class="positive">查看更多</p>
+        </a>
+      </div>
+    </div>
+    <div class="ion-wrap" ng-if="PanelHomeCtrl.eventGroup.length || PanelHomeCtrl.dueTasks.length">
+        <div class="list ionic list-today" ng-if="PanelHomeCtrl.eventGroup.length || PanelHomeCtrl.dueTasks.length">
+          <div-title class="item item-title">
+              <span class="item-title-icon">
+                <i class="icon icon-alert-clock"></i>
+              </span>
+            今天的事
+          </div-title>
+          <a class="item item-event" ng-repeat="event in PanelHomeCtrl.eventGroup track by event._id" ng-href="/#/detail/event/{{event._id}}">
+            <i class="icon icon-calendar2"></i>
+              <span>
+                <p ng-bind="::event.title"></p>
+                <p class="event-date"><span ng-bind="event.startDate | eventDateFormat: event.endDate"></span></p>
+              </span>
+          </a>
+          <a class="item item-icon-left item-task" ng-repeat="task in PanelHomeCtrl.dueTasks track by task._id" ng-href="/#/detail/task/{{task._id}}">
+            <i class="icon icon-checkbox-thin"></i>
+            <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div>
+            <span class="task-content" ng-bind="::task.content"></span>
+              <span class="task-duedate badge" ng-class="{'badge-assertive': task.overDue, 'badge-energized': task.oneDay}">
+                <i class="icon icon-td-calendar"></i>
+                <span class="due-date-display" ng-bind="::task.dueDate | formatDate: 'calendar'"></span>
+              </span>
+          </a>
+          <a class="item item-icon-left item-more" ng-if="PanelHomeCtrl.dueTasks.length !== PanelHomeCtrl._dueTasks.length" on-tap="PanelHomeCtrl.loadDue()">
+            <i class="icon ion-more positive"></i>
+            <p class="positive">查看更多</p>
+          </a>
+        </div>
+    </div>
+    <div class="ion-wrap activities-wrap">
+      <div class="list activities-list">
+        <div ng-repeat="activity in PanelHomeCtrl.activities track by activity._id">
+          <!-- 动态类型是非文件类型的item 容器-->
+          <div ng-show="activity.type !== 'work'"
+             class="item item-avatar activity-item activity-item-{{activity.type}}"
+             on-tap="PanelHomeCtrl.openDetail(activity.objectHref, activity.type)">
+            <img ng-src="{{activity.avatarUrl}}" class="activity-avatar">
+            <time>{{activity.created | formatDate}}</time>
+            <p class="activity-creator"><span>{{::activity.title}}</span></p>
+            <div class="object-content">
+              <a class="item">
+                <p class="activity-content" ng-if="activity.type !== 'work'">
+                  <i class="icon {{activity.icon}}"></i>
+                  <span class="post-title title" ng-if="activity.type === 'post'" ng-bind="activity.postTitle"></span>
+                  <p ng-if="activity.type !== 'work'" ng-class="{'title': activity.type !== 'post', 'activity-task-done': activity.isDone}" ng-bind-html="activity.objectContent" class="activity-content-html {{::activity.type}}"></p>
+                </p>
+              </a>
+            </div>
+          </div>
+
+          <!-- end 动态类型是非文件类型的item 容器-->
+          <!-- 动态类型是文件的item 容器-->
+          <div ng-show="activity.type === 'work'"
+               class="item item-avatar activity-item activity-item-{{::activity.type}}">
+            <img ng-src="{{::activity.avatarUrl}}" class="activity-avatar">
+            <time>{{::activity.created | formatDate}}</time>
+            <p class="activity-creator"><span>{{::activity.title}}</span></p>
+            <div class="activity-file-wrapper">
+              <a class="activity-content item" ng-repeat="file in activity.files" on-tap="PanelHomeCtrl.openDetail(file.objectHref, 'work')">
+                <span ng-if="!file.thumbnailUrl" class="file-background {{file.fileType}}">
+                  <span class="activity-fileType {{::file.class}}" ng-bind="::file.fileType"></span>
+                </span>
+                <span class="pic-preview" ng-if="file.thumbnailUrl" style="background-image:url({{::file.thumbnailUrl}})">
+                  <span class="activity-file-placeholder">&nbsp;</span>
+                </span>
+                <span ng-bind="file.fileName" class="activity-file-name"></span>
+              </a>
+            </div>
+          </div>
+          <!-- end 动态类型是文件的item 容器-->
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll immediate-check="false" ng-if="PanelHomeCtrl.infinite">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

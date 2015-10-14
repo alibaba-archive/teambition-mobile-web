@@ -1,0 +1,34 @@
+<div class="file-detail list" ng-controller="FileCtrl">
+  <div class="file-wrap">
+    <div class="item item-avatar">
+      <div class="avatar item-image" style="background-image: url({{file.creatorAvatar}})"></div>
+      <p class="file-info">文件大小: <span ng-bind="file.fileSize | formatFileSize"></span></p>
+      <p class="file-info">
+        上传时间:
+        <span ng-bind="file.updated | formatDate:'lll'"></span>
+      </p>
+    </div>
+    <div class="item item-image {{file.fileCategory}}">
+      <img class="file-image" ng-show="file.fileCategory == 'image'" ng-src="{{file.thumbnail}}">
+      <div ng-show="file.fileCategory != 'image'" class="file-thubmail {{file.fileType}}">
+        <div class="filetype {{file.class}}" ng-bind="file.fileType"></div>
+      </div>
+    </div>
+    <div class="item item-preview">
+      <p class="file-name">{{file.fileName}}</p>
+      <a class="positive" on-tap="previewFile()" ng-if="file.fileCategory === 'image'">
+        预览
+      </a>
+    </div>
+  </div>
+  <div class="file-executor-wrap" on-tap="showExecutors()">
+    <div class="item list-title">
+      参与者
+    </div>
+    <div class="item item-icon-left">
+      <i class="icon icon-users"></i>
+      <span><span ng-repeat="member in members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+    </div>
+  </div>
+</div>
+<div ng-include="'activities/index.html'"></div>

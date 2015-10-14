@@ -1,0 +1,11 @@
+<ion-view>
+  <ion-content>
+    <ion-list class="subtasks-wrap">
+      <div class="item list-title">子任务</div>
+      <div ng-repeat="subtask in subtasks" class="item item-icon-left">
+        <i class="icon" ng-class="{'icon-checkbox-thin': !subtask.isDone, 'icon-checkbox-ios-checked': subtask.isDone}"></i>
+        {{subtask.content}}
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>
