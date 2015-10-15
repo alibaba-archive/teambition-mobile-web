@@ -1,6 +1,8 @@
-/// <reference path="scripts/interface/teambition.d.ts" />
+/// <reference path="components/interface/teambition.d.ts" />
 module teambition {
   'use strict';
+
+  declare let webkitURL;
 
   export let rootZone = zone.fork({
     afterTask: () => {
@@ -11,9 +13,7 @@ module teambition {
   export let $$rootScope: IRootScope;
   export let $$injector: any;
 
-  export let cdnHost: string;
-  export let strikerHost: string;
-  export let wsHost: string;
+  export let URL: URL = URL || webkitURL;
 
   export function noop() {
     return false;
@@ -68,17 +68,9 @@ module teambition {
       $rootScope.zone = this.zone;
       this.zone.run(() => {
         this.$rootScope = $rootScope;
-        this.getConfig();
         this.getUserInfo();
         $rootScope.pending = this.pending;
       });
-    }
-
-    private getConfig() {
-      let script = document.getElementById('teambition-config');
-      strikerHost = script.getAttribute('data-strikerhost');
-      cdnHost = script.getAttribute('data-cdnhost');
-      wsHost = script.getAttribute('data-cdnhost');
     }
 
     private initRootscope(userMe: teambition.IUserMe): void {

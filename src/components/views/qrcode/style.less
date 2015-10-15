@@ -1,0 +1,75 @@
+// Global reference
+@import "../../../less/reference.less";
+
+.pane.white-pane {
+  background-color: white;
+}
+
+.qrcode-view {
+  text-align: center;
+  background-color: #383838;
+  padding-top: 6%;
+
+  .scroll {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .qrcode-content {
+    .scroll {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .join-project {
+      width: 74%;
+      height: 76px;
+      margin: 0 auto;
+      background-color: @white;
+      margin-top: 6%;
+      padding: 10px 4px;
+      padding-bottom: 0;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .project-name {
+
+      .project-title {
+        display: inline-block;
+        max-width: 74%;
+        .text-overflow();
+        font-size: 20px;
+      }
+    }
+
+    .qrcode-tips {
+      width: 74%;
+      line-height: 18px;
+      margin: 0 auto;
+      margin-top: 70%;
+      padding:10px;
+      padding-top: 4px;
+      color: rgba(161, 161, 161, 1);
+      background-color: @white;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .more-tips {
+      margin: 2% 10px 0 10px;
+      padding: 10px 10px;
+      background-color: rgba(255, 255, 255, .1);
+
+      h6 {
+        line-height: 18px;
+        color: rgba(255, 255, 255, .9);
+      }
+    }
+
+  }
+
+  .qrcode-img {
+    width: 74%;
+    position: relative;
+    top: 66px;
+  }
+}

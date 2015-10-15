@@ -46,17 +46,16 @@ var logError  = function(stream) {
 var paths = {
   images: ['src/images/*'],
   less: [
-    'src/app.less',
-    'src/scripts/**/*.less',
-    'src/views/**/*.less'
+    'src/less/app.less',
+    'src/components/**/*.less'
   ],
   html: [
-    'src/views/**/*.html',
+    'src/components/views/**/*.html',
     'src/scripts/directives/**/*.html'
   ],
   'app': [
     'src/**/*.ts',
-    '!src/scripts/interface/zone.d.ts'
+    '!src/components/interface/zone.d.ts'
   ],
   tbui: [
     'src/less/tb-fonts-variables.less',
@@ -163,10 +162,8 @@ gulp.task('concat-app', function() {
     .pipe(sourcemaps.init())
     .pipe(order([
       'src/app.js',
-      'src/config.js',
-      'src/run.js',
-      'src/View.js',
-      'src/views/**/*.js',
+      'src/components/run.js',
+      'src/components/views/View.js',
       'src/scripts/**/*.js'
     ]))
     .pipe(concat('app.js'))
@@ -210,7 +207,6 @@ gulp.task('lib-js', function() {
     'bower_components/marked/lib/marked.js',
     'bower_components/store2/dist/store2.js',
     'bower_components/moment/moment.js',
-    'bower_components/gta/lib/index.js',
     'bower_components/ng-file-upload/ng-file-upload.js',
     'bower_components/gta/lib/index.js'
   ])
@@ -220,10 +216,12 @@ gulp.task('lib-js', function() {
 
 function replaceForPublish() {
   return gulp.src('www/index.html')
-    .pipe(replace('8fadf360-fe9d-11e4-b300-55a8b3ba5938', '59fd91e0-9af6-11e4-aece-1bc583a1d7d7'))
+    .pipe(replace('8fadf360-fe9d-11e4-b300-55a8b3ba5938', 'c63fe5b0-15ad-11e5-90e6-bd2cee5c6f14'))
+    .pipe(replace('55b93a33-952d-413c-8985-7b74c1a01a83', '27c134a7-15d3-43aa-8330-6742708c3f41'))
     .pipe(replace('http://m.wx.project.ci', 'https://weixin.teambition.com'))
     .pipe(replace('http://project.ci/api', 'https://www.teambition.com/api'))
     .pipe(replace('wx48744c9444d9824a', 'wx3197516ac7a4c96b'))
+    .pipe(replace('ws://snapper.project.bi/websocket', 'wss://push.teambition.com/websocket'))
     .pipe(replace('http://account.project.ci', 'https://account.teambition.com'))
 }
 
@@ -258,30 +256,18 @@ gulp.task('revall', function() {
 })
 
 function watchTs(event) {
-  var regViews = /src\/views/
-  var regScripts = /src\/scripts/
+  var reg = /src\/components/
   var path = event.path
   var dest
-  if (regViews.test(path)) {
-    var _test = 'src/views'
+  if (reg.test(path)) {
+    var _test = 'src/components/'
     var _pos = path.indexOf(_test)
     var _subLength = path.length - _pos - _test.length
-    var _subPos = _pos + _test.length + 1
+    var _subPos = _pos + _test.length
     var _subStr = path.substr(_subPos, _subLength)
     var _subPath = _subStr.split('/')
-    dest = '.tmp/scripts/views/' + _subPath[0] + '/'
-  }else if(regScripts.test(path)) {
-    var test = 'src/scripts'
-    var pos = path.indexOf(test)
-    var subLength = path.length - pos - test.length
-    var subPos = pos + test.length + 1
-    var subStr = path.substr(subPos, subLength)
-    var subPath = subStr.split('/')
-    if (subPath.length <= 1) {
-      dest = '.tmp/scripts/scripts/'
-    }else {
-      dest = '.tmp/scripts/scripts/' + subPath[0] + '/'
-    }
+    _subPath.pop()
+    dest = '.tmp/scripts/components/' + _subPath.join('/') + '/'
   }
   compileTypescript(path, dest)
 }
@@ -292,11 +278,6 @@ gulp.task('watch', function() {
   gulp.watch(paths.html, compileTemplate)
   gulp.watch(paths.images, ['images'])
   gulp.watch('.tmp/scripts/**/*.js', ['concat-app'])
-})
-
-gulp.task('cdn', function() {
-  return gulp.src(['dist/**', '!dist/index.html'])
-    .pipe(cdnUploader('/tb-weixin', CDNs))
 })
 
 gulp.task('before:build', sequence('clean', 'tsd:install',

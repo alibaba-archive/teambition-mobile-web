@@ -1,0 +1,109 @@
+// Global reference
+@import "../../../../less/reference.less";
+
+.task-detail {
+  margin-bottom: 0;
+  .item{
+    padding:14px 16px 14px 54px;
+  }
+  .task-name-wrap{
+    border-bottom: 1px solid rgba(0, 0, 0, .03);
+    overflow: hidden;
+    margin-bottom: 15px;
+    .task-belong{
+      font-size: 15px;
+      font-weight: 600;
+      padding: 16px;
+      .task-belong-wrap{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding-right: 30px;
+        color: #808080;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .task-content {
+      white-space: normal;
+      min-height: 49px;
+      .item-content {
+        color: @darkTextColor;
+        font-weight: bold;
+      }
+      span {
+        font-size: 20px;
+      }
+    }
+    .icon {
+      height: 48px;
+    }
+  }
+  .task-info-wrap,
+  .task-more-wrap,
+  .task-executor-wrap {
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, .03);
+    border-bottom: 1px solid rgba(0, 0, 0, .03);
+  }
+  .task-info-wrap{
+    margin-bottom: 15px;
+    .item{
+      color: #383838;
+    }
+    .item-detail-avatar{
+      padding:16px 16px 0 16px;
+    }
+  }
+  .task-more-wrap{
+    margin-bottom: 15px;
+  }
+  .item {
+    border: none;
+    .item-value {
+      float: right;
+      max-width: 60%;
+      color: @darkTextColor;
+      margin-right: 5px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .item-content,
+    p {
+      overflow: initial;
+      text-overflow: initial;
+      white-space: normal;
+    }
+  }
+  .item-icon-right {
+    padding-right: 30px;
+  }
+  .item-taks-note {
+    border-bottom: 0;
+    min-height: 50px;
+  }
+  .task-note {
+    white-space: normal;
+    ul{
+      list-style: initial;
+      margin-left: 15px;
+    }
+    p{
+      margin-right: 2px;
+    }
+  }
+}
+.item-detail-avatar{
+  .task-executor-avatar{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+  .task-executor-name{
+    position: relative;
+    bottom: 5px;
+    left: 10px;
+    color: #383838;
+  }
+}
