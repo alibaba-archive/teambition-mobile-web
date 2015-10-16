@@ -56,7 +56,7 @@ module teambition {
       $http: angular.IHttpService,
       $q: angular.IQService,
       RestAPI: teambition.IRestAPI,
-      stageAPI: Thenjs.IThenjsProto,
+      stageAPI: angular.IPromise<IStageData>,
       projectParser: (project: IProjectData) => teambition.IProjectDataParsed,
       Cache: angular.ICacheObject,
       queryFileds: teambition.IqueryFileds,

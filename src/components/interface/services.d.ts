@@ -10,6 +10,7 @@
 /// <reference path='../services/apis/eventAPI.ts' />
 /// <reference path='../services/apis/postAPI.ts' />
 /// <reference path='../services/apis/workAPI.ts' />
+/// <reference path='../services/apis/activityAPI.ts' />
 /// <reference path='../services/apis/likeAPI.ts' />
 /// <reference path='../services/apis/objectLinkAPI.ts' />
 /// <reference path='../services/parsers/projectParser.ts' />

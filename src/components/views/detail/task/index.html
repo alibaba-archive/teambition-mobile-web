@@ -1,13 +1,13 @@
-<div class="task-detail list" ng-controller="TaskCtrl">
+<div class="task-detail list" ng-controller="TaskView as TaskCtrl">
   <div class="task-name-wrap">
     <div class="task-belong item">
       <div class="task-belong-wrap">
-        <span>{{project.name}}</span><span>,&nbsp;</span><span>{{task.tasklist}}<span>,&nbsp;</span><span>{{task.stage}}</span></span>
+        <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
       </div>
     </div>
     <div class="item item-icon-left task-content">
-      <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': task.isDone}"></i>
-      <span>{{task.content}}</span>
+      <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"></i>
+      <span>{{TaskCtrl.task.content}}</span>
     </div>
   </div>
   <div class="task-info-wrap">
@@ -15,13 +15,13 @@
       信息
     </div>
     <div class="item item-detail-avatar">
-      <img ng-src="{{task.executorAvatar}}" class="task-executor-avatar">
-      <span class="task-executor-name">{{task.executorName}}</span>
+      <img ng-src="{{TaskCtrl.task.executorAvatar}}" class="task-executor-avatar">
+      <span class="task-executor-name">{{TaskCtrl.task.executorName}}</span>
     </div>
     <div class="item item-icon-left">
       <i class="icon icon-calendar2"></i>
-      <span ng-if="!task.dueDate">没有设置截止日期</span>
-      <span ng-if="task.dueDate" ng-class="{'assertive': task.overdue}">{{task.dueDate | formatDate:'ll'}}</span>
+      <span ng-if="!TaskCtrl.task.dueDate">没有设置截止日期</span>
+      <span ng-if="TaskCtrl.task.dueDate" ng-class="{'assertive': TaskCtrl.task.overdue}">{{TaskCtrl.task.dueDate | formatDate:'ll'}}</span>
     </div>
   </div>
   <div class="task-more-wrap ionic">
@@ -32,34 +32,34 @@
       <i class="icon icon-wall"></i>
       <span ng-bind-html="task.note" class="task-note"></span>
     </div-item>
-    <a class="item item-icon-left" on-tap="openSubtasks()" ng-if="task.subtaskTotal">
+    <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskTotal">
       <i class="icon icon-sub-task"></i>
-      <span><span>{{task.subtaskTotal}}</span>个子任务，<span>{{task.subtaskDone}}</span>个已完成</span>
+      <span><span>{{TaskCtrl.task.subtaskTotal}}</span>个子任务，<span>{{TaskCtrl.task.subtaskDone}}</span>个已完成</span>
     </a>
     <div-item class="item item-icon-left">
-      <i class="icon icon-circle-bold priority-{{task.priority || 0}}"></i>
-      <span>{{task.priority | priorityStr}}</span>
+      <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
+      <span>{{TaskCtrl.task.priority | priorityStr}}</span>
     </div-item>
     <div-item class="item item-icon-left">
       <i class="icon icon-repeat"></i>
-      <span>{{task.recurrence | recurrenceStr}}</span>
+      <span>{{TaskCtrl.task.recurrence | recurrenceStr}}</span>
     </div-item>
-    <a class="item item-icon-left" on-tap="openLinked()" ng-show="task.linked.length">
+    <a class="item item-icon-left" on-tap="TaskCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
       <i class="icon icon-link2"></i>
-      <span>{{task.linked.length}}个关联</span>
+      <span>{{TaskCtrl.task.linked.length}}个关联</span>
     </a>
-    <div-item class="item item-icon-left" on-tap="like()">
-      <i class="icon icon-dig" ng-class="{'positive': task.isLike}"></i>
-      <span><div class="liked-people" ng-bind="task.likedPeople"></div><span ng-bind="task.likesCount"></span></span>
+    <div-item class="item item-icon-left" on-tap="TaskCtrl.like()">
+      <i class="icon icon-dig" ng-class="{'positive': TaskCtrl.task.isLike}"></i>
+      <span><div class="liked-people" ng-bind="TaskCtrl.task.likedPeople"></div><span ng-bind="TaskCtrl.task.likesCount"></span></span>
     </div-item>
   </div>
-  <div class="task-executor-wrap" on-tap="showExecutors()">
+  <div class="task-executor-wrap" on-tap="TaskCtrl.showExecutors()">
     <div class="item list-title">
       参与者
     </div>
     <div class="item item-icon-left">
       <i class="icon icon-users"></i>
-      <span><span ng-repeat="member in members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+      <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
     </div>
   </div>
 </div>

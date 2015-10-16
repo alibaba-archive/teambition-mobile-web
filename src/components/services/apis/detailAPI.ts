@@ -116,7 +116,7 @@ module teambition {
   }
 
   export interface IDetailAPI {
-    fetch<T>(_id: string, type: string, linkedId: string): angular.IPromise<T>;
+    fetch(_id: string, type: string, linkedId: string): angular.IPromise<any>;
   }
 
   angular.module('teambition').factory('detailAPI',
@@ -235,7 +235,7 @@ module teambition {
               tasklistAPI.fetch(data._tasklistId)
               .then((tasklist: ITasklistData) => {
                 detailInfos.tasklist = tasklist;
-                detailInfos.stage = findElementInArray(tasklist.hasStages, data._tasklistId);
+                detailInfos.stage = findElementInArray(tasklist.hasStages, data._stageId);
               })
             );
           }

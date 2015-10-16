@@ -1,9 +1,9 @@
-<div class="list activities" ng-controller="ActivitiesCtrl">
+<div class="list activities" ng-controller="ActivityView as ActivityCtrl">
   <div class="item list-title">
     动态
   </div>
 
-  <div class="item item-avatar" ng-repeat="item in activities">
+  <div class="item item-avatar" ng-repeat="item in ActivityCtrl.activities">
     <i class="icon activities-icon" ng-class="item.icon" ng-if="!item.isComment"></i>
     <div ng-if="item.isComment" class="avatar item-image activities-comment-avatar"
       style="background-image: url({{::item.creatorAvatar}})"></div>

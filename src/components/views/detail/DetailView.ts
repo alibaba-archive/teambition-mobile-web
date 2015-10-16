@@ -29,12 +29,12 @@ module teambition {
 
     public ViewName = 'DetailView';
 
+    public objectTpl: string;
+
     protected _boundToObjectId: string;
     protected _boundToObjectType: string;
     protected _linkedId: string;
-    protected _boundToObject: {
-      data: any;
-    };
+    protected detail: any;
     protected members: IMemberData[];
 
     private detailAPI: IDetailAPI;
@@ -45,9 +45,6 @@ module teambition {
     ) {
       super();
       this.detailAPI = detailAPI;
-      this._boundToObject = {
-        data: null
-      };
       this.zone.run(noop);
     }
 
@@ -58,14 +55,15 @@ module teambition {
       if (this._boundToObjectType !== 'entry') {
         return this.detailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
         .then((detail: any) => {
-          this._boundToObject.data = detail;
+          this.detail = detail;
           this.members = detail.involveMembers;
+          return detail;
         });
       }
     }
 
     public onAllChangesDone() {
-
+      this.objectTpl = objectTpls[this._boundToObjectType].url;
     }
 
   }

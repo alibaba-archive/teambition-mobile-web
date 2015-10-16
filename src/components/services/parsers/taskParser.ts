@@ -3,6 +3,7 @@ module teambition {
   'use strict';
 
   export interface ITaskDataParsed extends ITaskData {
+    _projectId: string;
     parsed: boolean;
     oneDay: boolean;
     overDue: boolean;

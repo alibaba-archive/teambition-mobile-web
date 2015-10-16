@@ -236,7 +236,7 @@ module teambition {
       }
     }
 
-    private getProjects(): Thenjs.IPromise<any> {
+    private getProjects(): angular.IPromise<any> {
       let self = this;
       return this.projectsAPI.fetch()
       .then((projects: teambition.IProjectData[]) => {
