@@ -19,7 +19,6 @@ var RevAll       = require('gulp-rev-all')
 var plumber      = require('gulp-plumber')
 var autoprefixer = require('gulp-autoprefixer')
 var util         = require('gulp-util')
-var order        = require('gulp-order')
 var merge2       = require('merge2')
 var through      = require('through2')
 var cdnUploader  = require('cdn-uploader')
@@ -158,14 +157,13 @@ gulp.task('compile-template', function() {
 })
 
 gulp.task('concat-app', function() {
-  return gulp.src('.tmp/scripts/**/*.js')
+  return gulp.src([
+      '.tmp/scripts/app.js',
+      '.tmp/scripts/run.js',
+      '.tmp/scripts/components/views/View.js',
+      '.tmp/scripts/**/*.js'
+    ])
     .pipe(sourcemaps.init())
-    .pipe(order([
-      'src/app.js',
-      'src/components/run.js',
-      'src/components/views/View.js',
-      'src/scripts/**/*.js'
-    ]))
     .pipe(concat('app.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('www/js/'))

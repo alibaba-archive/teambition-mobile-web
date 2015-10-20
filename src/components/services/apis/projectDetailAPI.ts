@@ -135,7 +135,7 @@ module teambition {
           let result: ITaskDataParsed = this.taskParser(task);
           results.push(result);
           result.fetchTime = Date.now();
-          this.Cache.put(`task:detail:${result._id}`, result);
+          this.Cache.put(`task:detail:${result._id}`, task);
         });
         this.Cache.put(cacheNamespace, results);
         return results;

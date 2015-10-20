@@ -31,7 +31,7 @@ module teambition {
         url: '/home?visible',
         views: {
           'project-home': {
-            templateUrl: 'project-home/index.html'
+            templateUrl: 'project-tabs/project-home/index.html'
           }
         }
       })
@@ -39,7 +39,7 @@ module teambition {
         url: '/tasklist?visible',
         views: {
           'project-task': {
-            templateUrl: 'project-tasklist/index.html'
+            templateUrl: 'project-tabs/project-tasklist/index.html'
           }
         }
       })
@@ -47,7 +47,7 @@ module teambition {
         url: '/post?visible',
         views: {
           'project-post': {
-            templateUrl: 'project-post/index.html'
+            templateUrl: 'project-tabs/project-post/index.html'
           }
         }
       })
@@ -55,7 +55,7 @@ module teambition {
         url: '/work?visible',
         views: {
           'project-work': {
-            templateUrl: 'project-work/index.html'
+            templateUrl: 'project-tabs/project-work/index.html'
           }
         }
       })
@@ -63,17 +63,25 @@ module teambition {
         url: '/event?visible',
         views: {
           'project-event': {
-            templateUrl: 'project-event/index.html'
+            templateUrl: 'project-tabs/project-event/index.html'
           }
         }
       })
       .state('collections', {
         url: '/project/:_id/work/:_collectionId',
-        templateUrl: 'project-work/index.html'
+        templateUrl: 'project-tabs/project-work/index.html'
       })
       .state('wdetail', {
         url: '/detail/:type/:_id?linkedId',
         templateUrl: 'detail/index.html'
+      })
+      .state('subtsk', {
+        url: '/detail/task/:_id/subtasks',
+        templateUrl: 'detail/task/task-subtask/index.html'
+      })
+      .state('link', {
+        url: '/detail/:type/:_id/link',
+        templateUrl: 'detail/linked/index.html'
       });
     }
   ]);

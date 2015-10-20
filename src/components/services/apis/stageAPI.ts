@@ -43,6 +43,7 @@ module teambition {
             angular.forEach(data, (stage: IStageData, index: number) => {
               Cache.put(`stages:detail:${stage._id}`, stage);
             });
+            Cache.put(`stages:tasklist:${_id}`, data);
             return data;
           });
         }

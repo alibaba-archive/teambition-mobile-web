@@ -1,0 +1,125 @@
+// Global reference
+@import "../../../../less/reference.less";
+
+.activities {
+  margin:15px 0 20px 0;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  .item-avatar{
+    padding-left: 54px;
+  }
+  .item {
+    padding-top: 10px;
+    padding-bottom: 0;
+    border: none;
+    min-height: 41px;
+    .content{
+      p{
+        color: #A2A2A2;
+      }
+    }
+    .name{
+      color: #808080;
+      margin-right: 3px;
+    }
+    .item-image {
+      width: 30px;
+      height: 30px;
+    }
+    .creator-name{
+      padding-right: 60px;
+      font-size: 12px;
+      white-space: normal;
+      color: #A2A2A2;
+      p {
+        font-size: 12px;
+      }
+    }
+    .activity-linked {
+      a {
+        color: #03a9f4;
+      }
+    }
+    &.item-divider {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    > p,
+    > time {
+      margin: 0;
+    }
+
+    p {
+      overflow: initial;
+      text-overflow: initial;
+      white-space: normal;
+      font-size: 15px;
+      color: #A2A2A2;
+    }
+
+    .activity-content {
+      min-height: 35px;
+      color: #808080;
+      li {
+        white-space: normal;
+      }
+      p{
+        color: #000000;
+        font-size: 16px;
+        line-height: 24px;
+      }
+      img[alt=emoji] {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    .activity-creator {
+      color: #A2A2A2;
+      font-size: 12px;
+    }
+
+    .attachments{
+      font-size: 14px;
+      color: #387ef5;
+      min-height: 25px;
+      white-space: normal;
+      .activity-image-preview {
+        img {
+          border-radius: 0;
+          top: 0;
+          left: 0;
+        }
+      }
+    }
+
+    .item-content {
+      position: relative;
+    }
+
+    time {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 12px;
+      color: #A2A2A2;
+    }
+    .activities-icon{
+      position: absolute;
+      left: 22px;
+      top: 9px;
+    }
+    .activities-icon:before{
+      font-size: 14px;
+      color: #A2A2A2;
+    }
+    .activities-comment-avatar{
+      top: 10px;
+    }
+  }
+
+}
+.activities:last-child {
+  padding-bottom: 10px;
+  background: white;
+}

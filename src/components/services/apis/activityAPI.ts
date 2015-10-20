@@ -2,8 +2,16 @@
 module teambition {
   'use strict';
 
+  export interface IActivitySaveData {
+    _boundToObjectId: string;
+    attachments: string[];
+    boundToObjectType: string;
+    content: string;
+  }
+
   export interface IActivityAPI {
     fetch(_boundToObjectType: string, _boundToObjectId: string): angular.IPromise<IActivityDataParsed[]>;
+    save(data: IActivitySaveData): angular.IPromise<IActivityDataParsed>;
   }
 
   angular.module('teambition').factory('activityAPI',
@@ -47,6 +55,20 @@ module teambition {
           let results = prepareResult(result, data);
           Cache.put(cacheId, results);
           return results;
+        });
+      },
+      save: (data: IActivitySaveData) => {
+        let cacheId = `activities:${data._boundToObjectId}`;
+        let activities = Cache.get<IActivityDataParsed[]>(cacheId) || [];
+        return RestAPI.save({
+          Type: 'activities'
+        }, data)
+        .$promise
+        .then((activity: IActivityData) => {
+          arrayMerge(activities, [activity]);
+          Cache.put(cacheId, activities);
+          let result = activityParser(activity);
+          return result;
         });
       }
     };

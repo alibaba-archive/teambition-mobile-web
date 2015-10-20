@@ -16,6 +16,7 @@ module teambition {
     title: string;
     project: string;
     isDone: boolean;
+    icon?: string;
   }
 
   export interface IObjectLinkAPI {

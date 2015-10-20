@@ -32,9 +32,9 @@
       <i class="icon icon-wall"></i>
       <span ng-bind-html="task.note" class="task-note"></span>
     </div-item>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskTotal">
+    <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskCount.total">
       <i class="icon icon-sub-task"></i>
-      <span><span>{{TaskCtrl.task.subtaskTotal}}</span>个子任务，<span>{{TaskCtrl.task.subtaskDone}}</span>个已完成</span>
+      <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
     </a>
     <div-item class="item item-icon-left">
       <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
@@ -44,7 +44,7 @@
       <i class="icon icon-repeat"></i>
       <span>{{TaskCtrl.task.recurrence | recurrenceStr}}</span>
     </div-item>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
+    <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
       <i class="icon icon-link2"></i>
       <span>{{TaskCtrl.task.linked.length}}个关联</span>
     </a>
@@ -53,7 +53,7 @@
       <span><div class="liked-people" ng-bind="TaskCtrl.task.likedPeople"></div><span ng-bind="TaskCtrl.task.likesCount"></span></span>
     </div-item>
   </div>
-  <div class="task-executor-wrap" on-tap="TaskCtrl.showExecutors()">
+  <div class="task-executor-wrap" on-tap="DetailCtrl.showExecutors()">
     <div class="item list-title">
       参与者
     </div>
@@ -63,4 +63,3 @@
     </div>
   </div>
 </div>
-<div ng-include="'activities/index.html'"></div>

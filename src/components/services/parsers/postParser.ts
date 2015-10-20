@@ -27,9 +27,6 @@ module teambition {
     mdParser: (markdownString: string) => string
   ) => {
     return (post: IPostDataParsed) => {
-      if (post.parsed) {
-        return post;
-      }
       post.rawContent = post.content;
       post.content = post.html ? post.html : post.content;
       if (post.postMode !== 'html') {
@@ -49,7 +46,6 @@ module teambition {
       post.creator = post.creator || {_id: null, avatarUrl: nobodyUrl, name: null};
       post.creatorName = post.creator.name;
       post.creatorAvatar = post.creator.avatarUrl;
-      post.parsed = true;
       return post;
     };
   });

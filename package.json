@@ -10,8 +10,7 @@
     "type": "git",
     "url": "git@github.com:teambition/teambition-wechat.git"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "cdn-uploader": "^0.1.1",
     "et-template": "^0.1.2",
@@ -23,7 +22,6 @@
     "gulp-minify-html": "^1.0.4",
     "gulp-ng-annotate": "^1.1.0",
     "gulp-ng-template": "^0.2.1",
-    "gulp-order": "^1.1.1",
     "gulp-plumber": "^1.0.1",
     "gulp-replace": "^0.5.4",
     "gulp-rev-all": "^0.8.21",
@@ -38,6 +36,7 @@
     "merge2": "^0.3.6",
     "through2": "^2.0.0",
     "tsd": "^0.6.4",
+    "typescript": "^1.6.2",
     "uuid": "^2.0.1",
     "wrench": "^1.5.8"
   }

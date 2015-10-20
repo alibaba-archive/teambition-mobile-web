@@ -1,35 +1,34 @@
-<div class="event-detail" ng-controller="EventCtrl">
+<div class="event-detail" ng-controller="EventView as EventCtrl">
   <div class="list">
     <div class="event-main-wrap">
       <div class="item">
-        <p class="event-title">{{event.title}}</p>
-        <p class="event-time" ng-bind="event.eventTime1"></p>
-        <p><span ng-bind="event.eventTime2"></span></p>
+        <p class="event-title">{{EventCtrl.event.title}}</p>
+        <p class="event-time" ng-bind="EventCtrl.event.eventTime1"></p>
+        <p><span ng-bind="EventCtrl.event.eventTime2"></span></p>
       </div>
     </div>
     <div class="event-detail-wrap">
-      <div class="item item-icon-left" ng-if="event.content">
+      <div class="item item-icon-left" ng-if="EventCtrl.event.content">
         <i class="icon icon-wall"></i>
-        <span class="event-content margin-left" ng-bind-html="event.content"></span>
+        <span class="event-content margin-left" ng-bind-html="EventCtrl.event.content"></span>
       </div>
       <div class="item item-icon-left">
         <i class="icon icon-location"></i>
-        <span class="event-location margin-left" ng-bind="event.location"></span>
+        <span class="event-location margin-left" ng-bind="EventCtrl.event.location"></span>
       </div>
-      <a class="item item-icon-left" on-tap="openLinked()" ng-if="event.linked.length">
+      <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-if="EventCtrl.event.linked.length">
         <i class="icon icon-link2"></i>
-        <span class="margin-left">{{event.linked.length}}个关联</span>
+        <span class="margin-left">{{EventCtrl.event.linked.length}}个关联</span>
       </a>
     </div>
-    <div class="event-executor-wrap" on-tap="showExecutors()">
+    <div class="event-executor-wrap" on-tap="DetailCtrl.showExecutors()">
       <div class="item list-title">
         参与者
       </div>
       <div class="item item-icon-left">
         <i class="icon icon-users"></i>
-        <span><span ng-repeat="member in members">{{member.name}} <span ng-if="!$last">、</span></span></span>
+        <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
       </div>
     </div>
   </div>
 </div>
-<div ng-include="'activities/index.html'"></div>

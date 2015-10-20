@@ -40,7 +40,7 @@ module teambition {
         angular.forEach(tasks, (task: ITaskData, index: number) => {
           let result: ITaskDataParsed = taskParser(task);
           result.fetchTime = Date.now();
-          Cache.put(`task:detail:${task._id}`, result);
+          Cache.put(`task:detail:${task._id}`, task);
           results.push(result);
         });
         return results;
@@ -95,7 +95,6 @@ module teambition {
           return deferred.promise;
         }
         let tasks = [];
-        let fetchTime: number = 0;
         return $q.all([
           RestAPI.query({
             Type: 'tasklists',
@@ -104,7 +103,6 @@ module teambition {
             isDone: true,
             fields: queryFileds.taskFileds
           }, (data: ITaskData[]) => {
-            fetchTime ++;
             let result: ITaskDataParsed[] = prepareTasks(data, _tasklistId);
             tasks = tasks.concat(result);
           })

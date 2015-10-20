@@ -116,7 +116,7 @@ module teambition {
   }
 
   export interface IDetailAPI {
-    fetch(_id: string, type: string, linkedId: string): angular.IPromise<any>;
+    fetch(_id: string, type: string, linkedId?: string): angular.IPromise<any>;
   }
 
   angular.module('teambition').factory('detailAPI',

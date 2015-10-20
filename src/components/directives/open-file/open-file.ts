@@ -29,14 +29,13 @@ module teambition {
             };
             reader.readAsDataURL(file);
           });
-          scope.$apply(() => {
+          scope.$apply(function() {
             scope.onload({images: items});
           });
         };
 
         let chooseImage = (e: Event) => {
           e.preventDefault();
-
           let input = document.createElement('INPUT');
           input.setAttribute('type', 'file');
           if (scope.multiple) {
@@ -44,10 +43,13 @@ module teambition {
           }
           input.addEventListener('change', imageChosen, false);
 
-          angular.element(input).click();
+          let evt = document.createEvent('MouseEvent');
+          evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+          input.dispatchEvent(evt);
         };
 
-        angular.element(element).on('tap', chooseImage);
+        element.on('touchstart', chooseImage)
+               .on('click', chooseImage);
       }
     };
   }]);

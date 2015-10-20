@@ -20,7 +20,7 @@ module teambition {
       this.zone.run(noop);
     }
 
-    onInit() {
+    public onInit() {
       this.task = this.parent.detail;
       let projectId = this.task._projectId;
       return this.projectsAPI.fetchById(projectId)
@@ -28,6 +28,13 @@ module teambition {
         this.project = project;
       });
     }
+
+    public openSubtasks () {
+      if (this.task.subtaskCount) {
+        window.location.hash = `/detail/task/${this.task._id}/subtasks`;
+      }
+    }
+
   }
 
   angular.module('teambition').controller('TaskView', TaskView);

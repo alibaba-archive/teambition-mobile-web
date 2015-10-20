@@ -1,17 +1,18 @@
-<ion-view class="detail-view" ng-class="{'big-footer': images.length}" ng-controller="DetailView as DetailCtrl">
+<ion-view class="detail-view" ng-class="{'big-footer': DetailCtrl.images.length}" ng-controller="DetailView as DetailCtrl">
   <ion-content>
     <div ng-include="DetailCtrl.objectTpl"></div>
+    <div ng-include="'detail/activities/index.html'"></div>
   </ion-content>
   <ion-footer-bar class="bar-stable detail-footer">
     <div class="item item-input-inset item-comment">
       <i class="icon icon-paperclip"
-        open-file="DetailCtrl.loadedImages(images)"
+        open-file="DetailCtrl.loadImages(images)"
         open-file-filter="DetailCtrl.isImageFile(file)"
         open-file-multiple="true"></i>
       <div class="item-input-wrapper">
-        <input type="text" placeholder="评论..." ng-model="comment.content">
+        <input type="text" placeholder="评论..." ng-model="DetailCtrl.comment.content">
         <div class="comment-images">
-          <div class="comment-image" ng-repeat="item in DetailCtrl.images track by $index">
+          <div class="comment-image" ng-repeat="item in DetailCtrl.images">
             <img ng-src="{{item.url}}">
             <i class="icon ion-ios-close comment-image-close" on-tap="DetailCtrl.removeImage($index)"></i>
           </div>

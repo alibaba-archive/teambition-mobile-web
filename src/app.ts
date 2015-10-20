@@ -3,7 +3,6 @@
 
 module teambition {
   'use strict';
-  export let nobodyUrl: string = 'images/nobody-avator@2x.png';
   let script = document.getElementById('teambition-config');
   angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload'])
   .constant('Moment', moment)

@@ -4,7 +4,7 @@ module teambition {
 
   export interface ILikeAPI {
     getLiked: (type: string, _id: string) => angular.IPromise<ILikeData>;
-    postLike: (type: string, _id: string, isLiked: boolean) => angular.IPromise<ILikeData>;
+    postLike: <T>(detail: any) => angular.IPromise<T>;
   }
 
   angular.module('teambition').factory('likeAPI',
@@ -28,34 +28,34 @@ module teambition {
           return result;
         });
       },
-      postLike: (type: string, _id: string, liked: boolean) => {
-        if (liked) {
-          return RestAPI.delete({
-            Type: `${type}s`,
-            Id: _id,
+      postLike: <T>(detail: any) => {
+        let promise: angular.IPromise<any>;
+        if (detail.liked) {
+          promise = RestAPI.delete({
+            Type: `${detail.type}s`,
+            Id: detail._id,
             Path1: 'like'
           }, {
-            _id: _id
+            _id: detail._id
           })
-          .$promise
-          .then((data: ILikeData) => {
-            let likeObj = likeParser(data);
-            return likeObj;
-          });
+          .$promise;
         }else {
-          return RestAPI.save({
-            Type: `${type}s`,
-            Id: _id,
+          promise = RestAPI.save({
+            Type: `${detail.type}s`,
+            Id: detail._id,
             Path1: 'like'
           }, {
-            _id: _id
+            _id: detail._id
           })
-          .$promise
-          .then((data: ILikeData) => {
-            let likeObj = likeParser(data);
-            return likeObj;
-          });
+          .$promise;
         }
+        promise.then((data: ILikeDataParsed) => {
+          detail.isLike = data.isLike;
+          detail.likesGroup = data.likesGroup;
+          detail.likedPeople = data.likedPeople;
+          detail.likesCount = data.likesCount;
+          return detail;
+        });
       }
     };
   });

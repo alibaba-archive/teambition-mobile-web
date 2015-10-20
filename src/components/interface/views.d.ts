@@ -1,11 +1,11 @@
 /// <reference path='../../../.tmp/typings/tsd.d.ts' />
-/// <reference path='../views/project-tabs/TabsView.ts' />
 /// <reference path='../views/project/ProjectView.ts' />
-/// <reference path='../views/project-home/PanelHomeView.ts' />
-/// <reference path='../views/project-tasklist/PanelTasklistView.ts' />
-/// <reference path='../views/project-post/PanelPostView.ts' />
-/// <reference path='../views/project-work/PanelWorkView.ts' />
-/// <reference path='../views/project-event/PanelEventView.ts' />
+/// <reference path='../views/project-tabs/TabsView.ts' />
+/// <reference path='../views/project-tabs/project-home/PanelHomeView.ts' />
+/// <reference path='../views/project-tabs/project-tasklist/PanelTasklistView.ts' />
+/// <reference path='../views/project-tabs/project-post/PanelPostView.ts' />
+/// <reference path='../views/project-tabs/project-work/PanelWorkView.ts' />
+/// <reference path='../views/project-tabs/project-event/PanelEventView.ts' />
 /// <reference path='../views/detail/DetailView.ts' />
 declare module teambition {
   export interface IRootScope extends angular.IScope {

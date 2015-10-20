@@ -44,7 +44,7 @@ module teambition {
             }
             result.fetchTime = Date.now();
             raw.push(result);
-            Cache.put(`event:detail:${event._id}`, result);
+            Cache.put(`event:detail:${event._id}`, event);
           });
           results.counter = counter;
           results.raw = raw;
