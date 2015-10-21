@@ -1,0 +1,42 @@
+.et-notify {
+  width: 90%;
+  position: absolute;
+  height: 50px;
+  left: 5%;
+  bottom: 10px;
+  border-radius: 5px;
+  z-index: 23333;
+  background: rgba(0, 0, 0, 0.85);
+  .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: block;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+    margin: 9px 0 0 5px;
+    color: white;
+    float: left;
+    &.error {
+      background-color: #E51C23;
+    }
+    &.success {
+      background-color: #8BC34A;
+    }
+  }
+  .notify-text {
+    display: inline-block;
+    position: absolute;
+    &.notify-title {
+      color: white;
+      margin: 6px 0 0 20px;
+      font-size: 16px;
+    }
+    &.notify-content {
+      color: #A6A6A6;
+      margin: 25px 0 0 20px;
+      font-size: 12px;
+    }
+  }
+}

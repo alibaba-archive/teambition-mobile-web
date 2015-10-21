@@ -103,18 +103,18 @@ module teambition {
 
     public openDetail(href: string, type: string) {
       if (href === 'deleted') {
-        this.showMsg('err', `该${this.typeMap[type]}已经被删除`);
+        this.showMsg('err', '不能查看详情', `该${this.typeMap[type]}已经被删除`);
       }else if (href !== '#') {
         window.location.href = href;
       }
     }
 
     public openMembersFilterModal() {
-      this.openModal('project-home/members-filter-modal.html', {scope: this.$scope});
+      this.openModal('project-tabs/project-home/members-filter-modal.html', {scope: this.$scope});
     }
 
     public openTasksFilterModal() {
-      this.openModal('project-home/tasks-filter-modal.html', {scope: this.$scope});
+      this.openModal('project-tabs/project-home/tasks-filter-modal.html', {scope: this.$scope});
     }
 
     public checkItem(filter: any, type: string, item: string) {

@@ -58,16 +58,16 @@ module teambition {
           let str: string;
           if (!project.isStar) {
             str = '星标项目失败';
-            this.showMsg('error', str);
+            this.showMsg('error', project.name, str);
           }else {
             str = '星标项目成功';
             this.starProjects += 1;
-            this.showMsg('success', str);
+            this.showMsg('success', project.name, str);
           }
         })
         .catch((err: Error) => {
           let str = '星标项目失败';
-          this.showMsg('error', str);
+          this.showMsg('error', project.name, str);
         });
       }
       this.$ionicListDelegate.closeOptionButtons();
@@ -81,16 +81,17 @@ module teambition {
           let str: string;
           if (project.isStar) {
             str = '取消星标失败';
-            this.showMsg('error', str);
+            this.showMsg('error', project.name, str);
           }else {
             str = '取消星标成功';
             this.starProjects += 1;
-            this.showMsg('success', str);
+            this.showMsg('success', project.name, str);
           }
         })
         .catch((err: Error) => {
           let str = '取消星标失败';
-          this.showMsg('error', str);
+          this.notify.show('error', '网路出错了', '断线重连中');
+          this.showMsg('error', project.name, str);
         });
       }
       this.$ionicListDelegate.closeOptionButtons();
@@ -152,11 +153,11 @@ module teambition {
                 self.projectsAPI.archiveProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
-                  self.showMsg('success', '归档项目成功');
+                  self.showMsg('success', project.name, '归档项目成功');
                 })
                 .catch((err: Error) => {
                   project.deleted = false;
-                  self.showMsg('error', '网络错误，归档项目失败');
+                  self.showMsg('error', project.name, '网络错误，归档项目失败');
                 });
                 popup.close();
               }
@@ -164,7 +165,7 @@ module teambition {
           ]
         });
       }else {
-        this.showMsg('error', '无法归档项目');
+        this.showMsg('error', project.name, '无法归档项目');
       }
     }
 
@@ -186,11 +187,11 @@ module teambition {
                 self.projectsAPI.leaveProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
-                  self.showMsg('success', '退出项目成功');
+                  self.showMsg('success', project.name, '退出项目成功');
                 })
                 .catch((err: Error) => {
                   project.deleted = false;
-                  self.showMsg('error', '不能退出这个项目');
+                  self.showMsg('error', project.name, '不能退出这个项目');
                 });
                 popup.close();
               }
@@ -198,7 +199,7 @@ module teambition {
           ]
         });
       }else {
-        this.showMsg('error', '无法退出项目');
+        this.showMsg('error', project.name, '无法退出项目');
       }
     }
 
@@ -220,11 +221,11 @@ module teambition {
                 self.projectsAPI.deleteProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
-                  self.showMsg('success', '删除项目成功');
+                  self.showMsg('success', project.name, '删除项目成功');
                 })
                 .catch((err: Error) => {
                   project.deleted = false;
-                  self.showMsg('error', '不能删除这个项目');
+                  self.showMsg('error', project.name, '不能删除这个项目');
                 });
                 popup.close();
               }
@@ -232,7 +233,7 @@ module teambition {
           ]
         });
       }else {
-        this.showMsg('error', '无法删除项目');
+        this.showMsg('error', project.name, '无法删除项目');
       }
     }
 
@@ -254,7 +255,7 @@ module teambition {
       return this.projectsAPI.checkProjectsInviteUrl(url)
       .then(function(data: string | teambition.IProjectInviteData) {
         if (data === 'notValid') {
-          self.showMsg('error', '不合法的二维码');
+          self.showMsg('error', '扫描失败', '不合法的二维码');
         }
         return data;
       });

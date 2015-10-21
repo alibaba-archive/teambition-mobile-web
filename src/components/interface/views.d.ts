@@ -13,7 +13,7 @@ declare module teambition {
     loaded: boolean;
     zone: Zone;
     userMe: IUserMe;
-    pending: angular.IPromise<any>;
+    pending: any;
   }
 
   interface IUserEmail {

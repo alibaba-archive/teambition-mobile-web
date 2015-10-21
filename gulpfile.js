@@ -20,12 +20,9 @@ var plumber      = require('gulp-plumber')
 var autoprefixer = require('gulp-autoprefixer')
 var util         = require('gulp-util')
 var merge2       = require('merge2')
-var through      = require('through2')
 var cdnUploader  = require('cdn-uploader')
 var clientId     = require('./package.json').ACCOUNT_CLIENTID
 var wrench       = require('wrench')
-var ET           = require('et-template')
-var through      = require('through2')
 
 var cdnPrefix = 'https://dn-st.teambition.net/tb-weixin'
 
@@ -52,7 +49,7 @@ var paths = {
     'src/components/views/**/*.html',
     'src/scripts/directives/**/*.html'
   ],
-  'app': [
+  app: [
     'src/**/*.ts',
     '!src/components/interface/zone.d.ts'
   ],
@@ -127,27 +124,6 @@ function compileTemplate() {
     .pipe(gulp.dest('.tmp/scripts/template/'))
 }
 
-// function compileET() {
-//   var option = {
-//     modelType: 'object'
-//   }
-//   var et = new ET(option)
-//   var compile = function() {
-//     return through.obj(function (file, enc, next) {
-//       if (!file.isBuffer()) {
-//         return next()
-//       }
-//       var contents = et.compile(file.contents.toString())
-//       file.contents = new Buffer(contents)
-//       file.path = file.path.replace(/\.html/, '.js')
-//       this.push(file)
-//       next()
-//     })
-//   }
-//   return gulp.src('src/scripts/components/**/*.html')
-//     .pipe(compile())
-// }
-
 gulp.task('compile-ts', function() {
   return compileTypescript(paths.app)
 })
@@ -169,7 +145,7 @@ gulp.task('concat-app', function() {
     .pipe(gulp.dest('www/js/'))
 })
 
-gulp.task('compile', sequence(['compile-ts', 'compile-template'], 'concat-app'))
+gulp.task('compile', sequence(['compile-ts', 'compile-template', 'compile-et'], 'concat-app'))
 
 gulp.task('html', function() {
   return gulp.src('src/index.html')
@@ -206,7 +182,8 @@ gulp.task('lib-js', function() {
     'bower_components/store2/dist/store2.js',
     'bower_components/moment/moment.js',
     'bower_components/ng-file-upload/ng-file-upload.js',
-    'bower_components/gta/lib/index.js'
+    'bower_components/gta/lib/index.js',
+    'node_modules/et-template/es5/dependency.ng.js'
   ])
     .pipe(concat('lib.js'))
     .pipe(gulp.dest('www/js/'))
@@ -270,7 +247,7 @@ function watchTs(event) {
   compileTypescript(path, dest)
 }
 
-gulp.task('watch', function() {
+gulp.task('watch', ['watch-et'], function() {
   gulp.watch(paths.less, ['less'])
   gulp.watch(paths.app, watchTs)
   gulp.watch(paths.html, compileTemplate)

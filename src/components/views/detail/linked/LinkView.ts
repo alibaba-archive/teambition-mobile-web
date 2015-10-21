@@ -47,7 +47,7 @@ module teambition {
         window.location.hash = `/detail/${item.linkedType}/${data._id}?linkedId=${item._id}`;
       })
       .catch((reason: any) => {
-        this.showMsg('error', '无权限访问');
+        this.showMsg('error', '打开关联失败', '无权限访问');
       });
     }
 

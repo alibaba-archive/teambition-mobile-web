@@ -20,21 +20,6 @@ module teambition {
     return false;
   };
 
-  export let $inject = {
-    $rootScope: null,
-    $q: null,
-    $state: null,
-    $ionicLoading: null,
-    $location: null,
-    $ionicModal: null,
-    $ionicListDelegate: null,
-    $ionicActionSheet: null,
-    $ionicPopup: null,
-    $ionicTabsDelegate: null,
-    $ionicScrollDelegate: null,
-    Moment: null
-  };
-
   class Run {
     private $rootScope;
     private zone;
@@ -151,17 +136,6 @@ module teambition {
       getParameterByName
     );
 
-    let dependency = Object.keys($inject);
-    for (let index = 0; index < dependency.length; index++) {
-      let element = dependency[index];
-      let instance: any;
-      try {
-        instance = $injector.get(element);
-        $inject[element] = instance;
-      } catch (error) {
-        throw error;
-      }
-    }
     $$injector = $injector;
 
     if (app.LANGUAGE === 'zh') {

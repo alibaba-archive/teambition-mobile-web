@@ -4,7 +4,7 @@
 module teambition {
   'use strict';
   let script = document.getElementById('teambition-config');
-  angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload'])
+  angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
   .constant('Moment', moment)
   .constant('Marked', marked)
   .constant('app', {

@@ -202,7 +202,7 @@ module teambition {
         this.images = [];
       })
       .catch((reason: any) => {
-        this.showMsg('error', reason);
+        this.showMsg('error', '评论失败', reason);
       });
     }
 

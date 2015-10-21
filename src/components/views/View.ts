@@ -14,6 +14,22 @@ module teambition {
     state : ''
   };
 
+  const $inject = [
+    '$rootScope',
+    '$q',
+    '$state',
+    '$ionicLoading',
+    '$location',
+    '$ionicModal',
+    '$ionicListDelegate',
+    '$ionicActionSheet',
+    '$ionicPopup',
+    '$ionicTabsDelegate',
+    '$ionicScrollDelegate',
+    'Moment',
+    'notify'
+  ];
+
   export class View {
 
     public zone;
@@ -37,7 +53,9 @@ module teambition {
     protected $ionicModal: ionic.modal.IonicModalService;
     protected loading = false;
     protected Moment: moment.MomentStatic;
+    protected notify: EtTemplate.Notify;
 
+    private hasInjected = false;
 
     constructor() {
       if (this.parentName) {
@@ -46,8 +64,8 @@ module teambition {
       this.initZone();
     }
 
-    public onInit(promise?: angular.IPromise<any>) {
-      return promise || this.$rootScope.pending;
+    public onInit() {
+      return this.$rootScope.pending;
     }
 
     public onAllChangesDone() {
@@ -58,8 +76,8 @@ module teambition {
       noop();
     }
 
-    protected showMsg(type: string, infomation: string) {
-      console.log(type, infomation);
+    protected showMsg(type: string, title: string, content: string, href?: string) {
+      this.notify.show(type, title, content, href);
     }
 
     protected showLoading() {
@@ -118,7 +136,7 @@ module teambition {
         },
         'beforeTask': () => {
           let $$id: string;
-          this.initInjector($inject);
+          this.initInjector();
           $$id = this.$$id || this.$state.params._id;
           if (!initedViews[this.ViewName + $$id]) {
             this._onInit().then(() => {
@@ -133,20 +151,27 @@ module teambition {
       });
     }
 
-    private initInjector($inject: any) {
-      if (typeof($inject) !== 'object') {
-        return false;
+    private initInjector() {
+      if (this.hasInjected) {
+        return ;
       }
-      let properties = Object.keys($inject);
-      for (let index = 0; index < properties.length; index++) {
-        let element = properties[index];
-        this[element] = $inject[element];
+      for (let index = 0; index < $inject.length; index++) {
+        let element = $inject[index];
+        let instance: any;
+        try {
+          instance = $$injector.get(element);
+          this[element] = instance;
+        } catch (error) {
+          throw error;
+        }
       }
+      this.hasInjected = true;
+
     }
 
     private _onInit() {
       let $$id = this.$$id || this.$state.params._id;
-      let pending: angular.IPromise<any>;
+      let pending: any;
       let bindPromise: () => angular.IPromise<any>;
       this.$$id = $$id;
       this.showLoading();
@@ -161,6 +186,14 @@ module teambition {
       this.$rootScope.$on('$stateChangeStart', () => {
         initedViews[this.ViewName + this.$$id] = false;
       });
+      let _rootPending = this.$rootScope.pending;
+      if (_rootPending.$$state.status === 0) {
+        pending = _rootPending.then(() => {
+          return this.onInit();
+        });
+      }else {
+        pending = this.onInit();
+      }
       pending = this.onInit();
       bindPromise = Zone.bindPromiseFn<any>(() => {
         return pending.then(() => {
