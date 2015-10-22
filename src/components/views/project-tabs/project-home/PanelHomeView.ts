@@ -51,7 +51,7 @@ module teambition {
     private projectDetailAPI: IProjectDetailAPI;
     private eventAPI: IEventAPI;
     private memberAPI: IMemberAPI;
-    private infinite: boolean = true;
+    private infinite = true;
     private activities: IProjectActivitiesDataParsed [];
     private eventGroup: IEventData[];
 
@@ -85,11 +85,16 @@ module teambition {
     }
 
     public scrollHandler() {
-      if (
-        typeof(this.$ionicScrollDelegate.getScrollPosition().top) !== 'undefined' &&
-        this.$ionicScrollDelegate.getScrollPosition().top > 45
-      ) {
-        this.loadMoreData();
+      let thisView = this.$ionicScrollDelegate.getScrollView();
+      let height: number;
+      if (typeof(thisView) !== 'undefined') {
+        height = thisView.__maxScrollTop;
+      }
+      if ( typeof(this.$ionicScrollDelegate.getScrollPosition) !== 'undefined') {
+        let top = this.$ionicScrollDelegate.getScrollPosition().top;
+        if (height - top < 45) {
+          this.loadMoreData();
+        }
       }
     }
 

@@ -8,6 +8,8 @@ module teambition {
 
   let loadingZone: Zone;
 
+  let pending: any;
+
   let currentModal = {
     modal: null,
     templateUrl: '',
@@ -140,12 +142,18 @@ module teambition {
           $$id = this.$$id || this.$state.params._id;
           if (!initedViews[this.ViewName + $$id]) {
             this._onInit().then(() => {
-              this.$rootScope.loaded = true;
-              this.hideLoading();
               this.hasFetched = true;
+              if (pending && pending.$$state.status === 0) {
+                return ;
+              }else {
+                this.$rootScope.loaded = true;
+                this.hideLoading();
+              }
             });
           }else {
-            this.hideLoading();
+            if (!pending || (pending && pending.$$state.status === 1)) {
+              this.hideLoading();
+            }
           }
         }
       });
@@ -171,12 +179,10 @@ module teambition {
 
     private _onInit() {
       let $$id = this.$$id || this.$state.params._id;
-      let pending: any;
       let bindPromise: () => angular.IPromise<any>;
       this.$$id = $$id;
       this.showLoading();
       viewsMap[this.ViewName] = this;
-      initedViews[this.ViewName + $$id] = true;
       if (typeof(this.$scope) === 'object') {
         this.$scope.$on('$destroy', () => {
           // console.log(this.ViewName, ' has been destroyed');
@@ -186,17 +192,14 @@ module teambition {
       this.$rootScope.$on('$stateChangeStart', () => {
         initedViews[this.ViewName + this.$$id] = false;
       });
-      let _rootPending = this.$rootScope.pending;
-      if (_rootPending.$$state.status === 0) {
-        pending = _rootPending.then(() => {
-          return this.onInit();
-        });
-      }else {
-        pending = this.onInit();
-      }
-      pending = this.onInit();
       bindPromise = Zone.bindPromiseFn<any>(() => {
-        return pending.then(() => {
+        return this.$rootScope.pending
+        .then(() => {
+          pending = this.onInit();
+          return pending;
+        })
+        .then(() => {
+          initedViews[this.ViewName + $$id] = true;
           return this.onAllChangesDone();
         });
       });

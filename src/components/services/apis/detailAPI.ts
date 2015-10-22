@@ -180,9 +180,9 @@ module teambition {
           }
         });
         if (involveMembers.length) {
-          detail.involveMembers = involveMembers;
+          detail.members = involveMembers;
         }else {
-          detail.involveMembers = [{name: '暂无参与者'}];
+          detail.members = [{name: '暂无参与者'}];
         }
       }
       switch (type) {

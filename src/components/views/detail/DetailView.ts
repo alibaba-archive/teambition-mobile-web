@@ -92,7 +92,7 @@ module teambition {
         return this.detailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
         .then((detail: any) => {
           this.detail = detail;
-          this.members = detail.involveMembers;
+          this.members = detail.members;
           return detail;
         });
       }else {

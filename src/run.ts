@@ -26,7 +26,6 @@ module teambition {
     private getParameterByName;
     private RestAPI: IRestAPI;
     private $state;
-    private pending: angular.IPromise<any>;
     private $ionicLoading;
     constructor(
       app: teambition.Iapp,
@@ -55,7 +54,6 @@ module teambition {
       this.zone.run(() => {
         this.$rootScope = $rootScope;
         this.getUserInfo();
-        $rootScope.pending = this.pending;
       });
     }
 
@@ -73,7 +71,7 @@ module teambition {
       let self = this;
       if (!visible) {
         this.zone.hasCreated = true;
-        this.pending = this.RestAPI.get({
+        this.$rootScope.pending = this.RestAPI.get({
           Type: 'users',
           Id: 'me'
         })
