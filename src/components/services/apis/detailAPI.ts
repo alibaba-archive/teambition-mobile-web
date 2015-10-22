@@ -208,7 +208,8 @@ module teambition {
 
     return {
       fetch: (_id: string, type: string, linkedId: string) => {
-        return query(_id, type, linkedId)
+        let deferred = $q.defer();
+        query(_id, type, linkedId)
         .then((data: any) => {
           let detailInfos: IDetailInfos;
           detailInfos = {};
@@ -239,11 +240,13 @@ module teambition {
               })
             );
           }
-          return $q.all(fetchTasks)
+          $q.all(fetchTasks)
           .then(() => {
-            return detailParser(data, type, detailInfos);
+            let result = detailParser(data, type, detailInfos);
+            deferred.resolve(result);
           });
         });
+        return deferred.promise;
       }
     };
   });

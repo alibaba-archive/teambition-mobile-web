@@ -1,7 +1,7 @@
 <ion-view class="detail-view" ng-class="{'big-footer': DetailCtrl.images.length}" ng-controller="DetailView as DetailCtrl">
   <ion-content>
-    <div ng-include="DetailCtrl.objectTpl"></div>
-    <div ng-include="'detail/activities/index.html'"></div>
+    <div ui-view="detail"></div>
+    <div ui-view="detail-activities"></div>
   </ion-content>
   <ion-footer-bar class="bar-stable detail-footer">
     <div class="item item-input-inset item-comment">

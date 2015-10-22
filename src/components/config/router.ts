@@ -23,11 +23,11 @@ module teambition {
         url: '/qrcode/:projectId/:signCode/:invitorId',
         templateUrl: 'qrcode/index.html'
       })
-      .state('wproject', {
+      .state('project', {
         url: '/project/:_id',
         templateUrl: 'project-tabs/index.html'
       })
-      .state('wproject.home', {
+      .state('project.home', {
         url: '/home?visible',
         views: {
           'project-home': {
@@ -35,7 +35,7 @@ module teambition {
           }
         }
       })
-      .state('wproject.tasklist', {
+      .state('project.tasklist', {
         url: '/tasklist?visible',
         views: {
           'project-task': {
@@ -43,7 +43,7 @@ module teambition {
           }
         }
       })
-      .state('wproject.post', {
+      .state('project.post', {
         url: '/post?visible',
         views: {
           'project-post': {
@@ -51,7 +51,7 @@ module teambition {
           }
         }
       })
-      .state('wproject.work', {
+      .state('project.work', {
         url: '/work?visible',
         views: {
           'project-work': {
@@ -59,7 +59,7 @@ module teambition {
           }
         }
       })
-      .state('wproject.event', {
+      .state('project.event', {
         url: '/event?visible',
         views: {
           'project-event': {
@@ -71,9 +71,22 @@ module teambition {
         url: '/project/:_id/work/:_collectionId',
         templateUrl: 'project-tabs/project-work/index.html'
       })
-      .state('wdetail', {
-        url: '/detail/:type/:_id?linkedId',
+      .state('detail', {
+        url: '/detail',
         templateUrl: 'detail/index.html'
+      })
+      .state('detail.views', {
+        url: '/:type/:_id?linkedId',
+        views: {
+          detail: {
+            templateUrl: ($stateParams: any) => {
+              return `detail/${$stateParams.type}/index.html`;
+            }
+          },
+          'detail-activities': {
+            templateUrl: 'detail/activities/index.html'
+          }
+        }
       })
       .state('subtsk', {
         url: '/detail/task/:_id/subtasks',

@@ -195,7 +195,10 @@ module teambition {
       bindPromise = Zone.bindPromiseFn<any>(() => {
         return this.$rootScope.pending
         .then(() => {
-          pending = this.onInit();
+          let _pending = this.onInit();
+          if (_pending !== this.$rootScope.pending) {
+            pending = _pending;
+          }
           return pending;
         })
         .then(() => {

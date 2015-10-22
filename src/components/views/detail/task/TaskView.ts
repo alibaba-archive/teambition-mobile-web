@@ -20,13 +20,9 @@ module teambition {
       this.zone.run(noop);
     }
 
-    public onInit() {
+    public onAllChangesDone() {
       this.task = this.parent.detail;
-      let projectId = this.task._projectId;
-      return this.projectsAPI.fetchById(projectId)
-      .then((project: IProjectDataParsed) => {
-        this.project = project;
-      });
+      this.project = this.parent.project;
     }
 
     public openSubtasks () {

@@ -41,6 +41,7 @@ module teambition {
     public comment: {
       content: string;
     };
+    public project: IProjectDataParsed;
 
     protected _boundToObjectId: string;
     protected _boundToObjectType: string;
@@ -84,17 +85,23 @@ module teambition {
       this.zone.run(noop);
     }
 
-    public onInit() {
+    public onInit(): angular.IPromise<any> {
       this._boundToObjectId = this.$state.params._id;
       this._boundToObjectType = this.$state.params.type;
       this._linkedId = this.$state.params.linkedId;
       if (this._boundToObjectType !== 'entry') {
-        return this.detailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
+        let deferred = this.$q.defer();
+        this.detailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
         .then((detail: any) => {
           this.detail = detail;
           this.members = detail.members;
-          return detail;
+          this.projectsAPI.fetchById(detail._projectId)
+          .then((project: IProjectDataParsed) => {
+            this.project = project;
+            deferred.resolve(project);
+          });
         });
+        return deferred.promise;
       }else {
         return this.entryAPI.fetch(this._boundToObjectId)
         .then((data: IEntryData) => {
