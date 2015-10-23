@@ -6,7 +6,7 @@
     </button>
   </ion-header-bar>
   <ion-content>
-    <ul class="list">
+    <div class="list">
       <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.all"
                     ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types')">全部类型</ion-checkbox>
       <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.task"
@@ -19,6 +19,6 @@
                     ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','event')">日程</ion-checkbox>
       <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.entry"
                     ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','entry')">账目</ion-checkbox>
-    </ul>
+    </div>
   </ion-content>
 </ion-modal-view>

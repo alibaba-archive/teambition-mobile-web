@@ -3,9 +3,11 @@ declare module teambition {
     NAME: string;
     VERSION: string;
     LANGUAGE: string;
+    host: string;
     apiHost: string;
     strikerHost: string;
     cdnHost: string;
     wsHost: string;
+    wxid: string;
   }
 }

@@ -38,9 +38,7 @@ module teambition {
 
     public objectTpl: string;
     public fixWebkit = false;
-    public comment: {
-      content: string;
-    };
+    public comment: string;
     public project: IProjectDataParsed;
 
     protected _boundToObjectId: string;
@@ -78,9 +76,7 @@ module teambition {
       this.workAPI = workAPI;
       this.entryAPI = entryAPI;
       this.likeAPI = likeAPI;
-      this.comment = {
-        content: ''
-      };
+      this.comment = '';
       this.images = [];
       this.zone.run(noop);
     }
@@ -138,7 +134,7 @@ module teambition {
     }
 
     public hasContent() {
-      return !!(this.images.length || this.comment.content);
+      return !!(this.images.length || this.comment.length);
     }
 
     public like() {
@@ -157,7 +153,7 @@ module teambition {
     }
 
     public addComment() {
-      if (!this.comment.content || !this.images.length) {
+      if (!this.comment && !this.images.length) {
         return ;
       }
       this.showLoading();
@@ -197,19 +193,21 @@ module teambition {
     }
 
     private addTextComment(attachments?: string[]) {
-      attachments = attachments.length ? attachments : [];
+      attachments = (attachments && attachments.length) ? attachments : [];
       return this.activityAPI.save({
         _boundToObjectId: this._boundToObjectId,
         attachments: attachments,
         boundToObjectType: this._boundToObjectType,
-        content: this.comment.content
+        content: this.comment
       })
       .then((activity: IActivityDataParsed) => {
-        this.comment.content = '';
+        this.comment = '';
         this.images = [];
       })
       .catch((reason: any) => {
-        this.showMsg('error', '评论失败', reason);
+        let msg = '网络错误';
+        msg = (reason && typeof(reason.data) === 'object') ? reason.data.message : msg;
+        this.showMsg('error', '评论失败', msg);
       });
     }
 

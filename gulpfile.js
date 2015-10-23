@@ -135,6 +135,8 @@ gulp.task('compile-template', function() {
 gulp.task('concat-app', function() {
   return gulp.src([
       '.tmp/scripts/app.js',
+      '.tmp/scripts/Modules/MomentLocale.js',
+      '.tmp/scripts/Modules/WechatService.js',
       '.tmp/scripts/run.js',
       '.tmp/scripts/components/views/View.js',
       '.tmp/scripts/**/*.js'
@@ -231,18 +233,30 @@ gulp.task('revall', function() {
 })
 
 function watchTs(event) {
-  var reg = /src\/components/
+  var reg1 = /src\/components/
+  var reg2 = /src\/modules/
   var path = event.path
   var dest
-  if (reg.test(path)) {
-    var _test = 'src/components/'
+  if (reg1.test(path) || reg2.test(path)) {
+    var _test
+    var _dest
+    if (reg1.test(path)) {
+      _test = 'src/components/'
+      _dest = 'components'
+    }else if(reg2.test(path)) {
+      _test = 'src/modules/'
+      _dest = 'modules'
+    }
     var _pos = path.indexOf(_test)
     var _subLength = path.length - _pos - _test.length
     var _subPos = _pos + _test.length
     var _subStr = path.substr(_subPos, _subLength)
     var _subPath = _subStr.split('/')
     _subPath.pop()
-    dest = '.tmp/scripts/components/' + _subPath.join('/') + '/'
+    _subPath = _subPath.join('/')
+    _subPath = (_subPath.substr(-1) === '/') ? _subPath : _subPath + '/'
+    _subPath = (_subPath.substr(0) === '/') ? _subPath : '/' + _subPath
+    dest = '.tmp/scripts/' + _dest + _subPath
   }
   compileTypescript(path, dest)
 }

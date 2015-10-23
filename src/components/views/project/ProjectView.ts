@@ -16,10 +16,17 @@ module teambition {
 
     public ViewName = 'ProjectView';
     public $$id     = 'Projects';
+    public personalProjects: IProjectDataParsed[] = [];
+    public staredProject: IProjectDataParsed[] = [];
 
     private projectsAPI: teambition.IProjectsAPI;
-    private allProjects: teambition.IProjectData[];
-    private starProjects: number = 0;
+    private organization: {
+      [index: string]: {
+        id: string;
+        name: string;
+        projects: IProjectDataParsed[];
+      }
+    } = {};
 
     // @ngInject
     constructor(
@@ -61,7 +68,6 @@ module teambition {
             this.showMsg('error', project.name, str);
           }else {
             str = '星标项目成功';
-            this.starProjects += 1;
             this.showMsg('success', project.name, str);
           }
         })
@@ -84,7 +90,6 @@ module teambition {
             this.showMsg('error', project.name, str);
           }else {
             str = '取消星标成功';
-            this.starProjects += 1;
             this.showMsg('success', project.name, str);
           }
         })
@@ -238,15 +243,27 @@ module teambition {
     }
 
     private getProjects(): angular.IPromise<any> {
-      let self = this;
       return this.projectsAPI.fetch()
       .then((projects: teambition.IProjectData[]) => {
-        self.allProjects = projects;
-        angular.forEach(projects, (project: teambition.IProjectData, index: number) => {
-          if (project.isStar) {
-            self.starProjects += 1;
-          }
-        });
+        this.sortProject(projects);
+      });
+    }
+
+    private sortProject(projects: IProjectDataParsed[]) {
+      angular.forEach(projects, (project: teambition.IProjectData, index: number) => {
+        if (project.isStar) {
+          this.staredProject.push(project);
+        }
+        if (project.organization) {
+          this.organization[project.organization._id] = this.organization[project.organization._id] ? this.organization[project.organization._id] : {
+            id: project.organization._id,
+            name: project.organization.name,
+            projects: []
+          };
+          this.organization[project.organization._id].projects.push(project);
+        }else {
+          this.personalProjects.push(project);
+        }
       });
     }
 

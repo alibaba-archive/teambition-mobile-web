@@ -4,6 +4,9 @@
 module teambition {
   'use strict';
   let script = document.getElementById('teambition-config');
+
+  export let host = script.getAttribute('data-host');
+
   angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
   .constant('Moment', moment)
   .constant('Marked', marked)
@@ -14,6 +17,7 @@ module teambition {
     apiHost: script.getAttribute('data-apihost'),
     strikerHost: script.getAttribute('data-strikerhost'),
     cdnHost: script.getAttribute('data-cdnhost'),
-    wsHost: script.getAttribute('data-wshost')
+    wsHost: script.getAttribute('data-wshost'),
+    wxid: script.getAttribute('data-wxid')
   });
 }

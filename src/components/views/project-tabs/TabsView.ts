@@ -11,8 +11,8 @@ module teambition {
 
     public ViewName = 'TabsView';
     public projectId: string;
+    public project: IProjectData;
 
-    private project: IProjectData;
     private projectName: string;
     private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
     private projectsAPI: IProjectsAPI;

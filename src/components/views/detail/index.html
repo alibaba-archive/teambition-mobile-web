@@ -10,7 +10,7 @@
         open-file-filter="DetailCtrl.isImageFile(file)"
         open-file-multiple="true"></i>
       <div class="item-input-wrapper">
-        <input type="text" placeholder="评论..." ng-model="DetailCtrl.comment.content">
+        <input type="text" placeholder="评论..." ng-model="DetailCtrl.comment">
         <div class="comment-images">
           <div class="comment-image" ng-repeat="item in DetailCtrl.images">
             <img ng-src="{{item.url}}">

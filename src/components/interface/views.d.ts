@@ -7,6 +7,11 @@
 /// <reference path='../views/project-tabs/project-work/PanelWorkView.ts' />
 /// <reference path='../views/project-tabs/project-event/PanelEventView.ts' />
 /// <reference path='../views/detail/DetailView.ts' />
+
+declare module 'teambition' {
+  export = teambition;
+}
+
 declare module teambition {
   export interface IRootScope extends angular.IScope {
     global: IGlobal;
@@ -16,14 +21,14 @@ declare module teambition {
     pending: any;
   }
 
-  interface IUserEmail {
+  export interface IUserEmail {
     email: string;
     state: number;
     _id: string;
     id: string;
   }
 
-  interface IUserMe {
+  export interface IUserMe {
     _id: string;
     email: string;
     name: string;
@@ -97,7 +102,7 @@ declare module teambition {
     joinedProjectsCount: number;
   }
 
-  interface IGlobal {
+  export interface IGlobal {
     title: String;
   }
 }

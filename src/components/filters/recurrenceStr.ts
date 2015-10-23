@@ -13,8 +13,10 @@ module teambition {
         WEEKLY: '周',
         MONTHLY: '月'
       };
-      let freq = _arr[0].split('=')[1];
-      let cycle = _arr[1].split('=')[1];
+      let freq = _arr[0];
+      freq = freq ? freq.split('=')[1] : freq;
+      let cycle = _arr[1];
+      cycle = cycle ? cycle.split('=')[1] : cycle;
       if (cycle === '2') {
         cycle = '两';
       }else {

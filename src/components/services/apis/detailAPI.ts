@@ -182,7 +182,7 @@ module teambition {
         if (involveMembers.length) {
           detail.members = involveMembers;
         }else {
-          detail.members = [{name: '暂无参与者'}];
+          detail.members = [{name: '暂无参与者', avatarUrl: nobodyUrl}];
         }
       }
       switch (type) {

@@ -1,4 +1,4 @@
-/// <reference path='../interface/teambition.d.ts' />
+/// <reference path='../components/interface/teambition.d.ts' />
 module teambition {
   'use strict';
 
@@ -9,6 +9,8 @@ module teambition {
   let loadingZone: Zone;
 
   let pending: any;
+
+  let userMe: IUserMe;
 
   let currentModal = {
     modal: null,
@@ -41,6 +43,7 @@ module teambition {
     public parentName: string;
     public parent: any;
     public shouldFetchedTimes: number;
+    public project: IProjectDataParsed;
 
     protected $rootScope: IRootScope;
     protected $scope: angular.IScope;
@@ -134,7 +137,11 @@ module teambition {
       let parentZone = (this.parent) ? this.parent.zone : rootZone;
       this.zone = parentZone.fork({
         'afterTask': () => {
+          userMe = userMe ? userMe : this.$rootScope.userMe;
           currentModal.state = this.$location.path();
+          if (Wechat && this.project) {
+            Wechat.reconfigShare(userMe, this.project);
+          }
         },
         'beforeTask': () => {
           let $$id: string;
