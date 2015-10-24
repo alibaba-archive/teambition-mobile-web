@@ -12,8 +12,6 @@ module teambition {
       $httpProvider: angular.IHttpProvider
     ) => {
 
-      $ionicConfigProvider.views.transition('none');
-
       $httpProvider.defaults.withCredentials = true;
 
       $ionicConfigProvider.views.forwardCache(true);

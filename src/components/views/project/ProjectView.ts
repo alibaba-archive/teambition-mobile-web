@@ -69,6 +69,7 @@ module teambition {
           }else {
             str = '星标项目成功';
             this.showMsg('success', project.name, str);
+            this.staredProject.push(project);
           }
         })
         .catch((err: Error) => {
@@ -90,6 +91,8 @@ module teambition {
             this.showMsg('error', project.name, str);
           }else {
             str = '取消星标成功';
+            let position = this.staredProject.indexOf(project);
+            this.staredProject.splice(position, 1);
             this.showMsg('success', project.name, str);
           }
         })

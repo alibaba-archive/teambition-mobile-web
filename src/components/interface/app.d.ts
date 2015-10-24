@@ -9,5 +9,6 @@ declare module teambition {
     cdnHost: string;
     wsHost: string;
     wxid: string;
+    socket: any;
   }
 }

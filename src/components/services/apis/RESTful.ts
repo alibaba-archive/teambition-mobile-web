@@ -8,6 +8,8 @@ module teambition {
     Path1?: string;
     Path2?: string;
     Path3?: string;
+    _boundToObjectId?: string;
+    fields?: string;
     [index: string]: any;
   }
 
@@ -97,10 +99,16 @@ module teambition {
 
   export class RestAPI implements IRestAPI {
     private $resource: IRestMethod;
+    private socketListener: any;
     // @ngInject
-    constructor(app: Iapp, $resource: angular.resource.IResourceService) {
+    constructor(
+      app: Iapp,
+      $resource: angular.resource.IResourceService,
+      socketListener: any
+    ) {
       // 大写开头是为了避免和后端的接口的 key 冲突
       let path: string = '/:V2/:Type/:Id/:Path1/:Path2/:Path3';
+      this.socketListener = socketListener;
       this.$resource = $resource(app.apiHost + path, null , {
         query: {
           method: 'GET',
@@ -133,26 +141,31 @@ module teambition {
 
     @request
     public get(paths: IRestPaths, successCallback: (data: any) => any, errorCallback: (err: Error) => any) {
+      this.socketListener(paths);
       return this.$resource.get.apply(null, arguments);
     }
 
     @request
     public query(paths: IRestPaths, callback: (data: any) => any) {
+      this.socketListener(paths);
       return this.$resource.query.apply(null, arguments);
     }
 
     @request
     public update(paths: IRestPaths, data: any, callback: (data: any) => any) {
+      this.socketListener(paths);
       return this.$resource.update.apply(null, arguments);
     }
 
     @request
     public save(paths: IRestPaths, data: any, callback: (data: any) => any) {
+      this.socketListener(paths);
       return this.$resource.save.apply(null, arguments);
     }
 
     @request
     public post(paths: IRestPaths, data: any, callback: (data: any) => any) {
+      this.socketListener(paths);
       return this.$resource.post.apply(null, arguments);
     }
 

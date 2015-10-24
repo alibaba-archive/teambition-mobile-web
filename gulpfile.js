@@ -185,7 +185,11 @@ gulp.task('lib-js', function() {
     'bower_components/moment/moment.js',
     'bower_components/ng-file-upload/ng-file-upload.js',
     'bower_components/gta/lib/index.js',
-    'node_modules/et-template/es5/dependency.ng.js'
+    'node_modules/et-template/es5/dependency.ng.js',
+    'bower_components/jsonrpc-lite/jsonrpc.js',
+    'bower_components/angular-socket-io/socket.js',
+    'bower_components/engine.io-client/engine.io.js',
+    'bower_components/snapper2-consumer/index.js'
   ])
     .pipe(concat('lib.js'))
     .pipe(gulp.dest('www/js/'))
@@ -198,7 +202,7 @@ function replaceForPublish() {
     .pipe(replace('http://m.wx.project.ci', 'https://weixin.teambition.com'))
     .pipe(replace('http://project.ci/api', 'https://www.teambition.com/api'))
     .pipe(replace('wx48744c9444d9824a', 'wx3197516ac7a4c96b'))
-    .pipe(replace('ws://snapper.project.bi/websocket', 'wss://push.teambition.com/websocket'))
+    .pipe(replace('ws://snapper.project.bi/', 'wss://push.teambition.com'))
     .pipe(replace('http://account.project.ci', 'https://account.teambition.com'))
 }
 

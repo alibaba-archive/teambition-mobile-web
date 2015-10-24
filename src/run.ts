@@ -34,25 +34,28 @@ module teambition {
   };
 
   class Run {
-    private $rootScope;
+    private app: Iapp;
+    private $rootScope: IRootScope;
     private zone;
     private getParameterByName;
     private RestAPI: IRestAPI;
-    private $state;
-    private $ionicLoading;
+    private $state: angular.ui.IStateService;
+    private $ionicLoading: ionic.loading.IonicLoadingService;
+    private socket: any;
     constructor(
       app: teambition.Iapp,
       RestAPI: teambition.IRestAPI,
       $ionicPlatform: ionic.platform.IonicPlatformService,
       $ionicLoading: ionic.loading.IonicLoadingService,
       $rootScope: teambition.IRootScope,
-      $state: ng.ui.IStateService,
+      $state: angular.ui.IStateService,
       $ionicHistory: ionic.navigation.IonicHistoryService,
       $ionicModal: ionic.modal.IonicModalService,
       $timeout: angular.ITimeoutService,
       $location: angular.ILocationService,
       $http: angular.IHttpService,
       $injector: any,
+      socket: any,
       projectsAPI: teambition.IProjectsAPI,
       Moment: moment.MomentStatic,
       Cache: angular.ICacheFactoryService,
@@ -63,6 +66,8 @@ module teambition {
       this.RestAPI = RestAPI;
       this.$state = $state;
       this.$ionicLoading = $ionicLoading;
+      this.socket = socket;
+      this.app = app;
       $rootScope.zone = this.zone;
       this.zone.run(() => {
         this.$rootScope = $rootScope;
@@ -76,6 +81,7 @@ module teambition {
         title: 'Teambition'
       };
       $rootScope.userMe = userMe;
+      this.app.socket = this.socket(userMe.snapperToken);
       $$rootScope = $rootScope;
     }
 
@@ -114,13 +120,14 @@ module teambition {
     $ionicPlatform: ionic.platform.IonicPlatformService,
     $ionicLoading: ionic.loading.IonicLoadingService,
     $rootScope: teambition.IRootScope,
-    $state: ng.ui.IStateService,
+    $state: angular.ui.IStateService,
     $ionicHistory: ionic.navigation.IonicHistoryService,
     $ionicModal: ionic.modal.IonicModalService,
     $timeout: angular.ITimeoutService,
     $location: angular.ILocationService,
-    $http: angular.IHttpService,
+    $http: any,
     $injector: any,
+    socket: any,
     projectsAPI: teambition.IProjectsAPI,
     Moment: moment.MomentStatic,
     Cache: angular.ICacheFactoryService,
@@ -140,6 +147,7 @@ module teambition {
       $location,
       $http,
       $injector,
+      socket,
       projectsAPI,
       Moment,
       Cache,
