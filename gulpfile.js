@@ -187,9 +187,8 @@ gulp.task('lib-js', function() {
     'bower_components/gta/lib/index.js',
     'node_modules/et-template/es5/dependency.ng.js',
     'bower_components/jsonrpc-lite/jsonrpc.js',
-    'bower_components/angular-socket-io/socket.js',
     'bower_components/engine.io-client/engine.io.js',
-    'bower_components/snapper2-consumer/index.js'
+    'bower_components/snapper-consumer/index.js'
   ])
     .pipe(concat('lib.js'))
     .pipe(gulp.dest('www/js/'))

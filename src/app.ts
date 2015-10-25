@@ -7,7 +7,7 @@ module teambition {
 
   export let host = script.getAttribute('data-host');
 
-  angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template', 'btford.socket-io'])
+  angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
   .constant('Moment', moment)
   .constant('Marked', marked)
   .constant('app', {
