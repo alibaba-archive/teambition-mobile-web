@@ -12,9 +12,10 @@ module teambition {
         return;
       }
       let socket = app.socket;
-      let name = params.Type;
+      let name = params.Type === 'projects' ? 'project' : params.Type;
       let _id = params.Id || params._boundToObjectId;
       let namespace = name;
+
       if (_id) {
         namespace = `${name}/${_id}`;
       }
@@ -22,28 +23,36 @@ module teambition {
         return ;
       }
       listener.push(namespace);
-      if (name !== 'projects') {
-        socket.on('change:isArchived', (model: any, isArchived: boolean) => {
-          console.log(model, isArchived);
-        });
+
+      let newMsgCallback = (data: any) => {
+        console.log(data, `:new:${namespace}`);
+      };
+
+      let changeMsgCallback = (data: any) => {
+        console.log(data, `:change:${namespace}`);
+      };
+
+      let refreshMsgCallback = (_id: string) => {
+        console.log(_id, `:refresh:${namespace}`);
+      };
+
+      let removeMsgCallback = (_id: string) => {
+        console.log(_id, `:remove:${namespace}`);
+      };
+
+      let changIsArchivedCallback = (model: any, isArchived: boolean) => {
+        console.log(model, isArchived);
+      };
+
+      if (name !== 'project') {
+        socket.on('change:isArchived', changIsArchivedCallback);
       }else if (_id) {
         socket.join(_id);
       }
-      socket.on(`:new:${namespace}`, (data: any) => {
-        console.log(data);
-      });
-      socket.on(`:change:${namespace}`, (data: any) => {
-        console.log(data);
-      });
-      socket.on(`:refresh:${namespace}`, (_id: string) => {
-        console.log(_id);
-      });
-      socket.on(`:remove:${namespace}`, (_id: string) => {
-        console.log(_id);
-      });
-      socket.on(`:remove:${namespace}`, (_id: string) => {
-        console.log(_id);
-      });
+      socket.on(`:new:${namespace}`, newMsgCallback);
+      socket.on(`:change:${namespace}`, changeMsgCallback);
+      socket.on(`:refresh:${namespace}`, refreshMsgCallback);
+      socket.on(`:remove:${namespace}`, removeMsgCallback);
     };
   });
 }

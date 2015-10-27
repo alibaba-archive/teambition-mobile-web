@@ -14,9 +14,7 @@ module teambition {
         token: token
       });
       ws.on = (eventName: string, callback?: Function) => {
-        return ngConsumer.onmessage(event, (data?: any) => {
-          console.log(event);
-        });
+        return ngConsumer.onmessage(eventName, callback);
       };
       return ws;
     };

@@ -18,8 +18,9 @@ module teambition {
     public $$id     = 'Projects';
     public personalProjects: IProjectDataParsed[] = [];
     public staredProject: IProjectDataParsed[] = [];
+    public projects: IProjectDataParsed[] = [];
 
-    private projectsAPI: teambition.IProjectsAPI;
+    private projectsAPI: IProjectsAPI;
     private organization: {
       [index: string]: {
         id: string;
@@ -27,15 +28,18 @@ module teambition {
         projects: IProjectDataParsed[];
       }
     } = {};
+    private Cache: angular.ICacheObject;
 
     // @ngInject
     constructor(
       $scope: angular.IScope,
-      projectsAPI: teambition.IProjectsAPI
+      projectsAPI: IProjectsAPI,
+      Cache: angular.ICacheObject
     ) {
       super();
       this.$scope = $scope;
       this.projectsAPI = projectsAPI;
+      this.Cache = Cache;
       this.zone.run(noop);
     }
 
@@ -61,7 +65,6 @@ module teambition {
       if (!project.isStar) {
         this.projectsAPI.starProject(project._id)
         .then((data: IProjectData) => {
-          project.isStar = data.isStar;
           let str: string;
           if (!project.isStar) {
             str = '星标项目失败';
@@ -69,7 +72,6 @@ module teambition {
           }else {
             str = '星标项目成功';
             this.showMsg('success', project.name, str);
-            this.staredProject.push(project);
           }
         })
         .catch((err: Error) => {
@@ -84,15 +86,12 @@ module teambition {
       if (project.isStar) {
         this.projectsAPI.unStarProject(project._id)
         .then((data: IProjectData) => {
-          project.isStar = data.isStar;
           let str: string;
           if (project.isStar) {
             str = '取消星标失败';
             this.showMsg('error', project.name, str);
           }else {
             str = '取消星标成功';
-            let position = this.staredProject.indexOf(project);
-            this.staredProject.splice(position, 1);
             this.showMsg('success', project.name, str);
           }
         })
@@ -143,6 +142,19 @@ module teambition {
         }
       });
       this.$ionicListDelegate.closeOptionButtons();
+    }
+
+    public countStar() {
+      let index: number;
+      let projects = this.projects;
+      let hasStar = false;
+      for (index = 0; index < projects.length; index++) {
+        let project = projects[index];
+        if (project.isStar) {
+          hasStar = true;
+        }
+      }
+      return hasStar;
     }
 
     private archiveProject(project: IProjectData) {
@@ -249,6 +261,7 @@ module teambition {
       return this.projectsAPI.fetch()
       .then((projects: teambition.IProjectData[]) => {
         this.sortProject(projects);
+        this.projects = projects;
       });
     }
 

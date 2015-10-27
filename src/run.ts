@@ -17,11 +17,7 @@ module teambition {
     timestamp: number;
   }
 
-  export let rootZone = zone.fork({
-    afterTask: () => {
-      // console.log('root zone aftertask');
-    }
-  });
+  export let rootZone = zone.fork();
 
   export let $$rootScope: IRootScope;
   export let $$injector: any;
@@ -167,6 +163,12 @@ module teambition {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
       });
     }
+
+    $http.defaults.headers.common.Authorization = 'OAuth2 JL_N0f_OP6dpvTOKjQe8e7wCi5w=MCN3vfXo99625ad6abf' +
+                                                  '2bf03774c86d6ba205ceff8da45c6553c9bd488f5d80c9ac49ebb1' +
+                                                  '91697aad985141dc8e94aa064f30e558f3a90194505323a58fe85c' +
+                                                  'b162ee6df2554f253692fc09aced2bb4475ef0f1d5e68f1be52984' +
+                                                  '2eec4ff020100829d74d0f89c0c0501be279ff8a08bf4cb6c7b';
 
     MomentLocale(app.LANGUAGE, Moment);
 

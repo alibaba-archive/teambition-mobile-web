@@ -1,7 +1,7 @@
 /// <reference path="../../interface/teambition.d.ts" />
 module teambition {
   'use strict';
-  export interface IProjectDataParsed extends teambition.IProjectData {
+  export interface IProjectDataParsed extends IProjectData {
     organizationId?: string;
     organizationName?: string;
     _py?: number;

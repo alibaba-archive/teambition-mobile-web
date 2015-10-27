@@ -1,13 +1,13 @@
 <ion-view class="padding" ng-controller="ProjectView as ProjectCtrl">
   <ion-content>
     <div class="list projects-list">
-      <div class="item item-divider" ng-if="ProjectCtrl.staredProject.length">
+      <div class="item item-divider" ng-if="ProjectCtrl.countStar()">
         星标项目
       </div>
-      <div class="project-wrap project-starred" ng-if="ProjectCtrl.staredProject.length">
+      <div class="project-wrap project-starred" ng-if="ProjectCtrl.countStar()">
         <a class="project-item" href="/#/project/{{project._id}}/home"
            style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
-           ng-repeat="(py, project) in ProjectCtrl.staredProject track by project._id">
+           ng-repeat="(py, project) in ProjectCtrl.projects track by project._id" ng-if="project.isStar">
           <p>{{::project.name}}</p>
           <i class="icon icon-star"></i>
         </a>

@@ -4,6 +4,15 @@ module teambition {
 
   declare let Consumer;
 
+  export interface IConsumer {
+    _join(roomId: string, consumerId: string): void;
+    join(roomId: string): angular.IPromise<any>;
+    onmessage(eventName: Event | string, callback: (result: any) => any);
+  }
+
+  let joined = [];
+  let listener = {};
+
   angular.module('teambition').factory('ngConsumer',
   // @ngInject
   (
@@ -11,9 +20,20 @@ module teambition {
   ) => {
     let consumer = new Consumer();
     let join = consumer.join;
-    let joined = [];
+
+    let fireListener = (listeners: Function[], result: any) => {
+      if (!listeners || !listeners.length) {
+        return ;
+      }
+      for (let index = 0; index < listeners.length; index++) {
+        let _listener = listeners[index];
+        if (typeof _listener === 'function') {
+          _listener(result);
+        }
+      }
+    };
+
     consumer._join = (_id: string, consumerId: string) => {
-      console.log(_id, consumerId);
       if (!_id) {
         return;
       }
@@ -36,17 +56,39 @@ module teambition {
       if (!event) {
         return;
       }
-      let params = event.data ? event.data.params : '';
-      let results = [];
-      if (params instanceof Array) {
-        angular.forEach(params, (data: any, index: number) => {
-          results.push(JSON.parse(data));
-        });
+      if (typeof event === 'string') {
+        if (typeof callback === 'function') {
+          if (listener[event] && listener[event].length) {
+            if (listener[event].indexOf(callback) === -1) {
+              listener[event].push(callback);
+            }
+          }else {
+            listener[event] = [callback];
+          }
+        }
+      }else {
+        let params = event.data ? event.data.params : '';
+        let results = [];
+        if (params instanceof Array) {
+          angular.forEach(params, (data: any, index: number) => {
+            let result = JSON.parse(data);
+            let e = result.e;
+            let d = result.d;
+            let listeners = listener[e];
+            if (typeof callback === 'function') {
+              if (listeners.length) {
+                listeners.push(callback);
+              }else {
+                listener[e] = [callback];
+              }
+            }
+            fireListener(listener[e], d);
+          });
+        }
+        if (results.length) {
+          console.log('results: ', results);
+        }
       }
-      if (typeof(callback) === 'function') {
-        callback(results);
-      }
-      console.log('results: ', results);
     };
     return consumer;
   });

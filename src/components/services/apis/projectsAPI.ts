@@ -34,6 +34,7 @@ module teambition {
     isPublic: boolean;
     created: string;
     isStar: boolean;
+    starsCount: number;
     canArchive: boolean;
     canQuit: boolean;
     canDelete: boolean;
@@ -68,8 +69,8 @@ module teambition {
         angular.forEach(data, (item: IProjectData, index: number) => {
           let project: teambition.IProjectDataParsed = projectParser(item);
           projects.push(project);
-          if (!Cache.get(`projects:${project._id}`)) {
-            Cache.put(`projects:${project._id}`, project);
+          if (!Cache.get(`project:${project._id}`)) {
+            Cache.put(`project:${project._id}`, project);
           }
         });
         return projects;
@@ -83,7 +84,8 @@ module teambition {
           })
           .$promise
           .then((projects: IProjectData[]) => {
-            return prepareProject(projects).sort((left: IProjectDataParsed, right: IProjectDataParsed) => {
+            return prepareProject(projects)
+            .sort((left: IProjectDataParsed, right: IProjectDataParsed) => {
               return left._py - right._py;
             });
           });
@@ -142,7 +144,14 @@ module teambition {
             Id: _projectId,
             Path1: 'star'
           }, null)
-          .$promise;
+          .$promise
+          .then((data: IProjectDataParsed) => {
+            let oldCache = Cache.get<IProjectDataParsed>(`project:${data._id}`);
+            oldCache.isStar = data.isStar;
+            oldCache.starsCount = data.starsCount;
+            Cache.put(`project:${data._id}`, oldCache);
+            return oldCache;
+          });
         },
         unStarProject: (_projectId: string) => {
           return RestAPI.delete({
@@ -150,7 +159,14 @@ module teambition {
             Id: _projectId,
             Path1: 'star'
           })
-          .$promise;
+          .$promise
+          .then((data: IProjectDataParsed) => {
+            let oldCache = Cache.get<IProjectDataParsed>(`project:${data._id}`);
+            oldCache.isStar = data.isStar;
+            oldCache.starsCount = data.starsCount;
+            Cache.put(`project:${data._id}`, oldCache);
+            return oldCache;
+          });
         },
         leaveProject: (_projectId: string) => {
           return RestAPI.update({

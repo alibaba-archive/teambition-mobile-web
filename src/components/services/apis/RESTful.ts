@@ -89,8 +89,23 @@ module teambition {
         }else {
           let _arguments = replaceCallback(args, arg);
           let result = value.value.apply(this, _arguments);
+          let socketListener = RestAPI.socketListener;
+          let paths = args[0];
           fetchingMap[arg] = result;
+          socketListener(paths);
           // console.log(`Call: ${key}(${arg}) => `, result);
+          result.$promise.then((data: any) => {
+            if (data.length) {
+              for (let index = 0; index < data.length; index++) {
+                let element = data[index];
+                let path = {
+                  Path: paths.Path,
+                  Id: element._id
+                };
+                socketListener(path);
+              }
+            }
+          });
           return result;
         }
       }
@@ -98,8 +113,9 @@ module teambition {
   };
 
   export class RestAPI implements IRestAPI {
+    public static socketListener: any;
+
     private $resource: IRestMethod;
-    private socketListener: any;
     // @ngInject
     constructor(
       app: Iapp,
@@ -108,7 +124,7 @@ module teambition {
     ) {
       // 大写开头是为了避免和后端的接口的 key 冲突
       let path: string = '/:V2/:Type/:Id/:Path1/:Path2/:Path3';
-      this.socketListener = socketListener;
+      RestAPI.socketListener = socketListener;
       this.$resource = $resource(app.apiHost + path, null , {
         query: {
           method: 'GET',
@@ -141,31 +157,26 @@ module teambition {
 
     @request
     public get(paths: IRestPaths, successCallback: (data: any) => any, errorCallback: (err: Error) => any) {
-      this.socketListener(paths);
       return this.$resource.get.apply(null, arguments);
     }
 
     @request
     public query(paths: IRestPaths, callback: (data: any) => any) {
-      this.socketListener(paths);
       return this.$resource.query.apply(null, arguments);
     }
 
     @request
     public update(paths: IRestPaths, data: any, callback: (data: any) => any) {
-      this.socketListener(paths);
       return this.$resource.update.apply(null, arguments);
     }
 
     @request
     public save(paths: IRestPaths, data: any, callback: (data: any) => any) {
-      this.socketListener(paths);
       return this.$resource.save.apply(null, arguments);
     }
 
     @request
     public post(paths: IRestPaths, data: any, callback: (data: any) => any) {
-      this.socketListener(paths);
       return this.$resource.post.apply(null, arguments);
     }
 

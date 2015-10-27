@@ -1,7 +1,7 @@
 {
-  "name": "account-wx-service",
+  "name": "teambition-wechat",
   "version": "0.3.6",
-  "description": "Teambition weixin account connection",
+  "description": "Teambition Wechat mobile web application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,7 @@
   "dependencies": {},
   "devDependencies": {
     "cdn-uploader": "^0.1.1",
-    "et-template": "^0.1.6",
+    "et-template": "^0.1.7",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-concat": "^2.6.0",
