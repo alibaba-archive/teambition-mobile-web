@@ -7,35 +7,21 @@ module teambition {
     fetchNoExecutorOrDuedateTasks(_projectId: string, typeFilter: string, count?: number, page?: number): angular.IPromise<ITaskDataParsed[]>;
   }
 
-  class ProjectDetailAPI implements IProjectDetailAPI {
-    private $q: angular.IQService;
-    private RestAPI: IRestAPI;
-    private Cache: angular.ICacheObject;
+  @inject([
+    'PAParser',
+    'queryFileds',
+    'taskParser',
+    'Moment',
+    'memberAPI',
+    'Cache'
+  ])
+  class ProjectDetailAPI extends BaseAPI implements IProjectDetailAPI {
     private PAParser: IPAParser;
     private queryFileds: IqueryFileds;
     private taskParser: ITaskParser;
     private Moment: moment.MomentStatic;
     private memberAPI: IMemberAPI;
-    // @ngInject
-    constructor(
-      $q: angular.IQService,
-      RestAPI: IRestAPI,
-      memberAPI: IMemberAPI,
-      PAParser: IPAParser,
-      taskParser: ITaskParser,
-      Moment: moment.MomentStatic,
-      Cache: angular.ICacheObject,
-      queryFileds: IqueryFileds
-    ) {
-      this.$q = $q;
-      this.RestAPI = RestAPI;
-      this.Cache = Cache;
-      this.PAParser = PAParser;
-      this.queryFileds = queryFileds;
-      this.taskParser = taskParser;
-      this.Moment = Moment;
-      this.memberAPI = memberAPI;
-    }
+    private Cache: angular.ICacheObject;
 
     public fetchActivities(_projectId: string, _prevId: string, count: number, page: number, membersFilter?: string, typesFilter?: string) {
       let cacheNamespace = `activities:${page}:${_projectId}:${membersFilter}:${typesFilter}`;
@@ -151,5 +137,5 @@ module teambition {
     }
   }
 
-  angular.module('teambition').service('projectDetailAPI', ProjectDetailAPI);
+  angular.module('teambition').service('ProjectDetailAPI', ProjectDetailAPI);
 }

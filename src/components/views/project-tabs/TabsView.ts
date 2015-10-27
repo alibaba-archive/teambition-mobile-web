@@ -15,14 +15,14 @@ module teambition {
 
     private projectName: string;
     private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
-    private projectsAPI: IProjectsAPI;
+    private ProjectsAPI: IProjectsAPI;
     private tabTypes: string[] = ['home', 'tasklist', 'post', 'work', 'event'];
     // @ngInject
     constructor(
-      projectsAPI: IProjectsAPI
+      ProjectsAPI: IProjectsAPI
     ) {
       super();
-      this.projectsAPI = projectsAPI;
+      this.ProjectsAPI = ProjectsAPI;
       this.zone.run(noop);
     }
 
@@ -55,7 +55,7 @@ module teambition {
     }
 
     public fetchProject(projectId: string) {
-      return this.projectsAPI.fetchById(projectId)
+      return this.ProjectsAPI.fetchById(projectId)
       .then((project: IProjectData) => {
         this.project = project;
         this.projectName = project.name;

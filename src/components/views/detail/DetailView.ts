@@ -50,7 +50,7 @@ module teambition {
     private detailAPI: IDetailAPI;
     private activityAPI: IActivityAPI;
     private strikerAPI: IStrikerAPI;
-    private projectsAPI: IProjectsAPI;
+    private ProjectsAPI: IProjectsAPI;
     private workAPI: IWorkAPI;
     private entryAPI: IEntryAPI;
     private likeAPI: ILikeAPI;
@@ -62,7 +62,7 @@ module teambition {
       detailAPI: IDetailAPI,
       activityAPI: IActivityAPI,
       strikerAPI: IStrikerAPI,
-      projectsAPI: IProjectsAPI,
+      ProjectsAPI: IProjectsAPI,
       workAPI: IWorkAPI,
       entryAPI: IEntryAPI,
       likeAPI: ILikeAPI
@@ -72,7 +72,7 @@ module teambition {
       this.detailAPI = detailAPI;
       this.activityAPI = activityAPI;
       this.strikerAPI = strikerAPI;
-      this.projectsAPI = projectsAPI;
+      this.ProjectsAPI = ProjectsAPI;
       this.workAPI = workAPI;
       this.entryAPI = entryAPI;
       this.likeAPI = likeAPI;
@@ -91,7 +91,7 @@ module teambition {
         .then((detail: any) => {
           this.detail = detail;
           this.members = detail.members;
-          this.projectsAPI.fetchById(detail._projectId)
+          this.ProjectsAPI.fetchById(detail._projectId)
           .then((project: IProjectDataParsed) => {
             this.project = project;
             deferred.resolve(project);
@@ -173,7 +173,7 @@ module teambition {
           strikerRes = data.length ? data : [data];
         })
         .then(() => {
-          return this.projectsAPI.fetchById(_projectId);
+          return this.ProjectsAPI.fetchById(_projectId);
         })
         .then((project: IProjectDataParsed) => {
           let collectionId = project._defaultCollectionId;

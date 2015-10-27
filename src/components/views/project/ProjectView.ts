@@ -20,7 +20,7 @@ module teambition {
     public staredProject: IProjectDataParsed[] = [];
     public projects: IProjectDataParsed[] = [];
 
-    private projectsAPI: IProjectsAPI;
+    private ProjectsAPI: IProjectsAPI;
     private organization: {
       [index: string]: {
         id: string;
@@ -33,12 +33,12 @@ module teambition {
     // @ngInject
     constructor(
       $scope: angular.IScope,
-      projectsAPI: IProjectsAPI,
+      ProjectsAPI: IProjectsAPI,
       Cache: angular.ICacheObject
     ) {
       super();
       this.$scope = $scope;
-      this.projectsAPI = projectsAPI;
+      this.ProjectsAPI = ProjectsAPI;
       this.Cache = Cache;
       this.zone.run(noop);
     }
@@ -63,7 +63,7 @@ module teambition {
 
     public starProject(project: IProjectData) {
       if (!project.isStar) {
-        this.projectsAPI.starProject(project._id)
+        this.ProjectsAPI.starProject(project._id)
         .then((data: IProjectData) => {
           let str: string;
           if (!project.isStar) {
@@ -84,7 +84,7 @@ module teambition {
 
     public unStarProject(project: IProjectData) {
       if (project.isStar) {
-        this.projectsAPI.unStarProject(project._id)
+        this.ProjectsAPI.unStarProject(project._id)
         .then((data: IProjectData) => {
           let str: string;
           if (project.isStar) {
@@ -170,7 +170,7 @@ module teambition {
               text: '确认归档',
               type: 'button-positive',
               onTap: function() {
-                self.projectsAPI.archiveProject(project._id)
+                self.ProjectsAPI.archiveProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
                   self.showMsg('success', project.name, '归档项目成功');
@@ -204,7 +204,7 @@ module teambition {
               text: '确认退出',
               type: 'button-assertive',
               onTap: () => {
-                self.projectsAPI.leaveProject(project._id)
+                self.ProjectsAPI.leaveProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
                   self.showMsg('success', project.name, '退出项目成功');
@@ -238,7 +238,7 @@ module teambition {
               text: '确认删除',
               type: 'button-assertive',
               onTap: () => {
-                self.projectsAPI.deleteProject(project._id)
+                self.ProjectsAPI.deleteProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
                   self.showMsg('success', project.name, '删除项目成功');
@@ -258,7 +258,7 @@ module teambition {
     }
 
     private getProjects(): angular.IPromise<any> {
-      return this.projectsAPI.fetch()
+      return this.ProjectsAPI.fetch()
       .then((projects: teambition.IProjectData[]) => {
         this.sortProject(projects);
         this.projects = projects;
@@ -285,7 +285,7 @@ module teambition {
 
     private checkUrlValid(url: string): angular.IPromise<any> {
       let self = this;
-      return this.projectsAPI.checkProjectsInviteUrl(url)
+      return this.ProjectsAPI.checkProjectsInviteUrl(url)
       .then(function(data: string | teambition.IProjectInviteData) {
         if (data === 'notValid') {
           self.showMsg('error', '扫描失败', '不合法的二维码');

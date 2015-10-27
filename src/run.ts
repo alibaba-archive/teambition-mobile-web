@@ -52,7 +52,7 @@ module teambition {
       $http: angular.IHttpService,
       $injector: any,
       socket: any,
-      projectsAPI: teambition.IProjectsAPI,
+      ProjectsAPI: teambition.IProjectsAPI,
       Moment: moment.MomentStatic,
       Cache: angular.ICacheFactoryService,
       getParameterByName: teambition.IGetParmByName
@@ -124,7 +124,7 @@ module teambition {
     $http: any,
     $injector: any,
     socket: any,
-    projectsAPI: teambition.IProjectsAPI,
+    ProjectsAPI: teambition.IProjectsAPI,
     Moment: moment.MomentStatic,
     Cache: angular.ICacheFactoryService,
     getParameterByName: teambition.IGetParmByName
@@ -144,7 +144,7 @@ module teambition {
       $http,
       $injector,
       socket,
-      projectsAPI,
+      ProjectsAPI,
       Moment,
       Cache,
       getParameterByName
@@ -175,6 +175,25 @@ module teambition {
     $$injector = $injector;
 
     return run;
+  };
+
+  export let inject = (services: string[]) => {
+    if (!services || !services.length) {
+      return;
+    }
+    let service: any;
+    return function(Target: any) {
+      angular.module('teambition').run(() => {
+        angular.forEach(services, (name: string, index: number) => {
+          try {
+            service = $$injector.get(name);
+            Target.prototype[name] = service;
+          } catch (error) {
+            console.error(error);
+          }
+        });
+      });
+    };
   };
 
   angular.module('teambition').run(RunFn);

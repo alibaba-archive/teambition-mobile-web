@@ -48,7 +48,7 @@ module teambition {
     };
 
 
-    private projectDetailAPI: IProjectDetailAPI;
+    private ProjectDetailAPI: IProjectDetailAPI;
     private eventAPI: IEventAPI;
     private memberAPI: IMemberAPI;
     private infinite = true;
@@ -67,13 +67,13 @@ module teambition {
     // @ngInject
     constructor(
       $scope: angular.IScope,
-      projectDetailAPI: IProjectDetailAPI,
+      ProjectDetailAPI: IProjectDetailAPI,
       memberAPI: IMemberAPI,
       eventAPI: IEventAPI
     ) {
       super();
       this.$scope = $scope;
-      this.projectDetailAPI = projectDetailAPI;
+      this.ProjectDetailAPI = ProjectDetailAPI;
       this.eventAPI = eventAPI;
       this.memberAPI = memberAPI;
       this.zone.run(noop);
@@ -197,7 +197,7 @@ module teambition {
       }
       loaded = true;
       let page: number = (typeof(cache) === 'undefined') ? 0 : cache.page;
-      return this.projectDetailAPI.fetchActivities(projectId, start, count, page, membersFilter, typesFilter)
+      return this.ProjectDetailAPI.fetchActivities(projectId, start, count, page, membersFilter, typesFilter)
       .then((data: IProjectActivitiesData[]) => {
         if (cache) {
           cache.page += 1;
@@ -247,7 +247,7 @@ module teambition {
 
     private getNoneExecutorTasks() {
       let self = this;
-      return this.projectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'noneExecutor')
+      return this.ProjectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'noneExecutor')
       .then((tasks: ITaskDataParsed[]) => {
         if (!tasks) {
           return;
@@ -271,7 +271,7 @@ module teambition {
 
     private getOverDueTasks() {
       let self = this;
-      return this.projectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'due')
+      return this.ProjectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'due')
       .then((tasks: ITaskDataParsed []) => {
         if (!tasks) {
           return;
