@@ -25,105 +25,104 @@ module teambition {
     fetchTasksByTasklistId(tasklistId: string): angular.IPromise<ITaskDataParsed[]>;
   }
 
-  angular.module('teambition').factory('tasklistAPI',
-  // @ngInject
-  function(
-    $q: angular.IQService,
-    RestAPI: IRestAPI,
-    Cache: angular.ICacheObject,
-    taskParser: ITaskParser,
-    queryFileds: IqueryFileds
-  ) {
-    var prepareTasks = (tasks: ITaskData[], tasklistId: string) => {
+  @inject([
+    'Cache',
+    'taskParser'
+  ])
+  class TasklistAPI extends BaseAPI implements ITasklistAPI {
+    private Cache: angular.ICacheObject;
+    private taskParser: ITaskParser;
+
+    public fetch (_id: string) {
+      let cache = this.Cache.get<ITasklistData>(`tasklist:${_id}`);
+      let deferred = this.$q.defer<ITasklistData>();
+      if (cache) {
+        deferred.resolve(cache);
+        return deferred.promise;
+      }else {
+        return this.RestAPI.get({
+          Type: 'tasklists',
+          Id: _id
+        }, (data: ITasklistData) => {
+          this.Cache.put(`tasklist:${_id}`, data);
+          return data;
+        })
+        .$promise;
+      }
+    }
+
+    public fetchAll (_projectId: string) {
+      let tasklists: ITasklistData[] = this.Cache.get<ITasklistData[]>(`tasklists:${_projectId}`);
+      let deferred = this.$q.defer<ITasklistData[]>();
+      if (tasklists) {
+        deferred.resolve(tasklists);
+        return deferred.promise;
+      }
+      return this.RestAPI.query({
+        Type: 'tasklists',
+        _projectId: _projectId
+      }, (tasklists: ITaskData[]) => {
+        angular.forEach(tasklists, (tasklist: ITasklistData, index: number) => {
+          this.Cache.put(`tasklist:${tasklist._id}`, tasklist);
+        });
+        this.Cache.put(`tasklists:${_projectId}`, tasklists);
+      })
+      .$promise;
+    }
+
+    public fetchTasksByTasklistId (_tasklistId: string) {
+      let cache: ITaskDataParsed[] = this.Cache.get<ITaskDataParsed[]>(`tasks:in:${_tasklistId}`);
+      let deferred = this.$q.defer<ITaskDataParsed[]>();
+      if (cache) {
+        deferred.resolve(cache);
+        return deferred.promise;
+      }
+      let tasks = [];
+      return this.$q.all([
+        this.RestAPI.query({
+          Type: 'tasklists',
+          Id: _tasklistId,
+          Path1: 'tasks',
+          isDone: true,
+          fields: this.queryFileds.taskFileds
+        }, (data: ITaskData[]) => {
+          let result: ITaskDataParsed[] = this.prepareTasks(data, _tasklistId);
+          tasks = tasks.concat(result);
+        })
+        .$promise,
+        this.RestAPI.query({
+          Type: 'tasklists',
+          Id: _tasklistId,
+          Path1: 'tasks',
+          isDone: false,
+          fields: this.queryFileds.taskFileds
+        }, (data: ITaskData[]) => {
+          let result: ITaskDataParsed[] = this.prepareTasks(data, _tasklistId);
+          tasks = tasks.concat(result);
+        })
+        .$promise
+      ])
+      .then(() => {
+        this.Cache.put(`tasks:in:${_tasklistId}`, tasks);
+        return tasks;
+      });
+    }
+
+    private prepareTasks (tasks: ITaskData[], tasklistId: string) {
       if (tasks.length) {
         let results: ITaskDataParsed[] = [];
         angular.forEach(tasks, (task: ITaskData, index: number) => {
-          let result: ITaskDataParsed = taskParser(task);
+          let result: ITaskDataParsed = this.taskParser(task);
           result.fetchTime = Date.now();
-          Cache.put(`task:detail:${task._id}`, task);
+          this.Cache.put(`task:detail:${task._id}`, task);
           results.push(result);
         });
         return results;
       }else {
         return [];
       }
-    };
+    }
+  }
 
-    return <ITasklistAPI>{
-      fetch: (_id: string) => {
-        let cache = Cache.get<ITasklistData>(`tasklist:${_id}`);
-        let deferred = $q.defer<ITasklistData>();
-        if (cache) {
-          deferred.resolve(cache);
-          return deferred.promise;
-        }else {
-          return RestAPI.get({
-            Type: 'tasklists',
-            Id: _id
-          }, (data: ITasklistData) => {
-            Cache.put(`tasklist:${_id}`, data);
-            return data;
-          })
-          .$promise;
-        }
-      },
-
-      fetchAll: (_projectId: string) => {
-        let tasklists: ITasklistData[] = Cache.get<ITasklistData[]>(`tasklists:${_projectId}`);
-        let deferred = $q.defer<ITasklistData[]>();
-        if (tasklists) {
-          deferred.resolve(tasklists);
-          return deferred.promise;
-        }
-        return RestAPI.query({
-          Type: 'tasklists',
-          _projectId: _projectId
-        }, (tasklists: ITaskData[]) => {
-          angular.forEach(tasklists, (tasklist: ITasklistData, index: number) => {
-            Cache.put(`tasklist:${tasklist._id}`, tasklist);
-          });
-          Cache.put(`tasklists:${_projectId}`, tasklists);
-        })
-        .$promise;
-      },
-
-      fetchTasksByTasklistId: (_tasklistId: string) => {
-        let cache: ITaskDataParsed[] = Cache.get<ITaskDataParsed[]>(`tasks:in:${_tasklistId}`);
-        let deferred = $q.defer<ITaskDataParsed[]>();
-        if (cache) {
-          deferred.resolve(cache);
-          return deferred.promise;
-        }
-        let tasks = [];
-        return $q.all([
-          RestAPI.query({
-            Type: 'tasklists',
-            Id: _tasklistId,
-            Path1: 'tasks',
-            isDone: true,
-            fields: queryFileds.taskFileds
-          }, (data: ITaskData[]) => {
-            let result: ITaskDataParsed[] = prepareTasks(data, _tasklistId);
-            tasks = tasks.concat(result);
-          })
-          .$promise,
-          RestAPI.query({
-            Type: 'tasklists',
-            Id: _tasklistId,
-            Path1: 'tasks',
-            isDone: false,
-            fields: queryFileds.taskFileds
-          }, (data: ITaskData[]) => {
-            let result: ITaskDataParsed[] = prepareTasks(data, _tasklistId);
-            tasks = tasks.concat(result);
-          })
-          .$promise
-        ])
-        .then(() => {
-          Cache.put(`tasks:in:${_tasklistId}`, tasks);
-          return tasks;
-        });
-      }
-    };
-  });
+  angular.module('teambition').service('TasklistAPI', TasklistAPI);
 }

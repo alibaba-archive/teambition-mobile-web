@@ -18,7 +18,7 @@ module teambition {
     state : ''
   };
 
-  const $inject = [
+  @inject([
     '$rootScope',
     '$q',
     '$state',
@@ -32,8 +32,7 @@ module teambition {
     '$ionicScrollDelegate',
     'Moment',
     'notify'
-  ];
-
+  ])
   export class View {
 
     public zone;
@@ -59,8 +58,6 @@ module teambition {
     protected loading = false;
     protected Moment: moment.MomentStatic;
     protected notify: EtTemplate.Notify;
-
-    private hasInjected = false;
 
     constructor() {
       if (this.parentName) {
@@ -145,7 +142,6 @@ module teambition {
         },
         'beforeTask': () => {
           let $$id: string;
-          this.initInjector();
           $$id = this.$$id || this.$state.params._id;
           if (!initedViews[this.ViewName + $$id]) {
             this._onInit().then(() => {
@@ -164,24 +160,6 @@ module teambition {
           }
         }
       });
-    }
-
-    private initInjector() {
-      if (this.hasInjected) {
-        return ;
-      }
-      for (let index = 0; index < $inject.length; index++) {
-        let element = $inject[index];
-        let instance: any;
-        try {
-          instance = $$injector.get(element);
-          this[element] = instance;
-        } catch (error) {
-          throw error;
-        }
-      }
-      this.hasInjected = true;
-
     }
 
     private _onInit() {

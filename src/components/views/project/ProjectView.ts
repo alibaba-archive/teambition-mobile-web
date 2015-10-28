@@ -240,11 +240,9 @@ module teambition {
               onTap: () => {
                 self.ProjectsAPI.deleteProject(project._id)
                 .then((data: IProjectData) => {
-                  project.deleted = true;
                   self.showMsg('success', project.name, '删除项目成功');
                 })
                 .catch((err: Error) => {
-                  project.deleted = false;
                   self.showMsg('error', project.name, '不能删除这个项目');
                 });
                 popup.close();

@@ -16,38 +16,35 @@ module teambition {
     order: number;
   }
 
-  angular.module('teambition').factory('stageAPI',
-    // @ngInject
-    (
-      $q: angular.IQService,
-      RestAPI: teambition.IRestAPI,
-      Cache: angular.ICacheObject
-    ) => {
-      var stageAPI: IStageAPI;
-      return stageAPI = {
-        fetch: (_id: string) => {
-          let cache = Cache.get<IStageData[]>(`stages:tasklist:${_id}`);
-          if (cache) {
-            let deferred = $q.defer<IStageData[]>();
-            deferred.resolve(cache);
-            return deferred.promise;
-          }
-          return RestAPI.query(
-            {
-              Type: 'stages',
-              _tasklistId: _id
-            }
-          )
-          .$promise
-          .then((data: IStageData[]) => {
-            angular.forEach(data, (stage: IStageData, index: number) => {
-              Cache.put(`stages:detail:${stage._id}`, stage);
-            });
-            Cache.put(`stages:tasklist:${_id}`, data);
-            return data;
-          });
+  @inject([
+    'Cache'
+  ])
+  class StageAPI extends BaseAPI implements IStageAPI {
+    private Cache: angular.ICacheObject;
+
+    public fetch (_id: string) {
+      let cache = this.Cache.get<IStageData[]>(`stages:tasklist:${_id}`);
+      if (cache) {
+        let deferred = this.$q.defer<IStageData[]>();
+        deferred.resolve(cache);
+        return deferred.promise;
+      }
+      return this.RestAPI.query(
+        {
+          Type: 'stages',
+          _tasklistId: _id
         }
-      };
+      )
+      .$promise
+      .then((data: IStageData[]) => {
+        angular.forEach(data, (stage: IStageData, index: number) => {
+          this.Cache.put(`stages:detail:${stage._id}`, stage);
+        });
+        this.Cache.put(`stages:tasklist:${_id}`, data);
+        return data;
+      });
     }
-  );
+  }
+
+  angular.module('teambition').service('StageAPI', StageAPI);
 }

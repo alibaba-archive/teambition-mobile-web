@@ -14,6 +14,8 @@ module teambition {
 
       $httpProvider.defaults.withCredentials = true;
 
+      $ionicConfigProvider.views.transition('none');
+
       $ionicConfigProvider.views.forwardCache(true);
 
       $ionicConfigProvider.tabs.position('bottom');

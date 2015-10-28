@@ -9,26 +9,26 @@ module teambition {
     work: 'icon-file'
   };
 
+  @inject([
+    'DetailAPI'
+  ])
   class LinkView extends View {
 
     public ViewName = 'LinkView';
 
     public linked: ILinkedData[];
 
-    private detailAPI: IDetailAPI;
-    // @ngInject
-    constructor(
-      detailAPI: IDetailAPI
-    ) {
+    private DetailAPI: IDetailAPI;
+
+    constructor() {
       super();
-      this.detailAPI = detailAPI;
       this.zone.run(noop);
     }
 
     public onInit() {
       let id = this.$state.params._id;
       let type = this.$state.params.type;
-      return this.detailAPI.fetch(id, type)
+      return this.DetailAPI.fetch(id, type)
       .then((data: any) => {
         let linked = data.linked;
         angular.forEach(linked, (link: ILinkedData, index: number) => {
@@ -42,7 +42,7 @@ module teambition {
       if (!item) {
         return;
       }
-      this.detailAPI.fetch(item._linkedId, item.linkedType, item._id)
+      this.DetailAPI.fetch(item._linkedId, item.linkedType, item._id)
       .then((data: any) => {
         window.location.hash = `/detail/${item.linkedType}/${data._id}?linkedId=${item._id}`;
       })

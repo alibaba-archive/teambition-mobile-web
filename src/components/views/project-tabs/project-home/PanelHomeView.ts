@@ -4,13 +4,23 @@ module teambition {
 
   declare let $location;
 
-  let lastid: string = '';
   let loaded: boolean = false;
-  let hasMore: boolean = false;
   let projectId: string;
   let lastCacheText: string = '';
+  // 用于计算拉取到的主页动态为空的次数，如果多次为空则认为动态已经拉完，禁止下拉加载更多
+  let counter = 0;
+
+  let cacheActivities: {
+    [index: string]: IProjectActivitiesDataParsed[];
+  };
+  cacheActivities = {};
 
   @parentView('TabsView')
+  @inject([
+    'ProjectDetailAPI',
+    'EventAPI',
+    'MemberAPI'
+  ])
   export class PanelHomeView extends View {
 
     public ViewName = 'PanelHomeView';
@@ -39,18 +49,11 @@ module teambition {
     public membersMap: {
       [index: string]: string;
     };
-    public cacheActivities: {
-      page: number;
-      activities: IProjectActivitiesDataParsed[];
-    } = {
-      page: 0,
-      activities: []
-    };
 
 
     private ProjectDetailAPI: IProjectDetailAPI;
-    private eventAPI: IEventAPI;
-    private memberAPI: IMemberAPI;
+    private EventAPI: IEventAPI;
+    private MemberAPI: IMemberAPI;
     private infinite = true;
     private activities: IProjectActivitiesDataParsed [];
     private eventGroup: IEventData[];
@@ -66,16 +69,11 @@ module teambition {
 
     // @ngInject
     constructor(
-      $scope: angular.IScope,
-      ProjectDetailAPI: IProjectDetailAPI,
-      memberAPI: IMemberAPI,
-      eventAPI: IEventAPI
+      $scope: angular.IScope
     ) {
       super();
       this.$scope = $scope;
-      this.ProjectDetailAPI = ProjectDetailAPI;
-      this.eventAPI = eventAPI;
-      this.memberAPI = memberAPI;
+      this.infinite = true;
       this.zone.run(noop);
     }
 
@@ -85,6 +83,9 @@ module teambition {
     }
 
     public scrollHandler() {
+      if (!this.infinite) {
+        return;
+      }
       let thisView = this.$ionicScrollDelegate.getScrollView();
       let height: number;
       if (typeof(thisView) !== 'undefined') {
@@ -141,33 +142,33 @@ module teambition {
     }
 
     public filterMembers() {
-      let self = this;
       let cacheText;
       this.filterResultParser(this.selectedMembers, this.selectedMembers.members, this.membersMap, 'members');
       cacheText = this.selectedMembers.cacheText + ' ' + this.selectedTypes.cacheText;
       if (cacheText !== lastCacheText) {
         this.showLoading();
-        this.getActivities(lastid, 20, this.selectedMembers.cacheText, this.selectedTypes.cacheText)
+        this.getActivities(20, this.selectedMembers.cacheText, this.selectedTypes.cacheText)
         .then(() => {
-          self.hideLoading();
-          self.cancelModal();
+          this.hideLoading();
+          this.cancelModal();
         });
       }
+      this.infinite = true;
     }
 
     public filterTasks() {
-      let self = this;
       let cacheText;
       this.filterResultParser(this.selectedTypes, this.selectedTypes.types, this.typeMap, 'tasks');
       cacheText = this.selectedMembers.cacheText + ' ' + this.selectedTypes.cacheText;
       if (cacheText !== lastCacheText) {
         this.showLoading();
-        this.getActivities(lastid, 20, this.selectedMembers.cacheText, this.selectedTypes.cacheText)
+        this.getActivities(20, this.selectedMembers.cacheText, this.selectedTypes.cacheText)
         .then(() => {
-          self.hideLoading();
-          self.cancelModal();
+          this.hideLoading();
+          this.cancelModal();
         });
       }
+      this.infinite = true;
     }
 
     private loadMoreData() {
@@ -176,62 +177,41 @@ module teambition {
       }
       let membersFilter: string = this.selectedMembers.cacheText;
       let typesFilter: string = this.selectedTypes.cacheText;
-      this.getActivities(lastid, 20, membersFilter, typesFilter);
+      this.getActivities(20, membersFilter, typesFilter);
     }
 
-    private getActivities(start: string, count: number, membersFilter?: string, typesFilter?: string) {
-      let _membersFilter: string = membersFilter ? membersFilter : 'all';
-      let _typesFilter: string = typesFilter ? typesFilter : 'all';
-      let cacheText = `${_membersFilter} ${_typesFilter}`;
+    private getActivities(count: number, membersFilter?: string, typesFilter?: string, page?: number) {
+      let _membersFilter = membersFilter ? membersFilter : 'all';
+      let _typesFilter = typesFilter ? typesFilter : 'all';
+      let cacheText = `${projectId}:${_membersFilter}:${_typesFilter}`;
       lastCacheText = cacheText;
-      let cache = this.cacheActivities[cacheText];
-      let deferred = this.$q.defer<any>();
-      if (typeof(cache) !== 'undefined' && typeof(cache.hasMore) !== 'undefined') {
-        hasMore = cache.hasMore;
-      }else {
-        hasMore = true;
-      }
-      if (!hasMore || loaded) {
-        deferred.resolve('loading or no more data can be loaded');
-        return deferred.promise;
-      }
+      let cache = cacheActivities[cacheText];
       loaded = true;
-      let page: number = (typeof(cache) === 'undefined') ? 0 : cache.page;
-      return this.ProjectDetailAPI.fetchActivities(projectId, start, count, page, membersFilter, typesFilter)
-      .then((data: IProjectActivitiesData[]) => {
-        if (cache) {
-          cache.page += 1;
-        }else {
-          cache = this.cacheActivities[cacheText] = {
-            page: 2,
-            activities: []
-          };
+      return this.ProjectDetailAPI.fetchActivities(projectId, count, membersFilter, typesFilter, page)
+      .then((data: IProjectActivitiesDataParsed[]) => {
+        if (!cache) {
+          cacheActivities[cacheText] = data;
+          cache = data;
+        }else if (cache.length === data.length) {
+          counter ++;
+          if (counter > 1) {
+            this.infinite = false;
+          }
         }
-        if (typeof(data.length) !== 'undefined' && data.length) {
-          angular.forEach(data, (activity: IProjectActivitiesData, index: number) => {
-            cache.activities.push(activity);
-          });
-          cache.hasMore = true;
-          this.infinite = true;
-          lastid = data[data.length - 1]._id;
-        }else {
-          this.infinite = false;
-        }
-        this.activities = cache.activities;
+        this.activities = cache;
         loaded = false;
       });
     }
 
     private getEvents(_projectId: string, now: string) {
-      let self = this;
-      return this.eventAPI.fetch(_projectId, now)
+      return this.EventAPI.fetch(_projectId, now)
       .then((eventGroup: any) => {
-        self.eventGroup = eventGroup.raw;
+        this.eventGroup = eventGroup.raw;
       });
     }
 
     private getMembers() {
-      return this.memberAPI.fetch(projectId)
+      return this.MemberAPI.fetch(projectId)
       .then((members: IMemberData[]) => {
         let membersMap: {
           [index: string]: string;
@@ -246,13 +226,12 @@ module teambition {
     }
 
     private getNoneExecutorTasks() {
-      let self = this;
       return this.ProjectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'noneExecutor')
       .then((tasks: ITaskDataParsed[]) => {
         if (!tasks) {
           return;
         }
-        self._noneExecutorTasks = tasks;
+        this._noneExecutorTasks = tasks;
         if (tasks.length > 4) {
           let _tasks: ITaskDataParsed[] = [];
           angular.forEach(tasks, (task: ITaskDataParsed, index: number) => {
@@ -262,21 +241,20 @@ module teambition {
               return false;
             }
           });
-          self.noneExecutorTasks = _tasks;
+          this.noneExecutorTasks = _tasks;
         }else {
-          self.noneExecutorTasks = tasks;
+          this.noneExecutorTasks = tasks;
         }
       });
     }
 
     private getOverDueTasks() {
-      let self = this;
       return this.ProjectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'due')
       .then((tasks: ITaskDataParsed []) => {
         if (!tasks) {
           return;
         }
-        self._dueTasks = tasks;
+        this._dueTasks = tasks;
         if (tasks.length > 4) {
           let _tasks: ITaskDataParsed[] = [];
           angular.forEach(tasks, (task: ITaskDataParsed, index: number) => {
@@ -286,20 +264,19 @@ module teambition {
               return false;
             }
           });
-          self.dueTasks = _tasks;
+          this.dueTasks = _tasks;
         }else {
-          self.dueTasks = tasks;
+          this.dueTasks = tasks;
         }
         return;
       });
     }
 
     private getProjectTasks (_projectId: string) {
-      let self = this;
       return this.$q.all([
-        self.getMembers(),
-        self.getNoneExecutorTasks(),
-        self.getOverDueTasks()
+        this.getMembers(),
+        this.getNoneExecutorTasks(),
+        this.getOverDueTasks()
       ]);
     }
 
@@ -310,7 +287,7 @@ module teambition {
         this.getProjectTasks(projectId)
       ])
       .then(() => {
-        return this.getActivities(lastid[lastCacheText], 20);
+        return this.getActivities(20, null, null, 1);
       });
     }
 

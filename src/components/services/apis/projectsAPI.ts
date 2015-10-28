@@ -6,7 +6,7 @@ module teambition {
     fetchById(_id: string): angular.IPromise<IProjectDataParsed>;
     checkProjectsInviteUrl(url: string): angular.IPromise<string | IProjectInviteData>;
     joinByCode(_projectId: string, _signId: string, _invitorId: string): angular.IPromise<IProjectData>;
-    deleteProject(_projectId: string): angular.IPromise<IProjectDataParsed>;
+    deleteProject(_projectId: string): angular.IPromise<any>;
     unStarProject(_projectId: string): angular.IPromise<IProjectDataParsed>;
     starProject(_projectId: string): angular.IPromise<IProjectDataParsed>;
     leaveProject(_projectId: string): angular.IPromise<any>;
@@ -54,14 +54,10 @@ module teambition {
 
   @inject([
     'projectParser',
-    'Cache',
-    'queryFileds',
     'ProjectModel'
   ])
   class ProjectsAPI extends BaseAPI implements IProjectsAPI {
     private projectParser: (project: IProjectData) => teambition.IProjectDataParsed;
-    private Cache: angular.ICacheObject;
-    private queryFileds: teambition.IqueryFileds;
     private ProjectModel: IProjectModel;
 
     public fetch() {
@@ -136,11 +132,7 @@ module teambition {
       }, null)
       .$promise
       .then((data: IProjectDataParsed) => {
-        let oldCache = this.Cache.get<IProjectDataParsed>(`project:${data._id}`);
-        oldCache.isStar = data.isStar;
-        oldCache.starsCount = data.starsCount;
-        this.Cache.put(`project:${data._id}`, oldCache);
-        return oldCache;
+        return this.ProjectModel.updateObj(data._id, data);
       });
     }
 
@@ -170,7 +162,10 @@ module teambition {
         Type: 'projects',
         Id: _projectId
       })
-      .$promise;
+      .$promise
+      .then(() => {
+        this.ProjectModel.remove(_projectId);
+      });
     }
 
     public joinByCode(_projectId: string, _signCode: string, _invitorId: string) {
@@ -194,7 +189,12 @@ module teambition {
       }, {
         isArchive: true
       })
-      .$promise;
+      .$promise
+      .then((data: IProjectData) => {
+        let result = this.projectParser(data);
+        this.ProjectModel.updateObj(result._id, result);
+        return this.ProjectModel.get(result._id);
+      });
     }
 
     private prepareProject(data: Array<IProjectData>): IProjectDataParsed[] {
@@ -204,7 +204,8 @@ module teambition {
         projects.push(project);
         this.ProjectModel.set(project._id, project);
       });
-      return projects;
+      this.ProjectModel.setCollection(projects);
+      return this.ProjectModel.getCollection();
     }
   }
 

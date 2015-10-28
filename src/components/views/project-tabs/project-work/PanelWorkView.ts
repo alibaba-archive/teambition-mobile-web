@@ -5,6 +5,9 @@ module teambition {
   let projectId: string;
 
   @parentView('TabsView')
+  @inject([
+    'WorkAPI'
+  ])
   class PanelWorkView extends View {
 
     public ViewName = 'PanelWorkView';
@@ -12,15 +15,10 @@ module teambition {
     public works: IFileDataParsed[];
     public collections: ICollectionData[];
 
-    private workAPI: IWorkAPI;
+    private WorkAPI: IWorkAPI;
 
-
-    // @ngInject
-    constructor(
-      workAPI: IWorkAPI
-    ) {
+    constructor() {
       super();
-      this.workAPI = workAPI;
       this.zone.run(noop);
     }
 
@@ -42,12 +40,12 @@ module teambition {
       .then((project: IProjectDataParsed) => {
         let _collectionId = collectionId || project._rootCollectionId;
         return this.$q.all([
-          this.workAPI.fetchWorks(projectId, _collectionId)
+          this.WorkAPI.fetchWorks(projectId, _collectionId)
           .then((works: IFileDataParsed[]) => {
             this.works = works;
             return works;
           }),
-          this.workAPI.fetchCollections(projectId, _collectionId)
+          this.WorkAPI.fetchCollections(projectId, _collectionId)
           .then((collections: ICollectionData[]) => {
             this.collections = collections;
             return collections;

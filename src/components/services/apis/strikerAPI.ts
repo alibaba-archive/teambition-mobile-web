@@ -3,18 +3,37 @@ module teambition {
   'use strict';
 
   export interface IStrikerAPI {
-    upload(blobs: File[]): angular.IPromise<any>;
+    upload(blobs: File[]): angular.IPromise<angular.IHttpPromiseCallbackArg<{}>>;
   }
 
-  angular.module('teambition').factory('strikerAPI',
-  // @ngInject
-  (
-    app: Iapp,
-    Upload: angular.angularFileUpload.IUploadService,
-    RestAPI: IRestAPI
-  ) => {
-    let strikerAuth = () => {
-      return RestAPI.get({
+  @inject([
+    'app',
+    'Upload'
+  ])
+  class StrikerAPI extends BaseAPI implements IStrikerAPI {
+    private app: Iapp;
+    private Upload: angular.angularFileUpload.IUploadService;
+
+    public upload (blobs: File[]) {
+      return this.strikerAuth().then((strikerAuth: string) => {
+        return this.Upload.upload({
+          url: this.app.strikerHost + 'upload',
+          headers: {
+            'Authorization': strikerAuth,
+            'Content-Type': 'multipart/form-data'
+          },
+          file: blobs,
+          withCredentials: true,
+          method: 'POST'
+        })
+        .then((res: any) => {
+          return res.data;
+        });
+      });
+    }
+
+    private strikerAuth () {
+      return this.RestAPI.get({
         Type: 'users',
         Id: 'me',
         fields: 'strikerAuth'
@@ -27,22 +46,8 @@ module teambition {
           return false;
         }
       });
-    };
-    return {
-      upload: (blobs: File) => {
-        strikerAuth().then((strikerAuth: string) => {
-          return Upload.upload({
-            url: app.strikerHost + 'upload',
-            headers: {
-              'Authorization': strikerAuth,
-              'Content-Type': 'multipart/form-data'
-            },
-            file: blobs,
-            withCredentials: true,
-            method: 'POST'
-          });
-        });
-      }
-    };
-  });
+    }
+  }
+
+  angular.module('teambition').service('StrikerAPI', StrikerAPI);
 }

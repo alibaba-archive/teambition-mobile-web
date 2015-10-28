@@ -7,6 +7,9 @@ module teambition {
   let lastSelected: string;
   let projectId: string;
 
+  @inject([
+    'ProjectsAPI'
+  ])
   export class TabsView extends View {
 
     public ViewName = 'TabsView';
@@ -17,12 +20,9 @@ module teambition {
     private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
     private ProjectsAPI: IProjectsAPI;
     private tabTypes: string[] = ['home', 'tasklist', 'post', 'work', 'event'];
-    // @ngInject
-    constructor(
-      ProjectsAPI: IProjectsAPI
-    ) {
+
+    constructor() {
       super();
-      this.ProjectsAPI = ProjectsAPI;
       this.zone.run(noop);
     }
 

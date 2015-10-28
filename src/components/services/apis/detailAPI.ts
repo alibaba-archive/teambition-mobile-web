@@ -119,54 +119,101 @@ module teambition {
     fetch(_id: string, type: string, linkedId?: string): angular.IPromise<any>;
   }
 
-  angular.module('teambition').factory('detailAPI',
-  // @ngInject
-  (
-    $q: angular.IQService,
-    RestAPI: IRestAPI,
-    Cache: angular.ICacheObject,
-    taskParser: ITaskParser,
-    postParser: IPostParser,
-    eventParser: IPostParser,
-    fileParser: IFileParser,
-    objectLinkAPI: IObjectLinkAPI,
-    likeAPI: ILikeAPI,
-    tagsAPI: ITagsAPI,
-    stageAPI: IStageAPI,
-    memberAPI: IMemberAPI,
-    tasklistAPI: ITasklistAPI,
-    queryFileds: IqueryFileds
-  ) => {
+  @inject([
+    'taskParser',
+    'postParser',
+    'eventParser',
+    'fileParser',
+    'ObjectLinkAPI',
+    'LikeAPI',
+    'TagsAPI',
+    'MemberAPI',
+    'TasklistAPI',
+    'Cache'
+  ])
+  class DetailAPI extends BaseAPI implements IDetailAPI {
+    private Cache: angular.ICacheObject;
+    private taskParser: ITaskParser;
+    private eventParser: IEventParser;
+    private fileParser: IFileParser;
+    private postParser: IPostParser;
+    private ObjectLinkAPI: IObjectLinkAPI;
+    private LikeAPI: ILikeAPI;
+    private TagsAPI: ITagsAPI;
+    private MemberAPI: IMemberAPI;
+    private TasklistAPI: ITasklistAPI;
 
-    let filedsMap = {
-      task: queryFileds.taskFileds,
-      post: queryFileds.postFileds,
-      event: queryFileds.eventFileds,
-      work: queryFileds.workFileds
+    private filedsMap = {
+      task: this.queryFileds.taskFileds,
+      post: this.queryFileds.postFileds,
+      event: this.queryFileds.eventFileds,
+      work: this.queryFileds.workFileds
     };
 
-    let query = (_id: string, type: string, linkedId: string) => {
-      let cache = Cache.get(`${type}:detail:${_id}`);
-      let deferred = $q.defer();
+    public fetch (_id: string, type: string, linkedId: string) {
+      let deferred = this.$q.defer();
+      this.query(_id, type, linkedId)
+      .then((data: any) => {
+        let detailInfos: IDetailInfos;
+        detailInfos = {};
+        let fetchTasks = [
+          this.ObjectLinkAPI.fetch(type, _id)
+          .then((linked: ILinkedData[]) => {
+            data.linked = linked;
+          }),
+          this.LikeAPI.getLiked(type, _id)
+          .then((liked: ILikeDataParsed) => {
+            detailInfos.like = liked;
+          }),
+          this.TagsAPI.fetchByObjectId(`${type}s`, _id)
+          .then((tags: ITagsData[]) => {
+            detailInfos.tags = tags;
+          }),
+          this.MemberAPI.fetch(data._projectId)
+          .then((members: IMemberData[]) => {
+            detailInfos.members = members;
+          })
+        ];
+        if (type === 'task') {
+          fetchTasks.push(
+            this.TasklistAPI.fetch(data._tasklistId)
+            .then((tasklist: ITasklistData) => {
+              detailInfos.tasklist = tasklist;
+              detailInfos.stage = this.findElementInArray(tasklist.hasStages, data._stageId);
+            })
+          );
+        }
+        this.$q.all(fetchTasks)
+        .then(() => {
+          let result = this.detailParser(data, type, detailInfos);
+          deferred.resolve(result);
+        });
+      });
+      return deferred.promise;
+    }
+
+    private query(_id: string, type: string, linkedId: string) {
+      let cache = this.Cache.get(`${type}:detail:${_id}`);
+      let deferred = this.$q.defer();
       if (cache) {
         deferred.resolve(cache);
         return deferred.promise;
       }else {
-        return RestAPI.get({
+        return this.RestAPI.get({
           Type: `${type}s`,
           Id: _id,
           _objectLinkId: linkedId,
-          fields: filedsMap[type]
+          fields: this.filedsMap[type]
         })
         .$promise
         .then((data: any) => {
-          Cache.put(`${type}:detail:${_id}`, data);
+          this.Cache.put(`${type}:detail:${_id}`, data);
           return data;
         });
       }
-    };
+    }
 
-    let detailParser = (detail: any, type: string, detailInfos: IDetailInfos): any => {
+    private detailParser (detail: any, type: string, detailInfos: IDetailInfos): any {
       let members = detailInfos.members;
       let involveMembers = [];
       detail.isLike = detailInfos.like.isLike;
@@ -187,67 +234,25 @@ module teambition {
       }
       switch (type) {
         case 'task':
-          return taskParser(detail, detailInfos);
+          return this.taskParser(detail, detailInfos);
         case 'post':
-          return postParser(detail);
+          return this.postParser(detail);
         case 'work':
-          return fileParser(detail);
+          return this.fileParser(detail);
         case 'event':
-          return eventParser(detail);
+          return this.eventParser(detail);
       }
-    };
+    }
 
-    let findElementInArray = <T extends {_id: string}>(array: T[], id: string): T => {
+    private findElementInArray <T extends {_id: string}>(array: T[], id: string): T {
       for (let index = 0; index < array.length; index++) {
         let element = array[index];
         if (element._id === id) {
           return element;
         }
       }
-    };
+    }
+  }
 
-    return {
-      fetch: (_id: string, type: string, linkedId: string) => {
-        let deferred = $q.defer();
-        query(_id, type, linkedId)
-        .then((data: any) => {
-          let detailInfos: IDetailInfos;
-          detailInfos = {};
-          let fetchTasks = [
-            objectLinkAPI.fetch(type, _id)
-            .then((linked: ILinkedData[]) => {
-              data.linked = linked;
-            }),
-            likeAPI.getLiked(type, _id)
-            .then((liked: ILikeDataParsed) => {
-              detailInfos.like = liked;
-            }),
-            tagsAPI.fetchByObjectId(`${type}s`, _id)
-            .then((tags: ITagsData[]) => {
-              detailInfos.tags = tags;
-            }),
-            memberAPI.fetch(data._projectId)
-            .then((members: IMemberData[]) => {
-              detailInfos.members = members;
-            })
-          ];
-          if (type === 'task') {
-            fetchTasks.push(
-              tasklistAPI.fetch(data._tasklistId)
-              .then((tasklist: ITasklistData) => {
-                detailInfos.tasklist = tasklist;
-                detailInfos.stage = findElementInArray(tasklist.hasStages, data._stageId);
-              })
-            );
-          }
-          $q.all(fetchTasks)
-          .then(() => {
-            let result = detailParser(data, type, detailInfos);
-            deferred.resolve(result);
-          });
-        });
-        return deferred.promise;
-      }
-    };
-  });
+  angular.module('teambition').service('DetailAPI', DetailAPI);
 }

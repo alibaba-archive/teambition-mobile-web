@@ -9,14 +9,8 @@ module teambition {
     public task: ITaskDataParsed;
     public project: IProjectDataParsed;
 
-    private projectsAPI: IProjectsAPI;
-
-    // @ngInject
-    constructor(
-      projectsAPI: IProjectsAPI
-    ) {
+    constructor() {
       super();
-      this.projectsAPI = projectsAPI;
       this.zone.run(noop);
     }
 

@@ -23,23 +23,19 @@ module teambition {
     fetch: (_parentType: string, _parentId: string) => angular.IPromise<ILinkedData[]>;
   }
 
-  angular.module('teambition').factory('objectLinkAPI',
-  // @ngInject
-  (
-    RestAPI: IRestAPI
-  ) => {
-    return {
-      fetch: (_parentType: string, _parentId: string) => {
-        return RestAPI.query({
-          Type: `${_parentType}s`,
-          Id: _parentId,
-          Path1: 'objectLinks'
-        })
-        .$promise
-        .then((data: ILinkedData[]) => {
-          return data;
-        });
-      }
-    };
-  });
+  class ObjectLinkAPI extends BaseAPI implements IObjectLinkAPI {
+    public fetch(_parentType: string, _parentId: string) {
+      return this.RestAPI.query({
+        Type: `${_parentType}s`,
+        Id: _parentId,
+        Path1: 'objectLinks'
+      })
+      .$promise
+      .then((data: ILinkedData[]) => {
+        return data;
+      });
+    }
+  }
+
+  angular.module('teambition').service('ObjectLinkAPI', ObjectLinkAPI);
 }

@@ -5,6 +5,9 @@ module teambition {
   let projectId: string;
 
   @parentView('TabsView')
+  @inject([
+    'EventAPI'
+  ])
   export class PanelEventView extends View {
     public ViewName = 'PanelEventView';
 
@@ -13,14 +16,10 @@ module teambition {
     };
     public counter: number;
 
-    private eventAPI: IEventAPI;
+    private EventAPI: IEventAPI;
 
-    // @ngInject
-    constructor(
-      eventAPI: IEventAPI
-    ) {
+    constructor() {
       super();
-      this.eventAPI = eventAPI;
       this.zone.run(noop);
     }
 
@@ -38,7 +37,7 @@ module teambition {
 
     private fetchEvents() {
       let now = new Date().toISOString();
-      return this.eventAPI.fetch(projectId, now)
+      return this.EventAPI.fetch(projectId, now)
       .then((eventGroup: IEventsResult) => {
         if (!eventGroup || !eventGroup.data) {
           return ;

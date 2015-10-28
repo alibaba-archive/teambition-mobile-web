@@ -5,19 +5,19 @@ module teambition {
   let projectId: string;
 
   @parentView('TabsView')
+  @inject([
+    'PostAPI'
+  ])
   export class PanelPostView extends View {
 
     public ViewName = 'PanelPostView';
 
     public posts: IPostData[];
 
-    private postAPI: IPostAPI;
+    private PostAPI: IPostAPI;
 
-    constructor(
-      postAPI: IPostAPI
-    ) {
+    constructor() {
       super();
-      this.postAPI = postAPI;
       this.zone.run(noop);
     }
 
@@ -34,7 +34,7 @@ module teambition {
     }
 
     private initFetch() {
-      return this.postAPI.fetchAll(projectId)
+      return this.PostAPI.fetchAll(projectId)
       .then((posts: IPostData[]) => {
         this.posts = posts;
       });

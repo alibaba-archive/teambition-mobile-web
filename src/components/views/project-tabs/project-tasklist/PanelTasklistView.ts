@@ -6,6 +6,11 @@ module teambition {
   let tasklistSelected: ITasklistData;
 
   @parentView('TabsView')
+  @inject([
+    'StageAPI',
+    'TagsAPI',
+    'TasklistAPI'
+  ])
   export class PanelTasklistView extends View {
 
     public ViewName = 'PanelTasklistView';
@@ -24,20 +29,12 @@ module teambition {
     public taskLength: number;
     public stages: IStageData[];
 
-    private tagsAPI: ITagsAPI;
-    private tasklistAPI: ITasklistAPI;
-    private stageAPI: IStageAPI;
+    private TagsAPI: ITagsAPI;
+    private TasklistAPI: ITasklistAPI;
+    private StageAPI: IStageAPI;
 
-    // @ngInject
-    constructor(
-      tasklistAPI: ITasklistAPI,
-      tagsAPI: ITagsAPI,
-      stageAPI: IStageAPI
-    ) {
+    constructor() {
       super();
-      this.tasklistAPI = tasklistAPI;
-      this.tagsAPI = tagsAPI;
-      this.stageAPI = stageAPI;
       this.zone.run(noop);
     }
 
@@ -73,7 +70,7 @@ module teambition {
     }
 
     private getTaskLists() {
-      return this.tasklistAPI.fetchAll(projectId)
+      return this.TasklistAPI.fetchAll(projectId)
       .then((tasklists: ITasklistData[]) => {
         this.tasklists = tasklists;
         if (!tasklistSelected || tasklistSelected._projectId !== projectId) {
@@ -87,7 +84,7 @@ module teambition {
     }
 
     private getTags() {
-      return this.tagsAPI.fetchByProject(projectId)
+      return this.TagsAPI.fetchByProject(projectId)
       .then((tags: ITagsData[]) => {
         this.tags = tags;
       });
@@ -97,10 +94,10 @@ module teambition {
       this.tasks = {};
       this.taskLength = 0;
       this.showLoading();
-      return this.stageAPI.fetch(_tasklistId)
+      return this.StageAPI.fetch(_tasklistId)
       .then((stages: IStageData[]) => {
         this.stages = stages;
-        return this.tasklistAPI.fetchTasksByTasklistId(_tasklistId);
+        return this.TasklistAPI.fetchTasksByTasklistId(_tasklistId);
       })
       .then((tasks: ITaskDataParsed[]) => {
         angular.forEach(tasks, (task: ITaskDataParsed, index: number) => {

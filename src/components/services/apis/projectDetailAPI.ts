@@ -3,7 +3,7 @@ module teambition {
   'use strict';
 
   export interface IProjectDetailAPI {
-    fetchActivities(_projectId: string, _prevId: string, count: number, page: number, membersFilter: string, typesFilter: string): angular.IPromise<IProjectActivitiesData[]>;
+    fetchActivities(_projectId: string, count: number, membersFilter: string, typesFilter: string, page?: number): angular.IPromise<IProjectActivitiesDataParsed[]>;
     fetchNoExecutorOrDuedateTasks(_projectId: string, typeFilter: string, count?: number, page?: number): angular.IPromise<ITaskDataParsed[]>;
   }
 
@@ -12,48 +12,67 @@ module teambition {
     'queryFileds',
     'taskParser',
     'Moment',
-    'memberAPI',
+    'MemberAPI',
+    'ProjectActivityModel',
+    'TaskModel',
     'Cache'
   ])
   class ProjectDetailAPI extends BaseAPI implements IProjectDetailAPI {
     private PAParser: IPAParser;
-    private queryFileds: IqueryFileds;
     private taskParser: ITaskParser;
     private Moment: moment.MomentStatic;
-    private memberAPI: IMemberAPI;
+    private MemberAPI: IMemberAPI;
+    private ProjectActivityModel: IProjectActivityModel;
+    private TaskModel: ITaskModel;
     private Cache: angular.ICacheObject;
 
-    public fetchActivities(_projectId: string, _prevId: string, count: number, page: number, membersFilter?: string, typesFilter?: string) {
-      let cacheNamespace = `activities:${page}:${_projectId}:${membersFilter}:${typesFilter}`;
-      let activities: IProjectActivitiesDataParsed[] = this.Cache.get<IProjectActivitiesDataParsed[]>(cacheNamespace);
-      let deferred = this.$q.defer<IProjectActivitiesDataParsed[]>();
-      if (activities) {
-        deferred.resolve(activities);
-        return deferred.promise;
-      }else {
-        return this.RestAPI.query({
-          Type: 'projects',
-          Id: _projectId,
-          Path1: 'activities',
-          count: count,
-          page: page,
-          fields: this.queryFileds.projectActivityFileds,
-          _prevId: _prevId,
-          _creatorId: membersFilter,
-          type: typesFilter
-        })
-        .$promise
-        .then((data: IProjectActivitiesData[]) => {
-          activities = this.prepareActivities(data, _projectId, page, membersFilter, typesFilter);
-          return activities;
-        });
+    private pageCounter: {
+      [index: string]: number;
+    } = {};
+
+    public fetchActivities(_projectId: string, count: number, membersFilter?: string, typesFilter?: string, page?: number) {
+      let _membersFilter = membersFilter || 'all';
+      let _typesFilter = typesFilter || 'all';
+      let cacheNamespace = `activities:${_projectId}:${_membersFilter}:${_typesFilter}`;
+      if (typeof page === 'undefined') {
+        if (typeof this.pageCounter[cacheNamespace] !== 'undefined') {
+          page = this.pageCounter[cacheNamespace] + 1;
+        }else {
+          page = 1;
+        }
       }
+      let deferred = this.$q.defer();
+      let cache = this.ProjectActivityModel.getCollection(_projectId, _membersFilter, _typesFilter);
+      if (cache) {
+        deferred.resolve(cache);
+        return deferred.promise;
+      }
+      this.pageCounter[cacheNamespace] = page;
+      return this.RestAPI.query({
+        Type: 'projects',
+        Id: _projectId,
+        Path1: 'activities',
+        count: count,
+        page: page,
+        fields: this.queryFileds.projectActivityFileds,
+        _creatorId: membersFilter,
+        type: typesFilter
+      })
+      .$promise
+      .then((data: IProjectActivitiesData[]) => {
+        let activities = this.prepareActivities(data, _projectId, page, _membersFilter, _typesFilter);
+        return activities;
+      });
     }
 
     public fetchNoExecutorOrDuedateTasks(_projectId: string, typesFilter: string, count: number = 20, page: number = 1) {
       let cacheNamespace: string = `${typesFilter}:tasks${page}:${_projectId}`;
-      let tasksCache: ITaskDataParsed [] = this.Cache.get<ITaskDataParsed []>(cacheNamespace);
-      let self = this;
+      let tasksCache: ITaskDataParsed [];
+      if (typesFilter === 'due') {
+        tasksCache = this.TaskModel.getDueExecutorCollection(_projectId);
+      }else {
+        tasksCache = this.TaskModel.getNoneExecutorCollection(_projectId);
+      }
       let deferred = this.$q.defer<ITaskDataParsed []>();
       if (tasksCache) {
         deferred.resolve(tasksCache);
@@ -75,13 +94,13 @@ module teambition {
         }else if (typesFilter === 'noneExecutor') {
           query._executorId = '';
         }
-        return this.memberAPI.fetch(_projectId)
+        return this.MemberAPI.fetch(_projectId)
         .then((members: IMemberData[]) => {
-          let result: any = self.setMemberMaps(members);
+          let result: any = this.setMemberMaps(members);
           return result;
         })
         .then((members: any[]) => {
-          return self.RestAPI.query(query)
+          return this.RestAPI.query(query)
           .$promise
           .then((data: ITaskData[]) => {
             let result: ITaskDataParsed[] = this.prepareTasks(data, _projectId, members, typesFilter, page);
@@ -92,28 +111,22 @@ module teambition {
     }
 
     private prepareActivities(activities: IProjectActivitiesData[], projectId: string, page: number, membersFilter: string, typesFilter: string): IProjectActivitiesDataParsed[] {
-      let cacheNamespace: string = `activities:${page}:${projectId}:${membersFilter}:${typesFilter}`;
       if (activities && activities.length) {
         let _activities: IProjectActivitiesDataParsed [] = [];
         angular.forEach(activities, (activity: IProjectActivitiesData, index: number) => {
           let _activity: IProjectActivitiesDataParsed = this.PAParser(activity);
           _activities.push(_activity);
         });
-        this.Cache.put(cacheNamespace, _activities);
+        this.ProjectActivityModel.setCollection(projectId, membersFilter, typesFilter, _activities);
         return _activities;
       }else {
-        this.Cache.put(cacheNamespace, []);
-        return [];
+        return this.ProjectActivityModel.getCollection(projectId, membersFilter, typesFilter);
       }
     }
 
     private prepareTasks(tasks: ITaskData[], projectId: string, members: IMemberData[], typesFilter: string, page: number): ITaskDataParsed[] {
-      let cacheNamespace: string = `${typesFilter}:tasks${page}:${projectId}`;
-      if (!tasks || !tasks.length) {
-        this.Cache.put(cacheNamespace, []);
-        return [];
-      }else {
-        let results: ITaskDataParsed[] = [];
+      let results: ITaskDataParsed[] = [];
+      if (tasks && tasks.length) {
         angular.forEach(tasks, (task: ITaskData, index: number) => {
           if (task._executorId) {
             task.executor = members[task._executorId];
@@ -121,11 +134,15 @@ module teambition {
           let result: ITaskDataParsed = this.taskParser(task);
           results.push(result);
           result.fetchTime = Date.now();
-          this.Cache.put(`task:detail:${result._id}`, task);
+          this.TaskModel.setDetail(result._id, task);
         });
-        this.Cache.put(cacheNamespace, results);
-        return results;
       }
+      if (typesFilter === 'noneExecutor') {
+        this.TaskModel.setNoneExecutorCollection(projectId, results);
+      }else {
+        this.TaskModel.setDueCollection(projectId, results);
+      }
+      return results;
     }
 
     private setMemberMaps(members: IMemberData[]) {

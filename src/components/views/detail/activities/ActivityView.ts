@@ -8,21 +8,21 @@ module teambition {
 
     public activities: IActivityDataParsed[];
 
-    private activityAPI: IActivityAPI;
+    private ActivityAPI: IActivityAPI;
 
     // @ngInject
     constructor(
-      activityAPI: IActivityAPI
+      ActivityAPI: IActivityAPI
     ) {
       super();
-      this.activityAPI = activityAPI;
+      this.ActivityAPI = ActivityAPI;
       this.zone.run(noop);
     }
 
     public onInit() {
       let _boundToObjectType = this.parent._boundToObjectType;
       let _boundToObjectId = this.parent._boundToObjectId;
-      return this.activityAPI.fetch(_boundToObjectType, _boundToObjectId)
+      return this.ActivityAPI.fetch(_boundToObjectType, _boundToObjectId)
       .then((activities: IActivityDataParsed[]) => {
         this.activities = activities;
       });

@@ -32,6 +32,15 @@ module teambition {
 
   let popup: ionic.popup.IonicPopupPromise;
 
+  @inject([
+    'DetailAPI',
+    'ActivityAPI',
+    'ProjectsAPI',
+    'EntryAPI',
+    'WorkAPI',
+    'LikeAPI',
+    'StrikerAPI'
+  ])
   class DetailView extends View {
 
     public ViewName = 'DetailView';
@@ -47,35 +56,22 @@ module teambition {
     protected detail: any;
     protected members: IMemberData[];
 
-    private detailAPI: IDetailAPI;
-    private activityAPI: IActivityAPI;
-    private strikerAPI: IStrikerAPI;
+    private DetailAPI: IDetailAPI;
+    private ActivityAPI: IActivityAPI;
+    private StrikerAPI: IStrikerAPI;
     private ProjectsAPI: IProjectsAPI;
-    private workAPI: IWorkAPI;
-    private entryAPI: IEntryAPI;
-    private likeAPI: ILikeAPI;
+    private WorkAPI: IWorkAPI;
+    private EntryAPI: IEntryAPI;
+    private LikeAPI: ILikeAPI;
     private images: IImagesData[];
 
     // @ngInject
     constructor(
       $scope: angular.IScope,
-      detailAPI: IDetailAPI,
-      activityAPI: IActivityAPI,
-      strikerAPI: IStrikerAPI,
-      ProjectsAPI: IProjectsAPI,
-      workAPI: IWorkAPI,
-      entryAPI: IEntryAPI,
-      likeAPI: ILikeAPI
+      StrikerAPI: IStrikerAPI
     ) {
       super();
       this.$scope = $scope;
-      this.detailAPI = detailAPI;
-      this.activityAPI = activityAPI;
-      this.strikerAPI = strikerAPI;
-      this.ProjectsAPI = ProjectsAPI;
-      this.workAPI = workAPI;
-      this.entryAPI = entryAPI;
-      this.likeAPI = likeAPI;
       this.comment = '';
       this.images = [];
       this.zone.run(noop);
@@ -87,7 +83,7 @@ module teambition {
       this._linkedId = this.$state.params.linkedId;
       if (this._boundToObjectType !== 'entry') {
         let deferred = this.$q.defer();
-        this.detailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
+        this.DetailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
         .then((detail: any) => {
           this.detail = detail;
           this.members = detail.members;
@@ -99,7 +95,7 @@ module teambition {
         });
         return deferred.promise;
       }else {
-        return this.entryAPI.fetch(this._boundToObjectId)
+        return this.EntryAPI.fetch(this._boundToObjectId)
         .then((data: IEntryData) => {
           this.detail = data;
           return data;
@@ -141,7 +137,7 @@ module teambition {
       if (!this._boundToObjectType) {
         return;
       }
-      return this.likeAPI.postLike(
+      return this.LikeAPI.postLike(
         this.detail
       );
     }
@@ -167,17 +163,26 @@ module teambition {
         let files = this.images.map((item: {data: File}) => {
           return item.data;
         });
-        let strikerRes: any;
-        return this.strikerAPI.upload(files)
+        let strikerRes: IStrikerRes[];
+        return this.StrikerAPI.upload(files)
         .then((data: any) => {
-          strikerRes = data.length ? data : [data];
+          if (data) {
+            if (data.length) {
+              strikerRes = data;
+            }else {
+              strikerRes = [data];
+            }
+          }else {
+            strikerRes = [];
+          }
         })
         .then(() => {
           return this.ProjectsAPI.fetchById(_projectId);
         })
         .then((project: IProjectDataParsed) => {
           let collectionId = project._defaultCollectionId;
-          return this.workAPI.uploads(collectionId, _projectId, strikerRes);
+          console.log(strikerRes);
+          return this.WorkAPI.uploads(collectionId, _projectId, strikerRes);
         })
         .then((resp: IFileDataParsed[]) => {
           let attachments = [];
@@ -188,13 +193,16 @@ module teambition {
         })
         .then((attachments: string[]) => {
           return this.addTextComment(attachments);
+        })
+        .catch((reason: any) => {
+          this.hideLoading();
         });
       }
     }
 
     private addTextComment(attachments?: string[]) {
       attachments = (attachments && attachments.length) ? attachments : [];
-      return this.activityAPI.save({
+      return this.ActivityAPI.save({
         _boundToObjectId: this._boundToObjectId,
         attachments: attachments,
         boundToObjectType: this._boundToObjectType,
@@ -203,11 +211,13 @@ module teambition {
       .then((activity: IActivityDataParsed) => {
         this.comment = '';
         this.images = [];
+        this.hideLoading();
       })
       .catch((reason: any) => {
         let msg = '网络错误';
         msg = (reason && typeof(reason.data) === 'object') ? reason.data.message : msg;
         this.showMsg('error', '评论失败', msg);
+        this.hideLoading();
       });
     }
 

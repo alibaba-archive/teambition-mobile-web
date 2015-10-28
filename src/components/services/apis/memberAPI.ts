@@ -13,41 +13,35 @@ module teambition {
     fetch: (_projectId: string) => angular.IPromise<IMemberData[]>;
   }
 
-  angular.module('teambition').factory('memberAPI',
-  // @ngInject
-  function(
-    $q: angular.IQService,
-    RestAPI: IRestAPI,
-    Cache: angular.ICacheObject,
-    queryFileds: IqueryFileds
-  ) {
-    let fetchPromise: angular.IPromise<IMemberData[]>;
-    return {
-      fetch: (_id: string) => {
-        let cacheId: string = `members:${_id}`;
-        let members: IMemberData[] = Cache.get<IMemberData[]>(cacheId);
-        if (members) {
-          let deferred = $q.defer<IMemberData[]>();
-          deferred.resolve(members);
-          return deferred.promise;
-        }else if (fetchPromise) {
-          return fetchPromise;
-        }else {
-          fetchPromise = RestAPI.query({
-            V2: 'v2',
-            Type: 'projects',
-            Id: _id,
-            Path1: 'members',
-            fields: queryFileds.memberFileds
-          })
-          .$promise
-          .then((data: IMemberData[]) => {
-            Cache.put(`members:${_id}`);
-            return data;
-          });
-          return fetchPromise;
-        }
+  @inject([
+    'Cache'
+  ])
+  class MemberAPI extends BaseAPI implements IMemberAPI {
+    private Cache: angular.ICacheObject;
+
+    public fetch(_id: string) {
+      let cacheId: string = `members:${_id}`;
+      let members: IMemberData[] = this.Cache.get<IMemberData[]>(cacheId);
+      if (members) {
+        let deferred = this.$q.defer<IMemberData[]>();
+        deferred.resolve(members);
+        return deferred.promise;
+      }else {
+        return this.RestAPI.query({
+          V2: 'v2',
+          Type: 'projects',
+          Id: _id,
+          Path1: 'members',
+          fields: this.queryFileds.memberFileds
+        })
+        .$promise
+        .then((data: IMemberData[]) => {
+          this.Cache.put(`members:${_id}`);
+          return data;
+        });
       }
-    };
-  });
+    }
+  }
+
+  angular.module('teambition').service('MemberAPI', MemberAPI);
 }

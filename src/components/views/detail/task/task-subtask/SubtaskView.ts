@@ -2,21 +2,18 @@
 module teambition {
   'use strict';
   @parentView('TaskView')
+  @inject([
+    'SubtasksAPI'
+  ])
   class SubtaskView extends View {
 
     public ViewName = 'SubtaskView';
     public subtasks: ISubtaskData[];
 
-    private subtasksAPI: ISubtasksAPI;
-    private detailAPI: IDetailAPI;
-    // @ngInject
-    constructor(
-      detailAPI: IDetailAPI,
-      subtasksAPI: ISubtasksAPI
-    ) {
+    private SubtasksAPI: ISubtasksAPI;
+
+    constructor() {
       super();
-      this.subtasksAPI = subtasksAPI;
-      this.detailAPI = detailAPI;
       this.zone.run(noop);
     }
 
@@ -27,7 +24,7 @@ module teambition {
       }else {
         taskId = this.$state.params._id;
       }
-      return this.subtasksAPI.fetch(taskId)
+      return this.SubtasksAPI.fetch(taskId)
       .then((data: ISubtaskData[]) => {
         this.subtasks = data;
       });
