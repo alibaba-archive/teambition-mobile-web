@@ -7,16 +7,16 @@ module teambition {
   }
 
   @inject([
-    'Cache',
+    'PostModel',
     'postParser'
   ])
   class PostAPI extends BaseAPI implements IPostAPI {
-    private Cache: angular.ICacheObject;
+    private PostModel: IPostModel;
     private postParser: IPostParser;
 
     public fetchAll (_projectId: string) {
-      let cache = this.Cache.get(`posts:${_projectId}`);
-      let deferred = this.$q.defer();
+      let cache = this.PostModel.getProjectPostsCollection(_projectId);
+      let deferred = this.$q.defer<IPostDataParsed[]>();
       if (cache) {
         deferred.resolve(cache);
         return deferred.promise;
@@ -42,10 +42,10 @@ module teambition {
       angular.forEach(posts, (post: IPostDataParsed, index: number) => {
         let result = this.postParser(post);
         result.fetchTime = Date.now();
-        this.Cache.put(`post:detail:${post._id}`, result);
+        this.PostModel.setDetail(`post:detail:${post._id}`, result);
         results.push(result);
       });
-      this.Cache.put(`posts:${_projectId}`, results);
+      this.PostModel.setProjectPostsCollection(_projectId, results);
       return results;
     }
   }

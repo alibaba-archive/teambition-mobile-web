@@ -26,15 +26,17 @@ module teambition {
   }
 
   @inject([
-    'Cache',
+    'TasklistModel',
+    'TaskModel',
     'taskParser'
   ])
   class TasklistAPI extends BaseAPI implements ITasklistAPI {
-    private Cache: angular.ICacheObject;
+    private TasklistModel: ITasklistModel;
+    private TaskModel: ITaskModel;
     private taskParser: ITaskParser;
 
     public fetch (_id: string) {
-      let cache = this.Cache.get<ITasklistData>(`tasklist:${_id}`);
+      let cache = this.TasklistModel.getOne(_id);
       let deferred = this.$q.defer<ITasklistData>();
       if (cache) {
         deferred.resolve(cache);
@@ -44,7 +46,7 @@ module teambition {
           Type: 'tasklists',
           Id: _id
         }, (data: ITasklistData) => {
-          this.Cache.put(`tasklist:${_id}`, data);
+          this.TasklistModel.setOne(_id, data);
           return data;
         })
         .$promise;
@@ -52,7 +54,7 @@ module teambition {
     }
 
     public fetchAll (_projectId: string) {
-      let tasklists: ITasklistData[] = this.Cache.get<ITasklistData[]>(`tasklists:${_projectId}`);
+      let tasklists = this.TasklistModel.getTasklistsCollection(_projectId);
       let deferred = this.$q.defer<ITasklistData[]>();
       if (tasklists) {
         deferred.resolve(tasklists);
@@ -61,17 +63,17 @@ module teambition {
       return this.RestAPI.query({
         Type: 'tasklists',
         _projectId: _projectId
-      }, (tasklists: ITaskData[]) => {
+      }, (tasklists: ITasklistData[]) => {
         angular.forEach(tasklists, (tasklist: ITasklistData, index: number) => {
-          this.Cache.put(`tasklist:${tasklist._id}`, tasklist);
+          this.TasklistModel.setOne(tasklist._id, tasklist);
         });
-        this.Cache.put(`tasklists:${_projectId}`, tasklists);
+        this.TasklistModel.setTasklistsCollection(_projectId, tasklists);
       })
       .$promise;
     }
 
     public fetchTasksByTasklistId (_tasklistId: string) {
-      let cache: ITaskDataParsed[] = this.Cache.get<ITaskDataParsed[]>(`tasks:in:${_tasklistId}`);
+      let cache: ITaskDataParsed[] = this.TaskModel.getTasklistCollection(_tasklistId);
       let deferred = this.$q.defer<ITaskDataParsed[]>();
       if (cache) {
         deferred.resolve(cache);
@@ -103,7 +105,7 @@ module teambition {
         .$promise
       ])
       .then(() => {
-        this.Cache.put(`tasks:in:${_tasklistId}`, tasks);
+        this.TaskModel.setTasklistCollection(_tasklistId, tasks);
         return tasks;
       });
     }
@@ -114,7 +116,7 @@ module teambition {
         angular.forEach(tasks, (task: ITaskData, index: number) => {
           let result: ITaskDataParsed = this.taskParser(task);
           result.fetchTime = Date.now();
-          this.Cache.put(`task:detail:${task._id}`, task);
+          this.TaskModel.setDetail(`task:detail:${task._id}`, task);
           results.push(result);
         });
         return results;

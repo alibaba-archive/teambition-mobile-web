@@ -11,25 +11,21 @@ module teambition {
 
   export interface IActivityAPI {
     fetch(_boundToObjectType: string, _boundToObjectId: string): angular.IPromise<IActivityDataParsed[]>;
-    save(data: IActivitySaveData): angular.IPromise<IActivityDataParsed>;
+    save(data: IActivitySaveData): angular.IPromise<void>;
   }
 
   @inject([
-    'arrayMerge',
-    'activityParser',
-    'Cache'
+    'ActivityModel',
+    'activityParser'
   ])
   class ActivityAPI extends BaseAPI implements IActivityAPI {
-    private arrayMerge: IArrayMerge;
+    private ActivityModel: IActivityModel;
     private activityParser: IActivityParser;
-    private Cache: angular.ICacheObject;
 
     public fetch (_boundToObjectType: string, _boundToObjectId: string) {
-      let cacheId = `activities:${_boundToObjectId}`;
-      let activities = this.Cache.get<IActivityDataParsed[]>(cacheId) || [];
-      let result = [];
-      let deferred = this.$q.defer();
-      if (activities.length) {
+      let activities = this.ActivityModel.getByObjectId(_boundToObjectId);
+      let deferred = this.$q.defer<IActivityDataParsed[]>();
+      if (activities) {
         deferred.resolve(activities);
         return deferred.promise;
       }
@@ -41,34 +37,30 @@ module teambition {
       })
       .$promise
       .then((data: IActivityData[]) => {
-        let results = this.prepareResult(result, data);
-        this.Cache.put(cacheId, results);
-        return results;
+        let result = [];
+        this.prepareResult(result, data);
+        this.ActivityModel.setActivities(_boundToObjectId, result);
+        return result;
       });
     }
 
     public save (data: IActivitySaveData) {
-      let cacheId = `activities:${data._boundToObjectId}`;
-      let activities = this.Cache.get<IActivityDataParsed[]>(cacheId) || [];
       return this.RestAPI.save({
         Type: 'activities'
       }, data)
       .$promise
       .then((activity: IActivityData) => {
-        this.arrayMerge(activities, [activity]);
-        this.Cache.put(cacheId, activities);
         let result = this.activityParser(activity);
-        return result;
+        this.ActivityModel.addActivity(data._boundToObjectId, result);
       });
     }
 
     private prepareResult (result: IActivityData[], activities: IActivityData []) {
-      result = result.length ? result : [];
+      result = result ? result : [];
       angular.forEach(activities, (activity: IActivityData, index: number) => {
         let parsed = this.activityParser(activity);
         result.push(parsed);
       });
-      return result.sort((a: IActivityData, b: IActivityData) => a.created - b.created);
     }
   }
 

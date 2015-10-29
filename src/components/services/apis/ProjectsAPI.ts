@@ -53,10 +53,12 @@ module teambition {
   }
 
   @inject([
+    'app',
     'projectParser',
     'ProjectModel'
   ])
   class ProjectsAPI extends BaseAPI implements IProjectsAPI {
+    private app: Iapp;
     private projectParser: (project: IProjectData) => teambition.IProjectDataParsed;
     private ProjectModel: IProjectModel;
 
@@ -81,6 +83,7 @@ module teambition {
         deferred.resolve(cache);
         return deferred.promise;
       }
+      this.app.socket.join(_id);
       return this.RestAPI.get({
         Type: 'projects',
         Id: _id,

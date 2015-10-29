@@ -22,7 +22,7 @@ module teambition {
     public tasklistMap: {
       [index: string]: string;
     };
-    public tags: ITagsData[];
+    public tags: {[index: string]: ITagsData};
     public tasks: {
       [index: string]: ITaskDataParsed[];
     };
@@ -85,7 +85,7 @@ module teambition {
 
     private getTags() {
       return this.TagsAPI.fetchByProject(projectId)
-      .then((tags: ITagsData[]) => {
+      .then((tags: {[index: string]: ITagsData}) => {
         this.tags = tags;
       });
     }

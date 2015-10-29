@@ -14,14 +14,13 @@ module teambition {
   }
 
   @inject([
-    'Cache'
+    'MemberModel'
   ])
   class MemberAPI extends BaseAPI implements IMemberAPI {
-    private Cache: angular.ICacheObject;
+    private MemberModel: IMemberModel;
 
     public fetch(_id: string) {
-      let cacheId: string = `members:${_id}`;
-      let members: IMemberData[] = this.Cache.get<IMemberData[]>(cacheId);
+      let members: IMemberData[] = this.MemberModel.getMemberCollection(_id);
       if (members) {
         let deferred = this.$q.defer<IMemberData[]>();
         deferred.resolve(members);
@@ -36,7 +35,7 @@ module teambition {
         })
         .$promise
         .then((data: IMemberData[]) => {
-          this.Cache.put(`members:${_id}`);
+          this.MemberModel.setMemberCollection(_id, data);
           return data;
         });
       }

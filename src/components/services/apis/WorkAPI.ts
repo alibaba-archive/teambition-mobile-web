@@ -19,11 +19,11 @@ module teambition {
 
   @inject([
     'fileParser',
-    'Cache'
+    'WorkModel'
   ])
   class WorkAPI extends BaseAPI implements IWorkAPI {
     private fileParser: IFileParser;
-    private Cache: angular.ICacheObject;
+    private WorkModel: IWorkModel;
 
     public upload (_parentId: string, strikerRes: IStrikerRes) {
       let {
@@ -64,8 +64,8 @@ module teambition {
     }
 
     public fetchWorks (_projectId: string, _parentId: string) {
-      let cache = this.Cache.get<IFileDataParsed[]>(`works:${_projectId}:${_parentId}`);
-      let deferred = this.$q.defer();
+      let cache = this.WorkModel.getFolderFilesCollection(_projectId, _parentId);
+      let deferred = this.$q.defer<IFileDataParsed[]>();
       if (cache) {
         deferred.resolve(cache);
         return deferred.promise;
@@ -86,8 +86,8 @@ module teambition {
     }
 
     public fetchCollections (_projectId: string, _collectionId: string) {
-      let cache = this.Cache.get<ICollectionData>(`collections:${_projectId}:${_collectionId}`);
-      let deferred = this.$q.defer();
+      let cache = this.WorkModel.getFoldersCollection(_projectId, _collectionId);
+      let deferred = this.$q.defer<ICollectionData[]>();
       if (cache) {
         deferred.resolve(cache);
         return deferred.promise;
@@ -113,10 +113,10 @@ module teambition {
       angular.forEach(works, (file: IFileDataParsed, index: number) => {
         let _id = file._id;
         let result = this.fileParser(file);
-        this.Cache.put(`work:detail:${_id}`, result);
+        this.WorkModel.setDetail(`work:detail:${_id}`, file);
         results.push(result);
       });
-      this.Cache.put(`works:${_projectId}:${_projectId}`, results);
+      this.WorkModel.setFolderFilesCollection(_projectId, _parentId, results);
       return results;
     }
 
@@ -130,7 +130,7 @@ module teambition {
           results.push(collection);
         }
       });
-      this.Cache.put(`collections:${_projectId}:${_collectionId}`, results);
+      this.WorkModel.setFoldersCollection(_projectId, _collectionId, results);
       return results;
     }
   }

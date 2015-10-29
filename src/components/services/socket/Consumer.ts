@@ -53,6 +53,7 @@ module teambition {
       }
     };
     consumer.onmessage = (event: any, callback: Function) => {
+      console.log(event);
       if (!event) {
         return;
       }

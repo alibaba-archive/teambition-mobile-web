@@ -17,18 +17,18 @@ module teambition {
 
   export interface ISubtasksAPI {
     fetch(_taskId: string): angular.IPromise<ISubtaskData[]>;
-    update(_id: string, task: ITaskDataParsed, dataToUpdated: any): angular.IPromise<ITaskDataParsed>;
+    update(_id: string, task: ITaskDataParsed, dataToUpdated: any): angular.IPromise<any>;
   }
 
   @inject([
-    'Cache'
+    'SubtaskModel',
+    'TaskModel'
   ])
   class SubtasksAPI extends BaseAPI implements ISubtasksAPI {
-    private Cache: angular.ICacheObject;
+    private SubtaskModel: ISubtaskModel;
 
     public fetch(_id: string) {
-      let cacheId = `task:subtask:${_id}`;
-      let subtasks = this.Cache.get<ISubtaskData[]>(cacheId);
+      let subtasks = this.SubtaskModel.getFromTask(_id);
       let deferred = this.$q.defer();
       if (subtasks) {
         deferred.resolve(subtasks);
@@ -40,7 +40,10 @@ module teambition {
       })
       .$promise
       .then((data: ISubtaskData[]) => {
-        this.Cache.put(cacheId, data);
+        this.SubtaskModel.setFromTask(_id, data);
+        angular.forEach(data, (subtask: ISubtaskData, index: number) => {
+          this.SubtaskModel.setSubtask(subtask);
+        });
         return data;
       });
     }
@@ -58,9 +61,7 @@ module teambition {
         }else {
           doneCount -= 1;
         }
-        task.subtaskCount.done = doneCount;
-        this.Cache.put(`task:detail:${task._id}`, task);
-        return task;
+        this.SubtaskModel.updateSubtask(_id, data);
       });
     }
   }

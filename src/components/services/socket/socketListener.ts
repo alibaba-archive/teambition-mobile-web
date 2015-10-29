@@ -7,18 +7,11 @@ module teambition {
     app: Iapp
   ) => {
     let listener = [];
-    return (params: IRestPaths) => {
-      if (!params || !app.socket) {
+    return (namespace: string) => {
+      if (!namespace || !app.socket) {
         return;
       }
       let socket = app.socket;
-      let name = params.Type === 'projects' ? 'project' : params.Type;
-      let _id = params.Id || params._boundToObjectId;
-      let namespace = name;
-
-      if (_id) {
-        namespace = `${name}/${_id}`;
-      }
       if (listener.indexOf(namespace) !== -1) {
         return ;
       }
@@ -46,8 +39,6 @@ module teambition {
 
       if (name !== 'project') {
         socket.on('change:isArchived', changIsArchivedCallback);
-      }else if (_id) {
-        socket.join(_id);
       }
       socket.on(`:new:${namespace}`, newMsgCallback);
       socket.on(`:change:${namespace}`, changeMsgCallback);

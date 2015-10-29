@@ -14,8 +14,7 @@ module teambition {
     'Moment',
     'MemberAPI',
     'ProjectActivityModel',
-    'TaskModel',
-    'Cache'
+    'TaskModel'
   ])
   class ProjectDetailAPI extends BaseAPI implements IProjectDetailAPI {
     private PAParser: IPAParser;
@@ -24,7 +23,6 @@ module teambition {
     private MemberAPI: IMemberAPI;
     private ProjectActivityModel: IProjectActivityModel;
     private TaskModel: ITaskModel;
-    private Cache: angular.ICacheObject;
 
     private pageCounter: {
       [index: string]: number;
@@ -66,7 +64,6 @@ module teambition {
     }
 
     public fetchNoExecutorOrDuedateTasks(_projectId: string, typesFilter: string, count: number = 20, page: number = 1) {
-      let cacheNamespace: string = `${typesFilter}:tasks${page}:${_projectId}`;
       let tasksCache: ITaskDataParsed [];
       if (typesFilter === 'due') {
         tasksCache = this.TaskModel.getDueExecutorCollection(_projectId);
@@ -134,7 +131,7 @@ module teambition {
           let result: ITaskDataParsed = this.taskParser(task);
           results.push(result);
           result.fetchTime = Date.now();
-          this.TaskModel.setDetail(result._id, task);
+          this.TaskModel.setDetail(`task:detail:${result._id}`, task);
         });
       }
       if (typesFilter === 'noneExecutor') {

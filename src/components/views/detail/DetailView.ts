@@ -208,7 +208,7 @@ module teambition {
         boundToObjectType: this._boundToObjectType,
         content: this.comment
       })
-      .then((activity: IActivityDataParsed) => {
+      .then(() => {
         this.comment = '';
         this.images = [];
         this.hideLoading();

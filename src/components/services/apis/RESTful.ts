@@ -89,23 +89,7 @@ module teambition {
         }else {
           let _arguments = replaceCallback(args, arg);
           let result = value.value.apply(this, _arguments);
-          let socketListener = RestAPI.socketListener;
-          let paths = args[0];
-          fetchingMap[arg] = result;
-          socketListener(paths);
           // console.log(`Call: ${key}(${arg}) => `, result);
-          result.$promise.then((data: any) => {
-            if (data.length) {
-              for (let index = 0; index < data.length; index++) {
-                let element = data[index];
-                let path = {
-                  Path: paths.Path,
-                  Id: element._id
-                };
-                socketListener(path);
-              }
-            }
-          });
           return result;
         }
       }
@@ -113,18 +97,15 @@ module teambition {
   };
 
   export class RestAPI implements IRestAPI {
-    public static socketListener: any;
 
     private $resource: IRestMethod;
     // @ngInject
     constructor(
       app: Iapp,
-      $resource: angular.resource.IResourceService,
-      socketListener: any
+      $resource: angular.resource.IResourceService
     ) {
       // 大写开头是为了避免和后端的接口的 key 冲突
       let path: string = '/:V2/:Type/:Id/:Path1/:Path2/:Path3';
-      RestAPI.socketListener = socketListener;
       this.$resource = $resource(app.apiHost + path, null , {
         query: {
           method: 'GET',
@@ -186,6 +167,5 @@ module teambition {
     }
   }
 
-  angular.module('teambition')
-  .service('RestAPI', RestAPI);
+  angular.module('teambition').service('RestAPI', RestAPI);
 }
