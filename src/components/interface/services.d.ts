@@ -1,4 +1,4 @@
-/// <reference path='../lib/BaseAPI.ts' />
+/// <reference path='../libs/BaseAPI.ts' />
 /// <reference path='../services/apis/RESTful.ts' />
 /// <reference path='../services/apis/ProjectsAPI.ts' />
 /// <reference path='../services/apis/ProjectDetailAPI.ts' />

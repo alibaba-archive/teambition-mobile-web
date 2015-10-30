@@ -8,8 +8,11 @@ module teambition {
 
   declare let webkitURL;
   declare let wx;
+  declare let Spiderjs;
 
   export let Wechat: WechatService;
+
+  export let spider: any;
 
   export interface IWxSignature {
     noncestr: string;
@@ -95,6 +98,16 @@ module teambition {
             this.goHome();
           }else {
             this.initRootscope(userMe);
+            try {
+              let spiderOptions = {
+                _userId: userMe._id,
+                client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
+                host: this.app.spiderhost
+              };
+              spider = new Spiderjs(spiderOptions);
+            } catch (error) {
+              console.error(error);
+            }
             let hash: string = window.location.hash;
             if (!hash) {
               this.$state.go('wechat');

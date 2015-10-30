@@ -111,18 +111,15 @@ module teambition {
     }
 
     private prepareTasks (tasks: ITaskData[], tasklistId: string) {
+      let results: ITaskDataParsed[] = [];
       if (tasks.length) {
-        let results: ITaskDataParsed[] = [];
         angular.forEach(tasks, (task: ITaskData, index: number) => {
           let result: ITaskDataParsed = this.taskParser(task);
-          result.fetchTime = Date.now();
           this.TaskModel.setDetail(`task:detail:${task._id}`, task);
           results.push(result);
         });
-        return results;
-      }else {
-        return [];
       }
+      return results;
     }
   }
 

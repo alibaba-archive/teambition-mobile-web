@@ -4,21 +4,35 @@ module teambition {
 
   export interface IWorkModel extends IDetailModel {
     getFolderFilesCollection(projectId: string, folderId: string): IFileDataParsed[];
-    setFolderFilesCollection(projectId: string, folderId: string, collection: IFileDataParsed[]): void;
+    setFolderFilesCollection(projectId: string, folderId: string, collection: IFileData[]): IFileDataParsed[];
     getFoldersCollection(projectId: string, folderId: string): ICollectionData[];
-    setFoldersCollection(projectId: string, folderId: string, collection: ICollectionData[]): void;
+    setFoldersCollection(projectId: string, folderId: string, collection: ICollectionData[]): ICollectionData[];
   }
 
+  @inject([
+    'fileParser'
+  ])
   class WorkModel extends DetailModel implements IWorkModel {
+
+    private fileParser: IFileParser;
+
     public getFolderFilesCollection(projectId: string, folderId: string) {
       return this._get<IFileDataParsed[]>('works', `${projectId}:${folderId}`);
     }
 
-    public setFolderFilesCollection(projectId: string, folderId: string, collection: IFileDataParsed[]) {
+    public setFolderFilesCollection(projectId: string, folderId: string, collection: IFileData[]) {
       let cache = this.getFolderFilesCollection(projectId, folderId);
+      let results: IFileDataParsed[] = [];
       if (!cache) {
-        this._set('works', `${projectId}:${folderId}`, collection);
+        angular.forEach(collection, (file: IFileData, index: number) => {
+          let _id = file._id;
+          let result = this.fileParser(file);
+          this.setDetail(`work:detail:${_id}`, file);
+          results.push(result);
+        });
       }
+      this._set('works', `${projectId}:${folderId}`, results);
+      return results;
     }
 
     public getFoldersCollection(projectId: string, folderId: string) {
@@ -27,9 +41,16 @@ module teambition {
 
     public setFoldersCollection(projectId: string, folderId: string, collection: ICollectionData[]) {
       let cache = this.getFoldersCollection(projectId, folderId);
+      let results = [];
       if (!cache) {
-        this._set('collections', `${projectId}:${folderId}`, collection);
+        angular.forEach(collection, (collection: ICollectionData, index: number) => {
+          if (collection.collectionType !== 'default') {
+            results.push(collection);
+          }
+        });
       }
+      this._set('collections', `${projectId}:${folderId}`, results);
+      return results;
     }
   }
 

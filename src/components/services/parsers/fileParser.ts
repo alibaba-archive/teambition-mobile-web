@@ -14,7 +14,7 @@ module teambition {
     likesCount?: number;
   }
 
-  export type IFileParser = (file: IFileDataParsed) => IFileDataParsed;
+  export type IFileParser = (file: IFileData) => IFileDataParsed;
 
   angular.module('teambition').factory('fileParser',
   // @ngInject

@@ -1,4 +1,4 @@
-/// <reference path='../lib/ETComponents.ts' />
+/// <reference path='../libs/ETComponents.ts' />
 /// <reference path='../et/notify/notify.ts' />
 
 declare module EtTemplate {

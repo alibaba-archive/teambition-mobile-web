@@ -77,13 +77,13 @@ module teambition {
     }
 
     public fetchById(_id: string) {
+      this.app.socket.join(_id);
       let cache: teambition.IProjectDataParsed = this.ProjectModel.get(_id);
       if (cache) {
         let deferred = this.$q.defer<IProjectDataParsed>();
         deferred.resolve(cache);
         return deferred.promise;
       }
-      this.app.socket.join(_id);
       return this.RestAPI.get({
         Type: 'projects',
         Id: _id,

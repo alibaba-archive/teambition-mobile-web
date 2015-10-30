@@ -9,6 +9,7 @@
     "angular-ui-router": "~0.2.15",
     "marked": "~0.3.2",
     "moment": "~2.8.1",
+    "spider": "git@code.teambition.com:spider/spiderjs.git",
     "ionic": "driftyco/ionic",
     "ng-file-upload": "~5.0.9",
     "zone.js": "angular/zone.js#~0.5.5",

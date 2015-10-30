@@ -188,7 +188,8 @@ gulp.task('lib-js', function() {
     'node_modules/et-template/es5/dependency.ng.js',
     'bower_components/jsonrpc-lite/jsonrpc.js',
     'bower_components/engine.io-client/engine.io.js',
-    'bower_components/snapper-consumer/index.js'
+    'bower_components/snapper-consumer/index.js',
+    'bower_components/spider/index.js'
   ])
     .pipe(concat('lib.js'))
     .pipe(gulp.dest('www/js/'))

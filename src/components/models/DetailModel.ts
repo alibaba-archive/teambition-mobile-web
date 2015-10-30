@@ -3,13 +3,13 @@ module teambition {
   'use strict';
 
   export interface IDetailModel {
-    setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData): void;
+    setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData | IEntryData): void;
     updateDetail(namespace: string, patch: any): void;
   }
 
   export class DetailModel extends BaseModel implements IDetailModel {
 
-    public setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IEventData) {
+    public setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData) {
       this._set(namespace, null, content);
     }
 

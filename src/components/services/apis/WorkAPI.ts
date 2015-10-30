@@ -18,11 +18,9 @@ module teambition {
   }
 
   @inject([
-    'fileParser',
     'WorkModel'
   ])
   class WorkAPI extends BaseAPI implements IWorkAPI {
-    private fileParser: IFileParser;
     private WorkModel: IWorkModel;
 
     public upload (_parentId: string, strikerRes: IStrikerRes) {
@@ -106,32 +104,16 @@ module teambition {
     }
 
     private prepareWorks (works: IFileData[], _projectId: string, _parentId: string) {
-      if (!works.length) {
-        return [];
+      if (works) {
+        return this.WorkModel.setFolderFilesCollection(_projectId, _parentId, works);
       }
-      let results = <IFileDataParsed[]>[];
-      angular.forEach(works, (file: IFileDataParsed, index: number) => {
-        let _id = file._id;
-        let result = this.fileParser(file);
-        this.WorkModel.setDetail(`work:detail:${_id}`, file);
-        results.push(result);
-      });
-      this.WorkModel.setFolderFilesCollection(_projectId, _parentId, results);
-      return results;
     }
 
     private prepareCollections (collections: ICollectionData[], _projectId: string, _collectionId: string) {
       if (!collections.length) {
-        return [];
+        return collections;
       }
-      let results = <ICollectionData[]>[];
-      angular.forEach(collections, (collection: ICollectionData, index: number) => {
-        if (collection.collectionType !== 'default') {
-          results.push(collection);
-        }
-      });
-      this.WorkModel.setFoldersCollection(_projectId, _collectionId, results);
-      return results;
+      return this.WorkModel.setFoldersCollection(_projectId, _collectionId, collections);
     }
   }
 
