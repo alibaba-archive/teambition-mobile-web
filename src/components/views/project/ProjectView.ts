@@ -12,6 +12,9 @@ module teambition {
     text: string;
   }
 
+  @inject([
+    'ProjectsAPI'
+  ])
   export class ProjectView extends View {
 
     public ViewName = 'ProjectView';
@@ -28,18 +31,13 @@ module teambition {
         projects: IProjectDataParsed[];
       }
     } = {};
-    private Cache: angular.ICacheObject;
 
     // @ngInject
     constructor(
-      $scope: angular.IScope,
-      ProjectsAPI: IProjectsAPI,
-      Cache: angular.ICacheObject
+      $scope: angular.IScope
     ) {
       super();
       this.$scope = $scope;
-      this.ProjectsAPI = ProjectsAPI;
-      this.Cache = Cache;
       this.zone.run(noop);
     }
 
@@ -48,12 +46,11 @@ module teambition {
     }
 
     public wxQrcode() {
-      let self = this;
       wx.scanQRCode({
         needResult: 1,
         scanType: ['qrCode'],
         success: (res: IWxScanRes) => {
-          self.checkUrlValid(res.resultStr)
+          this.checkUrlValid(res.resultStr)
           .then((data: IProjectInviteData) => {
             window.location.hash = `/invited/${data.projectId}/${data.signCode}/${data.invitorId}`;
           });
@@ -110,7 +107,6 @@ module teambition {
       let archiveIndex: number;
       let quitIndex: number;
       let deleteIndex: number;
-      let self = this;
       if (project.canArchive) {
         thisButtons.push({text: '归档项目'});
         archiveIndex = ++index;
@@ -129,13 +125,13 @@ module teambition {
         buttonClicked: (index: number) => {
           switch (index) {
             case archiveIndex :
-              self.archiveProject(project);
+              this.archiveProject(project);
               break;
             case quitIndex :
-              self.leaveProject(project);
+              this.leaveProject(project);
               break;
             case deleteIndex :
-              self.deleteProject(project);
+              this.deleteProject(project);
               break;
           };
           return true;
@@ -158,26 +154,25 @@ module teambition {
     }
 
     private archiveProject(project: IProjectData) {
-      let self = this;
       if (project.canArchive) {
         let popup = this.$ionicPopup.show({
           title: `归档项目「${project.name}」`,
           subTitle: '如果项目已经完成或是暂时中止，你可以先将项目归档',
-          scope: self.$scope,
+          scope: this.$scope,
           buttons: [
             {text: '取消'},
             {
               text: '确认归档',
               type: 'button-positive',
               onTap: function() {
-                self.ProjectsAPI.archiveProject(project._id)
+                this.ProjectsAPI.archiveProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
-                  self.showMsg('success', project.name, '归档项目成功');
+                  this.showMsg('success', project.name, '归档项目成功');
                 })
                 .catch((err: Error) => {
                   project.deleted = false;
-                  self.showMsg('error', project.name, '网络错误，归档项目失败');
+                  this.showMsg('error', project.name, '网络错误，归档项目失败');
                 });
                 popup.close();
               }
@@ -190,12 +185,11 @@ module teambition {
     }
 
     private leaveProject(project: IProjectData) {
-      let self = this;
       if (project.canQuit) {
         let popup = this.$ionicPopup.show({
           title: `退出项目「${project.name}」`,
           subTitle: '一旦你退出了该项目，你将不能查看任何关于该项目的信息',
-          scope: self.$scope,
+          scope: this.$scope,
           buttons: [
             {
               text: '取消'
@@ -204,14 +198,14 @@ module teambition {
               text: '确认退出',
               type: 'button-assertive',
               onTap: () => {
-                self.ProjectsAPI.leaveProject(project._id)
+                this.ProjectsAPI.leaveProject(project._id)
                 .then((data: IProjectData) => {
                   project.deleted = true;
-                  self.showMsg('success', project.name, '退出项目成功');
+                  this.showMsg('success', project.name, '退出项目成功');
                 })
                 .catch((err: Error) => {
                   project.deleted = false;
-                  self.showMsg('error', project.name, '不能退出这个项目');
+                  this.showMsg('error', project.name, '不能退出这个项目');
                 });
                 popup.close();
               }
@@ -224,12 +218,11 @@ module teambition {
     }
 
     private deleteProject(project: IProjectData) {
-      let self = this;
       if (project.canDelete) {
         let popup = this.$ionicPopup.show({
           title: `删除项目「${project.name}」`,
           subTitle: '所有与项目有关的信息将会被永久删除',
-          scope: self.$scope,
+          scope: this.$scope,
           buttons: [
             {
               text: '取消'
@@ -238,12 +231,12 @@ module teambition {
               text: '确认删除',
               type: 'button-assertive',
               onTap: () => {
-                self.ProjectsAPI.deleteProject(project._id)
+                this.ProjectsAPI.deleteProject(project._id)
                 .then((data: IProjectData) => {
-                  self.showMsg('success', project.name, '删除项目成功');
+                  this.showMsg('success', project.name, '删除项目成功');
                 })
                 .catch((err: Error) => {
-                  self.showMsg('error', project.name, '不能删除这个项目');
+                  this.showMsg('error', project.name, '不能删除这个项目');
                 });
                 popup.close();
               }
@@ -282,11 +275,10 @@ module teambition {
     }
 
     private checkUrlValid(url: string): angular.IPromise<any> {
-      let self = this;
       return this.ProjectsAPI.checkProjectsInviteUrl(url)
       .then(function(data: string | teambition.IProjectInviteData) {
         if (data === 'notValid') {
-          self.showMsg('error', '扫描失败', '不合法的二维码');
+          this.showMsg('error', '扫描失败', '不合法的二维码');
         }
         return data;
       });

@@ -12,3 +12,4 @@
 /// <reference path='../models/SubtaskModel.ts' />
 /// <reference path='../models/MemberModel.ts' />
 /// <reference path='../models/ActivityModel.ts' />
+/// <reference path='../models/MessageModel.ts' />

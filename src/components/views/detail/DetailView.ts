@@ -67,8 +67,7 @@ module teambition {
 
     // @ngInject
     constructor(
-      $scope: angular.IScope,
-      StrikerAPI: IStrikerAPI
+      $scope: angular.IScope
     ) {
       super();
       this.$scope = $scope;

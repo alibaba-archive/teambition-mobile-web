@@ -8,8 +8,12 @@ module teambition {
     addActivity(boundToObjectId: string, activity: IActivityDataParsed): void;
   }
 
+  @inject([
+    'activityParser'
+  ])
   class ActivityModel extends BaseModel implements IActivityModel {
     private activitiesIndex: string[] = [];
+    private activityParser: IActivityParser;
 
     public getByObjectId(boundToObjectId: string) {
       return this._get<IActivityDataParsed[]>('activities', boundToObjectId);
@@ -20,7 +24,7 @@ module teambition {
       if (cache) {
         angular.forEach(activities, (activity: IActivityDataParsed, index: number) => {
           if (this.activitiesIndex.indexOf(activity._id) === -1) {
-            cache.push(activity);
+            cache.push(this.activityParser(activity));
             this.activitiesIndex.push(activity._id);
           }
         });
@@ -29,6 +33,7 @@ module teambition {
         this._set('activities', boundToObjectId, activities);
         angular.forEach(activities, (activity: IActivityDataParsed, index: number) => {
           this.activitiesIndex.push(activity._id);
+          activities[index] = this.activityParser(activity);
         });
         activities.sort((a: IActivityData, b: IActivityData) => a.created - b.created);
       }
@@ -36,8 +41,11 @@ module teambition {
 
     public addActivity(boundToObjectId: string, activity: IActivityDataParsed) {
       let cache = this.getByObjectId(boundToObjectId);
-      cache.push(activity);
-      cache.sort((a: IActivityData, b: IActivityData) => a.created - b.created);
+      if (cache instanceof Array) {
+        this.activityParser(activity);
+        cache.push(activity);
+        cache.sort((a: IActivityData, b: IActivityData) => a.created - b.created);
+      }
     }
   }
 

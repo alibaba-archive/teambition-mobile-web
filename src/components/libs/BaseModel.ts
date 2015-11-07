@@ -25,7 +25,8 @@ module teambition {
 
     protected _updateObj<T>(type: string, id: string, patch: any) {
       if (typeof patch === 'object') {
-        let value = this.Cache.get<T>(`${type}:${id}`);
+        let namespace = id ? `${type}:${id}` : type;
+        let value = this.Cache.get<T>(namespace);
         let keys = Object.keys(patch);
         for (let index = 0; index < keys.length; index++) {
           let element = keys[index];

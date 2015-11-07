@@ -1,6 +1,6 @@
 {
   "version": "v4",
-  "repo": "Brooooooklyn/DefinitelyTyped",
+  "repo": "DefinitelyTyped/DefinitelyTyped",
   "ref": "master",
   "path": ".tmp/typings",
   "bundle": ".tmp/typings/tsd.d.ts",

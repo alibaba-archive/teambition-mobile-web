@@ -15,12 +15,10 @@ module teambition {
   }
 
   @inject([
-    'ActivityModel',
-    'activityParser'
+    'ActivityModel'
   ])
   class ActivityAPI extends BaseAPI implements IActivityAPI {
     private ActivityModel: IActivityModel;
-    private activityParser: IActivityParser;
 
     public fetch (_boundToObjectType: string, _boundToObjectId: string) {
       let activities = this.ActivityModel.getByObjectId(_boundToObjectId);
@@ -36,11 +34,9 @@ module teambition {
         fields: this.queryFileds.activityFileds
       })
       .$promise
-      .then((data: IActivityData[]) => {
-        let result = [];
-        this.prepareResult(result, data);
-        this.ActivityModel.setActivities(_boundToObjectId, result);
-        return result;
+      .then((data: IActivityDataParsed[]) => {
+        this.ActivityModel.setActivities(_boundToObjectId, data);
+        return data;
       });
     }
 
@@ -49,17 +45,8 @@ module teambition {
         Type: 'activities'
       }, data)
       .$promise
-      .then((activity: IActivityData) => {
-        let result = this.activityParser(activity);
-        this.ActivityModel.addActivity(data._boundToObjectId, result);
-      });
-    }
-
-    private prepareResult (result: IActivityData[], activities: IActivityData []) {
-      result = result ? result : [];
-      angular.forEach(activities, (activity: IActivityData, index: number) => {
-        let parsed = this.activityParser(activity);
-        result.push(parsed);
+      .then((activity: IActivityDataParsed) => {
+        this.ActivityModel.addActivity(data._boundToObjectId, activity);
       });
     }
   }

@@ -138,6 +138,7 @@ gulp.task('concat-app', function() {
       '.tmp/scripts/Modules/MomentLocale.js',
       '.tmp/scripts/Modules/WechatService.js',
       '.tmp/scripts/run.js',
+      '.tmp/scripts/Modules/View.js',
       '.tmp/scripts/components/lib/*.js',
       '.tmp/scripts/**/*.js'
     ])

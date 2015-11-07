@@ -5,6 +5,7 @@
 /// <reference path='../services/apis/StageAPI.ts' />
 /// <reference path='../services/apis/fields.ts' />
 /// <reference path='../services/apis/MemberAPI.ts' />
+/// <reference path='../services/apis/MessageAPI.ts' />
 /// <reference path='../services/apis/DetailAPI.ts' />
 /// <reference path='../services/apis/TasklistAPI.ts' />
 /// <reference path='../services/apis/SubtasksAPI.ts' />
@@ -31,6 +32,8 @@
 /// <reference path='../services/socket/Consumer.ts' />
 /// <reference path='../services/socket/socketFactory.ts' />
 /// <reference path='../services/socket/socketListener.ts' />
+/// <reference path='../libs/Listener.ts'/>
+/// <reference path='../services/socket/MessageListener.ts' />
 /// <reference path='../services/Cache.ts' />
 /// <reference path='../services/getParam.ts' />
 /// <reference path='../services/arrayMerge.ts' />

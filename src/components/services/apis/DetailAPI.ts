@@ -124,19 +124,19 @@ module teambition {
     'postParser',
     'eventParser',
     'fileParser',
+    'DetailModel',
     'ObjectLinkAPI',
     'LikeAPI',
     'TagsAPI',
     'MemberAPI',
-    'TasklistAPI',
-    'Cache'
+    'TasklistAPI'
   ])
   class DetailAPI extends BaseAPI implements IDetailAPI {
-    private Cache: angular.ICacheObject;
     private taskParser: ITaskParser;
     private eventParser: IEventParser;
     private fileParser: IFileParser;
     private postParser: IPostParser;
+    private DetailModel: IDetailModel;
     private ObjectLinkAPI: IObjectLinkAPI;
     private LikeAPI: ILikeAPI;
     private TagsAPI: ITagsAPI;
@@ -193,7 +193,7 @@ module teambition {
     }
 
     private query(_id: string, type: string, linkedId: string) {
-      let cache = this.Cache.get(`${type}:detail:${_id}`);
+      let cache = this.DetailModel.getDetail(`${type}:detail:${_id}`);
       let deferred = this.$q.defer();
       if (cache) {
         deferred.resolve(cache);
@@ -207,7 +207,7 @@ module teambition {
         })
         .$promise
         .then((data: any) => {
-          this.Cache.put(`${type}:detail:${_id}`, data);
+          this.DetailModel.setDetail(`${type}:detail:${_id}`, data);
           return data;
         });
       }

@@ -1,13 +1,16 @@
 /// <reference path="../../interface/teambition.d.ts" />
 module teambition {
   'use strict';
+
+  export type ISocketListener = (namespace: string, callback?: Function) => void;
+
   angular.module('teambition').factory('socketListener',
   // @ngInject
   (
     app: Iapp
   ) => {
     let listener = [];
-    return (namespace: string) => {
+    return (namespace: string, callback?: Function) => {
       if (!namespace || !app.socket) {
         return;
       }
@@ -33,17 +36,45 @@ module teambition {
         console.log(_id, `:remove:${namespace}`);
       };
 
-      let changIsArchivedCallback = (model: any, isArchived: boolean) => {
+      let changeIsArchivedCallback = (model: any, isArchived: boolean) => {
         console.log(model, isArchived);
       };
 
+      let buildCallback = (type: string) => {
+        return (...args: any[]) => {
+          if (callback) {
+            args.unshift(type);
+            callback.apply(null, args);
+          }else {
+            switch (type) {
+              case 'new':
+                newMsgCallback.apply(null, args);
+                break;
+              case 'change':
+                changeMsgCallback.apply(null, args);
+                break;
+              case 'refresh':
+                refreshMsgCallback.apply(null, args);
+                break;
+              case 'remove':
+                removeMsgCallback.apply(null, args);
+                break;
+              case 'isArchived':
+                changeIsArchivedCallback.apply(null, args);
+                break;
+            }
+          }
+        };
+      };
+
       if (name !== 'project') {
-        socket.on('change:isArchived', changIsArchivedCallback);
+        socket.on('change:isArchived', buildCallback('change'));
       }
-      socket.on(`:new:${namespace}`, newMsgCallback);
-      socket.on(`:change:${namespace}`, changeMsgCallback);
-      socket.on(`:refresh:${namespace}`, refreshMsgCallback);
-      socket.on(`:remove:${namespace}`, removeMsgCallback);
+
+      socket.on(`:new:${namespace}`, buildCallback('new'));
+      socket.on(`:change:${namespace}`, buildCallback('change'));
+      socket.on(`:refresh:${namespace}`, buildCallback('refresh'));
+      socket.on(`:remove:${namespace}`, buildCallback('remove'));
     };
   });
 }

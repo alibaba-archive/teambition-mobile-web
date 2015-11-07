@@ -73,14 +73,13 @@ module teambition {
         if (params instanceof Array) {
           angular.forEach(params, (data: any, index: number) => {
             let result = JSON.parse(data);
-            let e = result.e;
+            let e: string = result.e;
             let d = result.d;
-            let listeners = listener[e];
-            if (typeof callback === 'function') {
-              if (listeners.length) {
-                listeners.push(callback);
-              }else {
-                listener[e] = [callback];
+            if (e.indexOf('message') !== -1) {
+              if (e.indexOf('change') !== -1 || e.indexOf('new') !== -1) {
+                let _id = e.split('/')[1];
+                d.msgId = _id;
+                return fireListener(listener[':change:message'], d);
               }
             }
             fireListener(listener[e], d);

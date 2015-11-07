@@ -53,7 +53,6 @@ module teambition {
       $timeout: angular.ITimeoutService,
       $location: angular.ILocationService,
       $http: angular.IHttpService,
-      $injector: any,
       socket: any,
       ProjectsAPI: teambition.IProjectsAPI,
       Moment: moment.MomentStatic,
@@ -135,7 +134,6 @@ module teambition {
     $timeout: angular.ITimeoutService,
     $location: angular.ILocationService,
     $http: any,
-    $injector: any,
     socket: any,
     ProjectsAPI: teambition.IProjectsAPI,
     Moment: moment.MomentStatic,
@@ -155,7 +153,6 @@ module teambition {
       $timeout,
       $location,
       $http,
-      $injector,
       socket,
       ProjectsAPI,
       Moment,
@@ -177,15 +174,9 @@ module teambition {
       });
     }
 
-    $http.defaults.headers.common.Authorization = 'OAuth2 JL_N0f_OP6dpvTOKjQe8e7wCi5w=MCN3vfXo99625ad6abf' +
-                                                  '2bf03774c86d6ba205ceff8da45c6553c9bd488f5d80c9ac49ebb1' +
-                                                  '91697aad985141dc8e94aa064f30e558f3a90194505323a58fe85c' +
-                                                  'b162ee6df2554f253692fc09aced2bb4475ef0f1d5e68f1be52984' +
-                                                  '2eec4ff020100829d74d0f89c0c0501be279ff8a08bf4cb6c7b';
+    $http.defaults.headers.common.Authorization = 'OAuth2 5QnZlQtolQ3MVnelk-IRYpuCnDs=jXRIzqqC4cd919bc76a46a28621f738984f4a31ab2bff372b016ec8cd14a23fa5e10bc8a55a4ab6d790c3081327a3c8ad5a9ad28d213e8150fe5534f9bc8936f42b0e6cb1f9ea7480aca118bc4c1d86a05eacad7f1c44d6dcc23abaacd87c33932aa1013b4a92e0eb054a6bcb82027b0b1527b6d';
 
     MomentLocale(app.LANGUAGE, Moment);
-
-    $$injector = $injector;
 
     return run;
   };
@@ -196,16 +187,17 @@ module teambition {
     }
     let service: any;
     return function(Target: any) {
-      angular.module('teambition').run(() => {
+      angular.module('teambition').run(['$injector', ($injector: any) => {
+        $$injector = $injector;
         angular.forEach(services, (name: string, index: number) => {
           try {
-            service = $$injector.get(name);
+            service = $injector.get(name);
             Target.prototype[name] = service;
           } catch (error) {
             console.error(error);
           }
         });
-      });
+      }]);
     };
   };
 
