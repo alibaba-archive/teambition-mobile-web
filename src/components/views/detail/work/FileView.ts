@@ -13,6 +13,10 @@ module teambition {
       this.zone.run(noop);
     }
 
+    public onInit() {
+      return this.parent.onInit();
+    }
+
     public onAllChangesDone() {
       this.file = this.parent.detail;
     }

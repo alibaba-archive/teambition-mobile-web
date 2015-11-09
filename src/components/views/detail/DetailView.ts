@@ -31,6 +31,7 @@ module teambition {
   };
 
   let popup: ionic.popup.IonicPopupPromise;
+  let boundToObjectId: string;
 
   @inject([
     'DetailAPI',
@@ -80,6 +81,9 @@ module teambition {
       this._boundToObjectId = this.$state.params._id;
       this._boundToObjectType = this.$state.params.type;
       this._linkedId = this.$state.params.linkedId;
+      if (boundToObjectId === this._boundToObjectId) {
+        return;
+      }
       if (this._boundToObjectType !== 'entry') {
         let deferred = this.$q.defer();
         this.DetailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)

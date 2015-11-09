@@ -7,8 +7,8 @@ module teambition {
   export class Listener {
     private socketListener: ISocketListener;
 
-    protected listenTo(namespace: string, type: string, callback: Function) {
-      this.socketListener(namespace, ($type: string, data: any) => {
+    protected listenTo(type: string, namespace: string, callback: Function) {
+      this.socketListener(type, namespace, ($type: string, data: any) => {
         callback(type, data);
       });
     }

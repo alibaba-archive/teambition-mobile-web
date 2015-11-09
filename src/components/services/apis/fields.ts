@@ -12,7 +12,7 @@ module teambition {
     memberFileds: string;
   }
   var fields: IqueryFileds = {
-    activityFileds: '_id,action,content,created,icon,action,title,creator,linked,attachments',
+    activityFileds: '',
 
     taskFileds: '_executorId,_id,_projectId,_stageId,_tasklistId,content,dueDate,updated,created,note,' +
                 'executor,likesCount,likedPeople,isDone,priority,recurrence,linked,isLike,likesGroup,' +

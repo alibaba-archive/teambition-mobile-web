@@ -9,7 +9,7 @@
       style="background-image: url({{::item.creatorAvatar}})"></div>
     <time>{{::item.created | formatDate}}</time>
     <p ng-if="item.isComment" class="activity-creator">{{::item.creatorName}}</p>
-    <div ng-if="item.isComment" class="activity-content" ng-bind-html="item.content"></div>
+    <div ng-if="item.isComment" class="activity-content" ng-bind-html="item.comment"></div>
     <div class="activity-content attachments" ng-repeat="atta in item.attachments" on-tap="ActivityCtrl.openAtta(atta)">
       <span ng-bind="::atta.fileName" ng-if="atta.fileCategory !== 'image' && !ActivityCtrl.playable(atta)"></span>
       <a class="activity-image-preview item item-avatar" ng-if="atta.fileCategory === 'image'">
@@ -21,9 +21,9 @@
         <!--<span ng-bind="::atta.fileName" class="audio-title"></span>-->
       </a>
     </div>
-    <div ng-if="!item.isComment" class="creator-name" ng-class="{'activity-linked': item.action === 'linked'}" on-tap="ActivityCtrl.openDetail(item.linked)">
-      <span class="name">{{::item.creatorName}}</span>
-      <span ng-bind-html="item.content"></span>
+    <div ng-if="!item.isComment" class="creator-name" ng-class="{'activity-linked': item.rawAction === 'linked_task_created'}" on-tap="ActivityCtrl.openDetail(item.content.linked)">
+      <span class="name" ng-bind="item.creatorName"></span>
+      <span ng-bind-html="item.comment"></span>
     </div>
   </div>
 </div>

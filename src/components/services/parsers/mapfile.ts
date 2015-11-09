@@ -34,6 +34,7 @@ module teambition {
       update_entry: 'icon-bookkeeping',
       update_task: 'icon-pencil',
       linked: 'icon-link2',
+      linked_task_created: 'icon-link2',
       add_member: 'icon-add-user',
       remove_member: 'icon-user2-bold',
       setrole_member: 'icon-user2-bold',

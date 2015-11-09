@@ -48,7 +48,7 @@ module teambition {
     protected $scope: angular.IScope;
     protected $q: angular.IQService;
     protected $location: angular.ILocationService;
-    protected $state: angular.ui.IState;
+    protected $state: angular.ui.IStateService | angular.ui.IState;
     protected $ionicLoading: ionic.loading.IonicLoadingService;
     protected $ionicListDelegate: ionic.list.IonicListDelegate;
     protected $ionicActionSheet: ionic.actionSheet.IonicActionSheetService;
@@ -146,7 +146,7 @@ module teambition {
           if (!initedViews[this.ViewName + $$id]) {
             this._onInit().then(() => {
               this.hasFetched = true;
-              if (pending && pending.$$state.status === 0) {
+              if ((pending && pending.$$state.status === 0) || this.ViewName === 'RootView') {
                 return ;
               }else {
                 this.$rootScope.loaded = true;
@@ -188,6 +188,9 @@ module teambition {
         })
         .then(() => {
           initedViews[this.ViewName + $$id] = true;
+          if (this.$ionicScrollDelegate) {
+            this.$ionicScrollDelegate.scrollTop();
+          }
           return this.onAllChangesDone();
         });
       });

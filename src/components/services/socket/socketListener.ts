@@ -2,7 +2,7 @@
 module teambition {
   'use strict';
 
-  export type ISocketListener = (namespace: string, callback?: Function) => void;
+  export type ISocketListener = (type: string, namespace: string, callback?: Function) => void;
 
   angular.module('teambition').factory('socketListener',
   // @ngInject
@@ -10,15 +10,21 @@ module teambition {
     app: Iapp
   ) => {
     let listener = [];
-    return (namespace: string, callback?: Function) => {
-      if (!namespace || !app.socket) {
+    const typeMap = [
+      'new',
+      'change',
+      'refresh',
+      'remove'
+    ];
+    return (type: string, namespace: string, callback?: Function) => {
+      if (!type || !namespace || !app.socket || typeMap.indexOf(type) === -1) {
         return;
       }
       let socket = app.socket;
-      if (listener.indexOf(namespace) !== -1) {
+      if (listener.indexOf(`:${type}:${namespace}`) !== -1) {
         return ;
       }
-      listener.push(namespace);
+      listener.push(`:${type}:${namespace}`);
 
       let newMsgCallback = (data: any) => {
         console.log(data, `:new:${namespace}`);
@@ -71,10 +77,7 @@ module teambition {
         socket.on('change:isArchived', buildCallback('change'));
       }
 
-      socket.on(`:new:${namespace}`, buildCallback('new'));
-      socket.on(`:change:${namespace}`, buildCallback('change'));
-      socket.on(`:refresh:${namespace}`, buildCallback('refresh'));
-      socket.on(`:remove:${namespace}`, buildCallback('remove'));
+      socket.on(`:${type}:${namespace}`, buildCallback(type));
     };
   });
 }

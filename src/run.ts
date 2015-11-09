@@ -22,7 +22,6 @@ module teambition {
 
   export let rootZone = zone.fork();
 
-  export let $$rootScope: IRootScope;
   export let $$injector: any;
 
   export let URL: URL = URL || webkitURL;
@@ -33,139 +32,28 @@ module teambition {
   };
 
   class Run {
-    private app: Iapp;
-    private $rootScope: IRootScope;
-    private zone;
-    private getParameterByName;
-    private RestAPI: IRestAPI;
-    private $state: angular.ui.IStateService;
-    private $ionicLoading: ionic.loading.IonicLoadingService;
-    private socket: any;
-    constructor(
-      app: teambition.Iapp,
-      RestAPI: teambition.IRestAPI,
-      $ionicPlatform: ionic.platform.IonicPlatformService,
-      $ionicLoading: ionic.loading.IonicLoadingService,
-      $rootScope: teambition.IRootScope,
-      $state: angular.ui.IStateService,
-      $ionicHistory: ionic.navigation.IonicHistoryService,
-      $ionicModal: ionic.modal.IonicModalService,
-      $timeout: angular.ITimeoutService,
-      $location: angular.ILocationService,
-      $http: angular.IHttpService,
-      socket: any,
-      ProjectsAPI: teambition.IProjectsAPI,
-      Moment: moment.MomentStatic,
-      Cache: angular.ICacheFactoryService,
-      getParameterByName: teambition.IGetParmByName
-    ) {
+    private zone: Zone;
+    constructor() {
       this.zone = rootZone;
-      this.getParameterByName = getParameterByName;
-      this.RestAPI = RestAPI;
-      this.$state = $state;
-      this.$ionicLoading = $ionicLoading;
-      this.socket = socket;
-      this.app = app;
-      $rootScope.zone = this.zone;
-      this.zone.run(() => {
-        this.$rootScope = $rootScope;
-        this.getUserInfo();
-      });
-    }
-
-    private initRootscope(userMe: teambition.IUserMe): void {
-      let $rootScope: teambition.IRootScope = this.$rootScope;
-      $rootScope.global = {
-        title: 'Teambition'
-      };
-      $rootScope.userMe = userMe;
-      this.app.socket = this.socket(userMe.snapperToken);
-      $$rootScope = $rootScope;
-    }
-
-    private getUserInfo(): void {
-      let visible: string = this.getParameterByName(window.location.hash, 'visible');
-      if (!visible) {
-        this.zone.hasCreated = true;
-        this.$rootScope.pending = this.RestAPI.get({
-          Type: 'users',
-          Id: 'me'
-        })
-        .$promise
-        .then((userMe: teambition.IUserMe) => {
-          if (!userMe) {
-            this.goHome();
-          }else {
-            this.initRootscope(userMe);
-            try {
-              let spiderOptions = {
-                _userId: userMe._id,
-                client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
-                host: this.app.spiderhost
-              };
-              spider = new Spiderjs(spiderOptions);
-            } catch (error) {
-              console.error(error);
-            }
-            let hash: string = window.location.hash;
-            if (!hash) {
-              this.$state.go('wechat');
-            }
-          }
-        });
-      }
-    }
-
-    private goHome(): void {
-      this.$state.go('wx_login');
+      this.zone.run(noop);
     }
   }
 
   // @ngInject
   var RunFn = function(
-    app: teambition.Iapp,
-    RestAPI: teambition.IRestAPI,
-    $ionicPlatform: ionic.platform.IonicPlatformService,
-    $ionicLoading: ionic.loading.IonicLoadingService,
-    $rootScope: teambition.IRootScope,
-    $state: angular.ui.IStateService,
-    $ionicHistory: ionic.navigation.IonicHistoryService,
-    $ionicModal: ionic.modal.IonicModalService,
-    $timeout: angular.ITimeoutService,
-    $location: angular.ILocationService,
     $http: any,
-    socket: any,
-    ProjectsAPI: teambition.IProjectsAPI,
-    Moment: moment.MomentStatic,
-    Cache: angular.ICacheFactoryService,
-    getParameterByName: teambition.IGetParmByName
+    $rootScope: IRootScope,
+    app: Iapp,
+    Moment: moment.MomentStatic
   ) {
 
-    let run = new Run(
-      app,
-      RestAPI,
-      $ionicPlatform,
-      $ionicLoading,
-      $rootScope,
-      $state,
-      $ionicHistory,
-      $ionicModal,
-      $timeout,
-      $location,
-      $http,
-      socket,
-      ProjectsAPI,
-      Moment,
-      Cache,
-      getParameterByName
-    );
-
+    let run = new Run();
     let initWechat = () => {
       return $http.get('/weixin/dev/signature');
     };
 
     if (typeof(wx) === 'object') {
-      initWechat()
+      $rootScope.pending = initWechat()
       .then((data: IWxSignature) => {
         Wechat = new WechatService(app.wxid, data.noncestr, data.timestamp, data.signature);
       })

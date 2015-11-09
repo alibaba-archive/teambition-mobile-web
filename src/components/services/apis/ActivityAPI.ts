@@ -28,9 +28,9 @@ module teambition {
         return deferred.promise;
       }
       return this.RestAPI.query({
-        Type: 'activities',
-        boundToObjectType: _boundToObjectType,
-        _boundToObjectId: _boundToObjectId,
+        Type: `${_boundToObjectType}s`,
+        Id: _boundToObjectId,
+        Path1: 'activities',
         fields: this.queryFileds.activityFileds
       })
       .$promise

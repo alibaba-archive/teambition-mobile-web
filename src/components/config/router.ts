@@ -78,7 +78,7 @@ module teambition {
       .state('detail.views', {
         url: '/:type/:_id?linkedId',
         views: {
-          detail: {
+          object: {
             templateUrl: ($stateParams: any) => {
               return `detail/${$stateParams.type}/index.html`;
             }

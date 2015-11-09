@@ -46,8 +46,8 @@ module teambition {
       });
     };
     consumer.join = (_id: string) => {
-      console.log('join');
       if (joined.indexOf(_id) === -1) {
+        console.log('join');
         join.call(consumer, _id);
         joined.push(_id);
       }
@@ -75,12 +75,11 @@ module teambition {
             let result = JSON.parse(data);
             let e: string = result.e;
             let d = result.d;
-            if (e.indexOf('message') !== -1) {
-              if (e.indexOf('change') !== -1 || e.indexOf('new') !== -1) {
-                let _id = e.split('/')[1];
-                d.msgId = _id;
-                return fireListener(listener[':change:message'], d);
-              }
+            let namespace = e.split('/')[0];
+            if (e.indexOf('message') !== -1 && typeof d === 'object') {
+              let _id = e.split('/')[1];
+              d.msgId = _id;
+              return fireListener(listener[namespace], d);
             }
             fireListener(listener[e], d);
           });

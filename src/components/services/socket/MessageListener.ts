@@ -8,7 +8,8 @@ module teambition {
 
   class MessageListener extends Listener implements IMessageListener {
     public listen(callback: Function) {
-      this.listenTo('message', 'change', callback);
+      this.listenTo('new', 'message', callback);
+      this.listenTo('change', 'message', callback);
     }
   }
 

@@ -18,8 +18,8 @@ module teambition {
     private ActivityModel: IActivityModel;
 
     public setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData) {
-      this.socketListener(`activities/${content._id}`, (type: string, data: IActivityDataParsed) => {
-        console.log(data);
+      this.socketListener('new', `activities/${content._id}`, (type: string, data: IActivityDataParsed) => {
+        console.log('type: ', type, 'data: ', data);
         this.ActivityModel.addActivity(content._id, data);
       });
       this._set(namespace, null, content);

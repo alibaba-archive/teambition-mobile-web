@@ -4,23 +4,26 @@ module teambition {
 
   export interface IActivityData {
     _id: string;
-    attachments: IFileData[];
     action: string;
+    rawAction: string;
     created: number;
     boundToObjectType: string;
     creator: IMemberData;
     title: string;
-    content?: string | {
-      objects: ITaskData[] | IFileData[] | IPostData[] | IEventData[];
-      objectType: string;
+    content?: {
+      comment?: string;
+      attachments: IFileData[];
+      mentionsArray: string[];
+      mentions: IMemberData;
+      attachmentsName: string;
       creator: string;
-    };
-    linked?: {
-      _id: string;
-      _projectId: string;
-      _objectId: string;
-      objectType: string;
-      title: string;
+        linked?: {
+        _id: string;
+        _projectId: string;
+        _objectId: string;
+        objectType: string;
+        title: string;
+      };
     };
   }
 
@@ -30,6 +33,10 @@ module teambition {
     icon: string;
     creatorName: string;
     creatorAvatar: string;
+    comment: string;
+    linked: {
+      _id?: string;
+    };
   }
 
   export type IActivityParser = (activity: IActivityData) => IActivityDataParsed;
@@ -43,23 +50,21 @@ module teambition {
     mapfile: (type: string) => string
   ) => {
     return (activity: IActivityDataParsed) => {
-      activity.isComment = (activity.action === 'comment');
-      activity.icon = mapfile(activity.action);
+      activity.isComment = (activity.rawAction === 'comment');
+      activity.icon = mapfile(activity.rawAction);
       activity.icon = (activity.action !== 'set_done') ? activity.icon : 'icon-checkbox-checked';
       if (activity.isComment) {
-        if (activity.attachments && !activity.content) {
-          activity.content = '上传了附件';
+        if (activity.content.attachments && !activity.content.comment) {
+          activity.comment = '上传了附件';
         }
-        activity.content = emojiParser.replaceMd(activity.content);
-        activity.content = mdParser(activity.content);
-        activity.content = $sanitize(activity.content);
+        activity.comment = emojiParser.replaceMd(activity.content.comment);
+        activity.comment = mdParser(activity.comment);
+        activity.comment = $sanitize(activity.comment);
       }else {
-        activity.content = activity.title;
+        activity.comment = activity.title;
       }
-      if (activity.linked) {
-        let regExp = /data-id='([\s\S]*)'/;
-        activity.linked._id = activity.title.match(regExp)[1];
-        activity.content = mdParser(activity.content);
+      if (activity.content.linked) {
+        activity.comment = mdParser(activity.title);
       }
       activity.created = + new Date(activity.created);
       activity.creatorAvatar = activity.creator.avatarUrl;
