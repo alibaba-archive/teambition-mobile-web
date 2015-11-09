@@ -10,12 +10,16 @@ module teambition {
 
   export interface ILikeDataParsed extends ILikeData {
     likedPeople: string;
+    parsed: boolean;
   }
 
   export type ILikeParser = (likedData: ILikeData) => ILikeDataParsed;
 
   angular.module('teambition').factory('likeParser', () => {
     return (likedObj: ILikeDataParsed) => {
+      if (likedObj.parsed) {
+        return likedObj;
+      }
       let likedPeople: string[] = [];
       if (likedObj.likesCount) {
         angular.forEach(likedObj.likedPeople, (people: IMemberData, index: number) => {

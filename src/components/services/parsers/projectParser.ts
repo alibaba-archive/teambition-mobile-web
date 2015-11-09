@@ -6,11 +6,15 @@ module teambition {
     organizationName?: string;
     _py?: number;
     style?: string;
+    parsed: boolean;
   }
 
   angular.module('teambition').factory('projectParser', () => {
-    return (project: teambition.IProjectData): IProjectDataParsed => {
+    return (project: teambition.IProjectDataParsed): IProjectDataParsed => {
       if (project) {
+        if (project.parsed) {
+          return project;
+        }
         let result: IProjectDataParsed = project;
         if (result.organization) {
           result.organizationId = project.organization._id;

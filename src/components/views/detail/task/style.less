@@ -1,65 +1,54 @@
 // Global reference
 @import "../../../../less/reference.less";
 
-.task-detail {
+.task-detail.list {
   margin-bottom: 0;
-  .item{
-    padding:14px 16px 14px 54px;
+  .item.list-title {
+    padding: 0 0 0 16px;
+    height: 30px;
+    line-height: 30px;
+    color: @grayDark;
+    background-color: #f7f7f7;
   }
   .task-name-wrap{
-    border-bottom: 1px solid rgba(0, 0, 0, .03);
     overflow: hidden;
-    margin-bottom: 15px;
+    background-color: #f7f7f7;
+    .item {
+      background-color: #f7f7f7;
+    }
     .task-belong{
-      font-size: 15px;
-      font-weight: 600;
-      padding: 16px;
-      .task-belong-wrap{
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        padding-right: 30px;
-        color: #808080;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+      font-size: 14px;
+      color: @grayDark;
+      height: 44px;
+      line-height: 44px;
+      padding: 0 0 0 14px;
     }
     .task-content {
       white-space: normal;
-      min-height: 49px;
-      .item-content {
-        color: @darkTextColor;
-        font-weight: bold;
-      }
+      min-height: 40px;
+      font-size: 20px;
+      color: black;
       span {
         font-size: 20px;
       }
     }
     .icon {
-      height: 48px;
+      height: 40px;
     }
   }
   .task-info-wrap,
   .task-more-wrap,
   .task-executor-wrap {
+    color: @grayDarker;
     overflow: hidden;
-    border-top: 1px solid rgba(0, 0, 0, .03);
-    border-bottom: 1px solid rgba(0, 0, 0, .03);
   }
   .task-info-wrap{
-    margin-bottom: 15px;
-    .item{
-      color: #383838;
-    }
     .item-detail-avatar{
       padding:16px 16px 0 16px;
     }
   }
-  .task-more-wrap{
-    margin-bottom: 15px;
-  }
   .item {
+    padding:14px 16px 14px 54px;
     border: none;
     .item-value {
       float: right;

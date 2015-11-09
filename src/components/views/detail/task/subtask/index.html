@@ -5,6 +5,7 @@
       <div ng-repeat="subtask in SubtaskCtrl.subtasks" class="item item-icon-left">
         <i class="icon" ng-class="{'icon-checkbox-thin': !subtask.isDone, 'icon-checkbox-ios-checked': subtask.isDone}"></i>
         {{subtask.content}}
+        <img class="subtask-avatar" ng-src="{{subtask.executor.avatarUrl}}">
       </div>
     </ion-list>
   </ion-content>

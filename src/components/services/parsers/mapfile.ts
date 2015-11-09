@@ -4,6 +4,7 @@ module teambition {
   function mapfile(type: string): string {
     const iconsMap = {
       set_note: 'icon-book',
+      update_note: 'icon-book',
       set_executor: 'icon-user',
       set_content: 'icon-pencil',
       set_title: 'icon-pencil',
@@ -11,6 +12,7 @@ module teambition {
       set_attachments: 'icon-paperclip-horizontal',
       set_done: 'icon-tick',
       set_priority: 'icon-circle',
+      update_priority: 'icon-circle',
       set_duedate: 'icon-calendar2',
       involve: 'icon-add-user',
       create: 'icon-plus',

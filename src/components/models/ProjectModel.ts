@@ -40,12 +40,12 @@ module teambition {
       let projectIndex = this.projectIndex;
       let collection = this.collection;
       if (!projectIndex.length) {
-        angular.forEach(data, (project: IProjectData, index: number) => {
+        angular.forEach(data, (project: IProjectDataParsed, index: number) => {
           projectIndex.push(project._id);
           collection.push(project);
         });
       }else {
-        angular.forEach(data, (project: IProjectData, index: number) => {
+        angular.forEach(data, (project: IProjectDataParsed, index: number) => {
           if (projectIndex[index] !== project._id) {
             projectIndex.splice(index, 0, project._id);
             collection.splice(index, 0, project);

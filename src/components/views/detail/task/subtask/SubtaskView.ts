@@ -27,6 +27,7 @@ module teambition {
       return this.SubtasksAPI.fetch(taskId)
       .then((data: ISubtaskData[]) => {
         this.subtasks = data;
+        console.log(this.subtasks);
       });
     }
   }

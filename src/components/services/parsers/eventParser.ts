@@ -26,6 +26,9 @@ module teambition {
     Moment: moment.MomentStatic
   ) {
     return function(event: IEventDataParsed): IEventDataParsed {
+      if (event.parsed) {
+        return event;
+      }
       event.location = event.location ? event.location : '暂未安排地点';
       event.originContent = event.content;
       event.content = mdParser(event.content);
@@ -41,6 +44,7 @@ module teambition {
         event.eventTime2 = startDate.format('LLL');
       }
       event.updated = new Date(event.updated).valueOf() + '';
+      event.parsed = true;
       return event;
     };
   });

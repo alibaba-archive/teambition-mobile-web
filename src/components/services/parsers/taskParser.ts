@@ -34,6 +34,9 @@ module teambition {
     Cache: angular.ICacheObject
   ) {
     return function <ITaskParser>(task: ITaskDataParsed, detailInfos?: IDetailInfos) {
+      if (task.parsed) {
+        return task;
+      }
       detailInfos = detailInfos ? detailInfos : {};
       let today = Date.now();
       let dueDate = new Date(task.dueDate).valueOf();
@@ -59,6 +62,7 @@ module teambition {
       let tasklist =  detailInfos.tasklist;
       task.stage = stage ? stage.name : undefined;
       task.tasklist = tasklist ? tasklist.title : undefined;
+      task.parsed = true;
       return task;
     };
   });

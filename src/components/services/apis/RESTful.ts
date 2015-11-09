@@ -90,6 +90,7 @@ module teambition {
           let _arguments = replaceCallback(args, arg);
           let result = value.value.apply(this, _arguments);
           // console.log(`Call: ${key}(${arg}) => `, result);
+          fetchingMap[arg] = result;
           return result;
         }
       }

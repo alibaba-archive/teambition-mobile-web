@@ -88,9 +88,17 @@ module teambition {
           }
         }
       })
-      .state('subtsk', {
+      .state('edit_task_note', {
+        url: '/detail/task/:_id/note?linkedId',
+        templateUrl: 'detail/task/note/index.html'
+      })
+      .state('subtask', {
         url: '/detail/task/:_id/subtasks',
-        templateUrl: 'detail/task/task-subtask/index.html'
+        templateUrl: 'detail/task/subtask/index.html'
+      })
+      .state('edit_task_priority', {
+        url: '/detail/task/:_id/priority',
+        templateUrl: 'detail/task/priority/index.html'
       })
       .state('link', {
         url: '/detail/:type/:_id/link',

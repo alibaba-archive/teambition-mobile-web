@@ -1,14 +1,12 @@
 <div class="task-detail list" ng-controller="TaskView as TaskCtrl">
-  <div class="task-name-wrap">
+  <div class="task-name-wrap ionic">
     <div class="task-belong item">
-      <div class="task-belong-wrap">
-        <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
-      </div>
+      <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
     </div>
-    <div class="item item-icon-left task-content">
+    <div-item class="item item-icon-left task-content">
       <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"></i>
       <span>{{TaskCtrl.task.content}}</span>
-    </div>
+    </div-item>
   </div>
   <div class="task-info-wrap">
     <div class="item list-title">
@@ -28,18 +26,18 @@
     <div-title class="item list-title">
       更多
     </div-title>
-    <div-item class="item item-icon-left item-taks-note" ng-if='task.note'>
+    <a class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note' ng-href="#/detail/task/{{TaskCtrl.task._id}}/note">
       <i class="icon icon-wall"></i>
-      <span ng-bind-html="task.note" class="task-note"></span>
-    </div-item>
+      <span ng-bind-html="TaskCtrl.task.note" class="task-note"></span>
+    </a>
     <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskCount.total">
       <i class="icon icon-sub-task"></i>
       <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
     </a>
-    <div-item class="item item-icon-left">
+    <a class="item item-icon-left" ng-href="#/detail/task/{{TaskCtrl.task._id}}/priority">
       <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
       <span>{{TaskCtrl.task.priority | priorityStr}}</span>
-    </div-item>
+    </a>
     <div-item class="item item-icon-left">
       <i class="icon icon-repeat"></i>
       <span>{{TaskCtrl.task.recurrence | recurrenceStr}}</span>

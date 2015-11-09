@@ -50,6 +50,9 @@ module teambition {
     mapfile: (type: string) => string
   ) => {
     return (activity: IActivityDataParsed) => {
+      if (activity.parsed) {
+        return activity;
+      }
       activity.isComment = (activity.rawAction === 'comment');
       activity.icon = mapfile(activity.rawAction);
       activity.icon = (activity.action !== 'set_done') ? activity.icon : 'icon-checkbox-checked';
@@ -57,7 +60,8 @@ module teambition {
         if (activity.content.attachments && !activity.content.comment) {
           activity.comment = '上传了附件';
         }
-        activity.comment = emojiParser.replaceMd(activity.content.comment);
+        activity.comment = activity.content.comment.length ? activity.content.comment : activity.title;
+        activity.comment = emojiParser.replaceMd(activity.comment);
         activity.comment = mdParser(activity.comment);
         activity.comment = $sanitize(activity.comment);
       }else {
@@ -69,6 +73,7 @@ module teambition {
       activity.created = + new Date(activity.created);
       activity.creatorAvatar = activity.creator.avatarUrl;
       activity.creatorName = activity.creator.name;
+      activity.parsed = true;
       return activity;
     };
   });

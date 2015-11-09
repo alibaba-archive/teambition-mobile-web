@@ -250,14 +250,14 @@ module teambition {
 
     private getProjects(): angular.IPromise<any> {
       return this.ProjectsAPI.fetch()
-      .then((projects: teambition.IProjectData[]) => {
+      .then((projects: IProjectDataParsed[]) => {
         this.sortProject(projects);
         this.projects = projects;
       });
     }
 
     private sortProject(projects: IProjectDataParsed[]) {
-      angular.forEach(projects, (project: teambition.IProjectData, index: number) => {
+      angular.forEach(projects, (project: IProjectDataParsed, index: number) => {
         if (project.isStar) {
           this.staredProject.push(project);
         }

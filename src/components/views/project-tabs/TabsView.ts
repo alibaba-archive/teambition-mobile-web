@@ -14,7 +14,7 @@ module teambition {
 
     public ViewName = 'TabsView';
     public projectId: string;
-    public project: IProjectData;
+    public project: IProjectDataParsed;
 
     private projectName: string;
     private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
@@ -56,7 +56,7 @@ module teambition {
 
     public fetchProject(projectId: string) {
       return this.ProjectsAPI.fetchById(projectId)
-      .then((project: IProjectData) => {
+      .then((project: IProjectDataParsed) => {
         this.project = project;
         this.projectName = project.name;
         return project;
