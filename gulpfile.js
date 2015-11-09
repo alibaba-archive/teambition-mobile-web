@@ -24,6 +24,7 @@ var merge2       = require('merge2')
 var cdnUploader  = require('cdn-uploader')
 var clientId     = require('./package.json').ACCOUNT_CLIENTID
 var wrench       = require('wrench')
+var streamqueue  = require('streamqueue')
 
 var cdnPrefix = 'https://dn-st.teambition.net/tb-weixin'
 
@@ -134,15 +135,15 @@ gulp.task('compile-template', function() {
 })
 
 gulp.task('concat-app', function() {
-  return gulp.src([
-      '.tmp/scripts/app.js',
-      '.tmp/scripts/Modules/MomentLocale.js',
-      '.tmp/scripts/Modules/WechatService.js',
-      '.tmp/scripts/run.js',
-      '.tmp/scripts/Modules/View.js',
-      '.tmp/scripts/components/lib/*.js',
-      '.tmp/scripts/**/*.js'
-    ])
+  return streamqueue({ objectMode: true },
+      gulp.src('.tmp/scripts/app.js'),
+      gulp.src('.tmp/scripts/Modules/MomentLocale.js'),
+      gulp.src('.tmp/scripts/Modules/WechatService.js'),
+      gulp.src('.tmp/scripts/run.js'),
+      gulp.src('.tmp/scripts/Modules/View.js'),
+      gulp.src('.tmp/scripts/components/lib/*.js'),
+      gulp.src('.tmp/scripts/**/*.js')
+    )
     .pipe(sourcemaps.init())
     .pipe(concat('app.js'))
     .pipe(sourcemaps.write())

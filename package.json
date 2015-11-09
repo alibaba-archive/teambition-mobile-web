@@ -10,7 +10,9 @@
     "type": "git",
     "url": "git@github.com:teambition/teambition-wechat.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "streamqueue": "^1.1.1"
+  },
   "devDependencies": {
     "cdn-uploader": "^0.1.1",
     "et-template": "^0.1.7",
