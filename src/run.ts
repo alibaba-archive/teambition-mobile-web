@@ -9,6 +9,7 @@ module teambition {
   declare let webkitURL;
   declare let wx;
   declare let Spiderjs;
+  declare let zone: Zone;
 
   export let Wechat: WechatService;
 
