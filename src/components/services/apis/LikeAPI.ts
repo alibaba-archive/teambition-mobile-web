@@ -3,17 +3,23 @@ module teambition {
   'use strict';
 
   export interface ILikeAPI {
-    getLiked: (type: string, _id: string) => angular.IPromise<ILikeData>;
+    getLiked: (type: string, _id: string) => angular.IPromise<ILikeDataParsed>;
     postLike: <T>(detail: any) => angular.IPromise<T>;
   }
 
   @inject([
-    'likeParser'
+    'LikeModel'
   ])
   class LikeAPI extends BaseAPI implements ILikeAPI {
-    private likeParser: ILikeParser;
+    private LikeModel: ILikeModel;
 
     public getLiked (type: string, _id: string) {
+      let cache = this.LikeModel.get(_id);
+      if (cache) {
+        let deferred = this.$q.defer();
+        deferred.resolve(cache);
+        return deferred.promise;
+      }
       return this.RestAPI.get({
         Type: `${type}s`,
         Id: _id,
@@ -22,8 +28,7 @@ module teambition {
       })
       .$promise
       .then((data: ILikeData) => {
-        let result = this.likeParser(data);
-        return result;
+        return this.LikeModel.set(_id, data);
       });
     }
 
@@ -49,11 +54,7 @@ module teambition {
         .$promise;
       }
       return promise.then((data: ILikeDataParsed) => {
-        detail.isLike = data.isLike;
-        detail.likesGroup = data.likesGroup;
-        detail.likedPeople = data.likedPeople;
-        detail.likesCount = data.likesCount;
-        return detail;
+        this.LikeModel.update(detail._id, data);
       });
     }
   }

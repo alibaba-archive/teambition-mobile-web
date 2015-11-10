@@ -8,29 +8,29 @@
       <span>{{TaskCtrl.task.content}}</span>
     </div-item>
   </div>
-  <div class="task-info-wrap">
-    <div class="item list-title">
+  <div class="task-info-wrap ionic">
+    <div-item class="item list-title">
       信息
-    </div>
-    <div class="item item-detail-avatar">
-      <img ng-src="{{TaskCtrl.task.executorAvatar}}" class="task-executor-avatar">
-      <span class="task-executor-name">{{TaskCtrl.task.executorName}}</span>
-    </div>
-    <div class="item item-icon-left">
+    </div-item>
+    <a class="item item-detail-avatar" on-tap="TaskCtrl.openEdit('executor')">
+      <img ng-src="{{TaskCtrl.getExecutorAvatar()}}" class="task-executor-avatar">
+      <span class="task-executor-name" ng-bind="TaskCtrl.getExecutorName()"></span>
+    </a>
+    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('duedate')">
       <i class="icon icon-calendar2"></i>
       <span ng-if="!TaskCtrl.task.dueDate">没有设置截止日期</span>
       <span ng-if="TaskCtrl.task.dueDate" ng-class="{'assertive': TaskCtrl.task.overdue}">{{TaskCtrl.task.dueDate | formatDate:'ll'}}</span>
-    </div>
+    </a>
   </div>
   <div class="task-more-wrap ionic">
     <div-title class="item list-title">
       更多
     </div-title>
-    <a class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note' ng-href="#/detail/task/{{TaskCtrl.task._id}}/note">
+    <a class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note' on-tap="TaskCtrl.openEdit('note')">
       <i class="icon icon-wall"></i>
-      <span ng-bind-html="TaskCtrl.task.note" class="task-note"></span>
+      <span ng-bind-html="TaskCtrl.task.parsedNote" class="task-note"></span>
     </a>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskCount.total">
+    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('subtasks')" ng-if="TaskCtrl.task.subtaskCount.total">
       <i class="icon icon-sub-task"></i>
       <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
     </a>
@@ -40,7 +40,7 @@
     </a>
     <div-item class="item item-icon-left">
       <i class="icon icon-repeat"></i>
-      <span>{{TaskCtrl.task.recurrence | recurrenceStr}}</span>
+      <span>{{TaskCtrl.task.recurrenceTime | recurrenceStr}}</span>
     </div-item>
     <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
       <i class="icon icon-link2"></i>

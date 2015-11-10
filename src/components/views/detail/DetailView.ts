@@ -9,23 +9,18 @@ module teambition {
 
   const objectTpls = {
     task: {
-      url: 'detail/task/index.html',
       title: '任务详情'
     },
     post: {
-      url: 'detail/post/index.html',
       title: '分享详情'
     },
     event: {
-      url: 'detail/event/index.html',
       title: '日程详情'
     },
     work: {
-      url: 'detail/file/index.html',
       title: '文件详情'
     },
     entry: {
-      url: 'detail/entry/index.html',
       title: '记账详情'
     }
   };
@@ -37,6 +32,7 @@ module teambition {
     'DetailAPI',
     'ActivityAPI',
     'ProjectsAPI',
+    'MemberAPI',
     'EntryAPI',
     'WorkAPI',
     'LikeAPI',
@@ -46,10 +42,13 @@ module teambition {
 
     public ViewName = 'DetailView';
 
-    public objectTpl: string;
+    public title: string;
     public fixWebkit = false;
     public comment: string;
     public project: IProjectDataParsed;
+    public projectMembers: {
+      [index: string]: IMemberData
+    };
 
     protected _boundToObjectId: string;
     protected _boundToObjectType: string;
@@ -64,6 +63,7 @@ module teambition {
     private WorkAPI: IWorkAPI;
     private EntryAPI: IEntryAPI;
     private LikeAPI: ILikeAPI;
+    private MemberAPI: IMemberAPI;
     private images: IImagesData[];
 
     // @ngInject
@@ -85,18 +85,21 @@ module teambition {
         return;
       }
       if (this._boundToObjectType !== 'entry') {
-        let deferred = this.$q.defer();
-        this.DetailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
+        return this.DetailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
         .then((detail: any) => {
           this.detail = detail;
           this.members = detail.members;
-          this.ProjectsAPI.fetchById(detail._projectId)
-          .then((project: IProjectDataParsed) => {
-            this.project = project;
-            deferred.resolve(project);
-          });
+          return this.$q.all([
+            this.MemberAPI.fetch(detail._projectId)
+            .then((members: {[index: string]: IMemberData}) => {
+              this.projectMembers = members;
+            }),
+            this.ProjectsAPI.fetchById(detail._projectId)
+            .then((project: IProjectDataParsed) => {
+              this.project = project;
+            })
+          ]);
         });
-        return deferred.promise;
       }else {
         return this.EntryAPI.fetch(this._boundToObjectId)
         .then((data: IEntryData) => {
@@ -107,7 +110,7 @@ module teambition {
     }
 
     public onAllChangesDone() {
-      this.objectTpl = objectTpls[this._boundToObjectType].url;
+      this.title = objectTpls[this._boundToObjectType].title;
     }
 
     public showExecutors() {

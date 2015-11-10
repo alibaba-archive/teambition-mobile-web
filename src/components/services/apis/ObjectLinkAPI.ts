@@ -23,8 +23,20 @@ module teambition {
     fetch: (_parentType: string, _parentId: string) => angular.IPromise<ILinkedData[]>;
   }
 
+  @inject([
+    'ObjectLinkModel'
+  ])
   class ObjectLinkAPI extends BaseAPI implements IObjectLinkAPI {
+
+    private ObjectLinkModel: IObjectLinkModel;
+
     public fetch(_parentType: string, _parentId: string) {
+      let cache = this.ObjectLinkModel.getLinks(_parentType, _parentId);
+      if (cache) {
+        let deferred = this.$q.defer();
+        deferred.resolve(cache);
+        return deferred.promise;
+      }
       return this.RestAPI.query({
         Type: `${_parentType}s`,
         Id: _parentId,
@@ -32,6 +44,7 @@ module teambition {
       })
       .$promise
       .then((data: ILinkedData[]) => {
+        this.ObjectLinkModel.setLinks(_parentType, _parentId, data);
         return data;
       });
     }

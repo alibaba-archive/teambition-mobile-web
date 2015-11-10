@@ -4,12 +4,11 @@ module teambition {
 
   export interface ITaskDataParsed extends ITaskData {
     _projectId: string;
-    parsed: boolean;
     oneDay: boolean;
     overDue: boolean;
     executorAvatar: string;
     executorName: string;
-    originNode: string;
+    parsedNote: string;
     stage: string;
     subtaskDone: number;
     subtaskTotal: number;
@@ -19,6 +18,7 @@ module teambition {
     isLike?: boolean;
     likedPeople?: string;
     likesCount: number;
+    recurrenceTime: string;
   }
 
   export interface ITaskParser {
@@ -34,9 +34,6 @@ module teambition {
     Cache: angular.ICacheObject
   ) {
     return function <ITaskParser>(task: ITaskDataParsed, detailInfos?: IDetailInfos) {
-      if (task.parsed) {
-        return task;
-      }
       detailInfos = detailInfos ? detailInfos : {};
       let today = Date.now();
       let dueDate = new Date(task.dueDate).valueOf();
@@ -54,15 +51,14 @@ module teambition {
       };
       task.executorAvatar = task.executor.avatarUrl;
       task.executorName = task.executor.name;
-      task.originNode = task.note;
-      task.note = mdParser(task.note);
-      task.note = $sanitize(task.note);
-      task.recurrence = task.recurrence ? task.recurrence[0] : undefined;
+      task.parsedNote = task.note;
+      task.parsedNote = mdParser(task.parsedNote);
+      task.parsedNote = $sanitize(task.parsedNote);
+      task.recurrenceTime = task.recurrence ? task.recurrence[0] : undefined;
       let stage = detailInfos.stage;
       let tasklist =  detailInfos.tasklist;
       task.stage = stage ? stage.name : undefined;
       task.tasklist = tasklist ? tasklist.title : undefined;
-      task.parsed = true;
       return task;
     };
   });

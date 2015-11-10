@@ -1,7 +1,11 @@
 <ion-view ng-controller="EditPriorityView as EditPriorityCtrl" class="edit-priority-view">
   <ion-content>
     <div class="list">
-      
+      <ion-item ng-repeat="item in EditPriorityCtrl.priority" class="item-avatar item-icon-right" on-tap="EditPriorityCtrl.selectPriority($index)">
+        <div class="icon icon-circle-bold priority-icon-left priority-{{item.priority}}"></div>
+        <span class="pirority-name">{{item.name}}</span>
+        <i ng-if="item.isSelected" class="icon icon-tick positive"></i>
+      </ion-item>
     </div>
   </ion-content>
 </ion-view>

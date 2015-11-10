@@ -25,6 +25,8 @@ module teambition {
     private MessageListener: IMessageListener;
     private MessageAPI: IMessageAPI;
 
+    private userMe: IUserMe;
+
     constructor() {
       super();
       this.zone.run(noop);
@@ -44,6 +46,7 @@ module teambition {
             this.goHome();
           }else {
             this.initRootscope(userMe);
+            this.userMe = userMe;
             try {
               let spiderOptions = {
                 _userId: userMe._id,
@@ -68,7 +71,9 @@ module teambition {
       this.MessageListener.listen((type: string, data: any) => {
         this.MessageAPI.getOne(data.msgId)
         .then((message: IMessageData) => {
-          this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
+          if (data.creator._id !== this.userMe._id) {
+            this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
+          }
         });
       });
     }

@@ -10,7 +10,7 @@ module teambition {
   }
 
   export interface IMemberAPI {
-    fetch: (_projectId: string) => angular.IPromise<IMemberData[]>;
+    fetch: (_projectId: string) => angular.IPromise<{[index: string]: IMemberData}>;
   }
 
   @inject([
@@ -20,9 +20,9 @@ module teambition {
     private MemberModel: IMemberModel;
 
     public fetch(_id: string) {
-      let members: IMemberData[] = this.MemberModel.getMemberCollection(_id);
+      let members = this.MemberModel.getMemberCollection(_id);
       if (members) {
-        let deferred = this.$q.defer<IMemberData[]>();
+        let deferred = this.$q.defer<{[index: string]: IMemberData}>();
         deferred.resolve(members);
         return deferred.promise;
       }else {
@@ -35,8 +35,7 @@ module teambition {
         })
         .$promise
         .then((data: IMemberData[]) => {
-          this.MemberModel.setMemberCollection(_id, data);
-          return data;
+          return this.MemberModel.setMemberCollection(_id, data);
         });
       }
     }

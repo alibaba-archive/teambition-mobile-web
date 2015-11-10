@@ -112,11 +112,12 @@ module teambition {
     tags?: ITagsData[];
     tasklist?: ITasklistData;
     stage?: IStageData;
-    members?: IMemberData[];
+    members?: {[index: string]: IMemberData};
   }
 
   export interface IDetailAPI {
     fetch(_id: string, type: string, linkedId?: string): angular.IPromise<any>;
+    update(_id: string, type: string, patch: any): angular.IPromise<any>;
   }
 
   @inject([
@@ -151,8 +152,7 @@ module teambition {
     };
 
     public fetch (_id: string, type: string, linkedId: string) {
-      let deferred = this.$q.defer();
-      this.query(_id, type, linkedId)
+      return this.query(_id, type, linkedId)
       .then((data: any) => {
         let detailInfos: IDetailInfos;
         detailInfos = {};
@@ -170,7 +170,7 @@ module teambition {
             detailInfos.tags = tags;
           }),
           this.MemberAPI.fetch(data._projectId)
-          .then((members: IMemberData[]) => {
+          .then((members: {[index: string]: IMemberData}) => {
             detailInfos.members = members;
           })
         ];
@@ -183,13 +183,22 @@ module teambition {
             })
           );
         }
-        this.$q.all(fetchTasks)
+        return this.$q.all(fetchTasks)
         .then(() => {
-          let result = this.detailParser(data, type, detailInfos);
-          deferred.resolve(result);
+          return this.detailParser(data, type, detailInfos);
         });
       });
-      return deferred.promise;
+    }
+
+    public update(_id: string, type: string, patch: any) {
+      return this.RestAPI.update({
+        Type: `${type}s`,
+        Id: _id
+      }, patch)
+      .$promise
+      .then((detail: any) => {
+        this.DetailModel.updateDetail(`${type}:detail:${_id}`, detail);
+      });
     }
 
     private query(_id: string, type: string, linkedId: string) {
@@ -220,7 +229,7 @@ module teambition {
       detail.likesGroup = detailInfos.like.likesGroup;
       detail.likedPeople = detailInfos.like.likedPeople;
       detail.likesCount = detailInfos.like.likesCount;
-      if (members && members.length) {
+      if (members) {
         angular.forEach(members, (member: IMemberData, index: number) => {
           if (detail.involveMembers.indexOf(member._id) !== -1) {
             involveMembers.push(member);

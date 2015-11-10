@@ -142,7 +142,15 @@ gulp.task('concat-app', function() {
       gulp.src('.tmp/scripts/run.js'),
       gulp.src('.tmp/scripts/Modules/View.js'),
       gulp.src('.tmp/scripts/components/lib/*.js'),
-      gulp.src('.tmp/scripts/**/*.js')
+      gulp.src([
+        '.tmp/scripts/**/*.js',
+        '!.tmp/scripts/app.js',
+        '!.tmp/scripts/Modules/MomentLocale.js',
+        '!.tmp/scripts/Modules/WechatService.js',
+        '!.tmp/scripts/run.js',
+        '!.tmp/scripts/Modules/View.js',
+        '!.tmp/scripts/components/lib/*.js'
+      ])
     )
     .pipe(sourcemaps.init())
     .pipe(concat('app.js'))

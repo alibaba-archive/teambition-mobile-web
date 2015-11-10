@@ -47,7 +47,7 @@ module teambition {
     public _noneExecutorTasks: ITaskDataParsed[];
     public members: IMemberData[];
     public membersMap: {
-      [index: string]: string;
+      [index: string]: IMemberData;
     };
 
 
@@ -212,16 +212,8 @@ module teambition {
 
     private getMembers() {
       return this.MemberAPI.fetch(projectId)
-      .then((members: IMemberData[]) => {
-        let membersMap: {
-          [index: string]: string;
-        };
-        membersMap = {};
-        this.members = members;
-        angular.forEach(members, (member: IMemberData, index: number) => {
-          membersMap[member._id] = member.name;
-        });
-        this.membersMap = membersMap;
+      .then((members: {[index: string]: IMemberData}) => {
+        this.membersMap = members;
       });
     }
 

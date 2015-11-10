@@ -88,8 +88,12 @@ module teambition {
           }
         }
       })
+      .state('edit_executor', {
+        url: '/detail/:type/:_id/executor',
+        templateUrl: 'detail/task/executor/index.html'
+      })
       .state('edit_task_note', {
-        url: '/detail/task/:_id/note?linkedId',
+        url: '/detail/task/:_id/note',
         templateUrl: 'detail/task/note/index.html'
       })
       .state('subtask', {
@@ -99,6 +103,10 @@ module teambition {
       .state('edit_task_priority', {
         url: '/detail/task/:_id/priority',
         templateUrl: 'detail/task/priority/index.html'
+      })
+      .state('edit_task_duedate', {
+        url: '/detail/task/:_id/duedate',
+        templateUrl: 'detail/task/dueDate/index.html'
       })
       .state('link', {
         url: '/detail/:type/:_id/link',

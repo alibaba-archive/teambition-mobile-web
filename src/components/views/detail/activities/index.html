@@ -22,7 +22,6 @@
       </a>
     </div>
     <div ng-if="!item.isComment" class="creator-name" ng-class="{'activity-linked': item.rawAction === 'linked_task_created'}" on-tap="ActivityCtrl.openDetail(item.content.linked)">
-      <span class="name" ng-bind="item.creatorName"></span>
       <span ng-bind-html="item.comment"></span>
     </div>
   </div>

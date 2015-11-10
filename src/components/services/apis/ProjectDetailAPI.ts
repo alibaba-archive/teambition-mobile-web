@@ -92,11 +92,7 @@ module teambition {
           query._executorId = '';
         }
         return this.MemberAPI.fetch(_projectId)
-        .then((members: IMemberData[]) => {
-          let result: any = this.setMemberMaps(members);
-          return result;
-        })
-        .then((members: any[]) => {
+        .then((members: {[index: string]: IMemberData}) => {
           return this.RestAPI.query(query)
           .$promise
           .then((data: ITaskData[]) => {
@@ -121,7 +117,7 @@ module teambition {
       }
     }
 
-    private prepareTasks(tasks: ITaskData[], projectId: string, members: IMemberData[], typesFilter: string, page: number): ITaskDataParsed[] {
+    private prepareTasks(tasks: ITaskData[], projectId: string, members: {[index: string]: IMemberData}, typesFilter: string, page: number): ITaskDataParsed[] {
       let results: ITaskDataParsed[] = [];
       if (tasks && tasks.length) {
         angular.forEach(tasks, (task: ITaskData, index: number) => {
@@ -140,14 +136,6 @@ module teambition {
         this.TaskModel.setDueCollection(projectId, results);
       }
       return results;
-    }
-
-    private setMemberMaps(members: IMemberData[]) {
-      let map = {};
-      angular.forEach(members, (member: IMemberData, index: number) => {
-        map[member._id] = member;
-      });
-      return map;
     }
   }
 

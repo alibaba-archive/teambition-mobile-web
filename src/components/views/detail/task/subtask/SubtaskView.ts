@@ -1,7 +1,6 @@
 /// <reference path="../../../../interface/teambition.d.ts" />
 module teambition {
   'use strict';
-  @parentView('TaskView')
   @inject([
     'SubtasksAPI'
   ])
@@ -11,23 +10,19 @@ module teambition {
     public subtasks: ISubtaskData[];
 
     private SubtasksAPI: ISubtasksAPI;
+    private taskid: string;
 
     constructor() {
       super();
-      this.zone.run(noop);
+      this.zone.run(() => {
+        this.taskid = this.$state.params._id;
+      });
     }
 
     public onInit() {
-      let taskId: string;
-      if (this.parent) {
-        taskId = this.parent.task._id;
-      }else {
-        taskId = this.$state.params._id;
-      }
-      return this.SubtasksAPI.fetch(taskId)
+      return this.SubtasksAPI.fetch(this.taskid)
       .then((data: ISubtaskData[]) => {
         this.subtasks = data;
-        console.log(this.subtasks);
       });
     }
   }
