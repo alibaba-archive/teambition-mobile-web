@@ -27,7 +27,6 @@ module teambition {
     objectHref: string;
     isDone: boolean;
     objectContent: string;
-    parsed: boolean;
   }
 
   export interface IPAParser {
@@ -40,9 +39,6 @@ module teambition {
     mapfile: (type: string) => string
   ){
     return function(activity: IProjectActivitiesDataParsed): IProjectActivitiesDataParsed {
-      if (activity.parsed) {
-        return activity;
-      }
       activity.creatorId = activity.creator._id;
       activity.creatorName = activity.creator.name;
       activity.avatarUrl = activity.creator.avatarUrl;
@@ -103,7 +99,6 @@ module teambition {
           }
         }
       }
-      activity.parsed = true;
       return activity;
     };
   });

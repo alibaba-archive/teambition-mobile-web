@@ -18,6 +18,8 @@ module teambition {
 
       $ionicConfigProvider.views.forwardCache(false);
 
+      // $ionicConfigProvider.views.maxCache(3);
+
       $ionicConfigProvider.tabs.position('bottom');
 
       $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|wxlocalresource):|data:image\//);

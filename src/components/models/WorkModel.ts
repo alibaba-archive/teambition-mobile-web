@@ -9,12 +9,7 @@ module teambition {
     setFoldersCollection(projectId: string, folderId: string, collection: ICollectionData[]): ICollectionData[];
   }
 
-  @inject([
-    'fileParser'
-  ])
   class WorkModel extends DetailModel implements IWorkModel {
-
-    private fileParser: IFileParser;
 
     public getFolderFilesCollection(projectId: string, folderId: string) {
       return this._get<IFileDataParsed[]>('works', `${projectId}:${folderId}`);

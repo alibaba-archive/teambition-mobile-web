@@ -11,8 +11,8 @@
             <span ng-bind="::event.startDate | formatDate : 'H:mm '"></span>
           </div>
           <div class="event-content">
-            <p ng-bind="::event.title"></p>
-            <p ng-bind="::event.originContent"></p>
+            <p ng-bind="event.title"></p>
+            <p ng-bind="event.content"></p>
           </div>
         </a>
       </div>

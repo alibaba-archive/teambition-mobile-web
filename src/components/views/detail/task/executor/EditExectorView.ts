@@ -16,7 +16,6 @@ module teambition {
     private $ionicHistory: ionic.navigation.IonicHistoryService;
     private DetailAPI: IDetailAPI;
     private MemberAPI: IMemberAPI;
-    private boundToObjectType: string;
     private boundToObjectId: string;
     private lastSelected: string;
 
@@ -24,12 +23,11 @@ module teambition {
       super();
       this.zone.run(() => {
         this.boundToObjectId = this.$state.params._id;
-        this.boundToObjectType = this.$state.params.type;
       });
     }
 
     public onInit() {
-      return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
+      return this.DetailAPI.fetch(this.boundToObjectId, 'task')
       .then((detail: ITaskData) => {
         this.detail = detail;
         return detail._projectId;
@@ -52,7 +50,7 @@ module teambition {
         return ;
       }
       this.showLoading();
-      return this.DetailAPI.update(this.boundToObjectId, this.boundToObjectType, {
+      return this.DetailAPI.update(this.boundToObjectId, 'task', {
         _executorId: id
       })
       .then((patch: any) => {

@@ -19,6 +19,8 @@ module teambition {
     likedPeople?: string;
     likesCount: number;
     recurrenceTime: string;
+    displayDuedate?: Date;
+    detailInfos: IDetailInfos;
   }
 
   export interface ITaskParser {
@@ -33,8 +35,8 @@ module teambition {
     Moment: moment.MomentStatic,
     Cache: angular.ICacheObject
   ) {
-    return function <ITaskParser>(task: ITaskDataParsed, detailInfos?: IDetailInfos) {
-      detailInfos = detailInfos ? detailInfos : {};
+    return function <ITaskParser>(task: ITaskDataParsed) {
+      let detailInfos = task.detailInfos ? task.detailInfos : {};
       let today = Date.now();
       let dueDate = new Date(task.dueDate).valueOf();
       if (dueDate < today) {
@@ -49,6 +51,7 @@ module teambition {
         avatarUrl: teambition.nobodyUrl,
         _id: ''
       };
+      task.displayDuedate = new Date(task.dueDate);
       task.executorAvatar = task.executor.avatarUrl;
       task.executorName = task.executor.name;
       task.parsedNote = task.note;

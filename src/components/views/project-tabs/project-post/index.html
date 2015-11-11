@@ -3,10 +3,10 @@
     <div class="list ionic">
       <div class="item item-avatar" ng-repeat="post in PanelPostCtrl.posts track by post._id" on-tap="PanelPostCtrl.openDetail(post._id)">
         <img ng-src="{{post.creatorAvatar}}">
-        <p ng-bind="::post.creatorName"></p>
-        <p class="post-title" ng-bind="::post.title"></p>
-        <p class="post-content" ng-bind-html="::post.content"></p>
-        <time ng-bind="::post.updated | formatDate : 'MM-DD'"></time>
+        <p ng-bind="post.creatorName"></p>
+        <p class="post-title" ng-bind="post.displayedTitle"></p>
+        <p class="post-content" ng-bind-html="post.content"></p>
+        <time ng-bind="post.updated | formatDate : 'MM-DD'"></time>
       </div>
     </div>
   </ion-content>

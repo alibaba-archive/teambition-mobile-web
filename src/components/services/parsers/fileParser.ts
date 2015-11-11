@@ -2,7 +2,6 @@
 module teambition {
   'use strict';
   export interface IFileDataParsed extends IFileData {
-    parsed: boolean;
     class: string;
     creatorName: string;
     creatorAvatar: string;
@@ -22,9 +21,6 @@ module teambition {
     $sanitize: any
   ) => {
     return (file: IFileDataParsed) => {
-      if (file.parsed) {
-        return file;
-      }
       file.creator = file.creator || {_id: null, name: null, avatarUrl: nobodyUrl};
       file.creatorName = file.creator.name;
       file.creatorAvatar = file.creator.avatarUrl;
@@ -33,7 +29,6 @@ module teambition {
         file.class = 'bigger-bigger';
         file.fileType = file.fileType.charAt(0);
       }
-      file.parsed = true;
       return file;
     };
   });

@@ -16,6 +16,7 @@ module teambition {
   angular.module('teambition').factory('ngConsumer',
   // @ngInject
   (
+    $rootScope: IRootScope,
     RestAPI: IRestAPI
   ) => {
     let consumer = new Consumer();
@@ -30,6 +31,9 @@ module teambition {
         if (typeof _listener === 'function') {
           _listener(result);
         }
+      }
+      if (!$rootScope.$$phase) {
+        $rootScope.$digest();
       }
     };
 

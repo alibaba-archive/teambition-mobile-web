@@ -28,7 +28,6 @@ module teambition {
   }
 
   export interface IActivityDataParsed extends IActivityData {
-    parsed: boolean;
     isComment: boolean;
     icon: string;
     creatorName: string;
@@ -50,9 +49,6 @@ module teambition {
     mapfile: (type: string) => string
   ) => {
     return (activity: IActivityDataParsed) => {
-      if (activity.parsed) {
-        return activity;
-      }
       activity.isComment = (activity.rawAction === 'comment');
       activity.icon = mapfile(activity.rawAction);
       activity.icon = (activity.action !== 'set_done') ? activity.icon : 'icon-checkbox-checked';
@@ -73,7 +69,6 @@ module teambition {
       activity.created = + new Date(activity.created);
       activity.creatorAvatar = activity.creator.avatarUrl;
       activity.creatorName = activity.creator.name;
-      activity.parsed = true;
       return activity;
     };
   });

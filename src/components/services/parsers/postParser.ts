@@ -3,7 +3,6 @@ module teambition {
   'use strict';
 
   export interface IPostDataParsed extends IPostData {
-    parsed: boolean;
     rawContent: string;
     updated: number;
     creatorName: string;
@@ -13,6 +12,7 @@ module teambition {
     isLike?: boolean;
     likedPeople?: string;
     likesCount?: number;
+    displayedTitle: string;
   }
 
   export interface IPostParser {
@@ -27,15 +27,13 @@ module teambition {
     mdParser: (markdownString: string) => string
   ) => {
     return (post: IPostDataParsed) => {
-      if (post.parsed) {
-        return post;
-      }
       post.rawContent = post.content;
       post.content = post.html ? post.html : post.content;
       if (post.postMode !== 'html') {
         post.content = mdParser(post.content);
         post.content = $sanitize(post.content);
       }
+      post.displayedTitle = post.title;
       if (!post.title) {
         let $title = angular.element(`<div>${post.content}</div>`);
         let title = (typeof($title.text().trim) === 'function') ? $title.text().trim() : '';
@@ -43,13 +41,12 @@ module teambition {
           $title = $title.find('img:first');
           title = $title.attr('alt') || $title.attr('title') || $title.attr('src');
         }
-        post.title = $filter<ICutString>('cutString')(title, 60, '...');
+        post.displayedTitle = $filter<ICutString>('cutString')(title, 60, '...');
       }
       post.updated = + new Date(post.updated);
       post.creator = post.creator || {_id: null, avatarUrl: nobodyUrl, name: null};
       post.creatorName = post.creator.name;
       post.creatorAvatar = post.creator.avatarUrl;
-      post.parsed = true;
       return post;
     };
   });

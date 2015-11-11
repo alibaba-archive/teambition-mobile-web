@@ -1,10 +1,10 @@
 <div class="task-executors">
   <div class="bar bar-header" ng-show="DetailCtrl.fixWebkit">
-    <h1 class="title">参与者</h1>
-    <a class="button-positive button button-clear" on-tap="DetailCtrl.hideExecutors()">关闭</a>
+    <h1 class="title">谁点了赞</h1>
+    <a class="button-positive button button-clear" on-tap="DetailCtrl.hideLikes()">关闭</a>
   </div>
   <ion-list>
-    <ion-item ng-repeat="member in DetailCtrl.members track by member._id" class="item-detail-avatar">
+    <ion-item ng-repeat="member in DetailCtrl.detail.likesGroup track by member._id" class="item-detail-avatar">
       <img class="task-executor-avatar" ng-src="{{member.avatarUrl}}">
       <span class="task-executor-name">{{member.name}}</span>
     </ion-item>

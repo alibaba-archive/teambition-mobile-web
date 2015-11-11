@@ -107,8 +107,14 @@ module teambition {
     [index: string]: any;
   }
 
+  export interface ILikeData {
+    isLike: boolean;
+    likesCount: number;
+    likesGroup: IMemberData[];
+  }
+
   export interface IDetailInfos {
-    like?: ILikeDataParsed;
+    like?: ILikeData;
     tags?: ITagsData[];
     tasklist?: ITasklistData;
     stage?: IStageData;
@@ -133,10 +139,6 @@ module teambition {
     'TasklistAPI'
   ])
   class DetailAPI extends BaseAPI implements IDetailAPI {
-    private taskParser: ITaskParser;
-    private eventParser: IEventParser;
-    private fileParser: IFileParser;
-    private postParser: IPostParser;
     private DetailModel: IDetailModel;
     private ObjectLinkAPI: IObjectLinkAPI;
     private LikeAPI: ILikeAPI;
@@ -162,7 +164,7 @@ module teambition {
             data.linked = linked;
           }),
           this.LikeAPI.getLiked(type, _id)
-          .then((liked: ILikeDataParsed) => {
+          .then((liked: ILikeData) => {
             detailInfos.like = liked;
           }),
           this.TagsAPI.fetchByObjectId(`${type}s`, _id)
@@ -216,7 +218,6 @@ module teambition {
         })
         .$promise
         .then((data: any) => {
-          this.DetailModel.setDetail(`${type}:detail:${_id}`, data);
           return data;
         });
       }
@@ -227,8 +228,8 @@ module teambition {
       let involveMembers = [];
       detail.isLike = detailInfos.like.isLike;
       detail.likesGroup = detailInfos.like.likesGroup;
-      detail.likedPeople = detailInfos.like.likedPeople;
       detail.likesCount = detailInfos.like.likesCount;
+      detail.detailInfos = detailInfos;
       if (members) {
         angular.forEach(members, (member: IMemberData, index: number) => {
           if (detail.involveMembers.indexOf(member._id) !== -1) {
@@ -241,16 +242,7 @@ module teambition {
           detail.members = [{name: '暂无参与者', avatarUrl: nobodyUrl}];
         }
       }
-      switch (type) {
-        case 'task':
-          return this.taskParser(detail, detailInfos);
-        case 'post':
-          return this.postParser(detail);
-        case 'work':
-          return this.fileParser(detail);
-        case 'event':
-          return this.eventParser(detail);
-      }
+      return this.DetailModel.setDetail(`${type}:detail:${detail._id}`, detail);
     }
 
     private findElementInArray <T extends {_id: string}>(array: T[], id: string): T {

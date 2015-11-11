@@ -3,7 +3,7 @@ module teambition {
   'use strict';
 
   export interface ILikeAPI {
-    getLiked: (type: string, _id: string) => angular.IPromise<ILikeDataParsed>;
+    getLiked: (type: string, _id: string) => angular.IPromise<ILikeData>;
     postLike: <T>(detail: any) => angular.IPromise<T>;
   }
 
@@ -53,7 +53,7 @@ module teambition {
         })
         .$promise;
       }
-      return promise.then((data: ILikeDataParsed) => {
+      return promise.then((data: ILikeData) => {
         this.LikeModel.update(detail._id, data);
       });
     }

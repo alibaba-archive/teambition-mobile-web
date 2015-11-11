@@ -3,25 +3,20 @@ module teambition {
   'use strict';
 
   export interface ILikeModel {
-    set(_boundToObjectId: string, likeData: ILikeData): ILikeDataParsed;
-    get(_boundToObjectId: string): ILikeDataParsed;
+    set(_boundToObjectId: string, likeData: ILikeData): ILikeData;
+    get(_boundToObjectId: string): ILikeData;
     update(_boundToObjectId: string, patch: any): void;
   }
 
-  @inject([
-    'likeParser'
-  ])
   class LikeModel extends BaseModel implements ILikeModel {
-    private likeParser: ILikeParser;
 
     public set(_boundToObjectId: string, likeData: ILikeData) {
-      let result = this.likeParser(likeData);
-      this._set('like', _boundToObjectId, result);
-      return result;
+      this._set('like', _boundToObjectId, likeData);
+      return likeData;
     }
 
     public get(_boundToObjectId: string) {
-      return this._get<ILikeDataParsed>('like', _boundToObjectId);
+      return this._get<ILikeData>('like', _boundToObjectId);
     }
 
     public update(_boundToObjectId: string, patch: any) {

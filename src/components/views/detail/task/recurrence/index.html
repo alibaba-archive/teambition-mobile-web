@@ -1,0 +1,10 @@
+<ion-view ng-controller="EditRecurrenceView as EditRecurrenceCtrl">
+  <ion-content>
+    <div class="list">
+      <div class="item item-icon-right" ng-repeat="item in EditRecurrenceCtrl.recurrence track by $index" on-tap="EditRecurrenceCtrl.chooseRecurrence($index)">
+        <span class="recurrence-name">{{item.name}}</span>
+        <i ng-if="item.isSelected" class="icon icon-tick positive"></i>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

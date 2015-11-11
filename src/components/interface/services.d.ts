@@ -25,7 +25,6 @@
 /// <reference path='../services/parsers/postParser.ts' />
 /// <reference path='../services/parsers/eventParser.ts' />
 /// <reference path='../services/parsers/fileParser.ts' />
-/// <reference path='../services/parsers/likeParser.ts' />
 /// <reference path='../services/parsers/activityParser.ts' />
 /// <reference path='../services/parsers/emojiParser.ts' />
 /// <reference path='../services/parsers/mapfile.ts' />
@@ -33,7 +32,6 @@
 /// <reference path='../services/socket/socketFactory.ts' />
 /// <reference path='../services/socket/socketListener.ts' />
 /// <reference path='../libs/Listener.ts'/>
-/// <reference path='../services/socket/MessageListener.ts' />
 /// <reference path='../services/Cache.ts' />
 /// <reference path='../services/getParam.ts' />
 /// <reference path='../services/arrayMerge.ts' />

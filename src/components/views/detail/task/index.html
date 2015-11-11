@@ -34,27 +34,23 @@
       <i class="icon icon-sub-task"></i>
       <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
     </a>
-    <a class="item item-icon-left" ng-href="#/detail/task/{{TaskCtrl.task._id}}/priority">
+    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('priority')">
       <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
       <span>{{TaskCtrl.task.priority | priorityStr}}</span>
     </a>
-    <div-item class="item item-icon-left">
+    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('recurrence')">
       <i class="icon icon-repeat"></i>
       <span>{{TaskCtrl.task.recurrenceTime | recurrenceStr}}</span>
-    </div-item>
+    </a>
     <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
       <i class="icon icon-link2"></i>
       <span>{{TaskCtrl.task.linked.length}}个关联</span>
     </a>
-    <div-item class="item item-icon-left" on-tap="TaskCtrl.like()">
-      <i class="icon icon-dig" ng-class="{'positive': TaskCtrl.task.isLike}"></i>
-      <span><div class="liked-people" ng-bind="TaskCtrl.task.likedPeople"></div><span ng-bind="TaskCtrl.task.likesCount"></span></span>
-    </div-item>
   </div>
-  <div class="task-executor-wrap" on-tap="DetailCtrl.showExecutors()">
-    <div class="item list-title">
+  <div class="task-executor-wrap ionic" on-tap="TaskCtrl.openEdit('involve')">
+    <div-item class="item list-title">
       参与者
-    </div>
+    </div-item>
     <div class="item item-icon-left">
       <i class="icon icon-users"></i>
       <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>

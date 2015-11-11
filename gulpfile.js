@@ -290,7 +290,24 @@ gulp.task('before:build', sequence('clean', 'tsd:install',
 
 gulp.task('default', ['before:build'], function() {
   return replaceForPublish()
+    .pipe(replace('{{__third.lib.script}}', ''))
     .pipe(gulp.dest('www'))
 })
 
-gulp.task('build', sequence('before:build', 'revall'))
+gulp.task('before:wechat', ['before:build'], function() {
+  return replaceForPublish()
+    .pipe(replace('{{__third.lib.script}}', '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'))
+    .pipe(gulp.dest('www'))
+})
+
+gulp.task('before:ding', ['before:build'], function() {
+  return replaceForPublish()
+    .pipe(replace('{{__third.lib.script}}', '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'))
+    .pipe(gulp.dest('www'))
+})
+
+gulp.task('build:wechat', sequence('before:wechat', 'revall'))
+
+gulp.task('build:ding', sequence('before:ding', 'revall'))
+
+gulp.task('build', sequence('default', 'revall'))

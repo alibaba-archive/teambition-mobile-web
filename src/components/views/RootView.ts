@@ -7,9 +7,9 @@ module teambition {
   @inject([
     'app',
     'socket',
+    'socketListener',
     'getParameterByName',
     'RestAPI',
-    'MessageListener',
     'MessageAPI'
   ])
   class RootView extends View {
@@ -20,9 +20,9 @@ module teambition {
 
     private app: Iapp;
     private socket: any;
+    private socketListener: ISocketListener;
     private getParameterByName: IGetParmByName;
     private RestAPI: IRestAPI;
-    private MessageListener: IMessageListener;
     private MessageAPI: IMessageAPI;
 
     private userMe: IUserMe;
@@ -59,8 +59,7 @@ module teambition {
             }
             let hash = window.location.hash;
             if (!hash) {
-              this.$state.go('wechat');
-              // window.location.hash = '/wechat';
+              this.$state.go('projects');
             }
           }
         });
@@ -68,10 +67,18 @@ module teambition {
     }
 
     public onAllChangesDone() {
-      this.MessageListener.listen((type: string, data: any) => {
+      this.socketListener('new', 'message', (type: string, data: any) => {
         this.MessageAPI.getOne(data.msgId)
         .then((message: IMessageData) => {
-          if (data.creator._id !== this.userMe._id) {
+          if (message.creator && message.creator._id !== this.userMe._id) {
+            this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
+          }
+        });
+      });
+      this.socketListener('change', 'message', (type: string, data: any) => {
+        this.MessageAPI.getOne(data.msgId)
+        .then((message: IMessageData) => {
+          if (message.creator && message.creator._id !== this.userMe._id) {
             this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
           }
         });
@@ -88,7 +95,7 @@ module teambition {
     }
 
     private goHome(): void {
-      window.location.hash = 'wx_login';
+      window.location.hash = 'login';
     }
 
   }

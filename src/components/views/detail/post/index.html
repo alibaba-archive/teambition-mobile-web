@@ -1,7 +1,7 @@
 <div class="post-detail list" ng-controller="PostView as PostCtrl">
   <div class="post-wrap">
     <div class="item item-post-title">
-      <h1 class="post-title">{{PostCtrl.post.title}}</h1>
+      <h1 class="post-title">{{PostCtrl.post.displayedTitle}}</h1>
       <p><span>{{PostCtrl.post.creatorName}}</span>创建于<span class="post-time">{{PostCtrl.post.updated | formatDate:'lll'}}</span></p>
     </div>
     <div class="item item-post-content" ng-bind-html="PostCtrl.post.content"></div>

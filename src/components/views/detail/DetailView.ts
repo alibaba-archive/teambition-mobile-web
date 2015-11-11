@@ -113,15 +113,15 @@ module teambition {
       this.title = objectTpls[this._boundToObjectType].title;
     }
 
-    public showExecutors() {
+    public showLikes() {
       popup = this.$ionicPopup.show({
-        templateUrl: 'detail/executors/index.html',
+        templateUrl: 'detail/likes/index.html',
         scope: this.$scope
       });
       this.fixWebkit = true;
     }
 
-    public hideExecutors() {
+    public hideLikes() {
       popup.close();
       this.fixWebkit = false;
     }

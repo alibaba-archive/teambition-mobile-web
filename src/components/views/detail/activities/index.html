@@ -1,6 +1,7 @@
 <div class="list activities" ng-controller="ActivityView as ActivityCtrl">
   <div class="item list-title">
     动态
+    <span class="like-count" ng-if="DetailCtrl.detail.likesCount" on-tap="DetailCtrl.showLikes()">{{DetailCtrl.detail.likesCount}}个赞</span>
   </div>
 
   <div class="item item-avatar" ng-repeat="item in ActivityCtrl.activities">

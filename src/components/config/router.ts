@@ -7,12 +7,12 @@ module teambition {
       $stateProvider: angular.ui.IStateProvider
     ) => {
       $stateProvider
-      .state('wx_login', {
-        url: '/wx_login',
+      .state('login', {
+        url: '/login',
         templateUrl: 'login/index.html'
       })
-      .state('wechat', {
-        url: '/wechat',
+      .state('projects', {
+        url: '/projects',
         templateUrl: 'project/index.html'
       })
       .state('subscribe', {
@@ -89,7 +89,7 @@ module teambition {
         }
       })
       .state('edit_executor', {
-        url: '/detail/:type/:_id/executor',
+        url: '/detail/task/:_id/executor',
         templateUrl: 'detail/task/executor/index.html'
       })
       .state('edit_task_note', {
@@ -107,6 +107,14 @@ module teambition {
       .state('edit_task_duedate', {
         url: '/detail/task/:_id/duedate',
         templateUrl: 'detail/task/dueDate/index.html'
+      })
+      .state('edit_task_recurrence', {
+        url: '/detail/task/:_id/recurrence',
+        templateUrl: 'detail/task/recurrence/index.html'
+      })
+      .state('edit_involve', {
+        url: '/detail/:type/:_id/involve',
+        templateUrl: 'detail/involve/index.html'
       })
       .state('link', {
         url: '/detail/:type/:_id/link',
