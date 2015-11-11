@@ -69,7 +69,7 @@ module teambition {
     };
 
     if (typeof(wx) === 'object') {
-      $rootScope.pending = initWechat()
+      initWechat()
       .then((data: IWxSignature) => {
         Wechat = new WechatService(app.wxid, data.noncestr, data.timestamp, data.signature);
       })
@@ -77,7 +77,7 @@ module teambition {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
       });
     }else if (typeof(dd) === 'object') {
-      $rootScope.pending = initDD().then((data: any) => {
+      initDD().then((data: any) => {
         let info: IDingSignature = data.data;
         Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
         dd.ready(() => {
@@ -96,11 +96,11 @@ module teambition {
           alert(`error: ${JSON.stringify(error)}`);
         });
       });
-    }else {
-      let deferred = $q.defer();
-      deferred.resolve();
-      $rootScope.pending = deferred.promise;
     }
+
+    let deferred = $q.defer();
+    deferred.resolve();
+    $rootScope.pending = deferred.promise;
 
     $http.defaults.headers.common.Authorization = 'OAuth2 JL_N0f_OP6dpvTOKjQe8e7wCi5w=MCN3vfXo99625ad6abf2bf03774c86d6ba205ceff8da45c6553c9bd488f5d80c9ac49ebb191697aad985141dc8e94aa064f30e558f3a90194505323a58fe85cb162ee6df2554f253692fc09aced2bb4475ef0f1d5e68f1be529842eec4ff020100829d74d0f89c0c0501be279ff8a08bf4cb6c7b';
 

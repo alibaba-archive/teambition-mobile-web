@@ -134,14 +134,13 @@ gulp.task('compile-template', function() {
   return compileTemplate()
 })
 
-gulp.task('concat-app', function() {
+gulp.task('concat-app', ['replaceForPublish'], function() {
   return streamqueue({ objectMode: true },
       gulp.src('.tmp/scripts/app.js'),
       gulp.src('.tmp/scripts/Modules/MomentLocale.js'),
       gulp.src('.tmp/scripts/Modules/WechatService.js'),
       gulp.src('.tmp/scripts/Modules/DingService.js'),
       gulp.src('.tmp/scripts/run.js'),
-      gulp.src('.tmp/scripts/Modules/View.js'),
       gulp.src('.tmp/scripts/components/lib/*.js'),
       gulp.src([
         '.tmp/scripts/**/*.js',
@@ -150,7 +149,6 @@ gulp.task('concat-app', function() {
         '!.tmp/scripts/Modules/WechatService.js',
         '!.tmp/scripts/Modules/DingService.js',
         '!.tmp/scripts/run.js',
-        '!.tmp/scripts/Modules/View.js',
         '!.tmp/scripts/components/lib/*.js'
       ])
     )
@@ -208,8 +206,8 @@ gulp.task('lib-js', function() {
     .pipe(gulp.dest('www/js/'))
 })
 
-function replaceForPublish() {
-  return gulp.src('www/index.html')
+gulp.task('replaceForPublish', function() {
+  return gulp.src('.tmp/scripts/app.js')
     .pipe(replace('8fadf360-fe9d-11e4-b300-55a8b3ba5938', 'c63fe5b0-15ad-11e5-90e6-bd2cee5c6f14'))
     .pipe(replace('55b93a33-952d-413c-8985-7b74c1a01a83', '27c134a7-15d3-43aa-8330-6742708c3f41'))
     .pipe(replace('http://m.wx.project.ci', 'https://weixin.teambition.com'))
@@ -217,7 +215,8 @@ function replaceForPublish() {
     .pipe(replace('wx48744c9444d9824a', 'wx3197516ac7a4c96b'))
     .pipe(replace('ws://snapper.project.bi/', 'wss://push.teambition.com'))
     .pipe(replace('http://account.project.ci', 'https://account.teambition.com'))
-}
+    .pipe(gulp.dest('.tmp/scripts/'))
+})
 
 gulp.task('revall', function() {
   var revall = new RevAll({
@@ -229,7 +228,6 @@ gulp.task('revall', function() {
   })
 
   return merge2([
-    replaceForPublish(),
     gulp.src([
       'www/fonts/**',
       'www/images/**'
@@ -291,19 +289,19 @@ gulp.task('before:build', sequence('clean', 'tsd:install',
 ))
 
 gulp.task('default', ['before:build'], function() {
-  return replaceForPublish()
+  return gulp.src('www/index.html')
     .pipe(replace('{{__third.lib.script}}', ''))
     .pipe(gulp.dest('www'))
 })
 
 gulp.task('before:wechat', ['before:build'], function() {
-  return replaceForPublish()
+  return gulp.src('www/index.html')
     .pipe(replace('{{__third.lib.script}}', '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'))
     .pipe(gulp.dest('www'))
 })
 
 gulp.task('before:ding', ['before:build'], function() {
-  return replaceForPublish()
+  return gulp.src('www/index.html')
     .pipe(replace('{{__third.lib.script}}', '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'))
     .pipe(gulp.dest('www'))
 })

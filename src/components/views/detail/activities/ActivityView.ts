@@ -2,6 +2,9 @@
 module teambition {
   'use strict';
   @parentView('DetailView')
+  @inject([
+    'ActivityAPI'
+  ])
   class ActivityView extends View {
 
     public ViewName = 'ActivityView';
@@ -10,12 +13,8 @@ module teambition {
 
     private ActivityAPI: IActivityAPI;
 
-    // @ngInject
-    constructor(
-      ActivityAPI: IActivityAPI
-    ) {
+    constructor() {
       super();
-      this.ActivityAPI = ActivityAPI;
       this.zone.run(noop);
     }
 

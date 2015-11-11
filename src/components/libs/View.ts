@@ -1,4 +1,4 @@
-/// <reference path='../components/interface/teambition.d.ts' />
+/// <reference path='../interface/teambition.d.ts' />
 module teambition {
   'use strict';
 

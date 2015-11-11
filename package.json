@@ -1,14 +1,14 @@
 {
-  "name": "teambition-wechat",
-  "version": "0.3.6",
-  "description": "Teambition Wechat mobile web application",
+  "name": "teambition-mobile-web",
+  "version": "0.7.0",
+  "description": "Teambition mobile web application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:teambition/teambition-wechat.git"
+    "url": "git@github.com:teambition/teambition-mobile-web.git"
   },
   "dependencies": {
     "streamqueue": "^1.1.1"

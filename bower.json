@@ -1,5 +1,5 @@
 {
-  "name": "account-wx-service",
+  "name": "teambition-mobile-web",
   "private": true,
   "dependencies": {
     "UI": "git@code.teambition.com:components/tb-ui.git#~0.12.x",
