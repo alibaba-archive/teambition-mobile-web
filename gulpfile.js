@@ -139,6 +139,7 @@ gulp.task('concat-app', function() {
       gulp.src('.tmp/scripts/app.js'),
       gulp.src('.tmp/scripts/Modules/MomentLocale.js'),
       gulp.src('.tmp/scripts/Modules/WechatService.js'),
+      gulp.src('.tmp/scripts/Modules/DingService.js'),
       gulp.src('.tmp/scripts/run.js'),
       gulp.src('.tmp/scripts/Modules/View.js'),
       gulp.src('.tmp/scripts/components/lib/*.js'),
@@ -147,6 +148,7 @@ gulp.task('concat-app', function() {
         '!.tmp/scripts/app.js',
         '!.tmp/scripts/Modules/MomentLocale.js',
         '!.tmp/scripts/Modules/WechatService.js',
+        '!.tmp/scripts/Modules/DingService.js',
         '!.tmp/scripts/run.js',
         '!.tmp/scripts/Modules/View.js',
         '!.tmp/scripts/components/lib/*.js'

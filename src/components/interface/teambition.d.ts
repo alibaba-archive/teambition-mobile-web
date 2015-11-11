@@ -1,5 +1,6 @@
 /// <reference path="../../../.tmp/typings/tsd.d.ts" />
 /// <reference path="../../modules/WechatService.ts" />
+/// <reference path="../../modules/DingService.ts" />
 /// <reference path='../../app.ts' />
 /// <reference path='../../modules/MomentLocale.ts' />
 /// <reference path='../../modules/View.ts' />

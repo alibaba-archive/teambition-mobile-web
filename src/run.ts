@@ -2,16 +2,19 @@
 
 import WechatService = Wechat.WechatService;
 import MomentLocale = Locale.MomentLocale;
+import DingService = Ding.DingService;
 
 module teambition {
   'use strict';
 
   declare let webkitURL;
   declare let wx;
+  declare let dd;
   declare let Spiderjs;
   declare let zone: Zone;
 
   export let Wechat: WechatService;
+  export let Ding: DingService;
 
   export let spider: any;
 
@@ -19,6 +22,13 @@ module teambition {
     noncestr: string;
     signature: string;
     timestamp: number;
+  }
+
+  export interface IDingSignature {
+    corpId: string;
+    nonceStr: string;
+    signature: string;
+    timeStamp: number;
   }
 
   export let rootZone = zone.fork();
@@ -54,6 +64,10 @@ module teambition {
       return $http.get('/weixin/dev/signature');
     };
 
+    let initDD = () => {
+      return $http.get(`http://dt.jixigo.com:10003/signature`);
+    };
+
     if (typeof(wx) === 'object') {
       $rootScope.pending = initWechat()
       .then((data: IWxSignature) => {
@@ -61,6 +75,26 @@ module teambition {
       })
       .catch((reason: any) => {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
+      });
+    }else if (typeof(dd) === 'object') {
+      $rootScope.pending = initDD().then((data: any) => {
+        let info: IDingSignature = data.data;
+        Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
+        dd.ready(() => {
+          dd.biz.navigation.setTitle({
+            title: 'hah',
+            onSuccess: (result: any) => {
+              alert(`1${JSON.stringify(result)}`);
+            },
+            onFail: (result: any) => {
+              alert(`2${JSON.stringify(result)}`);
+            }
+          });
+        });
+
+        dd.error((error: any) => {
+          alert(`error: ${JSON.stringify(error)}`);
+        });
       });
     }else {
       let deferred = $q.defer();

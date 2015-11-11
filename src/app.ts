@@ -19,6 +19,7 @@ module teambition {
     cdnHost: script.getAttribute('data-cdnhost'),
     wsHost: script.getAttribute('data-wshost'),
     wxid: script.getAttribute('data-wxid'),
-    spiderHost: script.getAttribute('data-spiderhost')
+    spiderHost: script.getAttribute('data-spiderhost'),
+    dingAgentId: script.getAttribute('data-ding-agentid')
   });
 }
