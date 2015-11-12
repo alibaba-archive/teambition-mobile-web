@@ -26,6 +26,7 @@ module teambition {
       set_collection: 'icon-file',
       set_version: 'icon-file',
       set_tasklist: 'icon-th-list',
+      update_tasklist: 'icon-th-list',
       set_stage: 'icon-stage',
       update_stage: 'icon-stage',
       set_redo: 'icon-checkbox',

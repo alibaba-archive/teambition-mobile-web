@@ -1,0 +1,10 @@
+<ion-view ng-controller="ChooseStageView as ChooseStageCtrl" class="choose-tasklist">
+  <ion-content>
+     <div class="list">
+       <div class="item item-icon-right" ng-repeat="stage in ChooseStageCtrl.stages track by stage._id" on-tap="ChooseStageCtrl.chooseStage($index)">
+         <span class="stage-name" ng-bind="stage.name"></span>
+         <i class="icon icon-tick" ng-if="stage.isSelected"></i>
+       </div>
+     </div>
+  </ion-content>
+</ion-view>

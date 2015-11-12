@@ -70,7 +70,7 @@ module teambition {
       this.socketListener('new', 'message', (type: string, data: any) => {
         this.MessageAPI.getOne(data.msgId)
         .then((message: IMessageData) => {
-          if (message.creator && message.creator._id !== this.userMe._id) {
+          if (message.latestActivity && message.latestActivity.creator && message.latestActivity.creator._id !== this.userMe._id) {
             this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
           }
         });
@@ -78,7 +78,7 @@ module teambition {
       this.socketListener('change', 'message', (type: string, data: any) => {
         this.MessageAPI.getOne(data.msgId)
         .then((message: IMessageData) => {
-          if (message.creator && message.creator._id !== this.userMe._id) {
+          if (message.latestActivity && message.latestActivity.creator && message.latestActivity.creator._id !== this.userMe._id) {
             this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
           }
         });

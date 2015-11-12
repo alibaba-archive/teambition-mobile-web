@@ -124,10 +124,27 @@ module teambition {
       }
     }
 
-    protected cancelModal() {
+    protected cancelModal(): void {
       if (currentModal.modal && typeof(currentModal.modal.hide) === 'function') {
         currentModal.modal.hide();
       }
+    }
+
+    protected getFailureReason(reason: any): string {
+      let message: string;
+      if (typeof reason === 'string') {
+        try {
+          reason = JSON.parse(reason);
+          console.log(reason);
+          message = reason.data.message;
+        } catch (error) {
+          message = reason;
+          console.error(error);
+        }
+      }else {
+        message = reason.data ? reason.data.message : JSON.stringify(reason);
+      }
+      return message;
     }
 
     private initZone() {
@@ -189,7 +206,7 @@ module teambition {
         .then(() => {
           initedViews[this.ViewName + $$id] = true;
           if (this.$ionicScrollDelegate) {
-            this.$ionicScrollDelegate.scrollTop();
+            this.$ionicScrollDelegate.resize();
           }
           return this.onAllChangesDone();
         });

@@ -54,6 +54,9 @@ module teambition {
           }
         });
       }
+      collection.sort((left: IProjectDataParsed, right: IProjectDataParsed) => {
+        return left._py - right._py;
+      });
       this._set('projects', null, collection);
     }
 

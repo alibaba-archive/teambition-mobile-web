@@ -16,6 +16,10 @@ module teambition {
       this.zone.run(noop);
     }
 
+    public onInit() {
+      return this.parent.onInit();
+    }
+
     public onAllChangesDone() {
       this.members = this.parent.projectMembers;
       this.task = this.parent.detail;

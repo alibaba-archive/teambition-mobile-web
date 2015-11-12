@@ -3,7 +3,7 @@ module teambition {
   'use strict';
 
   export interface IPostDataParsed extends IPostData {
-    rawContent: string;
+    displayContent: string;
     updated: number;
     creatorName: string;
     creatorAvatar: string;
@@ -27,15 +27,14 @@ module teambition {
     mdParser: (markdownString: string) => string
   ) => {
     return (post: IPostDataParsed) => {
-      post.rawContent = post.content;
-      post.content = post.html ? post.html : post.content;
+      post.displayContent = post.content;
       if (post.postMode !== 'html') {
-        post.content = mdParser(post.content);
-        post.content = $sanitize(post.content);
+        post.displayContent = mdParser(post.displayContent);
+        post.displayContent = $sanitize(post.displayContent);
       }
       post.displayedTitle = post.title;
       if (!post.title) {
-        let $title = angular.element(`<div>${post.content}</div>`);
+        let $title = angular.element(`<div>${post.displayContent}</div>`);
         let title = (typeof($title.text().trim) === 'function') ? $title.text().trim() : '';
         if (!title.length) {
           $title = $title.find('img:first');

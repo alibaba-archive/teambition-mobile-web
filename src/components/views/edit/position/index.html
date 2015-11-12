@@ -1,0 +1,21 @@
+<ion-view ng-controller="TaskPositionSelectorView as TaskPositionSelectorCtrl" class="create-object-position">
+  <ion-content>
+     <div class="list ionic">
+       <a class="item item-icon-left" ng-href="#/detail/{{TaskPositionSelectorCtrl.boundToObjectType}}/{{TaskPositionSelectorCtrl.boundToObjectId}}/position/projects">
+         <i class="icon icon-project"></i>
+         项目
+         <span class="project-name bind-value" ng-bind="TaskPositionSelectorCtrl.project.name"></span>
+       </a>
+       <a class="item item-icon-left" ng-href="#/detail/{{TaskPositionSelectorCtrl.boundToObjectType}}/{{TaskPositionSelectorCtrl.boundToObjectId}}/position/tasklist">
+         <i class="icon icon-tick"></i>
+         任务列表
+         <span class="tasklist-name bind-value" ng-bind="TaskPositionSelectorCtrl.detail.tasklist"></span>
+       </a>
+       <a class="item item-icon-left" ng-href="#/detail/{{TaskPositionSelectorCtrl.boundToObjectType}}/{{TaskPositionSelectorCtrl.boundToObjectId}}/position/stage">
+         <i class="icon icon-stage"></i>
+         阶段
+         <span class="stage-name bind-value" ng-bind="TaskPositionSelectorCtrl.detail.stage"></span>
+       </a>
+     </div>
+  </ion-content>
+</ion-view>

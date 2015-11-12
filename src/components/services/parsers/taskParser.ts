@@ -51,7 +51,7 @@ module teambition {
         avatarUrl: teambition.nobodyUrl,
         _id: ''
       };
-      task.displayDuedate = new Date(task.dueDate);
+      task.displayDuedate = task.dueDate ? new Date(task.dueDate) : null;
       task.executorAvatar = task.executor.avatarUrl;
       task.executorName = task.executor.name;
       task.parsedNote = task.note;

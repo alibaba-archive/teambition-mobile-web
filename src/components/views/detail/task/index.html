@@ -1,8 +1,8 @@
 <div class="task-detail list" ng-controller="TaskView as TaskCtrl">
   <div class="task-name-wrap ionic">
-    <div class="task-belong item">
+    <a class="task-belong item" on-tap="TaskCtrl.openEdit('position')">
       <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
-    </div>
+    </a>
     <div-item class="item item-icon-left task-content">
       <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"></i>
       <span>{{TaskCtrl.task.content}}</span>

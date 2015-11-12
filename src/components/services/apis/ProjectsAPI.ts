@@ -63,16 +63,19 @@ module teambition {
     private ProjectModel: IProjectModel;
 
     public fetch() {
+      let cache = this.ProjectModel.getCollection();
+      if (cache) {
+        let deferred = this.$q.defer();
+        deferred.resolve(cache);
+        return deferred.promise;
+      }
       return this.RestAPI.query({
         Type: 'projects',
         fields: this.queryFileds.projectFileds
       })
       .$promise
       .then((projects: IProjectData[]) => {
-        return this.prepareProject(projects)
-        .sort((left: IProjectDataParsed, right: IProjectDataParsed) => {
-          return left._py - right._py;
-        });
+        return this.prepareProject(projects);
       });
     }
 

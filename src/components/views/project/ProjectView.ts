@@ -18,7 +18,6 @@ module teambition {
   export class ProjectView extends View {
 
     public ViewName = 'ProjectView';
-    public $$id     = 'Projects';
     public personalProjects: IProjectDataParsed[] = [];
     public staredProject: IProjectDataParsed[] = [];
     public projects: IProjectDataParsed[] = [];

@@ -5,7 +5,7 @@ module teambition {
     _id: string;
     _executorId: string;
     _projectId: string;
-    _taskListId: string;
+    _tasklistId: string;
     tagsId: string[];
     _stageId: string;
     involveMembers: string[];
@@ -123,7 +123,7 @@ module teambition {
 
   export interface IDetailAPI {
     fetch(_id: string, type: string, linkedId?: string): angular.IPromise<any>;
-    update(_id: string, type: string, patch: any): angular.IPromise<any>;
+    update(_id: string, type: string, patch: any, param?: string): angular.IPromise<any>;
   }
 
   @inject([
@@ -192,10 +192,11 @@ module teambition {
       });
     }
 
-    public update(_id: string, type: string, patch: any) {
+    public update(_id: string, type: string, patch: any, param?: string) {
       return this.RestAPI.update({
         Type: `${type}s`,
-        Id: _id
+        Id: _id,
+        Path1: param
       }, patch)
       .$promise
       .then((detail: any) => {

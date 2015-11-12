@@ -3,7 +3,6 @@ module teambition {
   'use strict';
 
   @inject([
-    '$ionicHistory',
     'DetailAPI',
     'MemberAPI'
   ])
@@ -13,7 +12,6 @@ module teambition {
     public members: any;
     public detail: ITaskData;
 
-    private $ionicHistory: ionic.navigation.IonicHistoryService;
     private DetailAPI: IDetailAPI;
     private MemberAPI: IMemberAPI;
     private boundToObjectId: string;
@@ -59,12 +57,12 @@ module teambition {
         this.lastSelected = id;
         this.showMsg('success', '更新成功', '已成功更新任务执行者');
         this.hideLoading();
-        this.$ionicHistory.goBack();
+        window.history.back();
       })
       .catch((reason: any) => {
         this.showMsg('error', '网络错误', '更新任务执行者失败');
         this.hideLoading();
-        this.$ionicHistory.goBack();
+        window.history.back();
       });
     }
   }

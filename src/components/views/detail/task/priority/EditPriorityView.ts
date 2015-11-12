@@ -2,7 +2,6 @@
 module teambition {
   'use strict';
   @inject([
-    '$ionicHistory',
     'DetailAPI'
   ])
   class EditPriorityView extends View {
@@ -29,7 +28,6 @@ module teambition {
     ];
 
     private taskid: string;
-    private $ionicHistory: ionic.navigation.IonicHistoryService;
     private DetailAPI: IDetailAPI;
     private lastSelected: number;
 
@@ -62,12 +60,12 @@ module teambition {
         this.priority[priority].isSelected = true;
         this.showMsg('success', '更新成功', '已更新任务优先级');
         this.hideLoading();
-        this.$ionicHistory.goBack();
+        window.history.back();
       })
       .catch((reason: any) => {
         this.showMsg('error', '更新失败', reason);
         this.hideLoading();
-        this.$ionicHistory.goBack();
+        window.history.back();
       });
     }
   }

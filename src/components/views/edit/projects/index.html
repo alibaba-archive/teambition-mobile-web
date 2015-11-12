@@ -1,0 +1,31 @@
+<ion-view class="padding" ng-controller="ChooseProjectsView as ChooseProjectsCtrl">
+  <ion-content>
+    <div class="list projects-list">
+      <div class="item item-divider" ng-if="ChooseProjectsCtrl.personalProjects.length">
+        个人项目
+      </div>
+      <ion-list class="project-wrap" ng-repeat="project in ChooseProjectsCtrl.personalProjects track by project._id" ng-show="!project.deleted">
+        <ion-item class="item item-icon-right" on-tap="ChooseProjectsCtrl.changeProject(project._id)">
+          <div class="project-list-icon project-logo" style="{{project.style}}"></div>
+          <i ng-if="project.isSelected" class="icon icon-tick positive"></i>
+          <p>{{project.name}}</p>
+        </ion-item>
+      </ion-list>
+      <!-- 个人项目结束 -->
+      <!-- 组织项目 -->
+      <section ng-repeat="organization in ChooseProjectsCtrl.organization track by organization.id | orderBy: 'name'">
+        <div class="item item-divider">
+          {{organization.name}}
+        </div>
+        <ion-list class="project-wrap" ng-repeat="project in organization.projects track by project._id" ng-show="!project.deleted">
+          <ion-item class="item item-icon-right" on-tap="ChooseProjectsCtrl.changeProject(project._id)">
+            <div class="project-list-icon project-logo" style="{{project.style}}"></div>
+            <i ng-if="project.isSelected" class="icon icon-tick positive"></i>
+            <p>{{project.name}}</p>
+          </ion-item>
+        </ion-list>
+      </section>
+      <!-- 组织项目结束 -->
+    </div>
+  </ion-content>
+</ion-view>

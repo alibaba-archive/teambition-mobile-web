@@ -3,7 +3,6 @@ module teambition {
   'use strict';
 
   @inject([
-    '$ionicHistory',
     'DetailAPI'
   ])
   class EditRecurrenceView extends View {
@@ -38,7 +37,6 @@ module teambition {
       }
     ];
 
-    private $ionicHistory: ionic.navigation.IonicHistoryService;
     private DetailAPI: IDetailAPI;
     private taskid: string;
     private lastIndex: number;
@@ -79,12 +77,12 @@ module teambition {
         this.lastIndex = $index;
         this.showMsg('success', '更新成功', '已更新任务重复规则');
         this.hideLoading();
-        this.$ionicHistory.goBack();
+        window.history.back();
       })
       .catch((reason: any) => {
         this.showMsg('error', '网络错误', reason);
         this.hideLoading();
-        this.$ionicHistory.goBack();
+        window.history.back();
       });
     }
   }

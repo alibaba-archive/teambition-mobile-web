@@ -88,6 +88,22 @@ module teambition {
           }
         }
       })
+      .state('edit_position', {
+        url: '/detail/:type/:_id/position',
+        templateUrl: 'edit/position/index.html'
+      })
+      .state('choose_project', {
+        url: '/detail/:type/:_id/position/projects',
+        templateUrl: 'edit/projects/index.html'
+      })
+      .state('choose_tasklist', {
+        url: '/detail/:type/:_id/position/tasklist',
+        templateUrl: 'edit/tasklist/index.html'
+      })
+      .state('choose_stage', {
+        url: '/detail/:type/:_id/position/stage',
+        templateUrl: 'edit/stage/index.html'
+      })
       .state('edit_executor', {
         url: '/detail/task/:_id/executor',
         templateUrl: 'detail/task/executor/index.html'

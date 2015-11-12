@@ -1,0 +1,10 @@
+<ion-view ng-controller="ChooseTasklistView as ChooseTasklistCtrl" class="choose-tasklist">
+  <ion-content>
+     <div class="list">
+       <div class="item item-icon-right" ng-repeat="tasklist in ChooseTasklistCtrl.tasklists track by tasklist._id" on-tap="ChooseTasklistCtrl.chooseTasklist($index)">
+         <span class="tasklist-name" ng-bind="tasklist.title"></span>
+         <i class="icon icon-tick" ng-if="tasklist.isSelected"></i>
+       </div>
+     </div>
+  </ion-content>
+</ion-view>
