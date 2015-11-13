@@ -101,6 +101,7 @@ module teambition {
     location: string;
     content: string;
     title: string;
+    recurrence: string;
     updated: string;
     involveMembers: string[];
     linked?: ILinkedData[];

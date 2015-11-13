@@ -19,13 +19,13 @@
       <span class="item-value">{{PostCtrl.post.linked.length}}个关联</span>
     </a>
   </div>
-  <div class="post-executor-wrap" on-tap="DetailCtrl.showExecutors()">
-    <div class="item list-title">
+  <div class="post-executor-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
+    <div-item class="item list-title">
       参与者
-    </div>
-    <div class="item item-icon-left">
+    </div-item>
+    <a class="item item-icon-left">
       <i class="icon icon-users"></i>
       <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
-    </div>
+    </a>
   </div>
 </div>

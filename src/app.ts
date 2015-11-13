@@ -19,6 +19,7 @@ module teambition {
     wsHost: 'ws://snapper.project.bi/',
     wxid: 'wx48744c9444d9824a',
     spiderHost: 'https://spider.teambition.com/api/track',
-    dingAgentId: '6837452'
+    dingAgentId: '6837452',
+    dingApiHost: 'http://192.168.0.145:6040'
   });
 }

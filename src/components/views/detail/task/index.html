@@ -1,6 +1,6 @@
 <div class="task-detail list" ng-controller="TaskView as TaskCtrl">
   <div class="task-name-wrap ionic">
-    <a class="task-belong item" on-tap="TaskCtrl.openEdit('position')">
+    <a class="task-belong item" on-tap="DetailCtrl.openEdit('position')">
       <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
     </a>
     <div-item class="item item-icon-left task-content">
@@ -12,11 +12,11 @@
     <div-item class="item list-title">
       信息
     </div-item>
-    <a class="item item-detail-avatar" on-tap="TaskCtrl.openEdit('executor')">
+    <a class="item item-detail-avatar" on-tap="DetailCtrl.openEdit('executor')">
       <img ng-src="{{TaskCtrl.getExecutorAvatar()}}" class="task-executor-avatar">
       <span class="task-executor-name" ng-bind="TaskCtrl.getExecutorName()"></span>
     </a>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('duedate')">
+    <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('duedate')">
       <i class="icon icon-calendar2"></i>
       <span ng-if="!TaskCtrl.task.dueDate">没有设置截止日期</span>
       <span ng-if="TaskCtrl.task.dueDate" ng-class="{'assertive': TaskCtrl.task.overdue}">{{TaskCtrl.task.dueDate | formatDate:'ll'}}</span>
@@ -26,19 +26,19 @@
     <div-title class="item list-title">
       更多
     </div-title>
-    <a class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note' on-tap="TaskCtrl.openEdit('note')">
+    <a class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note' on-tap="DetailCtrl.openEdit('note')">
       <i class="icon icon-wall"></i>
       <span ng-bind-html="TaskCtrl.task.parsedNote" class="task-note"></span>
     </a>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('subtasks')" ng-if="TaskCtrl.task.subtaskCount.total">
+    <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('subtasks')" ng-if="TaskCtrl.task.subtaskCount.total">
       <i class="icon icon-sub-task"></i>
       <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
     </a>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('priority')">
+    <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('priority')">
       <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
       <span>{{TaskCtrl.task.priority | priorityStr}}</span>
     </a>
-    <a class="item item-icon-left" on-tap="TaskCtrl.openEdit('recurrence')">
+    <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('recurrence')">
       <i class="icon icon-repeat"></i>
       <span>{{TaskCtrl.task.recurrenceTime | recurrenceStr}}</span>
     </a>
@@ -47,7 +47,7 @@
       <span>{{TaskCtrl.task.linked.length}}个关联</span>
     </a>
   </div>
-  <div class="task-executor-wrap ionic" on-tap="TaskCtrl.openEdit('involve')">
+  <div class="task-executor-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
     <div-item class="item list-title">
       参与者
     </div-item>

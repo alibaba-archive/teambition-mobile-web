@@ -11,6 +11,7 @@ declare module teambition {
     wxid: string;
     spiderhost: string;
     dingAgentId: string;
+    dingApiHost: string;
     socket: any;
   }
 }

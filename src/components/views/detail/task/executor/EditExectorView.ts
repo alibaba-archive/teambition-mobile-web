@@ -10,7 +10,7 @@ module teambition {
     public ViewName = 'EditExectorView';
 
     public members: any;
-    public detail: ITaskData;
+    public detail: ITaskDataParsed;
 
     private DetailAPI: IDetailAPI;
     private MemberAPI: IMemberAPI;
@@ -26,7 +26,7 @@ module teambition {
 
     public onInit() {
       return this.DetailAPI.fetch(this.boundToObjectId, 'task')
-      .then((detail: ITaskData) => {
+      .then((detail: ITaskDataParsed) => {
         this.detail = detail;
         return detail._projectId;
       })
@@ -38,6 +38,9 @@ module teambition {
           if (exector) {
             exector.isSelected = true;
             this.lastSelected = this.detail._executorId;
+          }else {
+            this.members['0'].isSelected = true;
+            this.lastSelected = '0';
           }
         });
       });
@@ -48,8 +51,9 @@ module teambition {
         return ;
       }
       this.showLoading();
+      let _id = id === '0' ? null : id;
       return this.DetailAPI.update(this.boundToObjectId, 'task', {
-        _executorId: id
+        _executorId: _id
       })
       .then((patch: any) => {
         this.members[this.lastSelected].isSelected = false;

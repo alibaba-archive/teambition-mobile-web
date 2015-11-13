@@ -1,0 +1,20 @@
+<ion-view class="create-project-view"
+          ng-controller="CreateProjectView as CreateProjectCtrl">
+  <ion-content>
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="项目名称">
+      </label>
+      <div class="selector-wrap ionic">
+        <div class="item">
+          所有者
+          <span ng-bind="CreateProjectCtrl.getOrganization()"></span>
+        </div>
+        <div class="item">
+          可见性
+          <span ng-bind="CreateProjectCtrl.getVisiable()"></span>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

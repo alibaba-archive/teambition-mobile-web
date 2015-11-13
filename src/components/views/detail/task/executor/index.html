@@ -1,10 +1,14 @@
 <ion-view ng-controller="EditExectorView as EditExectorCtrl" class="edit-exector-view">
   <ion-content>
     <div class="list executor-members">
-      <div class="item item-avatar item-icon-right" ng-repeat="member in EditExectorCtrl.members track by member._id" on-tap="EditExectorCtrl.selectExecutor(member._id)">
-        <div class="avatar item-image" style="background-image: url({{member.avatarUrl}})"></div>
+      <div class="item item-avatar item-icon-right"
+           ng-repeat="member in EditExectorCtrl.members track by member._id"
+           on-tap="EditExectorCtrl.selectExecutor(member._id)">
+        <div class="avatar item-image"
+             style="background-image: url({{member.avatarUrl}})">
+        </div>
         <h2 class="excutor-member-name">{{member.name}}</h2>
-        <i ng-if="member.isSelected" class="icon icon-tick positive"></i>
+        <i ng-show="member.isSelected" class="icon icon-tick positive"></i>
       </div>
     </div>
   </ion-content>

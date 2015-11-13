@@ -26,10 +26,6 @@ module teambition {
       this.project = this.parent.project;
     }
 
-    public openEdit(name: string) {
-      window.location.hash = `/detail/task/${this.task._id}/${name}`;
-    }
-
     public getExecutorAvatar() {
       if (!this.task) {
         return;

@@ -13,12 +13,8 @@ module EtTemplate {
     public parentDOM: Element;
     public template: IETProto;
 
-    constructor() {
-      this.zone.run(teambition.noop);
-    }
-
-    public update(data: IUpdateParam) {
-      this.template.update(data);
+    public update() {
+      this.template.update(this);
     }
 
     public destroy() {
@@ -41,17 +37,38 @@ module EtTemplate {
   export function Component(conf: IComponentConfig) {
     return function(target: any) {
       let hasInit = false;
+      let template: IETProto;
+      let proto = target.prototype;
       let zone = teambition.rootZone.fork({
         beforeTask: () => {
           let $$injector = teambition.$$injector;
           if (!hasInit) {
             let templateUrl = conf.templateUrl;
             let instanceName = templateUrl.split('/').join('_');
-            let instance = new $$injector.get(instanceName)();
-            target.prototype.template = instance;
-            target.prototype.parentDOM = document.querySelector(conf.selector);
+            let instance = new $$injector.get(instanceName)(proto);
+            template = proto.template = instance;
+            proto.parentDOM = document.querySelector(conf.selector);
           }
           hasInit = true;
+        },
+        afterTask: () => {
+          let keys = Object.keys(proto);
+          angular.forEach(keys, (val: string) => {
+            if (typeof proto[val] === 'function') {
+              let originFn = proto[val];
+              let fakeFn = (...args: any[]) => {
+                let val: any;
+                proto.zone.run(() => {
+                  val = originFn.apply(proto, args);
+                });
+                return val;
+              };
+              proto[val] = fakeFn;
+            }
+          });
+          if (template && proto) {
+            template.update(proto);
+          }
         }
       });
       target.prototype.zone = zone;

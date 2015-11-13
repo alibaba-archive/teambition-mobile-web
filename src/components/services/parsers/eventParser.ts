@@ -6,6 +6,7 @@ module teambition {
     contentToDisplay: string;
     eventTime1: string;
     eventTime2: string;
+    recurrenceTime: string;
     fetchTime?: number;
     linked?: ILinkedData[];
     isLike?: boolean;
@@ -25,10 +26,10 @@ module teambition {
     Moment: moment.MomentStatic
   ) {
     return function(event: IEventDataParsed): IEventDataParsed {
-      event.location = event.location ? event.location : '暂未安排地点';
       event.contentToDisplay = event.content;
       event.contentToDisplay = mdParser(event.contentToDisplay);
       event.contentToDisplay = $sanitize(event.contentToDisplay);
+      event.recurrenceTime = event.recurrence ? event.recurrence[0] : undefined;
       let startDate = Moment(event.startDate);
       let endDate = Moment(event.endDate);
       endDate = endDate ? endDate : endDate.clone().add(1, 'hours');

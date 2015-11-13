@@ -36,6 +36,9 @@ module teambition {
       let visible: string = this.getParameterByName(window.location.hash, 'visible');
       if (!visible) {
         this.zone.hasCreated = true;
+        if (this.userMe && this.$rootScope.pending) {
+          return;
+        }
         this.$rootScope.pending = this.RestAPI.get({
           Type: 'users',
           Id: 'me'

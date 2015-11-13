@@ -65,10 +65,10 @@ module teambition {
     };
 
     let initDD = () => {
-      return $http.get(`http://dt.jixigo.com:10003/signature`);
+      return $http.get(app.dingApiHost + '/signature');
     };
 
-    if (typeof(wx) === 'object') {
+    if (typeof wx === 'object') {
       initWechat()
       .then((data: IWxSignature) => {
         Wechat = new WechatService(app.wxid, data.noncestr, data.timestamp, data.signature);
@@ -76,25 +76,11 @@ module teambition {
       .catch((reason: any) => {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
       });
-    }else if (typeof(dd) === 'object') {
+    }else if (typeof dd === 'object') {
       initDD().then((data: any) => {
         let info: IDingSignature = data.data;
         Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
-        dd.ready(() => {
-          dd.biz.navigation.setTitle({
-            title: 'hah',
-            onSuccess: (result: any) => {
-              alert(`1${JSON.stringify(result)}`);
-            },
-            onFail: (result: any) => {
-              alert(`2${JSON.stringify(result)}`);
-            }
-          });
-        });
-
-        dd.error((error: any) => {
-          alert(`error: ${JSON.stringify(error)}`);
-        });
+        Ding.setTitle('Teambition');
       });
     }
 

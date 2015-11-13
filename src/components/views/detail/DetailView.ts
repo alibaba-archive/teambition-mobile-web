@@ -206,6 +206,10 @@ module teambition {
       }
     }
 
+    public openEdit(name: string) {
+      window.location.hash = `/detail/${this._boundToObjectType}/${this._boundToObjectId}/${name}`;
+    }
+
     private addTextComment(attachments?: string[]) {
       attachments = (attachments && attachments.length) ? attachments : [];
       return this.ActivityAPI.save({

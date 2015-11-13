@@ -7,24 +7,36 @@
         <p><span ng-bind="EventCtrl.event.eventTime2"></span></p>
       </div>
     </div>
-    <div class="event-detail-wrap">
-      <div class="item item-icon-left" ng-if="EventCtrl.event.content">
-        <i class="icon icon-wall"></i>
-        <span class="event-content margin-left" ng-bind-html="EventCtrl.event.contentToDisplay"></span>
-      </div>
+    <div class="item list-title">
+      信息
+    </div>
+    <div class="ionic">
       <div class="item item-icon-left">
         <i class="icon icon-location"></i>
-        <span class="event-location margin-left" ng-bind="EventCtrl.event.location"></span>
+        <span class="event-location" ng-bind="EventCtrl.event.location || '添加地点'"></span>
+      </div>
+    </div>
+    <div class="item list-title">
+      更多
+    </div>
+    <div class="event-detail-wrap ionic">
+      <div class="item item-icon-left">
+        <i class="icon icon-wall"></i>
+        <span class="event-content margin-left" ng-bind-html="EventCtrl.event.contentToDisplay || '添加备注'"></span>
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon icon-repeat"></i>
+        <span class="event-recurrence margin-left" ng-bind="EventCtrl.event.recurrenceTime | recurrenceStr"></span>
       </div>
       <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-if="EventCtrl.event.linked.length">
         <i class="icon icon-link2"></i>
         <span class="margin-left">{{EventCtrl.event.linked.length}}个关联</span>
       </a>
     </div>
-    <div class="event-executor-wrap" on-tap="DetailCtrl.showExecutors()">
-      <div class="item list-title">
+    <div class="event-executor-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
+      <div-item class="item list-title">
         参与者
-      </div>
+      </div-item>
       <div class="item item-icon-left">
         <i class="icon icon-users"></i>
         <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>

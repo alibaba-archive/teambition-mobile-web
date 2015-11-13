@@ -4,20 +4,21 @@
 .event-detail {
   margin-bottom: 0;
   .event-main-wrap{
-    margin-bottom: 15px;
     overflow: hidden;
     border-bottom: 1px solid rgba(0, 0, 0, .03);
-    .event-title {
-      color: @darkTextColor;
-      font-size: 28px;
-      line-height: 28px;
-    }
-    .event-time{
-      margin-top: 15px;
+    .item {
+      background-color: #f7f7f7;
+      .event-title {
+        color: @darkTextColor;
+        font-size: 28px;
+        line-height: 28px;
+      }
+      .event-time{
+        margin-top: 15px;
+      }
     }
   }
   .event-detail-wrap{
-
     overflow: hidden;
     border-top: 1px solid rgba(0, 0, 0, .03);
     border-bottom: 1px solid rgba(0, 0, 0, .03);
@@ -32,6 +33,7 @@
       display: flex;
       display: -webkit-flex;
       margin-left: 15px;
+      min-height: 20px;
     }
   }
   .item {
@@ -54,9 +56,7 @@
     }
   }
   .event-executor-wrap{
-    margin-top: 15px;
     overflow: hidden;
-    border-top: 1px solid rgba(0, 0, 0, .03);
     border-bottom: 1px solid rgba(0, 0, 0, .03);
   }
 }

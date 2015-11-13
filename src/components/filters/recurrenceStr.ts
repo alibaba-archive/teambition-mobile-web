@@ -11,7 +11,8 @@ module teambition {
       let ruleMap = {
         DAILY: '天',
         WEEKLY: '周',
-        MONTHLY: '月'
+        MONTHLY: '月',
+        BYDAY: 'FR'
       };
       let freq = _arr[0];
       freq = freq ? freq.split('=')[1] : freq;

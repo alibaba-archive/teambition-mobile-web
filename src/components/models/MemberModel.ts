@@ -22,6 +22,11 @@ module teambition {
         angular.forEach(collection, (member: IMemberData) => {
           memberMap[member._id] = member;
         });
+        memberMap['0'] = {
+          _id: '0',
+          name: '待认领',
+          avatarUrl: nobodyUrl
+        };
         this._set('members', projectId, memberMap);
         return memberMap;
       }else {

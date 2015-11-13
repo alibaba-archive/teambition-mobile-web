@@ -44,6 +44,14 @@ module teambition {
       return this.getProjects();
     }
 
+    public onAllChangesDone() {
+      if (Ding) {
+        Ding.setRight('创建项目', true, true, () => {
+          this.openProjectCreator();
+        });
+      }
+    }
+
     public wxQrcode() {
       wx.scanQRCode({
         needResult: 1,
@@ -150,6 +158,13 @@ module teambition {
         }
       }
       return hasStar;
+    }
+
+    private openProjectCreator() {
+      this.openModal('project/project-creator.html', {});
+      if (Ding) {
+        Ding.setRight('完成', true, true);
+      }
     }
 
     private archiveProject(project: IProjectData) {

@@ -10,6 +10,7 @@
 /// <reference path='../models/TasklistModel.ts' />
 /// <reference path='../models/TagsModel.ts' />
 /// <reference path='../models/ObjectLinkModel.ts' />
+/// <reference path='../models/OrganizationModel.ts' />
 /// <reference path='../models/LikeModel.ts' />
 /// <reference path='../models/SubtaskModel.ts' />
 /// <reference path='../models/MemberModel.ts' />

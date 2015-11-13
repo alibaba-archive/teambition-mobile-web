@@ -11,25 +11,33 @@ module EtTemplate {
   })
   export class Notify extends ETComponent {
 
+    public type: string;
+    public title: string;
+    public msg: string;
+    public href: string;
+    public animateClass: string;
+
+    constructor() {
+      super();
+      this.zone.run(teambition.noop);
+    }
+
     public show(type: string, title: string, msg: string, href?: string) {
-      let param = {
-        type: type,
-        title: title,
-        msg: msg,
-        animateClass: 'animated fadeInUp',
-        href: href
-      };
+      this.type = type;
+      this.title = title;
+      this.msg = msg;
+      this.href = href;
       window.clearTimeout(fadeOutAnimate);
       window.clearTimeout(removeFn);
+      this.animateClass = 'animated fadeInUp';
       this.remove();
-      this.update(param);
       this.insertDOM();
       fadeOutAnimate = setTimeout(() => {
-        param.animateClass = 'animated fadeOutDown';
-        this.update(param);
+        this.animateClass = 'animated fadeOutDown';
       }, 2000);
 
       removeFn = setTimeout(() => {
+        this.animateClass = null;
         this.remove();
       }, 3000);
 

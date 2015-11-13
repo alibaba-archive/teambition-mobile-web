@@ -17,6 +17,7 @@
 /// <reference path='../services/apis/ActivityAPI.ts' />
 /// <reference path='../services/apis/LikeAPI.ts' />
 /// <reference path='../services/apis/ObjectLinkAPI.ts' />
+/// <reference path='../services/apis/OrganizationAPI.ts' />
 /// <reference path='../services/apis/StrikerAPI.ts' />
 /// <reference path='../services/parsers/projectParser.ts' />
 /// <reference path='../services/parsers/PAParser.ts' />
