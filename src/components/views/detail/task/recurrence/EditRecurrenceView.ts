@@ -3,12 +3,13 @@ module teambition {
   'use strict';
 
   @inject([
-    'DetailAPI'
+    'DetailAPI',
+    '$filter'
   ])
   class EditRecurrenceView extends View {
     public ViewName = 'EditRecurrenceView';
 
-    public task: ITaskDataParsed;
+    public detail: any;
     public recurrence = [
       {
         name: '从不',
@@ -38,26 +39,30 @@ module teambition {
     ];
 
     private DetailAPI: IDetailAPI;
-    private taskid: string;
+    private boundToObjectId: string;
+    private boundToObjectType: string;
     private lastIndex: number;
+    private $filter: any;
     constructor() {
       super();
       this.zone.run(() => {
-        this.taskid = this.$state.params._id;
+        this.boundToObjectId = this.$state.params._id;
+        this.boundToObjectType = this.$state.params.type;
       });
     }
 
     public onInit() {
-      return this.DetailAPI.fetch(this.taskid, 'task')
+      return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
       .then((task: ITaskDataParsed) => {
-        this.task = task;
-        if (!this.task.recurrence) {
+        this.detail = task;
+        if (!this.detail.recurrence) {
           this.recurrence[0].isSelected = true;
           this.lastIndex = 0;
         }else {
           for (let index = 1; index < this.recurrence.length; index++) {
             let element = this.recurrence[index];
-            if (this.task.recurrenceTime.indexOf(element.recurrence) !== -1) {
+            let parsedRecurrence = this.$filter('recurrenceStr')(this.detail.recurrenceTime);
+            if (element.name === parsedRecurrence) {
               element.isSelected = true;
               this.lastIndex = index;
             }
@@ -68,7 +73,7 @@ module teambition {
 
     public chooseRecurrence($index: number) {
       this.showLoading();
-      return this.DetailAPI.update(this.taskid, 'task', {
+      return this.DetailAPI.update(this.boundToObjectId, this.boundToObjectType, {
         recurrence: [this.recurrence[$index].recurrence]
       })
       .then(() => {
@@ -80,7 +85,8 @@ module teambition {
         window.history.back();
       })
       .catch((reason: any) => {
-        this.showMsg('error', '网络错误', reason);
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '更新失败', message);
         this.hideLoading();
         window.history.back();
       });

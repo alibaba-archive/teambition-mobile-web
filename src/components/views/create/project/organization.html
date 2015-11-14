@@ -1,0 +1,24 @@
+<ion-modal-view>
+  <ion-content class="select-organization">
+    <div class="list no-organization">
+      <div class="item item-icon-right"
+           on-tap="CreateProjectCtrl.changeOrganization()">
+        个人项目
+        <i class="icon icon-tick" ng-if="CreateProjectCtrl.getOrganization() === '个人项目'"></i>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item list-title">
+        企业
+      </div>
+      <div class="organization-list">
+        <div class="item item-icon-right"
+           ng-repeat="organization in CreateProjectCtrl.organizations track by organization._id"
+           on-tap="CreateProjectCtrl.changeOrganization($index)">
+          <span ng-bind="organization.name"></span>
+          <i class="icon icon-tick" ng-if="CreateProjectCtrl.getOrganization() === organization.name"></i>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

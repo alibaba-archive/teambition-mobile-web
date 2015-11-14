@@ -10,7 +10,6 @@ module teambition {
   @inject([
     'PAParser',
     'queryFileds',
-    'taskParser',
     'Moment',
     'MemberAPI',
     'ProjectActivityModel',
@@ -18,7 +17,6 @@ module teambition {
   ])
   class ProjectDetailAPI extends BaseAPI implements IProjectDetailAPI {
     private PAParser: IPAParser;
-    private taskParser: ITaskParser;
     private Moment: moment.MomentStatic;
     private MemberAPI: IMemberAPI;
     private ProjectActivityModel: IProjectActivityModel;
@@ -41,7 +39,7 @@ module teambition {
       }
       let deferred = this.$q.defer();
       let cache = this.ProjectActivityModel.getCollection(_projectId, _membersFilter, _typesFilter);
-      if (cache) {
+      if (cache && Math.ceil(cache.length / 20) > page) {
         deferred.resolve(cache);
         return deferred.promise;
       }
@@ -120,14 +118,12 @@ module teambition {
     private prepareTasks(tasks: ITaskData[], projectId: string, members: {[index: string]: IMemberData}, typesFilter: string, page: number): ITaskDataParsed[] {
       let results: ITaskDataParsed[] = [];
       if (tasks && tasks.length) {
-        angular.forEach(tasks, (task: ITaskData, index: number) => {
+        angular.forEach(tasks, (task: ITaskDataParsed, index: number) => {
           if (task._executorId) {
             task.executor = members[task._executorId];
           }
-          let result: ITaskDataParsed = this.taskParser(task);
-          results.push(result);
-          result.fetchTime = Date.now();
-          this.TaskModel.setDetail(`task:detail:${result._id}`, task);
+          this.TaskModel.setDetail(`task:detail:${task._id}`, task);
+          results.push(task);
         });
       }
       if (typesFilter === 'noneExecutor') {

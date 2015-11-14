@@ -112,8 +112,8 @@ module teambition {
         url: '/detail/task/:_id/executor',
         templateUrl: 'detail/task/executor/index.html'
       })
-      .state('edit_task_note', {
-        url: '/detail/task/:_id/note',
+      .state('edit_detail_note', {
+        url: '/detail/:type/:_id/note',
         templateUrl: 'detail/task/note/index.html'
       })
       .state('subtask', {
@@ -128,8 +128,8 @@ module teambition {
         url: '/detail/task/:_id/duedate',
         templateUrl: 'detail/task/dueDate/index.html'
       })
-      .state('edit_task_recurrence', {
-        url: '/detail/task/:_id/recurrence',
+      .state('edit_detail_recurrence', {
+        url: '/detail/:type/:_id/recurrence',
         templateUrl: 'detail/task/recurrence/index.html'
       })
       .state('edit_involve', {

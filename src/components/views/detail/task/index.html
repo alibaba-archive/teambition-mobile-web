@@ -26,9 +26,9 @@
     <div-title class="item list-title">
       更多
     </div-title>
-    <a class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note' on-tap="DetailCtrl.openEdit('note')">
+    <a class="item item-icon-left item-taks-note" on-tap="DetailCtrl.openEdit('note')">
       <i class="icon icon-wall"></i>
-      <span ng-bind-html="TaskCtrl.task.parsedNote" class="task-note"></span>
+      <span ng-bind-html="TaskCtrl.task.parsedNote || '添加备注'" class="task-note"></span>
     </a>
     <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('subtasks')" ng-if="TaskCtrl.task.subtaskCount.total">
       <i class="icon icon-sub-task"></i>

@@ -11,6 +11,14 @@ module teambition {
     starProject(_projectId: string): angular.IPromise<IProjectDataParsed>;
     leaveProject(_projectId: string): angular.IPromise<any>;
     archiveProject(_projectId: string): angular.IPromise<IProjectDataParsed>;
+    createProject(
+      name: string,
+      _organizationId?: string,
+      description?: string,
+      logo?: string,
+      category?: string,
+      dividerIndex?: string
+    ): angular.IPromise<void>;
   }
 
   export interface ITburlData {
@@ -54,12 +62,10 @@ module teambition {
 
   @inject([
     'app',
-    'projectParser',
     'ProjectModel'
   ])
   class ProjectsAPI extends BaseAPI implements IProjectsAPI {
     private app: Iapp;
-    private projectParser: (project: IProjectData) => teambition.IProjectDataParsed;
     private ProjectModel: IProjectModel;
 
     public fetch() {
@@ -75,7 +81,8 @@ module teambition {
       })
       .$promise
       .then((projects: IProjectData[]) => {
-        return this.prepareProject(projects);
+        this.ProjectModel.setCollection(projects);
+        return projects;
       });
     }
 
@@ -94,9 +101,8 @@ module teambition {
       })
       .$promise
       .then((data: IProjectData) => {
-        let project: teambition.IProjectDataParsed = this.projectParser(data);
-        this.ProjectModel.set(project._id, project);
-        return project;
+        this.ProjectModel.set(data);
+        return data;
       });
     }
 
@@ -183,7 +189,7 @@ module teambition {
       }, {
         _invitorId: _invitorId
       }, (data: IProjectData) => {
-        this.prepareProject([data]);
+        this.ProjectModel.set(data);
       })
       .$promise;
     }
@@ -197,21 +203,33 @@ module teambition {
       })
       .$promise
       .then((data: IProjectData) => {
-        let result = this.projectParser(data);
-        this.ProjectModel.updateObj(result._id, result);
-        return this.ProjectModel.get(result._id);
+        this.ProjectModel.updateObj(data._id, data);
+        return this.ProjectModel.get(data._id);
       });
     }
 
-    private prepareProject(data: Array<IProjectData>): IProjectDataParsed[] {
-      let projects: IProjectDataParsed[] = [];
-      angular.forEach(data, (item: IProjectData, index: number) => {
-        let project: IProjectDataParsed = this.projectParser(item);
-        projects.push(project);
-        this.ProjectModel.set(project._id, project);
+    public createProject(
+      name: string,
+      _organizationId?: string,
+      description?: string,
+      logo?: string,
+      category?: string,
+      dividerIndex?: string
+    ) {
+      return this.RestAPI.save({
+        Type: 'projects'
+      }, {
+        name: name,
+        _organizationId: _organizationId,
+        description: description,
+        logo: logo,
+        category: category,
+        dividerIndex: dividerIndex
+      })
+      .$promise
+      .then((project: IProjectData) => {
+        this.ProjectModel.set(project);
       });
-      this.ProjectModel.setCollection(projects);
-      return this.ProjectModel.getCollection();
     }
   }
 

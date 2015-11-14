@@ -92,7 +92,8 @@ module teambition {
         height = thisView.__maxScrollTop;
       }
       if ( typeof(this.$ionicScrollDelegate.getScrollPosition) !== 'undefined') {
-        let top = this.$ionicScrollDelegate.getScrollPosition().top;
+        let position = this.$ionicScrollDelegate.getScrollPosition();
+        let top = position ? position.top : null;
         if (height - top < 45) {
           this.loadMoreData();
         }

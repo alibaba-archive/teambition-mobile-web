@@ -20,14 +20,14 @@
       更多
     </div>
     <div class="event-detail-wrap ionic">
-      <div class="item item-icon-left">
+      <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('note')">
         <i class="icon icon-wall"></i>
         <span class="event-content margin-left" ng-bind-html="EventCtrl.event.contentToDisplay || '添加备注'"></span>
-      </div>
-      <div class="item item-icon-left">
+      </a>
+      <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('recurrence')">
         <i class="icon icon-repeat"></i>
         <span class="event-recurrence margin-left" ng-bind="EventCtrl.event.recurrenceTime | recurrenceStr"></span>
-      </div>
+      </a>
       <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-if="EventCtrl.event.linked.length">
         <i class="icon icon-link2"></i>
         <span class="margin-left">{{EventCtrl.event.linked.length}}个关联</span>

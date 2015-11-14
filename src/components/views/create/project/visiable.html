@@ -1,0 +1,18 @@
+<ion-modal-view>
+  <ion-content class="select-visiable">
+    <div class="list">
+      <div class="item item-icon-left"
+          on-tap="CreateProjectCtrl.changeVisiable('private')">
+        <i class="icon icon-lock"></i>
+        <h2>私有项目</h2>
+        <span>仅项目成员可查看和编辑</span>
+      </div>
+      <div class="item item-icon-left"
+          on-tap="CreateProjectCtrl.changeVisiable('public')">
+        <i class="icon icon-lock"></i>
+        <h2>公开项目</h2>
+        <span>所有人都可以通过链接访问，仅项目成员可编辑</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -8,22 +8,24 @@ module teambition {
   class EditNoteView extends View {
     public ViewName = 'EditNoteView';
 
-    public task: ITaskData;
+    public detail: any;
 
     private DetailAPI: IDetailAPI;
-    private taskid: string;
+    private boundToObjectId: string;
+    private boundToObjectType: string;
 
     constructor() {
       super();
       this.zone.run(() => {
-        this.taskid = this.$state.params._id;
+        this.boundToObjectId = this.$state.params._id;
+        this.boundToObjectType = this.$state.params.type;
       });
     }
 
     public onInit() {
-      return this.DetailAPI.fetch(this.taskid, 'task')
-      .then((task: ITaskData) => {
-        this.task = task;
+      return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
+      .then((detail: any) => {
+        this.detail = detail;
       });
     }
 

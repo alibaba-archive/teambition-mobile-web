@@ -3,27 +3,32 @@ module teambition {
   'use strict';
   angular.module('teambition').filter('recurrenceStr', () => {
     return (rule: string) => {
-      let _rule = rule || '';
-      if (_rule === '') {
+      if (!rule || rule === '') {
         return '从不';
       }
-      let _arr = _rule.split(';');
-      let ruleMap = {
-        DAILY: '天',
-        WEEKLY: '周',
-        MONTHLY: '月',
-        BYDAY: 'FR'
-      };
-      let freq = _arr[0];
-      freq = freq ? freq.split('=')[1] : freq;
-      let cycle = _arr[1];
-      cycle = cycle ? cycle.split('=')[1] : cycle;
-      if (cycle === '2') {
-        cycle = '两';
-      }else {
-        cycle = '';
+      rule = rule.replace('RRULE:', '');
+      let ruleArr = rule.split(';');
+      let ruleMap = {};
+      angular.forEach(ruleArr, (childRule: string) => {
+        let childRuleMap = childRule.split('=');
+        ruleMap[childRuleMap[0]] = childRuleMap[1];
+      });
+      let str: string;
+      switch (ruleMap['FREQ']) {
+        case 'WEEKLY':
+          if (ruleMap['INTERVAL'] === 2) {
+            str = '两周';
+          }else {
+            str = '周';
+          }
+          break;
+        case 'DAILY':
+          str = '天';
+          break;
+        case 'MONTHLY':
+          str = '月';
+          break;
       }
-      let str = cycle + ruleMap[freq];
       return `每${str}`;
     };
   });
