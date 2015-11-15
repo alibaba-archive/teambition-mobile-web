@@ -20,11 +20,15 @@ module teambition {
           if (this.activitiesIndex.indexOf(activity._id) === -1) {
             this.activitiesIndex.push(activity._id);
             result.push(activity);
+            this._set('project:activity', activity._id, activity);
+          }else {
+            this._updateObj('project:activity', activity._id, activity)
           }
         }
       }else {
         angular.forEach(content, (activity: IActivityDataParsed, index: number) => {
           this.activitiesIndex.push(activity._id);
+          this._set('project:activity', activity._id, activity);
         });
         this._set(cacheIndex, null, content);
       }

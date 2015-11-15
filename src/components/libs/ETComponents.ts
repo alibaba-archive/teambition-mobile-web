@@ -39,6 +39,7 @@ module EtTemplate {
       let hasInit = false;
       let template: IETProto;
       let proto = target.prototype;
+      let patched = false;
       let zone = teambition.rootZone.fork({
         beforeTask: () => {
           let $$injector = teambition.$$injector;
@@ -52,20 +53,23 @@ module EtTemplate {
           hasInit = true;
         },
         afterTask: () => {
-          let keys = Object.keys(proto);
-          angular.forEach(keys, (val: string) => {
-            if (typeof proto[val] === 'function') {
-              let originFn = proto[val];
-              let fakeFn = (...args: any[]) => {
-                let val: any;
-                proto.zone.run(() => {
-                  val = originFn.apply(proto, args);
-                });
-                return val;
-              };
-              proto[val] = fakeFn;
-            }
-          });
+          if (!patched) {
+            let keys = Object.keys(proto);
+            angular.forEach(keys, (val: string) => {
+              if (typeof proto[val] === 'function') {
+                let originFn = proto[val];
+                let fakeFn = (...args: any[]) => {
+                  let val: any;
+                  proto.zone.run(() => {
+                    val = originFn.apply(proto, args);
+                  });
+                  return val;
+                };
+                proto[val] = fakeFn;
+              }
+              patched = true;
+            });
+          }
           if (template && proto) {
             template.update(proto);
           }

@@ -38,7 +38,7 @@ module teambition {
       let index = this.projectIndex.indexOf(_id);
       let collection = this._get<IProjectDataParsed[]>('projects');
       collection.splice(index, 1);
-      this.updateObj(_id, {deleted: true});
+      this._delete('project', _id);
     }
 
     public setCollection(data: IProjectData[]) {
@@ -48,6 +48,7 @@ module teambition {
         angular.forEach(data, (project: IProjectData, index: number) => {
           projectIndex.push(project._id);
           let result = this.projectParser(project);
+          this._set('project', project._id, result);
           collection.push(result);
         });
       }else {
@@ -56,8 +57,11 @@ module teambition {
             projectIndex.splice(index, 0, project._id);
             let result = this.projectParser(project);
             collection.splice(index, 0, result);
+            this._set('project', project._id, result);
           }else {
             this.updateObj(project._id, project);
+            let projectParsed = this._get<IProjectData>('project', project._id);
+            this.projectParser(projectParsed);
           }
         });
       }

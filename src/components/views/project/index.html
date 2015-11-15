@@ -22,7 +22,9 @@
         <p>扫一扫关注项目</p>
       </div>-->
       <!-- 个人项目 -->
-      <ion-list class="project-wrap ionic" ng-repeat="project in ProjectCtrl.personalProjects track by project._id" ng-show="!project.deleted">
+      <ion-list class="project-wrap ionic"
+                ng-repeat="project in ProjectCtrl.personalProjects track by project._id"
+                ng-show="!project.deleted">
         <ion-item class="item" ng-class="{'item-icon-right': editing}" href="/#/project/{{project._id}}/home">
           <div class="project-list-icon project-logo" style="{{project.style}}"></div>
           <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
@@ -41,10 +43,18 @@
         <div class="item item-divider">
           {{organization.name}}
         </div>
-        <ion-list class="project-wrap ionic" ng-repeat="project in organization.projects track by project._id" ng-show="!project.deleted">
-          <ion-item class="item" ng-class="{'item-icon-right': editing}" href="/#/project/{{project._id}}/home">
-            <div class="project-list-icon project-logo" style="{{project.style}}"></div>
-            <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
+        <ion-list class="project-wrap ionic"
+                  ng-repeat="project in organization.projects track by project._id"
+                  ng-show="!project.deleted">
+          <ion-item class="item"
+                    ng-class="{'item-icon-right': editing}"
+                    href="/#/project/{{project._id}}/home">
+            <div class="project-list-icon project-logo"
+                 style="{{project.style}}">
+            </div>
+            <i class="icon icon-circle-remove project-edit-icon"
+               ng-show="editing">
+            </i>
 
             <p>{{project.name}}</p>
             <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore(project)">更多</ion-option-button>

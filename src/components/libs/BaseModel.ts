@@ -37,5 +37,10 @@ module teambition {
         return value;
       }
     }
+
+    protected _delete(type: string, id: string) {
+      let namespace = id ? `${type}:${id}` : type;
+      this.Cache.remove(namespace);
+    }
   }
 }
