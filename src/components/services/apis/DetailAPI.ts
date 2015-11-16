@@ -51,6 +51,7 @@ module teambition {
     thumbnailUrl: string;
     description: string;
     source: string;
+    folder: string;
     involveMembers: string[];
     created: string;
     updated: string | number;

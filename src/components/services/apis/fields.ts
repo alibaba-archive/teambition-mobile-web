@@ -23,7 +23,7 @@ module teambition {
     eventFileds: '_id,_projectId,title,location,content,linked,involveMembers,startDate,endDate,updated,visiable,recurrence',
 
     workFileds: '_id,_projectId,creator,updated,involveMembers,fileType,fileName,fileSize,' +
-                'thumbnail,downloadUrl,linked,previewUrl,fileCategory,visiable',
+                'thumbnail,downloadUrl,linked,previewUrl,fileCategory,visiable,folder',
 
     entryFileds: '_id,_projectId,_entryCategoryId,amount,content,note,date,status,involveMembers,tags,type,title,visiable',
 

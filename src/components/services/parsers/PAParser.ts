@@ -55,6 +55,7 @@ module teambition {
               thumbnailUrl: '',
               fileName: '',
               objectHref: '',
+              folder: '',              
               class: ''
             };
             if (object.fileType.length > 4) {
@@ -65,6 +66,7 @@ module teambition {
             }
             fileObject.thumbnailUrl = object.thumbnailUrl;
             fileObject.fileName = object.fileName;
+            fileObject.folder = object.folder;
             if (object._id) {
               fileObject.objectHref = `/detail/work/${object._id}`;
             }else {
