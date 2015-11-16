@@ -6,7 +6,10 @@ module Ding {
 
   export class DingService {
 
-    public  $q: angular.IQService;
+    public $q: angular.IQService;
+
+    public code: string;
+
     private agentid: string;
     private corpId: string;
     private timeStamp: number;
@@ -26,16 +29,20 @@ module Ding {
       this.nonceStr = nonceStr;
       this.signature = signature;
       this.initDing();
+    }
+
+    public getCode(callback: Function) {
       dd.ready(() => {
         dd.runtime.permission.requestAuthCode({
-          corpId: corpId,
-          onSuccess: function(result: any) {
-            let code: string;
-            if (typeof result === 'object') {
-              code = result.code;
+          corpId: this.corpId,
+          onSuccess: (result: any) => {
+            this.code = result.code;
+            if (typeof callback === 'function') {
+              callback(result.code);
             }
           },
           onFail : function(err: any) {
+            alert(err);
             console.log(err);
           }
         });
@@ -108,6 +115,7 @@ module Ding {
         ]
       });
       dd.error((error: any) => {
+        alert(`config err: ${JSON.stringify(error)}`);
         console.log(`error: ${JSON.stringify(error)}`);
       });
     }

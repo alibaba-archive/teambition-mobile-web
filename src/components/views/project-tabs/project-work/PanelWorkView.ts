@@ -34,6 +34,12 @@ module teambition {
       window.location.hash = `/detail/work/${_id}`;
     }
 
+    public openCollection(id: string) {
+      if (id) {
+        window.location.hash = `/#/project/${projectId}/work/${id}`;
+      }
+    }
+
     private initFetch() {
       let collectionId = this.$state.params._collectionId;
       return this.parent.fetchProject(projectId)

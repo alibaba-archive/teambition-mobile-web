@@ -37,6 +37,12 @@ module teambition {
         });
       });
     }
+
+    public openEditor(type: string) {
+      if (type) {
+        window.location.hash = `#/detail/${this.boundToObjectType}/${this.boundToObjectId}/position/${type}`;
+      }
+    }
   }
 
   angular.module('teambition').controller('TaskPositionSelectorView', TaskPositionSelectorView);

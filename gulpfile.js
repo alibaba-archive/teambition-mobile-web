@@ -134,7 +134,7 @@ gulp.task('compile-template', function() {
   return compileTemplate()
 })
 
-gulp.task('concat-app', ['replaceForPublish'], function() {
+gulp.task('concat-app', function() {
   return streamqueue({ objectMode: true },
       gulp.src('.tmp/scripts/app.js'),
       gulp.src('.tmp/scripts/Modules/MomentLocale.js'),
@@ -284,8 +284,12 @@ gulp.task('watch', ['watch-et'], function() {
   gulp.watch('.tmp/scripts/**/*.js', ['concat-app'])
 })
 
-gulp.task('before:build', sequence('clean', 'tsd:install',
+gulp.task('before:ci', sequence('clean', 'tsd:install',
   ['lib-css', 'lib-font', 'lib-js', 'less', 'compile', 'html', 'images']
+))
+
+gulp.task('before:build', sequence('clean', 'tsd:install', 'replaceForPublish', 'compile',
+  ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
 ))
 
 gulp.task('default', ['before:build'], function() {

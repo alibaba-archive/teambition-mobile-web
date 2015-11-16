@@ -125,13 +125,10 @@ module teambition {
   export interface IDetailAPI {
     fetch(_id: string, type: string, linkedId?: string): angular.IPromise<any>;
     update(_id: string, type: string, patch: any, param?: string): angular.IPromise<any>;
+    create(type: string, content: any): angular.IPromise<any>;
   }
 
   @inject([
-    'taskParser',
-    'postParser',
-    'eventParser',
-    'fileParser',
     'DetailModel',
     'ObjectLinkAPI',
     'LikeAPI',
@@ -202,6 +199,16 @@ module teambition {
       .$promise
       .then((detail: any) => {
         this.DetailModel.updateDetail(`${type}:detail:${_id}`, detail);
+      });
+    }
+
+    public create(type: string, content: any) {
+      return this.RestAPI.update({
+        Type: `${type}s`
+      }, content)
+      .$promise
+      .then((detail: any) => {
+        return this.DetailModel.setDetail(`${type}:detail:${detail._id}`, content);
       });
     }
 

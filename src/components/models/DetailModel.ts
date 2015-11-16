@@ -3,7 +3,7 @@ module teambition {
   'use strict';
 
   export interface IDetailModel {
-    setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData | IEntryData): void;
+    setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData | IEntryData): ITaskData | IEventData | IPostData | IFileData | IEntryData;
     updateDetail(namespace: string, patch: any): void;
     getDetail(namespace: string): any;
   }

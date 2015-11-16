@@ -66,7 +66,7 @@ module teambition {
             fileObject.thumbnailUrl = object.thumbnailUrl;
             fileObject.fileName = object.fileName;
             if (object._id) {
-              fileObject.objectHref = `#/detail/work/${object._id}`;
+              fileObject.objectHref = `/detail/work/${object._id}`;
             }else {
               fileObject.objectHref = 'deleted';
             }
@@ -76,7 +76,7 @@ module teambition {
           activity.objectContent = first.content || first.title;
           activity.postTitle = first.title;
           if (first._id) {
-            activity.objectHref = `#/detail/${activity.boundToObjectType}/${first._id}`;
+            activity.objectHref = `/detail/${activity.boundToObjectType}/${first._id}`;
           }else {
             activity.objectHref = 'deleted';
           }

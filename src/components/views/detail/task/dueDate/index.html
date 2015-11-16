@@ -4,16 +4,23 @@
       <li class="item item-toggle">
         截止日期
         <label class="toggle toggle-positive">
-          <input type="checkbox" ng-checked="EditDuedateCtrl.task.displayDuedate" on-change="EditDuedateCtrl.changeDuedate()">
+          <input type="checkbox"
+                 ng-checked="EditDuedateCtrl.task.displayDuedate"
+                 on-change="EditDuedateCtrl.changeDuedate()">
           <div class="track">
           <div class="handle"></div>
           </div>
         </label>
       </li>
-      <li class="item" ng-show="EditDuedateCtrl.task.displayDuedate" ng-bind="EditDuedateCtrl.task.dueDate | formatDate : 'll'"></li>
+      <li class="item"
+          ng-show="EditDuedateCtrl.task.displayDuedate"
+          ng-bind="EditDuedateCtrl.task.dueDate | formatDate : 'll'">
+      </li>
       <label class="item item-input">
         <span class="input-label">日期</span>
-        <input type="date" ng-model="EditDuedateCtrl.task.displayDuedate" ng-model-options="{ getterSetter: true }">
+        <input type="date"
+               ng-model="EditDuedateCtrl.task.displayDuedate"
+               ng-model-options="{ getterSetter: true }">
       </label>
     </ul>
   </ion-content>

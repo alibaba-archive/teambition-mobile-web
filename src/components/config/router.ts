@@ -71,6 +71,10 @@ module teambition {
           }
         }
       })
+      .state('create_event', {
+        url: '/project/:_id/event/create',
+        templateUrl: 'create/event/index.html'
+      })
       .state('collections', {
         url: '/project/:_id/work/:_collectionId',
         templateUrl: 'project-tabs/project-work/index.html'

@@ -6,6 +6,7 @@ module teambition {
 
   @inject([
     'app',
+    '$http',
     'socket',
     'socketListener',
     'getParameterByName',
@@ -19,6 +20,7 @@ module teambition {
     protected $state: angular.ui.IStateService;
 
     private app: Iapp;
+    private $http: angular.IHttpService;
     private socket: any;
     private socketListener: ISocketListener;
     private getParameterByName: IGetParmByName;
@@ -37,34 +39,51 @@ module teambition {
       if (!visible) {
         this.zone.hasCreated = true;
         if (this.userMe && this.$rootScope.pending) {
-          return;
+          return this.$rootScope.pending;
         }
-        this.$rootScope.pending = this.RestAPI.get({
+        // let corpId = this.getParameterByName(window.location.search, 'corpId');
+        // return this.$http.get(`${this.app.dingApiHost}/getAccess?code=${Ding.code}&corpId=${corpId}`)
+        // .then((data: any) => {
+        //   // alert(1);
+        // })
+        // .catch((reason: any) => {
+        //   // alert(2);
+        // });
+        return this.RestAPI.get({
           Type: 'users',
           Id: 'me'
         })
         .$promise
         .then((userMe: teambition.IUserMe) => {
-          if (!userMe) {
-            this.goHome();
-          }else {
-            this.initRootscope(userMe);
-            this.userMe = userMe;
-            try {
-              let spiderOptions = {
-                _userId: userMe._id,
-                client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
-                host: this.app.spiderhost
-              };
-              spider = new Spiderjs(spiderOptions);
-            } catch (error) {
-              console.error(error);
-            }
-            let hash = window.location.hash;
-            if (!hash) {
-              this.$state.go('projects');
-            }
-          }
+          alert(0);
+          this.initUser(userMe);
+        })
+        .catch((reason: any) => {
+          let corpId = this.getParameterByName(window.location.search, 'corpId');
+          alert(typeof Ding);
+          this.$http.get(`${this.app.dingApiHost}/getAccess?code=${Ding.code}&corpId=${corpId}`)
+          .then((data: any) => {
+            alert(1);
+          })
+          .catch((reason: any) => {
+            alert(2);
+          });
+        })
+        .then((user: any) => {
+          return this.RestAPI.get({
+            Type: 'users',
+            Id: 'me'
+          })
+          .$promise
+          .then((userMe: IUserMe) => {
+            alert(2);
+            this.initUser(userMe);
+          });
+        })
+        .catch((reason: any) => {
+          let message = this.getFailureReason(reason);
+          alert(message);
+          this.showMsg('error', 'error', message);
         });
       }
     }
@@ -95,6 +114,29 @@ module teambition {
       };
       $rootScope.userMe = userMe;
       this.app.socket = this.socket(userMe.snapperToken);
+    }
+
+    private initUser(userMe: IUserMe) {
+      if (!userMe) {
+        this.goHome();
+      }else {
+        this.initRootscope(userMe);
+        this.userMe = userMe;
+        try {
+          let spiderOptions = {
+            _userId: userMe._id,
+            client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
+            host: this.app.spiderhost
+          };
+          spider = new Spiderjs(spiderOptions);
+        } catch (error) {
+          console.error(error);
+        }
+        let hash = window.location.hash;
+        if (!hash) {
+          this.$state.go('projects');
+        }
+      }
     }
 
     private goHome(): void {

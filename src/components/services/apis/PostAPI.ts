@@ -7,12 +7,10 @@ module teambition {
   }
 
   @inject([
-    'PostModel',
-    'postParser'
+    'PostModel'
   ])
   class PostAPI extends BaseAPI implements IPostAPI {
     private PostModel: IPostModel;
-    private postParser: IPostParser;
 
     public fetchAll (_projectId: string) {
       let cache = this.PostModel.getProjectPostsCollection(_projectId);
@@ -28,26 +26,12 @@ module teambition {
         fields: this.queryFileds.postFileds
       })
       .$promise
-      .then((data: IPostDataParsed[]) => {
-        let result = this.preparePosts(data, _projectId);
+      .then((data: IPostData[]) => {
+        let result = this.PostModel.setProjectPostsCollection(_projectId, data);
         return result;
       });
     }
 
-    private preparePosts (posts: IPostDataParsed[], _projectId: string) {
-      if (!posts.length) {
-        return [];
-      }
-      let results = [];
-      angular.forEach(posts, (post: IPostDataParsed, index: number) => {
-        let result = this.postParser(post);
-        result.fetchTime = Date.now();
-        this.PostModel.setDetail(`post:detail:${post._id}`, result);
-        results.push(result);
-      });
-      this.PostModel.setProjectPostsCollection(_projectId, results);
-      return results;
-    }
   }
 
   angular.module('teambition').service('PostAPI', PostAPI);

@@ -27,13 +27,11 @@ module teambition {
 
   @inject([
     'TasklistModel',
-    'TaskModel',
-    'taskParser'
+    'TaskModel'
   ])
   class TasklistAPI extends BaseAPI implements ITasklistAPI {
     private TasklistModel: ITasklistModel;
     private TaskModel: ITaskModel;
-    private taskParser: ITaskParser;
 
     public fetch (_id: string) {
       let cache = this.TasklistModel.getOne(_id);
@@ -79,7 +77,6 @@ module teambition {
         deferred.resolve(cache);
         return deferred.promise;
       }
-      let tasks = [];
       return this.$q.all([
         this.RestAPI.query({
           Type: 'tasklists',
@@ -88,8 +85,7 @@ module teambition {
           isDone: true,
           fields: this.queryFileds.taskFileds
         }, (data: ITaskData[]) => {
-          let result: ITaskDataParsed[] = this.prepareTasks(data, _tasklistId);
-          tasks = tasks.concat(result);
+          this.TaskModel.setTasklistCollection(_tasklistId, data);
         })
         .$promise,
         this.RestAPI.query({
@@ -99,27 +95,14 @@ module teambition {
           isDone: false,
           fields: this.queryFileds.taskFileds
         }, (data: ITaskData[]) => {
-          let result: ITaskDataParsed[] = this.prepareTasks(data, _tasklistId);
-          tasks = tasks.concat(result);
+          this.TaskModel.setTasklistCollection(_tasklistId, data);
         })
         .$promise
       ])
       .then(() => {
-        this.TaskModel.setTasklistCollection(_tasklistId, tasks);
+        let tasks = this.TaskModel.getTasklistCollection(_tasklistId);
         return tasks;
       });
-    }
-
-    private prepareTasks (tasks: ITaskData[], tasklistId: string) {
-      let results: ITaskDataParsed[] = [];
-      if (tasks.length) {
-        angular.forEach(tasks, (task: ITaskData, index: number) => {
-          let result: ITaskDataParsed = this.taskParser(task);
-          this.TaskModel.setDetail(`task:detail:${task._id}`, task);
-          results.push(result);
-        });
-      }
-      return results;
     }
   }
 

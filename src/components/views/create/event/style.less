@@ -1,0 +1,45 @@
+// Global reference
+@import "../../../../less/reference.less";
+.create-event-view {
+  .list {
+    .event-title {
+      height: 60px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      margin-bottom: 1px;
+      input {
+        font-size: 20px;
+        line-height: 34px;
+      }
+    }
+    .data-picker-wrap {
+      .event-time {
+        width: 49%;
+        float: left;
+        color: @grayDark;
+        font-size: 12px;
+        &.event-endTime {
+          text-align: right;
+          input {
+            right: 0;
+          }
+        }
+        &.event-date-time {
+          font-size: 20px;
+          color: @grayDarker;
+          padding-top: 0;
+          line-height: 36px;
+          input {
+            width: 60%;
+            top: 0;
+          }
+        }
+        input {
+          position: absolute;
+          top: 15px;
+          opacity: 0;
+          display: block;
+        }
+      }
+    }
+  }
+}

@@ -28,6 +28,14 @@ module teambition {
       return this.fetchEvents();
     }
 
+    public onAllChangesDone() {
+      if (Ding) {
+        Ding.setRight('新建日程', true, false, () => {
+          window.location.hash = `/project/${projectId}/event/create`;
+        });
+      }
+    }
+
     public openEvent(eventId: string) {
       if (!eventId) {
         return;

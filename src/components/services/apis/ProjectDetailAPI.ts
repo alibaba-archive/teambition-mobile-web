@@ -8,7 +8,6 @@ module teambition {
   }
 
   @inject([
-    'PAParser',
     'queryFileds',
     'Moment',
     'MemberAPI',
@@ -16,7 +15,6 @@ module teambition {
     'TaskModel'
   ])
   class ProjectDetailAPI extends BaseAPI implements IProjectDetailAPI {
-    private PAParser: IPAParser;
     private Moment: moment.MomentStatic;
     private MemberAPI: IMemberAPI;
     private ProjectActivityModel: IProjectActivityModel;
@@ -56,7 +54,7 @@ module teambition {
       })
       .$promise
       .then((data: IProjectActivitiesData[]) => {
-        let activities = this.prepareActivities(data, _projectId, page, _membersFilter, _typesFilter);
+        let activities = this.ProjectActivityModel.setCollection(_projectId, _membersFilter, _typesFilter, data);
         return activities;
       });
     }
@@ -98,20 +96,6 @@ module teambition {
             return result;
           });
         });
-      }
-    }
-
-    private prepareActivities(activities: IProjectActivitiesData[], projectId: string, page: number, membersFilter: string, typesFilter: string): IProjectActivitiesDataParsed[] {
-      if (activities && activities.length) {
-        let _activities: IProjectActivitiesDataParsed [] = [];
-        angular.forEach(activities, (activity: IProjectActivitiesData, index: number) => {
-          let _activity: IProjectActivitiesDataParsed = this.PAParser(activity);
-          _activities.push(_activity);
-        });
-        this.ProjectActivityModel.setCollection(projectId, membersFilter, typesFilter, _activities);
-        return _activities;
-      }else {
-        return this.ProjectActivityModel.getCollection(projectId, membersFilter, typesFilter);
       }
     }
 

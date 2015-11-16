@@ -160,6 +160,12 @@ module teambition {
       return hasStar;
     }
 
+    public openProject(id: string) {
+      if (id) {
+        window.location.hash = `/project/${id}/home`;
+      }
+    }
+
     private archiveProject(project: IProjectData) {
       if (project.canArchive) {
         let popup = this.$ionicPopup.show({

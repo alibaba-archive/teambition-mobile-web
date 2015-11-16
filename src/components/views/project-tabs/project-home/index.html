@@ -1,9 +1,17 @@
 <ion-view ng-controller="PanelHomeView as PanelHomeCtrl" class="pane">
   <ion-content class="panel-content has-tabs" on-scroll-complete="PanelHomeCtrl.scrollHandler()">
     <div class="activity-filter-wrap ion-wrap">
-        <span class="project-filter" on-tap="PanelHomeCtrl.openMembersFilterModal()">{{PanelHomeCtrl.selectedMembers.text}}<i class="icon icon-chevron-down"></i></span>
+        <span class="project-filter"
+              on-tap="PanelHomeCtrl.openMembersFilterModal()">
+              {{PanelHomeCtrl.selectedMembers.text}}
+              <i class="icon icon-chevron-down"></i>
+        </span>
 
-        <span class="project-filter" on-tap="PanelHomeCtrl.openTasksFilterModal()">{{PanelHomeCtrl.selectedTypes.text}}<i class="icon icon-chevron-down"></i></span>
+        <span class="project-filter"
+              on-tap="PanelHomeCtrl.openTasksFilterModal()">
+          {{PanelHomeCtrl.selectedTypes.text}}
+          <i class="icon icon-chevron-down"></i>
+        </span>
     </div>
 
     <div class="ion-wrap" ng-if="PanelHomeCtrl.noneExecutorTasks.length">
@@ -14,36 +22,47 @@
           </span>
           待认领的任务
         </div-title>
-        <a class="item item-icon-left item-task" ng-repeat="task in PanelHomeCtrl.noneExecutorTasks track by task._id" ng-href="/#/detail/task/{{task._id}}">
+        <a class="item item-icon-left item-task"
+           ng-repeat="task in PanelHomeCtrl.noneExecutorTasks track by task._id"
+           on-tap="PanelHomeCtrl.openDetail('detail/task/{{task._id}}' ,'task')">
           <i class="icon icon-checkbox-thin"></i>
-          <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div>
+          <div class="task-avatar"
+               style="background-image:url({{task.executorAvatar}});">
+          </div>
           <span class="task-content" ng-bind="::task.content"></span>
         </a>
-        <a class="item item-icon-left item-more" ng-if="PanelHomeCtrl.noneExecutorTasks.length !== PanelHomeCtrl._noneExecutorTasks.length" on-tap="PanelHomeCtrl.loadNoneExecutor()">
+        <a class="item item-icon-left item-more"
+           ng-if="PanelHomeCtrl.noneExecutorTasks.length !== PanelHomeCtrl._noneExecutorTasks.length"
+           on-tap="PanelHomeCtrl.loadNoneExecutor()">
           <i class="icon ion-more positive"></i>
           <p class="positive">查看更多</p>
         </a>
       </div>
     </div>
     <div class="ion-wrap" ng-if="PanelHomeCtrl.eventGroup.length || PanelHomeCtrl.dueTasks.length">
-        <div class="list ionic list-today" ng-if="PanelHomeCtrl.eventGroup.length || PanelHomeCtrl.dueTasks.length">
+        <div class="list ionic list-today"
+              ng-if="PanelHomeCtrl.eventGroup.length || PanelHomeCtrl.dueTasks.length">
           <div-title class="item item-title">
               <span class="item-title-icon">
                 <i class="icon icon-alert-clock"></i>
               </span>
             今天的事
           </div-title>
-          <a class="item item-event" ng-repeat="event in PanelHomeCtrl.eventGroup track by event._id" ng-href="/#/detail/event/{{event._id}}">
+          <a class="item item-event"
+             ng-repeat="event in PanelHomeCtrl.eventGroup track by event._id"
+             on-tap="PanelHomeCtrl.openDetail('/#/detail/event/{{event._id}}', 'event')">
             <i class="icon icon-calendar2"></i>
               <span>
                 <p ng-bind="::event.title"></p>
                 <p class="event-date"><span ng-bind="event.startDate | eventDateFormat: event.endDate"></span></p>
               </span>
           </a>
-          <a class="item item-icon-left item-task" ng-repeat="task in PanelHomeCtrl.dueTasks track by task._id" ng-href="/#/detail/task/{{task._id}}">
+          <a class="item item-icon-left item-task"
+             ng-repeat="task in PanelHomeCtrl.dueTasks track by task._id"
+             on-tap="PanelHomeCtrl.openDetail('detail/task/{{task._id}}' ,'task')">
             <i class="icon icon-checkbox-thin"></i>
             <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div>
-            <span class="task-content" ng-bind="::task.content"></span>
+            <span class="task-content" ng-bind="task.content"></span>
               <span class="task-duedate badge" ng-class="{'badge-assertive': task.overDue, 'badge-energized': task.oneDay}">
                 <i class="icon icon-td-calendar"></i>
                 <span class="due-date-display" ng-bind="::task.dueDate | formatDate: 'calendar'"></span>

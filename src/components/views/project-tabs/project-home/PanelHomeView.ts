@@ -112,7 +112,7 @@ module teambition {
       if (href === 'deleted') {
         this.showMsg('err', '不能查看详情', `该${this.typeMap[type]}已经被删除`);
       }else if (href !== '#') {
-        window.location.href = href;
+        window.location.hash = href;
       }
     }
 

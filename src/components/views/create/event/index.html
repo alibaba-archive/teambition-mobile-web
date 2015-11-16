@@ -1,0 +1,36 @@
+<ion-view class="create-event-view"
+          ng-controller="CreateEventView as CreateEventCtrl">
+  <ion-content>
+    <div class="list">
+      <div class="item item-input event-title">
+        <input type="text" placeholder="日程标题" ng-model="CreateEventCtrl.title">
+      </div>
+      <div class="data-picker-wrap">
+        <div class="item event-startTime event-time">
+          {{CreateEventCtrl.startDate | formatDate : 'MoDo dddd'}}
+          <input type="date"
+                ng-model="CreateEventCtrl.startDate"
+                ng-model-options="{ getterSetter: true }">
+        </div>
+        <div class="item event-endTime event-time">
+          {{CreateEventCtrl.endDate | formatDate : 'MoDo dddd'}}
+          <input type="date"
+                ng-model="CreateEventCtrl.endDate"
+                ng-model-options="{ getterSetter: true }">
+        </div>
+        <div class="item event-startTime event-time event-date-time">
+          {{CreateEventCtrl.startDate | formatDate : 'a hh:mm'}}
+          <input type="datetime-local"
+                ng-model="CreateEventCtrl.startDate"
+                ng-model-options="{ getterSetter: true }">
+        </div>
+        <div class="item event-endTime event-time event-date-time">
+          {{CreateEventCtrl.endDate | formatDate : 'a hh:mm'}}
+          <input type="datetime-local"
+                ng-model="CreateEventCtrl.endDate"
+                ng-model-options="{ getterSetter: true }">
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

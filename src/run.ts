@@ -15,6 +15,7 @@ module teambition {
 
   export let Wechat: WechatService;
   export let Ding: DingService;
+  export let DingCorpid: string;
 
   export let spider: any;
 
@@ -56,7 +57,8 @@ module teambition {
     $q: angular.IQService,
     $rootScope: IRootScope,
     app: Iapp,
-    Moment: moment.MomentStatic
+    Moment: moment.MomentStatic,
+    getParameterByName: IGetParmByName
   ) {
 
     let run = new Run();
@@ -65,11 +67,12 @@ module teambition {
     };
 
     let initDD = () => {
-      return $http.get(app.dingApiHost + '/signature');
+      DingCorpid = getParameterByName(window.location.search, 'corpId');
+      return $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`);
     };
 
     if (typeof wx === 'object') {
-      initWechat()
+      $rootScope.pending = initWechat()
       .then((data: IWxSignature) => {
         Wechat = new WechatService(app.wxid, data.noncestr, data.timestamp, data.signature);
       })
@@ -77,7 +80,8 @@ module teambition {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
       });
     }else if (typeof dd === 'object') {
-      initDD().then((data: any) => {
+      $rootScope.pending = initDD()
+      .then((data: any) => {
         let info: IDingSignature = data.data;
         Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
         Ding.setTitle('Teambition');

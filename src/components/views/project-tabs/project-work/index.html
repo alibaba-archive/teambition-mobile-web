@@ -4,7 +4,9 @@
       <span class="item item-divider" ng-if="PanelWorkCtrl.collections.length">
         文件夹
       </span>
-      <a class="item item-icon-left" ng-repeat="collection in PanelWorkCtrl.collections track by collection._id" ng-href="/#/project/{{collection._projectId}}/work/{{collection._id}}">
+      <a class="item item-icon-left"
+         ng-repeat="collection in PanelWorkCtrl.collections track by collection._id"
+         on-tap="PanelWorkCtrl.openCollection(collection._id)">
         <i class="icon icon-folder"></i>
         <span ng-bind="::collection.title" class="collection-name"></span>
       </a>

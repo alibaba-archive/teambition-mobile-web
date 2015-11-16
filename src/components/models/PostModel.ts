@@ -4,7 +4,7 @@ module teambition {
 
   export interface IPostModel extends IDetailModel {
     getProjectPostsCollection(projectId: string): IPostDataParsed[];
-    setProjectPostsCollection(projectId: string, collection: IPostDataParsed[]): void;
+    setProjectPostsCollection(projectId: string, collection: IPostData[]): IPostDataParsed[];
   }
 
   class PostModel extends DetailModel implements IPostModel {
@@ -12,11 +12,28 @@ module teambition {
       return this._get<IPostDataParsed[]>('posts', projectId);
     }
 
-    public setProjectPostsCollection(projectId: string, collection: IPostDataParsed[]) {
+    public setProjectPostsCollection(projectId: string, collection: IPostData[]) {
       let cache = this.getProjectPostsCollection(projectId);
       if (!cache) {
-        this._set('posts', projectId, collection);
+        let results = this.preparePosts(projectId, collection);
+        this._set('posts', projectId, results);
+        return results;
       }
+      return cache;
+    }
+
+    private preparePosts (_projectId: string, posts: IPostData[]) {
+      if (!posts.length) {
+        return [];
+      }
+      let results = [];
+      angular.forEach(posts, (post: IPostDataParsed, index: number) => {
+        let result = this.postParser(post);
+        result.fetchTime = Date.now();
+        this.setDetail(`post:detail:${post._id}`, result);
+        results.push(result);
+      });
+      return results;
     }
   }
 
