@@ -54,7 +54,7 @@ module Ding {
         dd.biz.navigation.setTitle({
           title: title,
           onFail : function(err: any) {
-            alert(err);
+            alert('setTitle' + JSON.stringify(err));
           }
         });
       });
@@ -100,7 +100,6 @@ module Ding {
 
     private initDing() {
       dd.config({
-        agentId: this.agentid,
         corpId: this.corpId,
         timeStamp: this.timeStamp,
         nonceStr: this.nonceStr,
@@ -113,6 +112,10 @@ module Ding {
           'biz.chat.chooseConversation',
           'biz.ding.post'
         ]
+      });
+
+      dd.ready(() => {
+        this.setTitle('Teambition');
       });
       dd.error((error: any) => {
         alert(`config err: ${JSON.stringify(error)}`);

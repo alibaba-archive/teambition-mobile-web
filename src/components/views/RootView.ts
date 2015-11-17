@@ -16,11 +16,12 @@ module teambition {
   class RootView extends View {
 
     public ViewName = 'RootView';
+    public $$id = 'RootView';
 
     protected $state: angular.ui.IStateService;
 
     private app: Iapp;
-    // private $http: angular.IHttpService;
+    private $http: angular.IHttpService;
     private socket: any;
     private socketListener: ISocketListener;
     private getParameterByName: IGetParmByName;
@@ -41,15 +42,51 @@ module teambition {
         if (this.userMe && this.$rootScope.pending) {
           return this.$rootScope.pending;
         }
-        console.log('me request');
         return this.RestAPI.get({
           Type: 'users',
           Id: 'me'
         })
         .$promise
         .then((userMe: teambition.IUserMe) => {
-          console.log('me response');
           this.initUser(userMe);
+        })
+        .catch((reason: any) => {
+          let defer = this.$q.defer();
+          DingCorpid = this.getParameterByName(window.location.search, 'corpId');
+          this.$http.get(this.app.dingApiHost + `/signature?corpId=${DingCorpid}`)
+          .then((data: any) => {
+            let info: IDingSignature = data.data;
+            let Ding = new DingService(this.app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
+            Ding.getCode((code: string) => {
+              this.$http.get(`${this.app.dingApiHost}/getAccess?code=${code}&corpId=${DingCorpid}`)
+              .then((result: any) => {
+                defer.resolve();
+              })
+              .catch((reason: any) => {
+                let message = this.getFailureReason(reason);
+                this.showMsg('error', 'error', message);
+              });
+            });
+          });
+          return defer.promise;
+        })
+        .then(() => {
+          return this.RestAPI.get({
+            Type: 'users',
+            Id: 'me'
+          })
+          .$promise
+          .then((userMe: IUserMe) => {
+            this.initUser(userMe);
+          })
+          .catch((reason: any) => {
+            let message = this.getFailureReason(reason);
+            this.showMsg('error', 'error', message);
+          });
+        })
+        .catch((reason: any) => {
+          let message = this.getFailureReason(reason);
+          this.showMsg('error', 'error', message);
         });
       }
     }

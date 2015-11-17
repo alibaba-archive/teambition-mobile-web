@@ -22,6 +22,8 @@ module teambition {
     public staredProject: IProjectDataParsed[] = [];
     public projects: IProjectDataParsed[] = [];
 
+    public href: string;
+
     private ProjectsAPI: IProjectsAPI;
     private organization: {
       [index: string]: {
@@ -37,17 +39,20 @@ module teambition {
     ) {
       super();
       this.$scope = $scope;
-      this.zone.run(() => {
-        if (Ding) {
-          Ding.setRight('创建项目', true, true, () => {
-            window.location.hash = '/projects/create';
-          });
-        }
-      });
+      this.zone.run(noop);
     }
 
     public onInit() {
       return this.getProjects();
+    }
+
+    public onAllChangesDone() {
+      this.href = window.location.href.replace('projects', 'project');
+      if (Ding) {
+        Ding.setRight('创建项目', true, true, () => {
+          window.location.hash = '/projects/create';
+        });
+      }
     }
 
     public wxQrcode() {
@@ -82,6 +87,7 @@ module teambition {
         });
       }
       this.$ionicListDelegate.closeOptionButtons();
+      return false;
     }
 
     public unStarProject(project: IProjectData) {
@@ -104,6 +110,7 @@ module teambition {
         });
       }
       this.$ionicListDelegate.closeOptionButtons();
+      return false;
     }
 
     public showMore(project: IProjectData) {
@@ -143,6 +150,7 @@ module teambition {
         }
       });
       this.$ionicListDelegate.closeOptionButtons();
+      return false;
     }
 
     public countStar() {
@@ -260,10 +268,8 @@ module teambition {
     }
 
     private getProjects(): angular.IPromise<any> {
-      console.log('projects request');
       return this.ProjectsAPI.fetch()
       .then((projects: IProjectDataParsed[]) => {
-        console.log('projects response');
         this.sortProject(projects);
         this.projects = projects;
       });

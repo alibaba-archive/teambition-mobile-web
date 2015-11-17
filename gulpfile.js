@@ -288,6 +288,12 @@ gulp.task('ci', sequence('clean', 'tsd:install', 'compile', 'concat-app',
   ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
 ))
 
+gulp.task('ci:ding', ['ci'], function() {
+  return gulp.src('www/index.html')
+    .pipe(replace('{{__third.lib.script}}', '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'))
+    .pipe(gulp.dest('www'))
+})
+
 gulp.task('before:build', sequence('clean', 'tsd:install', 'compile', 'replaceForPublish', 'concat-app',
   ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
 ))

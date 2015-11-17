@@ -7,6 +7,7 @@ module teambition {
     name: string;
     avatarUrl: string;
     title?: string;
+    isSelected?: boolean;
   }
 
   export interface IMemberAPI {

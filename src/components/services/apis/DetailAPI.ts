@@ -204,7 +204,7 @@ module teambition {
     }
 
     public create(type: string, content: any) {
-      return this.RestAPI.update({
+      return this.RestAPI.save({
         Type: `${type}s`
       }, content)
       .$promise

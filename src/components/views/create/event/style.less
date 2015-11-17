@@ -1,6 +1,7 @@
 // Global reference
 @import "../../../../less/reference.less";
 .create-event-view {
+  background: #f7f7f7;
   .list {
     .event-title {
       height: 60px;
@@ -13,8 +14,9 @@
     }
     .data-picker-wrap {
       .event-time {
-        width: 49%;
+        width: 50%;
         float: left;
+        height: 52px;
         color: @grayDark;
         font-size: 12px;
         &.event-endTime {
@@ -38,6 +40,20 @@
           top: 15px;
           opacity: 0;
           display: block;
+        }
+      }
+    }
+    .more-info-wrap {
+      .item {
+        color: @grayDark;
+        &.item-input {
+          i {
+            margin-left: 2px;
+          }
+          input {
+            font-size: 16px;
+            padding-left: 18px;
+          }
         }
       }
     }

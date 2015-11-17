@@ -3,6 +3,7 @@ module teambition {
   'use strict';
 
   export interface IEventModel extends IDetailModel {
+    addEvent(data: IEventDataParsed): void;
     getProjectEventsCollection(projectId: string): IEventsResult;
     setProjectEventsCollection(projectId: string, collection: IEventData[]): IEventsResult;
   }
@@ -19,6 +20,20 @@ module teambition {
         this._set('events', projectId, result);
       }
       return result;
+    }
+
+    public addEvent(data: IEventDataParsed) {
+      let collections = this.getProjectEventsCollection(data._projectId);
+      if (collections) {
+        let group = collections.data[data.startDate];
+        if (group) {
+          group.push(data);
+        }else {
+          collections.data[data.startDate] = [data];
+        }
+        collections.raw.push(data);
+        collections.counter ++;
+      }
     }
 
     private prepareEvents (_projectId: string, events: IEventData[]) {

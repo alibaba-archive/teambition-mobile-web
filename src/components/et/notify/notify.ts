@@ -17,6 +17,8 @@ module EtTemplate {
     public href: string;
     public animateClass: string;
 
+    public test: any;
+
     constructor() {
       super();
       this.zone.run(teambition.noop);
@@ -30,8 +32,8 @@ module EtTemplate {
       window.clearTimeout(fadeOutAnimate);
       window.clearTimeout(removeFn);
       this.animateClass = 'animated fadeInUp';
-      this.remove();
       this.insertDOM();
+      this.test = {a: 11111};
       fadeOutAnimate = setTimeout(() => {
         this.animateClass = 'animated fadeOutDown';
       }, 2000);

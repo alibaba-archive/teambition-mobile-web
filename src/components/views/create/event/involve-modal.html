@@ -1,0 +1,34 @@
+<ion-modal-view ng-controller="SelectInvolveView as EditInvolveCtrl">
+  <ion-view class="edit-involve-view">
+    <ion-content>
+      <div class="list executor-members">
+        <div class="item item-icon-left item-toggle">
+          <i class="icon"
+            ng-class="{'icon-unlock': EditInvolveCtrl.parent.isVisiable, 'icon-lock': !EditInvolveCtrl.parent.isVisiable}"
+            >
+          </i>
+          参与者可见
+          <label class="toggle toggle-balanced">
+            <input type="checkbox"
+                  ng-model="EditInvolveCtrl.isVisiable"
+                  ng-checked="(EditInvolveCtrl.detail.visiable === 'involves')">
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </div>
+        <div-title class="item list-title">
+          所有成员
+        </div-title>
+        <div class="item item-avatar item-icon-right"
+            ng-if="member._id != 0"
+            ng-repeat="member in EditInvolveCtrl.members track by member._id"
+            on-tap="EditInvolveCtrl.selectExecutor(member._id)">
+          <div class="avatar item-image" style="background-image: url({{member.avatarUrl}})"></div>
+          <h2 class="excutor-member-name">{{member.name}}</h2>
+          <i ng-if="member.isSelected" class="icon icon-tick positive"></i>
+        </div>
+      </div>
+    </ion-content>
+  </ion-view>
+</ion-modal-view>

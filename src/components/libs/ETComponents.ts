@@ -7,11 +7,34 @@ module EtTemplate {
     selector: string;
   }
 
+  const notPatched = ['constructor', 'zone'];
+
   export class ETComponent {
 
     public zone: Zone;
     public parentDOM: Element;
     public template: IETProto;
+
+    constructor() {
+      let keys = Object.keys(Object.getPrototypeOf(this));
+      this.zone['targetTmp'] = this;
+      angular.forEach(keys, (val: string) => {
+        if (typeof this[val] === 'function' && notPatched.indexOf(val) === -1) {
+          let originFn = this[val];
+          let fakeFn = (...args: any[]) => {
+            let val: any;
+            this.zone.run(() => {
+              val = originFn.apply(this, args);
+            });
+            return val;
+          };
+          this[val] = fakeFn;
+        }
+      });
+      if (this.template) {
+        this.template.update(this);
+      }
+    }
 
     public update() {
       this.template.update(this);
@@ -30,16 +53,15 @@ module EtTemplate {
     }
 
     protected insertDOM() {
-      this.parentDOM.appendChild(this.template.get());
+      this.parentDOM.appendChild(this.get());
     }
   }
 
   export function Component(conf: IComponentConfig) {
     return function(target: any) {
-      let hasInit = false;
       let template: IETProto;
+      let hasInit = false;
       let proto = target.prototype;
-      let patched = false;
       let zone = teambition.rootZone.fork({
         beforeTask: () => {
           let $$injector = teambition.$$injector;
@@ -53,26 +75,7 @@ module EtTemplate {
           hasInit = true;
         },
         afterTask: () => {
-          if (!patched) {
-            let keys = Object.keys(proto);
-            angular.forEach(keys, (val: string) => {
-              if (typeof proto[val] === 'function') {
-                let originFn = proto[val];
-                let fakeFn = (...args: any[]) => {
-                  let val: any;
-                  proto.zone.run(() => {
-                    val = originFn.apply(proto, args);
-                  });
-                  return val;
-                };
-                proto[val] = fakeFn;
-              }
-              patched = true;
-            });
-          }
-          if (template && proto) {
-            template.update(proto);
-          }
+          template.update(zone['targetTmp']);
         }
       });
       target.prototype.zone = zone;

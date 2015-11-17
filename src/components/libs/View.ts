@@ -10,13 +10,9 @@ module teambition {
 
   let pending: any;
 
-  let userMe: IUserMe;
+  let currentModal: ionic.modal.IonicModalController;
 
-  let currentModal = {
-    modal: null,
-    templateUrl: '',
-    state : ''
-  };
+  let userMe: IUserMe;
 
   @inject([
     '$rootScope',
@@ -99,35 +95,21 @@ module teambition {
     }
 
     protected openModal(templateUrl: string, options: ionic.modal.IonicModalOptions) {
-      if (
-        templateUrl === currentModal.templateUrl &&
-        currentModal.modal &&
-        this.$location.path() === currentModal.state
-      ) {
-        currentModal.modal.show();
-      }else {
-        if (currentModal.modal) {
-          currentModal.modal.remove();
-        }
-        currentModal.templateUrl = '';
-        let _options = angular.extend({
-          animation: 'slide-in-up',
-          focusFirstInput: false,
-          backdropClickToClose: true
-        }, options);
-        this.$ionicModal.fromTemplateUrl(templateUrl, _options)
-        .then((modal: ionic.modal.IonicModalController) => {
-          currentModal.modal = modal;
-          currentModal.templateUrl = templateUrl;
-          currentModal.modal.show();
-        });
-      }
+      let _options = angular.extend({
+        animation: 'slide-in-up',
+        focusFirstInput: false,
+        backdropClickToClose: true,
+        hardwareBackButtonClose: true
+      }, options);
+      this.$ionicModal.fromTemplateUrl(templateUrl, _options)
+      .then((modal: ionic.modal.IonicModalController) => {
+        currentModal = modal;
+        modal.show();
+      });
     }
 
     protected cancelModal(): void {
-      if (currentModal.modal && typeof(currentModal.modal.hide) === 'function') {
-        currentModal.modal.hide();
-      }
+      currentModal.hide();
     }
 
     protected getFailureReason(reason: any): string {
@@ -152,7 +134,6 @@ module teambition {
       this.zone = parentZone.fork({
         'afterTask': () => {
           userMe = userMe ? userMe : this.$rootScope.userMe;
-          currentModal.state = this.$location.path();
           if (Wechat && this.project) {
             Wechat.reconfigShare(userMe, this.project);
           }
@@ -193,11 +174,14 @@ module teambition {
       }
       this.$rootScope.$on('$stateChangeStart', () => {
         initedViews[this.ViewName + this.$$id] = false;
+        if (currentModal) {
+          currentModal.hide();
+        }
       });
       bindPromise = Zone.bindPromiseFn<any>(() => {
-        return this.$rootScope.pending
+        pending = pending || this.$rootScope.pending;
+        return pending
         .then(() => {
-          console.log('root scope pending resolved');
           let _pending = this.onInit();
           if (_pending !== this.$rootScope.pending) {
             pending = _pending;
