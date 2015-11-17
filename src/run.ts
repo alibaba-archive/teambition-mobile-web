@@ -68,7 +68,16 @@ module teambition {
 
     let initDD = () => {
       DingCorpid = getParameterByName(window.location.search, 'corpId');
-      return $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`);
+      let defer = $q.defer();
+      $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`)
+      .then((data: any) => {
+        console.log('ding response');
+        let info: IDingSignature = data.data;
+        Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
+        Ding.setTitle('Teambition');
+        defer.resolve();
+      });
+      return defer.promise;
     };
 
     if (typeof wx === 'object') {
@@ -80,12 +89,8 @@ module teambition {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
       });
     }else if (typeof dd === 'object') {
-      $rootScope.pending = initDD()
-      .then((data: any) => {
-        let info: IDingSignature = data.data;
-        Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
-        Ding.setTitle('Teambition');
-      });
+      console.log('ding request');
+      $rootScope.pending = initDD();
     }
 
     let deferred = $q.defer();

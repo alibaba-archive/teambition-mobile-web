@@ -197,6 +197,7 @@ module teambition {
       bindPromise = Zone.bindPromiseFn<any>(() => {
         return this.$rootScope.pending
         .then(() => {
+          console.log('root scope pending resolved');
           let _pending = this.onInit();
           if (_pending !== this.$rootScope.pending) {
             pending = _pending;

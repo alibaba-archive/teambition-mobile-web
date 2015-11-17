@@ -158,7 +158,7 @@ gulp.task('concat-app', function() {
     .pipe(gulp.dest('www/js/'))
 })
 
-gulp.task('compile', sequence(['compile-ts', 'compile-template', 'compile-et'], 'concat-app'))
+gulp.task('compile', sequence(['compile-ts', 'compile-template', 'compile-et']))
 
 gulp.task('html', function() {
   return gulp.src('src/index.html')
@@ -284,11 +284,11 @@ gulp.task('watch', ['watch-et'], function() {
   gulp.watch('.tmp/scripts/**/*.js', ['concat-app'])
 })
 
-gulp.task('before:ci', sequence('clean', 'tsd:install',
-  ['lib-css', 'lib-font', 'lib-js', 'less', 'compile', 'html', 'images']
+gulp.task('ci', sequence('clean', 'tsd:install', 'compile', 'concat-app',
+  ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
 ))
 
-gulp.task('before:build', sequence('clean', 'tsd:install', 'replaceForPublish', 'compile',
+gulp.task('before:build', sequence('clean', 'tsd:install', 'compile', 'replaceForPublish', 'concat-app',
   ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
 ))
 
@@ -298,13 +298,13 @@ gulp.task('default', ['before:build'], function() {
     .pipe(gulp.dest('www'))
 })
 
-gulp.task('before:wechat', ['before:build'], function() {
+gulp.task('wechat', ['before:build'], function() {
   return gulp.src('www/index.html')
     .pipe(replace('{{__third.lib.script}}', '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'))
     .pipe(gulp.dest('www'))
 })
 
-gulp.task('before:ding', ['before:build'], function() {
+gulp.task('ding', ['before:build'], function() {
   return gulp.src('www/index.html')
     .pipe(replace('{{__third.lib.script}}', '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'))
     .pipe(gulp.dest('www'))

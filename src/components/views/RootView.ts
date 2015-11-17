@@ -20,7 +20,7 @@ module teambition {
     protected $state: angular.ui.IStateService;
 
     private app: Iapp;
-    private $http: angular.IHttpService;
+    // private $http: angular.IHttpService;
     private socket: any;
     private socketListener: ISocketListener;
     private getParameterByName: IGetParmByName;
@@ -41,49 +41,15 @@ module teambition {
         if (this.userMe && this.$rootScope.pending) {
           return this.$rootScope.pending;
         }
-        // let corpId = this.getParameterByName(window.location.search, 'corpId');
-        // return this.$http.get(`${this.app.dingApiHost}/getAccess?code=${Ding.code}&corpId=${corpId}`)
-        // .then((data: any) => {
-        //   // alert(1);
-        // })
-        // .catch((reason: any) => {
-        //   // alert(2);
-        // });
+        console.log('me request');
         return this.RestAPI.get({
           Type: 'users',
           Id: 'me'
         })
         .$promise
         .then((userMe: teambition.IUserMe) => {
-          alert(0);
+          console.log('me response');
           this.initUser(userMe);
-        })
-        .catch((reason: any) => {
-          let corpId = this.getParameterByName(window.location.search, 'corpId');
-          alert(typeof Ding);
-          this.$http.get(`${this.app.dingApiHost}/getAccess?code=${Ding.code}&corpId=${corpId}`)
-          .then((data: any) => {
-            alert(1);
-          })
-          .catch((reason: any) => {
-            alert(2);
-          });
-        })
-        .then((user: any) => {
-          return this.RestAPI.get({
-            Type: 'users',
-            Id: 'me'
-          })
-          .$promise
-          .then((userMe: IUserMe) => {
-            alert(2);
-            this.initUser(userMe);
-          });
-        })
-        .catch((reason: any) => {
-          let message = this.getFailureReason(reason);
-          alert(message);
-          this.showMsg('error', 'error', message);
         });
       }
     }

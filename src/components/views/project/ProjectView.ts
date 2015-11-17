@@ -37,19 +37,17 @@ module teambition {
     ) {
       super();
       this.$scope = $scope;
-      this.zone.run(noop);
+      this.zone.run(() => {
+        if (Ding) {
+          Ding.setRight('创建项目', true, true, () => {
+            window.location.hash = '/projects/create';
+          });
+        }
+      });
     }
 
     public onInit() {
       return this.getProjects();
-    }
-
-    public onAllChangesDone() {
-      if (Ding) {
-        Ding.setRight('创建项目', true, true, () => {
-          window.location.hash = '/projects/create';
-        });
-      }
     }
 
     public wxQrcode() {
@@ -262,8 +260,10 @@ module teambition {
     }
 
     private getProjects(): angular.IPromise<any> {
+      console.log('projects request');
       return this.ProjectsAPI.fetch()
       .then((projects: IProjectDataParsed[]) => {
+        console.log('projects response');
         this.sortProject(projects);
         this.projects = projects;
       });
