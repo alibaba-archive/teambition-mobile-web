@@ -30,6 +30,12 @@ module teambition {
       event.contentToDisplay = mdParser(event.contentToDisplay);
       event.contentToDisplay = $sanitize(event.contentToDisplay);
       event.recurrenceTime = event.recurrence ? event.recurrence[0] : undefined;
+      if (event.startDate instanceof Date) {
+        event.startDate = event.startDate.toISOString();
+      }
+      if (event.endDate instanceof Date) {
+        event.endDate = event.endDate.toISOString();
+      }
       let startDate = Moment(event.startDate);
       let endDate = Moment(event.endDate);
       endDate = endDate ? endDate : endDate.clone().add(1, 'hours');

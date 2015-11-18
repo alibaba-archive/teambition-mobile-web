@@ -11,6 +11,10 @@ module teambition {
     'use strict';
     private Cache: angular.ICacheObject;
 
+    protected _add(type: string, id: string, content: any) {
+      this._set(type, id, content);
+    }
+
     protected _set(type: string, id: string, content: any) {
       let namespace = id ? `${type}:${id}` : type;
       if (!this.Cache.get(namespace)) {
@@ -40,6 +44,9 @@ module teambition {
 
     protected _delete(type: string, id: string) {
       let namespace = id ? `${type}:${id}` : type;
+      this._updateObj(type, id, {
+        deleted: true
+      });
       this.Cache.remove(namespace);
     }
   }

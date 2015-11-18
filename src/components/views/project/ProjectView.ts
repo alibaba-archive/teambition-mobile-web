@@ -55,19 +55,6 @@ module teambition {
       }
     }
 
-    public wxQrcode() {
-      wx.scanQRCode({
-        needResult: 1,
-        scanType: ['qrCode'],
-        success: (res: IWxScanRes) => {
-          this.checkUrlValid(res.resultStr)
-          .then((data: IProjectInviteData) => {
-            window.location.hash = `/invited/${data.projectId}/${data.signCode}/${data.invitorId}`;
-          });
-        }
-      });
-    }
-
     public starProject(project: IProjectData) {
       if (!project.isStar) {
         this.ProjectsAPI.starProject(project._id)
@@ -290,16 +277,6 @@ module teambition {
         }else {
           this.personalProjects.push(project);
         }
-      });
-    }
-
-    private checkUrlValid(url: string): angular.IPromise<any> {
-      return this.ProjectsAPI.checkProjectsInviteUrl(url)
-      .then(function(data: string | teambition.IProjectInviteData) {
-        if (data === 'notValid') {
-          this.showMsg('error', '扫描失败', '不合法的二维码');
-        }
-        return data;
       });
     }
   }

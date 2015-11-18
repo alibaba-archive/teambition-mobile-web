@@ -22,8 +22,14 @@ module teambition {
     private projectParser: (project: IProjectData) => IProjectDataParsed;
 
     public set(project: IProjectData) {
-      let result = this.projectParser(project);
-      this._set('project', project._id, result);
+      if (this.projectIndex.indexOf(project._id) === -1) {
+        let result = this.projectParser(project);
+        this.projectIndex.push(project._id);
+        this.collection.push(result);
+        this._set('project', project._id, result);
+      }else {
+        this._updateObj('project', project._id, project);
+      }
     }
 
     public updateObj(id: string, patch: any) {

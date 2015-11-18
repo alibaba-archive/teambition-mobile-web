@@ -26,7 +26,9 @@
       <ion-list class="project-wrap ionic"
                 ng-repeat="project in ProjectCtrl.personalProjects track by project._id"
                 ng-show="!project.deleted">
-        <ion-item class="item" ng-class="{'item-icon-right': editing}" ng-href="{{ProjectCtrl.href}}/{{project._id}}/home">
+        <ion-item class="item"
+                  ng-class="{'item-icon-right': editing}"
+                  ng-href="{{ProjectCtrl.href}}/{{project._id}}/home">
           <div class="project-list-icon project-logo" style="{{project.style}}"></div>
           <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
 

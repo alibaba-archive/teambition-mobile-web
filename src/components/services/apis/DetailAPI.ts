@@ -96,8 +96,8 @@ module teambition {
 
   export interface IEventData {
     _id: string;
-    endDate: string;
-    startDate: string;
+    endDate: any;
+    startDate: any;
     _projectId: string;
     location: string;
     content: string;

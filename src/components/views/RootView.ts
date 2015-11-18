@@ -52,20 +52,14 @@ module teambition {
         })
         .catch((reason: any) => {
           let defer = this.$q.defer();
-          DingCorpid = this.getParameterByName(window.location.search, 'corpId');
-          this.$http.get(this.app.dingApiHost + `/signature?corpId=${DingCorpid}`)
-          .then((data: any) => {
-            let info: IDingSignature = data.data;
-            let Ding = new DingService(this.app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
-            Ding.getCode((code: string) => {
-              this.$http.get(`${this.app.dingApiHost}/getAccess?code=${code}&corpId=${DingCorpid}`)
-              .then((result: any) => {
-                defer.resolve();
-              })
-              .catch((reason: any) => {
-                let message = this.getFailureReason(reason);
-                this.showMsg('error', 'error', message);
-              });
+          Ding.getCode((code: string) => {
+            this.$http.get(`${this.app.dingApiHost}/getAccess?code=${code}&corpId=${DingCorpid}`)
+            .then((result: any) => {
+              defer.resolve();
+            })
+            .catch((reason: any) => {
+              let message = this.getFailureReason(reason);
+              this.showMsg('error', 'error', message);
             });
           });
           return defer.promise;

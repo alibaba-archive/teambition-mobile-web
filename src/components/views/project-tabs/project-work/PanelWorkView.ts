@@ -27,6 +27,17 @@ module teambition {
       return this.initFetch();
     }
 
+    public onAllChangesDone() {
+      if (Ding) {
+        Ding.setLeft('返回', true, true, () => {
+          location.href = location.href.replace(window.location.hash, '') + '#/projects';
+        });
+        Ding.setRight('新建文件(夹)', true, false, () => {
+          window.location.hash = window.location.href.replace('tasklist', 'task/create');
+        });
+      }
+    }
+
     public openDetail(_id: string) {
       if (!_id) {
         return;

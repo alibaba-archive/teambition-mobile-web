@@ -10,6 +10,7 @@ module teambition {
       [index: string]: IEventDataParsed[];
     };
     raw: IEventDataParsed[];
+    index: string[];
     counter: number;
   }
 

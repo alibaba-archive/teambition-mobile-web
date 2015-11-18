@@ -59,6 +59,7 @@ module teambition {
     private infinite = true;
     private activities: IProjectActivitiesDataParsed [];
     private eventGroup: IEventData[];
+    private state: string;
 
     private typeMap = {
       'task': '任务',
@@ -84,6 +85,11 @@ module teambition {
       return this.initFetch();
     }
 
+    public onAllChangesDone() {
+      this.state = 'origin';
+      this.setHeader();
+    }
+
     public scrollHandler() {
       if (!this.infinite) {
         return;
@@ -92,6 +98,9 @@ module teambition {
       let height: number;
       if (typeof(thisView) !== 'undefined') {
         height = thisView.__maxScrollTop;
+        if (height < thisView.__clientHeight) {
+          this.infinite = false;
+        }
       }
       if ( typeof(this.$ionicScrollDelegate.getScrollPosition) !== 'undefined') {
         let position = this.$ionicScrollDelegate.getScrollPosition();
@@ -119,14 +128,18 @@ module teambition {
     }
 
     public openMembersFilterModal() {
+      this.state = 'memberFilter';
+      this.setHeader();
       this.openModal('project-tabs/project-home/members-filter-modal.html', {scope: this.$scope});
     }
 
     public openTasksFilterModal() {
+      this.state = 'typeFilter';
+      this.setHeader();
       this.openModal('project-tabs/project-home/tasks-filter-modal.html', {scope: this.$scope});
     }
 
-    public checkItem(filter: any, type: string, item: string) {
+    public checkItem(filter: any, type: string, item?: any) {
       if (!item) {
         if (!filter.count) {
           filter.all = true;
@@ -144,9 +157,24 @@ module teambition {
       }
     }
 
+    public selectMember(id: string) {
+      if (id === 'all') {
+        this.selectedMembers.all = true;
+        angular.forEach(this.membersMap, (member: IMemberData) => {
+          member.isSelected = false;
+        });
+        this.checkItem(this.selectedMembers, 'members');
+      }else {
+        this.selectedMembers.all = false;
+        this.membersMap[id].isSelected = !this.membersMap[id].isSelected;
+        this.selectedMembers.members[id] = this.selectedMembers.members[id] ? null : this.membersMap[id].name;
+        this.checkItem(this.selectedMembers, 'members', this.membersMap[id]);
+      }
+    }
+
     public filterMembers() {
       let cacheText;
-      this.filterResultParser(this.selectedMembers, this.selectedMembers.members, this.membersMap, 'members');
+      this.filterResultParser(this.selectedMembers, this.selectedMembers.members, this.selectedMembers.members, 'members');
       cacheText = this.selectedMembers.cacheText + ' ' + this.selectedTypes.cacheText;
       if (cacheText !== lastCacheText) {
         this.showLoading();
@@ -172,6 +200,40 @@ module teambition {
         });
       }
       this.infinite = true;
+    }
+
+    private setHeader() {
+      if (Ding) {
+        switch (this.state) {
+          case 'origin':
+            Ding.setTitle('Teambition');
+            Ding.setLeft('返回', true, true, () => {
+              location.href = location.href.replace(window.location.hash, '') + '#/projects';
+            });
+            Ding.setRight('', false, false);
+            break;
+          case 'memberFilter':
+            Ding.setTitle('选择成员');
+            Ding.setLeft('', false, false);
+            Ding.setRight('确定', true, false, () => {
+              this.filterMembers();
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+            break;
+          case 'typeFilter':
+            Ding.setTitle('选择类型');
+            Ding.setLeft('', false, false);
+            Ding.setRight('确定', true, false, () => {
+              this.filterTasks();
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+            break;
+        }
+      }
     }
 
     private loadMoreData() {

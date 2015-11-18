@@ -24,15 +24,20 @@ module teambition {
 
     public addEvent(data: IEventDataParsed) {
       let collections = this.getProjectEventsCollection(data._projectId);
+      let startDate = (typeof data.startDate === 'object') ? data.startDate.toString().substr(0, 10) : data.startDate.substr(0, 10);
       if (collections) {
-        let group = collections.data[data.startDate];
-        if (group) {
-          group.push(data);
-        }else {
-          collections.data[data.startDate] = [data];
+        startDate = data.startDate.substr(0, 10);
+        let group = collections.data[startDate];
+        if (collections.index.indexOf(data._id) === -1) {
+          if (group) {
+            group.push(data);
+          }else {
+            collections.data[startDate] = [data];
+          }
+          collections.raw.push(data);
+          collections.counter ++;
+          collections.index.push(data._id);
         }
-        collections.raw.push(data);
-        collections.counter ++;
       }
     }
 
@@ -40,6 +45,7 @@ module teambition {
       let results = <IEventsResult>{
         data: {},
         raw: null,
+        index: [],
         counter: 0
       };
       if (events) {
@@ -47,16 +53,18 @@ module teambition {
         let counter: number = 0;
         angular.forEach(events, (event: IEventData, index: number) => {
           let result: IEventDataParsed = this.eventParser(event);
-          let eventGroup: IEventDataParsed[] = results.data[event.startDate];
+          let startDate = event.startDate.substr(0, 10);
+          let eventGroup: IEventDataParsed[] = results.data[startDate];
           if (eventGroup) {
             eventGroup.push(result);
           }else {
-            results.data[event.startDate] = [];
-            results.data[event.startDate].push(result);
+            results.data[startDate] = [];
+            results.data[startDate].push(result);
             counter ++;
           }
           result.fetchTime = Date.now();
           raw.push(result);
+          results.index.push(event._id);
           this.setDetail(`event:detail:${event._id}`, event);
         });
         results.counter = counter;

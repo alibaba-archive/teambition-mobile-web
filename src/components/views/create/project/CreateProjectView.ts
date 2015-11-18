@@ -4,6 +4,7 @@ module teambition {
 
   let organization: IOrganizationData;
   let visiable: string;
+  let lastIndex: number;
 
   @inject([
     'OrganizationAPI',
@@ -19,6 +20,7 @@ module teambition {
 
     private OrganizationAPI: IOrganizationAPI;
     private ProjectsAPI: IProjectsAPI;
+    private state: string;
 
     // @ngInject
     constructor(
@@ -26,16 +28,7 @@ module teambition {
     ) {
       super();
       this.$scope = $scope;
-      this.zone.run(() => {
-        if (Ding) {
-          Ding.setLeft('取消', true, false, () => {
-            window.history.back();
-          });
-          Ding.setRight('确定', true, true, () => {
-            this.createProject();
-          });
-        }
-      });
+      this.zone.run(noop);
     }
 
     public onInit() {
@@ -43,6 +36,11 @@ module teambition {
       .then((organizations: IOrganizationData[]) => {
         this.organizations = organizations;
       });
+    }
+
+    public onAllChangesDone() {
+      this.state = 'origin';
+      this.setHeader();
     }
 
     public getOrganization() {
@@ -59,6 +57,8 @@ module teambition {
 
     public openOrganization() {
       this.openModal('create/project/organization.html', {scope: this.$scope});
+      this.state = 'selectProjects';
+      this.setHeader();
     }
 
     public openVisiable() {
@@ -66,6 +66,7 @@ module teambition {
     }
 
     public changeOrganization($index: number) {
+      lastIndex = this.organizations.indexOf(organization);
       if (typeof $index !== 'undefined') {
         organization = this.organizations[$index];
       }else {
@@ -73,9 +74,42 @@ module teambition {
       }
     }
 
+    private setHeader() {
+      if (Ding) {
+        switch (this.state) {
+          case 'origin':
+            Ding.setLeft('取消', true, false, () => {
+              window.history.back();
+            });
+            Ding.setRight('确定', true, true, () => {
+              this.createProject();
+            });
+            break;
+          case 'selectProjects':
+            Ding.setLeft('取消', true, false, () => {
+              organization = this.organizations[lastIndex];
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+            Ding.setRight('确定', true, true, () => {
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+            break;
+        }
+      }
+    }
+
     private createProject() {
       if (this.projectName) {
-        this.ProjectsAPI.createProject(this.projectName);
+        this.ProjectsAPI.createProject(this.projectName)
+        .then(() => {
+          window.history.back();
+        });
+      }else {
+        this.showMsg('error', '参数错误', '项目名称是必须的');
       }
     }
 

@@ -8,7 +8,6 @@
       </div>
       <div class="project-header-list">
         <a class="involve-member avatar img-circle"
-           ng-model="PanelHomeCtrl.selectedMembers.members[member._id]"
            ng-repeat="member in PanelHomeCtrl.members | limitTo: 6 track by member._id"
            style="background-image:url({{member.avatarUrl}})"></a>
         <a class="involve-member-add clearfix" ng-click="">
@@ -52,7 +51,7 @@
         <div class="ion-title-line"></div>
         <a class="item item-task"
            ng-repeat="task in PanelHomeCtrl.noneExecutorTasks track by task._id"
-           on-tap="PanelHomeCtrl.openDetail('detail/task/{{task._id}}', 'task')">
+           on-tap="PanelHomeCtrl.openDetail('/detail/task/{{task._id}}', 'task')">
           <i class="icon icon-checkbox-thin"></i>
           <span class="task-content" ng-bind="task.content"></span>
           <!-- <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div> -->
@@ -79,7 +78,7 @@
         <div class="ion-title-line"></div>
         <a class="item item-event"
             ng-repeat="event in PanelHomeCtrl.eventGroup track by event._id"
-            on-tap="PanelHomeCtrl.openDetail('detail/event/{{event._id}}', 'event')">
+            on-tap="PanelHomeCtrl.openDetail('/detail/event/{{event._id}}', 'event')">
           <i class="icon icon-calendar2"></i>
           <span class="task-content">
             <p ng-bind="event.title"></p>
@@ -88,7 +87,7 @@
         </a>
         <a class="item item-task"
            ng-repeat="task in PanelHomeCtrl.dueTasks track by task._id"
-           on-tap="PanelHomeCtrl.openDetail('detail/task/{{task._id}}', 'task')">
+           on-tap="PanelHomeCtrl.openDetail('/detail/task/{{task._id}}', 'task')">
           <i class="icon icon-checkbox-thin"></i>
           <span class="task-content">
             <p ng-bind="task.content"></p>

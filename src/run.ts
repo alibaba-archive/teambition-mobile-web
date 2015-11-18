@@ -88,6 +88,10 @@ module teambition {
       });
     }else if (typeof dd === 'object') {
       $rootScope.pending = initDD();
+    }else {
+      let defer = $q.defer();
+      defer.resolve();
+      $rootScope.pending = defer.promise;
     }
 
     // $http.defaults.headers.common.Authorization = 'OAuth2 JL_N0f_OP6dpvTOKjQe8e7wCi5w=MCN3vfXo99625ad6abf2bf03774c86d6ba205ceff8da45c6553c9bd488f5d80c9ac49ebb191697aad985141dc8e94aa064f30e558f3a90194505323a58fe85cb162ee6df2554f253692fc09aced2bb4475ef0f1d5e68f1be529842eec4ff020100829d74d0f89c0c0501be279ff8a08bf4cb6c7b';
@@ -118,4 +122,10 @@ module teambition {
   };
 
   angular.module('teambition').run(RunFn);
+
+  rootZone.run(() => {
+    angular.element(document).ready(() => {
+      angular.bootstrap(document, ['teambition']);
+    });
+  });
 }
