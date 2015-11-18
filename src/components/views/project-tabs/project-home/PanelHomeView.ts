@@ -42,7 +42,7 @@ module teambition {
       cacheText: null
     };
 
-    public project: IProjectData;
+    public project: IProjectDataParsed;
     public dueTasks: ITaskDataParsed[];
     public _dueTasks: ITaskDataParsed[];
     public noneExecutorTasks: ITaskDataParsed[];
@@ -75,6 +75,7 @@ module teambition {
       super();
       this.$scope = $scope;
       this.infinite = true;
+      this.members = [];
       this.zone.run(noop);
     }
 
@@ -216,15 +217,10 @@ module teambition {
     private getMembers() {
       return this.MemberAPI.fetch(projectId)
       .then((members: {[index: string]: IMemberData}) => {
-        let membersMap: {
-          [index: string]: string;
-        };
-        membersMap = {};
-        this.members = members;
-        angular.forEach(members, (member: IMemberData, index: number) => {
-          membersMap[member._id] = member.name;
+        this.membersMap = members;
+        angular.forEach(members, (member) => {
+          this.members.push(member);
         });
-        this.membersMap = membersMap;
       });
     }
 
