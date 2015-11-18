@@ -11,6 +11,7 @@ module teambition {
   @inject([
     'socketListener',
     'ActivityModel',
+    'EventModel',
     'taskParser',
     'postParser',
     'eventParser',
@@ -23,6 +24,7 @@ module teambition {
     protected fileParser: IFileParser;
     protected postParser: IPostParser;
     private socketListener: ISocketListener;
+    private EventModel: IEventModel;
     private ActivityModel: IActivityModel;
 
     public setDetail(namespace: string, content: any) {
@@ -60,7 +62,9 @@ module teambition {
         case 'work':
           return this.fileParser(detail);
         case 'event':
-          return this.eventParser(detail);
+          let result = this.eventParser(detail);
+          this.EventModel.addEvent(result);
+          return result;
       }
     }
   }

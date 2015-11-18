@@ -6,7 +6,7 @@
       </div>
       <div class="project-wrap project-starred" ng-if="ProjectCtrl.countStar()">
         <a class="project-item"
-           on-tap="ProjectCtrl.openProject(project._id)"
+           ng-href="{{ProjectCtrl.href}}/{{project._id}}/home"
            style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
            ng-repeat="(py, project) in ProjectCtrl.projects track by project._id" ng-if="project.isStar">
           <p>{{project.name}}</p>
@@ -26,7 +26,7 @@
       <ion-list class="project-wrap ionic"
                 ng-repeat="project in ProjectCtrl.personalProjects track by project._id"
                 ng-show="!project.deleted">
-        <ion-item class="item" ng-class="{'item-icon-right': editing}" on-tap="ProjectCtrl.openProject(project._id)">
+        <ion-item class="item" ng-class="{'item-icon-right': editing}" ng-href="{{ProjectCtrl.href}}/{{project._id}}/home">
           <div class="project-list-icon project-logo" style="{{project.style}}"></div>
           <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
 
@@ -49,7 +49,7 @@
                   ng-show="!project.deleted">
           <ion-item class="item"
                     ng-class="{'item-icon-right': editing}"
-                    on-tap="ProjectCtrl.openProject(project._id)">
+                    ng-href="{{ProjectCtrl.href}}/{{project._id}}/home">
             <div class="project-list-icon project-logo"
                  style="{{project.style}}">
             </div>

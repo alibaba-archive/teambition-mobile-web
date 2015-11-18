@@ -138,7 +138,9 @@ module teambition {
       })
       .state('edit_involve', {
         url: '/detail/:type/:_id/involve',
-        templateUrl: 'detail/involve/index.html'
+        templateUrl: 'detail/involve/index.html',
+        controller: 'EditInvolveView',
+        controllerAs: 'EditInvolveCtrl'
       })
       .state('link', {
         url: '/detail/:type/:_id/link',
