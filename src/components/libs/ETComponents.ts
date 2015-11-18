@@ -28,7 +28,7 @@ module EtTemplate {
             });
             return val;
           };
-          this[val] = fakeFn;
+          this[val] = fakeFn.bind(this);
         }
       });
       if (this.template) {

@@ -88,7 +88,7 @@ module teambition {
 
     public fetchById(_id: string) {
       if (this.app.socket) {
-        this.app.socket.join(_id);        
+        this.app.socket.join(_id);
       }
       let cache: teambition.IProjectDataParsed = this.ProjectModel.get(_id);
       if (cache) {

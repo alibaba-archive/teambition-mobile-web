@@ -218,7 +218,7 @@ module teambition {
       return this.MemberAPI.fetch(projectId)
       .then((members: {[index: string]: IMemberData}) => {
         this.membersMap = members;
-        angular.forEach(members, (member) => {
+        angular.forEach(members, (member: IMemberData) => {
           this.members.push(member);
         });
       });

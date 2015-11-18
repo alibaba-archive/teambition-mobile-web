@@ -55,7 +55,7 @@ module teambition {
               thumbnailUrl: '',
               fileName: '',
               objectHref: '',
-              folder: '',              
+              folder: '',
               class: ''
             };
             if (object.fileType.length > 4) {
