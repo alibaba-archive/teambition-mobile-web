@@ -9,7 +9,7 @@
            on-tap="ProjectCtrl.openProject(project._id)"
            style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
            ng-repeat="(py, project) in ProjectCtrl.projects track by project._id" ng-if="project.isStar">
-          <p>{{::project.name}}</p>
+          <p>{{project.name}}</p>
           <i class="icon icon-star"></i>
         </a>
       </div>

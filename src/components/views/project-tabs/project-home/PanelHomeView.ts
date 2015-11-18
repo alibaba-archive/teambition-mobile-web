@@ -17,6 +17,7 @@ module teambition {
 
   @parentView('TabsView')
   @inject([
+    'ProjectsAPI',
     'ProjectDetailAPI',
     'EventAPI',
     'MemberAPI'
@@ -41,6 +42,7 @@ module teambition {
       cacheText: null
     };
 
+    public project: IProjectData;
     public dueTasks: ITaskDataParsed[];
     public _dueTasks: ITaskDataParsed[];
     public noneExecutorTasks: ITaskDataParsed[];
@@ -50,7 +52,7 @@ module teambition {
       [index: string]: IMemberData;
     };
 
-
+    private ProjectsAPI: IProjectsAPI;
     private ProjectDetailAPI: IProjectDetailAPI;
     private EventAPI: IEventAPI;
     private MemberAPI: IMemberAPI;
@@ -65,7 +67,6 @@ module teambition {
       'post': '分享',
       'work': '文件'
     };
-
 
     // @ngInject
     constructor(
@@ -211,10 +212,19 @@ module teambition {
       });
     }
 
+
     private getMembers() {
       return this.MemberAPI.fetch(projectId)
       .then((members: {[index: string]: IMemberData}) => {
-        this.membersMap = members;
+        let membersMap: {
+          [index: string]: string;
+        };
+        membersMap = {};
+        this.members = members;
+        angular.forEach(members, (member: IMemberData, index: number) => {
+          membersMap[member._id] = member.name;
+        });
+        this.membersMap = membersMap;
       });
     }
 
@@ -277,7 +287,11 @@ module teambition {
       let now = this.Moment().startOf('day').toISOString();
       return this.$q.all([
         this.getEvents(projectId, now),
-        this.getProjectTasks(projectId)
+        this.getProjectTasks(projectId),
+        this.ProjectsAPI.fetchById(projectId)
+        .then((project: IProjectDataParsed) => {
+          this.project = project;
+        })
       ])
       .then(() => {
         return this.getActivities(20, null, null, 1);
