@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "cdn-uploader": "^0.1.1",
-    "et-template": "^0.1.7",
+    "et-template": "^0.1.9",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-batch": "^1.0.5",

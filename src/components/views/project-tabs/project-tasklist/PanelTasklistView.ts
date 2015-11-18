@@ -3,35 +3,37 @@ module teambition {
   'use strict';
 
   let projectId: string;
-  let tasklistSelected: ITasklistData;
+  let smartTitleMap = {
+    'smart-not-assigned': '待认领任务',
+    'smart-not-done': '未完成任务',
+    'smart-done': '已完成任务'
+  };
 
   @parentView('TabsView')
   @inject([
     'StageAPI',
-    'TagsAPI',
-    'TasklistAPI'
+    'TasklistAPI',
+    'taskFilter',
+    '$ionicBackdrop'
   ])
   export class PanelTasklistView extends View {
 
     public ViewName = 'PanelTasklistView';
 
+    public stages: IStageData[];
     public tasklists: ITasklistData[];
-    public tasklist: {
-      title: string;
-    };
-    public tasklistMap: {
-      [index: string]: string;
-    };
-    public tags: {[index: string]: ITagsData};
+    public tasklistSelected: ITasklistData;
+    protected taskFilter: EtTemplate.TaskFilter;
+
     public tasks: {
       [index: string]: ITaskDataParsed[];
     };
-    public taskLength: number;
-    public stages: IStageData[];
 
-    private TagsAPI: ITagsAPI;
+    public taskLength: number;
+
     private TasklistAPI: ITasklistAPI;
     private StageAPI: IStageAPI;
+    private $ionicBackdrop: ionic.backdrop.IonicBackdropService;
 
     constructor() {
       super();
@@ -54,13 +56,23 @@ module teambition {
       }
     }
 
-    public chooseTasklist() {
-      let map = this.tasklistMap;
-      let tasklistTitle = this.tasklist.title;
-      let _id = map[tasklistTitle];
-      if (_id) {
-        this.fetchTasksByTasklistId(_id);
+    public chooseTasklist(tasklist_id: string) {
+      if (tasklist_id) {
+        angular.forEach(this.tasklists, (tasklist: ITasklistData) => {
+          if (tasklist._id === tasklist_id) {
+            this.tasklistSelected = tasklist;
+          }
+        });
+        this.fetchTasksByTasklistId(tasklist_id);
       }
+    }
+
+    public chooseSmartlist(smartlist_type: string) {
+      let dummySelected = <ITasklistData>{};
+      dummySelected._id = smartlist_type;
+      dummySelected.title = smartTitleMap[smartlist_type];
+      this.tasklistSelected = dummySelected;
+      // this.fetchTasksBySmartGroup(type);
     }
 
     public openTaskDetail(_id: string) {
@@ -69,14 +81,22 @@ module teambition {
       }
     }
 
+    public openTaskFilter(event: angular.IAngularEvent) {
+      this.taskFilter.show(this);
+      setTimeout(() => {
+        this.$ionicBackdrop.retain();
+      }, 100);
+    }
+
+    public closeFilter() {
+      this.$ionicBackdrop.release();
+    }
+
     private initFetch() {
       let self = this;
-      return this.$q.all([
-        self.getTaskLists(),
-        self.getTags()
-      ])
+      return self.getTaskLists()
       .then(() => {
-        return self.fetchTasksByTasklistId(tasklistSelected._id);
+        return self.fetchTasksByTasklistId(this.tasklistSelected._id);
       });
     }
 
@@ -84,20 +104,9 @@ module teambition {
       return this.TasklistAPI.fetchAll(projectId)
       .then((tasklists: ITasklistData[]) => {
         this.tasklists = tasklists;
-        if (!tasklistSelected || tasklistSelected._projectId !== projectId) {
-          tasklistSelected = tasklists[0];
+        if (!this.tasklistSelected || this.tasklistSelected._projectId !== projectId) {
+          this.tasklistSelected = tasklists[0];
         }
-        this.tasklist = {
-          title: tasklistSelected.title
-        };
-        this.tasklistMap = this.setTasklistMap(tasklists);
-      });
-    }
-
-    private getTags() {
-      return this.TagsAPI.fetchByProject(projectId)
-      .then((tags: {[index: string]: ITagsData}) => {
-        this.tags = tags;
       });
     }
 
@@ -120,17 +129,6 @@ module teambition {
         });
         this.hideLoading();
       });
-    }
-
-    private setTasklistMap(tasklists: ITasklistData[]) {
-      let map: {
-        [index: string]: string;
-      };
-      map = {};
-      angular.forEach(tasklists, (tasklist: ITasklistData, index: number) => {
-        map[tasklist.title] = tasklist._id;
-      });
-      return map;
     }
 
     private insertTask(task: ITaskDataParsed, tasks: ITaskDataParsed[]) {

@@ -1,23 +1,39 @@
 <ion-view class="padding" ng-controller="PanelTasklistView as PanelTaskCtrl">
   <ion-content>
-    <div class="list tasklists-list">
-      <label class="item item-input item-select item-group">
-        <div class="input-label">
-          任务分组
+    <div class="list tasks-list">
+      <div class="item item-group-selector"
+           ng-click="PanelTaskCtrl.openTaskFilter($event)">
+        <div class="label">任务分组</div>
+        <div class="selector">
+          <span class="group-name">{{PanelTaskCtrl.tasklistSelected.title}}</span>
+          <i class="icon ion-arrow-down-b"></i>
         </div>
-        <select ng-model="PanelTaskCtrl.tasklist.title" ng-change="PanelTaskCtrl.chooseTasklist()">
-          <option ng-repeat="tasklist in PanelTaskCtrl.tasklists track by tasklist._id">{{::tasklist.title}}</option>
-        </select>
-      </label>
-      <div class="list ionic" ng-repeat="stage in PanelTaskCtrl.stages track by stage._id" ng-if="PanelTaskCtrl.tasks[stage._id].length">
-        <span class="stage-name">{{::stage.name}}</span>
-        <div class="task-content item item-icon-left" ng-repeat="task in PanelTaskCtrl.tasks[stage._id] track by task._id" on-tap="PanelTaskCtrl.openTaskDetail(task._id)" ng-class="{'task-done color-light-grey': task.isDone, 'has-tag': task.tagIds.length}">
-          <i class="icon task-content-icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': task.isDone}"></i>
-          <time ng-class="{'assertive': task.overDue, 'energized': task.oneDay}">{{::task.dueDate | formatDate : 'MM-DD'}}</time>
-          <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div>
-          <div class="task-title">{{::task.content}}</div>
-          <div class="task-tags"><span class="tag" ng-repeat="tagId in task.tagIds track by $index"><i class="dot tag-label-{{::PanelTaskCtrl.tags[tagId].color}}"></i>{{::PanelTaskCtrl.tags[tagId].name}}</span></div>
-        </div>
+      </div>
+
+      <div class="list task-list"
+           ng-if="PanelTaskCtrl.tasks[stage._id].length"
+           ng-repeat="stage in PanelTaskCtrl.stages track by stage._id">
+        <div class="item item-divider">{{::stage.name}}</div>
+        <a class="item item-icon-left task-item"
+           ng-class="{'task-has-done': task.isDone,
+                      'task-priority': task.priority > 0,
+                      'task-priority-high': task.priority == 1,
+                      'task-priority-urgent': task.priority == 2}"
+           on-tap="PanelTaskCtrl.openTaskDetail(task._id)"
+           ng-repeat="task in PanelTaskCtrl.tasks[stage._id] track by task._id">
+          <i class="icon task-icon"
+             ng-class="{'icon-checkbox-thin': !task.isDone,
+                        'icon-checkbox-ios-checked': task.isDone}"></i>
+          <div class="task-content" ng-class="{'task-has-due': task.dueDate}">
+            <div class="task-title">{{::task.content}}</div>
+            <time ng-if="task.dueDate" ng-class="{'task-over-due': task.overDue}">
+              {{::task.dueDate | formatDate : 'MM月DD日'}}
+            </time>
+          </div>
+          <div class="icon task-avatar"
+               style="background-image:url({{task.executorAvatar}});">
+          </div>
+        </a>
       </div>
     </div>
   </ion-content>
