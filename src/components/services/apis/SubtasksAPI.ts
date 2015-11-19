@@ -18,6 +18,7 @@ module teambition {
   export interface ISubtasksAPI {
     fetch(_taskId: string): angular.IPromise<ISubtaskData[]>;
     update(_id: string, task: ITaskDataParsed, dataToUpdated: any): angular.IPromise<any>;
+    create(content: string, _taskId: string, _executorId: string): angular.IPromise<void>;
   }
 
   @inject([
@@ -62,6 +63,20 @@ module teambition {
           doneCount -= 1;
         }
         this.SubtaskModel.updateSubtask(_id, data);
+      });
+    }
+
+    public create(content: string, _taskId: string, _executorId: string) {
+      return this.RestAPI.save({
+        Type: 'subtasks'
+      }, {
+        content: content,
+        _taskId: _taskId,
+        _executorId: _executorId
+      })
+      .$promise
+      .then((data: ISubtaskData) => {
+        this.SubtaskModel.setSubtask(data);
       });
     }
   }

@@ -35,3 +35,4 @@
 /// <reference path='../services/Cache.ts' />
 /// <reference path='../services/getParam.ts' />
 /// <reference path='../services/arrayMerge.ts' />
+/// <reference path='../services/rrule.ts' />

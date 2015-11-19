@@ -234,24 +234,10 @@ module teambition {
     }
 
     private detailParser (detail: any, type: string, detailInfos: IDetailInfos): any {
-      let members = detailInfos.members;
-      let involveMembers = [];
       detail.isLike = detailInfos.like.isLike;
       detail.likesGroup = detailInfos.like.likesGroup;
       detail.likesCount = detailInfos.like.likesCount;
       detail.detailInfos = detailInfos;
-      if (members) {
-        angular.forEach(members, (member: IMemberData, index: number) => {
-          if (detail.involveMembers.indexOf(member._id) !== -1) {
-            involveMembers.push(member);
-          }
-        });
-        if (involveMembers.length) {
-          detail.members = involveMembers;
-        }else {
-          detail.members = [{name: '暂无参与者', avatarUrl: nobodyUrl}];
-        }
-      }
       return this.DetailModel.setDetail(`${type}:detail:${detail._id}`, detail);
     }
 

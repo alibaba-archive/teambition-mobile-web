@@ -54,6 +54,20 @@ module teambition {
 
     private parseDetail(namespace: string, detail: any): any {
       let type = namespace.split(':')[0];
+      let members = detail.detailInfos ? detail.detailInfos.members : null;
+      let involveMembers = [];
+      if (members) {
+        angular.forEach(members, (member: IMemberData, index: number) => {
+          if (detail.involveMembers.indexOf(member._id) !== -1) {
+            involveMembers.push(member);
+          }
+        });
+        if (involveMembers.length) {
+          detail.members = involveMembers;
+        }else {
+          detail.members = [{name: '暂无参与者', avatarUrl: nobodyUrl}];
+        }
+      }
       switch (type) {
         case 'task':
           return this.taskParser(detail);

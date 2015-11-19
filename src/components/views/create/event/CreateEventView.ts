@@ -4,7 +4,8 @@ module teambition {
 
   @inject([
     'DetailAPI',
-    'MemberAPI'
+    'MemberAPI',
+    'Rrule'
   ])
   class CreateEventView extends View {
 
@@ -16,17 +17,49 @@ module teambition {
     public involveMembers: string[];
     public location: string;
     public content: string;
-    public recurrence: string;
+    public recurrenceStr: string;
     public isVisiable = false;
     public members: {
       [index: string]: IMemberData;
     };
     public visiable = 'members';
 
+    public recurrence = [
+      {
+        name: '从不',
+        recurrence: null,
+        isSelected: false
+      },
+      {
+        name: '每天',
+        recurrence: 'RRULE:FREQ=DAILY;INTERVAL=1',
+        isSelected: false
+      },
+      {
+        name: '每周',
+        recurrence: 'RRULE:FREQ=WEEKLY;INTERVAL=1',
+        isSelected: false
+      },
+      {
+        name: '每两周',
+        recurrence: 'RRULE:FREQ=WEEKLY;INTERVAL=2',
+        isSelected: false
+      },
+      {
+        name: '每月',
+        recurrence: 'RRULE:FREQ=MONTHLY;INTERVAL=1',
+        isSelected: false
+      }
+    ];
+
+    public recurrenceName: string;
+
     private state: string;
     private projectId: string;
     private DetailAPI: IDetailAPI;
     private MemberAPI: IMemberAPI;
+    private lastRecurrneceIndex: number;
+    private Rrule: IRrule;
 
     // @ngInject
     constructor(
@@ -74,6 +107,15 @@ module teambition {
       this.setHeader();
     }
 
+    public openRecurrence() {
+      this.openModal('create/event/recurrence.html', {
+        scope: this.$scope,
+        animation: 'slide-in-left'
+      });
+      this.state = 'recurrence';
+      this.setHeader();
+    }
+
     public getInvolveNames() {
       let names = [];
       angular.forEach(this.members, (member: IMemberData) => {
@@ -82,6 +124,19 @@ module teambition {
         }
       });
       return names.join('、');
+    }
+
+    public chooseRecurrence($index: number) {
+      if (this.lastRecurrneceIndex) {
+        this.recurrence[this.lastRecurrneceIndex].isSelected = false;
+      }
+      this.lastRecurrneceIndex = $index;
+      this.recurrence[$index].isSelected = true;
+      this.recurrenceStr = this.recurrence[$index].recurrence;
+      this.recurrenceName = this.recurrence[$index].name;
+      this.cancelModal();
+      this.state = 'origin';
+      this.setHeader();
     }
 
     private setHeader() {
@@ -104,6 +159,7 @@ module teambition {
               this.selectInvolve();
               this.state = 'origin';
               this.cancelModal();
+              this.setHeader();
             });
             Ding.setLeft('取消', true, false, () => {
               let id = this.$rootScope.userMe._id;
@@ -113,6 +169,7 @@ module teambition {
               });
               this.cancelModal();
               this.state = 'origin';
+              this.setHeader();
             });
           }
           break;
@@ -124,11 +181,24 @@ module teambition {
               if (!this.$scope.$$phase) {
                 this.$scope.$digest();
               }
+              this.setHeader();
             });
             Ding.setLeft('取消', true, false, () => {
               this.content = '';
               this.cancelModal();
               this.state = 'origin';
+              this.setHeader();
+            });
+          }
+          break;
+        case 'recurrence':
+          if (Ding) {
+            Ding.setRight('', false, false);
+            Ding.setLeft('取消', true, false, () => {
+              this.recurrenceStr = null;
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
             });
           }
           break;
@@ -138,7 +208,10 @@ module teambition {
     private createEvent() {
       if (typeof this.title !== 'undefined') {
         this.showLoading();
-        let recurrence = this.recurrence ? [this.recurrence] : null;
+        let nowStr = this.Rrule.timeToUntilString(Date.now());
+        let recurrence = this.recurrenceStr ?
+                         ['DTSTART=' + this.recurrenceStr.replace(';', `;${nowStr};`)] :
+                         null;
         return this.DetailAPI.create('event', {
           _projectId: this.projectId,
           title: this.title,

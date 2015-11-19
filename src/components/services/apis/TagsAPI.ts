@@ -27,7 +27,7 @@ module teambition {
     public fetchByObjectId (type: string, _id: string) {
       let cache: any = this.TagsModel.getCollection(type, _id);
       let deferred = this.$q.defer<ITagsData[]>();
-      if (cache && cache.length) {
+      if (cache) {
         deferred.resolve(cache);
         return deferred.promise;
       }

@@ -16,13 +16,6 @@
       <div class="item item-divider" ng-if="ProjectCtrl.personalProjects.length">
         个人项目
       </div>
-      <!--<div class="item item-scanning" on-tap="ProjectCtrl.wxQrcode()">
-        <div class="project-list-icon icon-has-background">
-          <i class="icon icon-scanning"></i>
-        </div>
-        <p>扫一扫关注项目</p>
-      </div>-->
-      <!-- 个人项目 -->
       <ion-list class="project-wrap ionic"
                 ng-repeat="project in ProjectCtrl.personalProjects track by project._id"
                 ng-show="!project.deleted">

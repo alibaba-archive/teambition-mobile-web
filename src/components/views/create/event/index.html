@@ -55,7 +55,10 @@
         </a>
         <a class="item item-icon-left" on-tap="CreateEventCtrl.openRecurrence()">
           <i class="icon icon-review"></i>
-          设置重复周期
+          <span ng-bind="CreateEventCtrl.recurrenceName"
+                ng-if="CreateEventCtrl.recurrenceName">
+          </span>
+          <span ng-if="!CreateEventCtrl.recurrenceName">设置重复周期</span>
         </a>
       </div>
     </div>

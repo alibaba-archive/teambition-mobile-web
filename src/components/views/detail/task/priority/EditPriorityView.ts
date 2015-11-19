@@ -63,7 +63,8 @@ module teambition {
         window.history.back();
       })
       .catch((reason: any) => {
-        this.showMsg('error', '更新失败', reason);
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '更新失败', message);
         this.hideLoading();
         window.history.back();
       });

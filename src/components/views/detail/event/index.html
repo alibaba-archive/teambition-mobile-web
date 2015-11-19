@@ -33,13 +33,15 @@
         <span class="margin-left">{{EventCtrl.event.linked.length}}个关联</span>
       </a>
     </div>
-    <div class="event-executor-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
+    <div class="involve-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
       <div-item class="item list-title">
         参与者
       </div-item>
-      <div class="item item-icon-left">
+      <div class="item item-icon-left detail-involves">
         <i class="icon icon-users"></i>
-        <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+        <span class="member-name-wrap">
+          <span ng-bind="DetailCtrl.getInvolves()"></span>
+        </span>
       </div>
     </div>
   </div>

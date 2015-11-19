@@ -3,6 +3,19 @@
 
 .detail-view {
   background: #f7f7f7;
+  .involve-wrap {
+    color: @grayDarker;
+    overflow: hidden;
+    .item.detail-involves {
+      height: 48px;
+      .member-name-wrap {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 95%;
+        display: inline-block;
+      }
+    }
+  }
   &.big-footer {
     & > ion-content {
       bottom: 162px;

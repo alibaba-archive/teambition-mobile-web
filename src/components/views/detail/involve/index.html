@@ -3,14 +3,13 @@
     <div class="list executor-members">
       <div class="item item-icon-left item-toggle">
         <i class="icon"
-           ng-class="{'icon-unlock': EditInvolveCtrl.isVisiable, 'icon-lock': !EditInvolveCtrl.isVisiable}"
+           ng-class="{'icon-unlock': !EditInvolveCtrl.isVisiable, 'icon-lock': EditInvolveCtrl.isVisiable}"
            >
         </i>
         参与者可见
         <label class="toggle toggle-balanced">
           <input type="checkbox"
-                 ng-model="EditInvolveCtrl.isVisiable"
-                 ng-checked="(EditInvolveCtrl.detail.visiable === 'involves')">
+                 ng-model="EditInvolveCtrl.isVisiable">
           <div class="track">
             <div class="handle"></div>
           </div>

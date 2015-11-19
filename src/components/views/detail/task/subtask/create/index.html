@@ -1,0 +1,25 @@
+<ion-view ng-controller="CreateSubtaskView as CreateSubtaskCtrl"
+          class="create-subtask-view">
+  <ion-content scroll="false">
+    <div class="list ionic">
+      <div-item class="item item-input">
+        <textarea ng-model="CreateSubtaskCtrl.content" placeholder="子任务标题"></textarea>
+      </div-item>
+      <a class="item item-avatar" on-tap="CreateSubtaskCtrl.openExecutor()">
+        <img ng-src="{{CreateSubtaskCtrl.members[CreateSubtaskCtrl.executorId].avatarUrl}}">
+        <span ng-bind="CreateSubtaskCtrl.getExecutorName()"></span>
+      </a>
+      <div class="item item-icon-left subtask-date">
+        <i class="icon icon-calendar2"></i>
+        <span ng-bind="CreateSubtaskCtrl.dueDate | formatDate : 'll'"
+              ng-if="CreateSubtaskCtrl.dueDate"></span>
+        <span ng-if="!CreateSubtaskCtrl.dueDate">
+          设置一个截止日期
+        </span>
+        <input type="date"
+                ng-model="CreateSubtaskCtrl.dueDate"
+                ng-model-options="{ getterSetter: true }">
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

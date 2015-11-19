@@ -4,11 +4,12 @@
       <div class="project-header-img" style="background-image: url({{PanelHomeCtrl.project.logo}})"></div>
       <div class="project-header-info">
         <h2 class="project-title">{{PanelHomeCtrl.project.name}}</h2>
-        <a class="project-member-count">{{PanelHomeCtrl.members.length}}个成员</a>
+        <a class="project-member-count">{{PanelHomeCtrl.members.length - 1}}个成员</a>
       </div>
       <div class="project-header-list">
         <a class="involve-member avatar img-circle"
-           ng-repeat="member in PanelHomeCtrl.members | limitTo: 6 track by member._id"
+           ng-repeat="member in PanelHomeCtrl.members | limitTo: 7 track by member._id"
+           ng-if="member._id != 0"
            style="background-image:url({{member.avatarUrl}})"></a>
         <a class="involve-member-add clearfix" ng-click="">
           <span class="icon icon-circle-cross"></span>
@@ -73,10 +74,9 @@
               <i class="icon icon-alert-clock"></i>
             </span>
           今天的事
-          <!--<span class="icon icon-chevron-right"></span>-->
         </div-title>
         <div class="ion-title-line"></div>
-        <a class="item item-event"
+        <div-item class="item item-event"
             ng-repeat="event in PanelHomeCtrl.eventGroup track by event._id"
             on-tap="PanelHomeCtrl.openDetail('/detail/event/{{event._id}}', 'event')">
           <i class="icon icon-calendar2"></i>
@@ -84,8 +84,8 @@
             <p ng-bind="event.title"></p>
             <p class="event-date"><span ng-bind="event.startDate | eventDateFormat: event.endDate"></span></p>
           </span>
-        </a>
-        <a class="item item-task"
+        </div-item>
+        <div-item class="item item-task"
            ng-repeat="task in PanelHomeCtrl.dueTasks track by task._id"
            on-tap="PanelHomeCtrl.openDetail('/detail/task/{{task._id}}', 'task')">
           <i class="icon icon-checkbox-thin"></i>
@@ -98,11 +98,11 @@
             <i class="icon icon-td-calendar"></i>
             <span class="due-date-display" ng-bind="task.dueDate | formatDate: 'calendar'"></span>
           </span>-->
-        </a>
-        <a class="item item-icon-left item-more" ng-if="PanelHomeCtrl.dueTasks.length !== PanelHomeCtrl._dueTasks.length" on-tap="PanelHomeCtrl.loadDue()">
+        </div-item>
+        <div-item class="item item-icon-left item-more" ng-if="PanelHomeCtrl.dueTasks.length !== PanelHomeCtrl._dueTasks.length" on-tap="PanelHomeCtrl.loadDue()">
           <i class="icon ion-more positive"></i>
           <p class="positive">查看更多</p>
-        </a>
+        </div-item>
       </div>
     </div>
 

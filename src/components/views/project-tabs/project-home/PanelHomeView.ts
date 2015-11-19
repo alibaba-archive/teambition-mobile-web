@@ -7,7 +7,7 @@ module teambition {
   let loaded: boolean = false;
   let projectId: string;
   let lastCacheText: string = '';
-  // 用于计算拉取到的主页动态为空的次数，如果多次为空则认为动态已经拉完，禁止下拉加载更多
+  // counter the request to home activities, set infinite false if counter is 3 or more
   let counter = 0;
 
   let cacheActivities: {

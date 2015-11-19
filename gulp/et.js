@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp         = require('gulp')
+var watch        = require('gulp-watch')
 var through      = require('through2')
 var ET           = require('et-template')
 
@@ -44,5 +45,5 @@ gulp.task('compile-et', function() {
 })
 
 gulp.task('watch-et', function() {
-  gulp.watch(EtPath, ['compile-et'])
+  watch(EtPath, ['compile-et'])
 })

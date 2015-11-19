@@ -54,7 +54,6 @@ module teambition {
     protected _boundToObjectType: string;
     protected _linkedId: string;
     protected detail: any;
-    protected members: IMemberData[];
 
     private DetailAPI: IDetailAPI;
     private ActivityAPI: IActivityAPI;
@@ -88,7 +87,6 @@ module teambition {
         return this.DetailAPI.fetch(this._boundToObjectId, this._boundToObjectType, this._linkedId)
         .then((detail: any) => {
           this.detail = detail;
-          this.members = detail.members;
           return this.$q.all([
             this.MemberAPI.fetch(detail._projectId)
             .then((members: {[index: string]: IMemberData}) => {
@@ -208,6 +206,16 @@ module teambition {
 
     public openEdit(name: string) {
       window.location.hash = `/detail/${this._boundToObjectType}/${this._boundToObjectId}/${name}`;
+    }
+
+    public getInvolves() {
+      if (this.detail) {
+        let involves = [];
+        angular.forEach(this.detail.members, (member: IMemberData) => {
+          involves.push(member.name);
+        });
+        return involves.join('、');
+      }
     }
 
     private addTextComment(attachments?: string[]) {

@@ -5,7 +5,9 @@
     </a>
     <div-item class="item item-icon-left task-content">
       <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"></i>
-      <span>{{TaskCtrl.task.content}}</span>
+      <input class="task-content-input"
+             ng-model="TaskCtrl.content"
+             ng-blur="TaskCtrl.updateTaskContent()">
     </div-item>
   </div>
   <div class="task-info-wrap ionic">
@@ -30,9 +32,18 @@
       <i class="icon icon-wall"></i>
       <span ng-bind-html="TaskCtrl.task.parsedNote || '添加备注'" class="task-note"></span>
     </a>
-    <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('subtasks')" ng-if="TaskCtrl.task.subtaskCount.total">
+    <a class="item item-icon-left"
+       on-tap="DetailCtrl.openEdit('subtasks')">
       <i class="icon icon-sub-task"></i>
-      <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
+      <span ng-if="TaskCtrl.task.subtaskCount.total">
+        <span>{{TaskCtrl.task.subtaskCount.total}}</span>
+        个子任务，
+        <span>{{TaskCtrl.task.subtaskCount.done}}</span>
+        个已完成
+      </span>
+      <span ng-if="!TaskCtrl.task.subtaskCount.total">
+        添加子任务
+      </span>
     </a>
     <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('priority')">
       <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
@@ -42,18 +53,22 @@
       <i class="icon icon-repeat"></i>
       <span>{{TaskCtrl.task.recurrenceTime | recurrenceStr}}</span>
     </a>
-    <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
+    <a class="item item-icon-left"
+       on-tap="DetailCtrl.openLinked()"
+       ng-if="TaskCtrl.task.linked.length">
       <i class="icon icon-link2"></i>
       <span>{{TaskCtrl.task.linked.length}}个关联</span>
     </a>
   </div>
-  <div class="task-executor-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
+  <div class="involve-wrap ionic" on-tap="DetailCtrl.openEdit('involve')">
     <div-item class="item list-title">
       参与者
     </div-item>
-    <div class="item item-icon-left">
+    <div class="item item-icon-left detail-involves">
       <i class="icon icon-users"></i>
-      <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+      <span class="member-name-wrap">
+        <span ng-bind="DetailCtrl.getInvolves()"></span>
+      </span>
     </div>
   </div>
 </div>

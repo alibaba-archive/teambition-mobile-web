@@ -5,22 +5,24 @@
         截止日期
         <label class="toggle toggle-positive">
           <input type="checkbox"
-                 ng-checked="EditDuedateCtrl.task.displayDuedate"
-                 on-change="EditDuedateCtrl.changeDuedate()">
+                 ng-model="EditDuedateCtrl.hasDueDate"
+                 ng-change="EditDuedateCtrl.resetDueDate()">
           <div class="track">
           <div class="handle"></div>
           </div>
         </label>
       </li>
-      <li class="item"
-          ng-show="EditDuedateCtrl.task.displayDuedate"
-          ng-bind="EditDuedateCtrl.task.dueDate | formatDate : 'll'">
-      </li>
       <label class="item item-input">
         <span class="input-label">日期</span>
-        <input type="date"
-               ng-model="EditDuedateCtrl.task.displayDuedate"
-               ng-model-options="{ getterSetter: true }">
+        <div class="date-wrap">
+          <span ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'll'"
+                ng-if="EditDuedateCtrl.displayDuedate"></span>
+          <span ng-if="!EditDuedateCtrl.displayDuedate">暂未设置截止日期</span>
+          <input type="date"
+                ng-model="EditDuedateCtrl.displayDuedate"
+                ng-model-options="{ getterSetter: true }"
+                ng-disabled="!EditDuedateCtrl.hasDueDate">
+        </div>
       </label>
     </ul>
   </ion-content>

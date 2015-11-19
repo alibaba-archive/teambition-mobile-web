@@ -124,6 +124,10 @@ module teambition {
         url: '/detail/task/:_id/subtasks',
         templateUrl: 'detail/task/subtask/index.html'
       })
+      .state('create_subtask', {
+        url: '/detail/task/:_id/subtasks/create',
+        templateUrl: 'detail/task/subtask/create/index.html'
+      })
       .state('edit_task_priority', {
         url: '/detail/task/:_id/priority',
         templateUrl: 'detail/task/priority/index.html'

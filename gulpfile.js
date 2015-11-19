@@ -1,6 +1,8 @@
-'use strict';
+'use strict'
 
 var gulp         = require('gulp')
+var watch        = require('gulp-watch')
+var batch        = require('gulp-batch')
 var rimraf       = require('gulp-rimraf')
 var concat       = require('gulp-concat')
 var less         = require('gulp-less')
@@ -135,27 +137,34 @@ gulp.task('compile-template', function() {
 })
 
 gulp.task('concat-app', function() {
-  return streamqueue({ objectMode: true },
+  merge2(
+    streamqueue({ objectMode: true },
       gulp.src('.tmp/scripts/app.js'),
       gulp.src('.tmp/scripts/Modules/MomentLocale.js'),
       gulp.src('.tmp/scripts/Modules/WechatService.js'),
       gulp.src('.tmp/scripts/Modules/DingService.js'),
       gulp.src('.tmp/scripts/run.js'),
-      gulp.src('.tmp/scripts/components/lib/*.js'),
+      gulp.src('.tmp/scripts/components/lib/View.js'),
+      gulp.src('.tmp/scripts/components/lib/BaseAPI.js'),
+      gulp.src('.tmp/scripts/components/lib/BaseModel.js'),
+      gulp.src('.tmp/scripts/components/lib/ETComponents.js')
+    ),
+    streamqueue({ objectMode: true },
       gulp.src([
-        '.tmp/scripts/**/*.js',
         '!.tmp/scripts/app.js',
         '!.tmp/scripts/Modules/MomentLocale.js',
         '!.tmp/scripts/Modules/WechatService.js',
         '!.tmp/scripts/Modules/DingService.js',
         '!.tmp/scripts/run.js',
-        '!.tmp/scripts/components/lib/*.js'
+        '!.tmp/scripts/components/lib/*.js',
+        '.tmp/scripts/**/*.js'
       ])
     )
-    .pipe(sourcemaps.init())
-    .pipe(concat('app.js'))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('www/js/'))
+  )
+  .pipe(sourcemaps.init())
+  .pipe(concat('app.js'))
+  .pipe(sourcemaps.write())
+  .pipe(gulp.dest('www/js/'))
 })
 
 gulp.task('compile', sequence(['compile-ts', 'compile-template', 'compile-et']))
@@ -277,11 +286,17 @@ function watchTs(event) {
 }
 
 gulp.task('watch', ['watch-et'], function() {
-  gulp.watch(paths.less, ['less'])
-  gulp.watch(paths.app, watchTs)
-  gulp.watch(paths.html, compileTemplate)
-  gulp.watch(paths.images, ['images'])
-  gulp.watch('.tmp/scripts/**/*.js', ['concat-app'])
+  watch(paths.less, batch(function(events, done) {
+    gulp.start('less', done)
+  }))
+  watch(paths.app, watchTs)
+  watch(paths.html, compileTemplate)
+  watch(paths.images, batch(function(events, done) {
+    gulp.start('images', done)
+  }))
+  watch('.tmp/scripts/**/*.js', batch(function(events, done) {
+    gulp.start('concat-app', done)
+  }))
 })
 
 gulp.task('ci', sequence('clean', 'tsd:install', 'compile', 'concat-app',
