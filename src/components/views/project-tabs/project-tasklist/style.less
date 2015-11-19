@@ -1,103 +1,118 @@
 // Global reference
 @import "../../../../less/reference.less";
 
-.tasklists-list{
-  .item-group{
-    border-bottom: 1px solid #DDDDDD;
-  }
-  .task-content{
-    border: none;
-  }
-  .task-done{
-    text-decoration: line-through;
-  }
-  .list{
-    margin-bottom: 0;
-    border-bottom: 1px solid #DDDDDD;
-    .stage-name{
-      margin: 12px 0 0 15px;
-      color: #A2A2A2;
-      display: inline-block;
+.tasks-list,
+.tasks-list-filter {
+  .item-group-selector {
+    height: 50px;
+
+    .label {
+      width: 35%;
+      color: black;
+      font-size: 15px;
+      max-width: 200px;
     }
-    .color-light-grey {
-      color: #A6A6A6;
 
-      i:before {
-        color: #A6A6A6;
+    .selector {
+      top: 0;
+      right: 0;
+      position: absolute;
+      padding-top: 14px;
+      padding-right: 15px;
+
+      .group-name {
+        margin-right: 5px;
+        font-size: 15px;
+        color: black;
       }
     }
-    .task-content{
-      &.has-tag {
-        padding-bottom: 0px;
-        margin-bottom: 10px;
-      }
-      .task-content-icon:before{
-        font-size: 18px;
-      }
-      time{
+  }
+
+  .task-list {
+    margin-bottom: -2px;
+    padding-bottom: 0;
+
+    .item-divider {
+      height: 32px;
+      font-size: 14px;
+      color: #808080;
+      padding-top: 5px;
+      margin-bottom: 1px;
+      background-color: #F7F7F7;
+      border-top: 1px solid #D9D9D9;
+      border-bottom: 1px solid #D9D9D9;
+    }
+
+    .task-item {
+      height: 50px;
+
+      &::after {
+        content: '';
+        left: 15px;
+        right: 0;
+        bottom: 1px;
+        height: 1px;
         position: absolute;
-        top: 19px;
-        right: 25px;
-        font-size: 12px;
-        color: #A2A2A2;
-        &.energized{
-          color: #ffc900;
-        }
-        &.assertive{
-          color: #ef473a;
-        }
-      }
-      .task-avatar{
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-size: cover;
-        position: absolute;
-      }
-      .task-title{
-        margin: 5px 0 0 50px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 70%;
+        background-color: #D9D9D9;
       }
 
-      .task-tags {
-        .tag {
-          font-size: 12px;
-          line-height: 10px;
-          margin: 5px 10px 0 0;
-          float: right;
-          padding: 3px 6px 3px 3px;
-          background-color: #e1e1e1;
-          border-radius: 8px;
-          .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            display: inline-block;
-            margin: 0 4px 1px 3px;
+      &.task-priority::before {
+        content: '';
+        width: 5px;
+        height: 50px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+      }
 
-            &.tag-label-red {
-              background-color: @tagRedColor;
-            }
-            &.tag-label-yellow {
-              background-color: @tagYellowColor;
-            }
-            &.tag-label-green {
-              background-color: @tagGreenColor;
-            }
-            &.tag-label-blue {
-              background-color: @tagBlueColor;
-            }
-            &.tag-label-purple {
-              background-color: @tagPurpleColor;
-            }
-            &.tag-label-gray {
-              background-color: @tagGrayColor;
-            }
+      &.task-priority.task-priority-high::before {
+        background-color: #F5A623;
+      }
+
+      &.task-priority.task-priority-urgent::before {
+        background-color: #E51C23;
+      }
+
+      &.task-has-done {
+        color: #808080;
+      }
+
+      .task-content {
+        margin-right: 40px;
+
+        .task-title {
+          max-width: 90%;
+          font-size: 15px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        &.task-has-due {
+          margin-top: -8px;
+
+          .task-title {
+            margin-bottom: -6px;
           }
         }
+
+        .task-over-due {
+          color: #E51C23;
+        }
+
+        time {
+          font-size: 11px;
+        }
       }
+    }
+
+    .task-avatar {
+      top: 10px;
+      left: auto;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-size: cover;
     }
   }
 }

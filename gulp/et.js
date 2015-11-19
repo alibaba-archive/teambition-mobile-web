@@ -2,6 +2,7 @@
 
 var gulp         = require('gulp')
 var watch        = require('gulp-watch')
+var batch        = require('gulp-batch')
 var through      = require('through2')
 var ET           = require('et-template')
 
@@ -45,5 +46,7 @@ gulp.task('compile-et', function() {
 })
 
 gulp.task('watch-et', function() {
-  watch(EtPath, ['compile-et'])
+  watch(EtPath, batch(function(events, done) {
+    gulp.start('compile-et', done)
+  }))
 })

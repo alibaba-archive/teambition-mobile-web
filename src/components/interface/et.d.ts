@@ -1,5 +1,6 @@
 /// <reference path='../libs/ETComponents.ts' />
 /// <reference path='../et/notify/notify.ts' />
+/// <reference path='../et/task-filter/task-filter.ts' />
 
 declare module EtTemplate {
 
@@ -13,7 +14,7 @@ declare module EtTemplate {
   }
 
   export interface IETProto {
-    update(data: IUpdateParam): void;
+    update(): void;
     get(): DocumentFragment;
     remove(): void;
     destroy(): void;
