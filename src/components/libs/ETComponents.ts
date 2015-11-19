@@ -28,16 +28,16 @@ module EtTemplate {
             });
             return val;
           };
-          this[val] = fakeFn.bind(this);
+          this[val] = fakeFn;
         }
       });
       if (this.template) {
-        this.template.update(this);
+        this.template.update();
       }
     }
 
     public update() {
-      this.template.update(this);
+      this.template.update();
     }
 
     public destroy() {
@@ -68,14 +68,14 @@ module EtTemplate {
           if (!hasInit) {
             let templateUrl = conf.templateUrl;
             let instanceName = templateUrl.split('/').join('_');
-            let instance = new $$injector.get(instanceName)(proto);
+            let instance = new $$injector.get(instanceName)(zone['targetTmp']);
             template = proto.template = instance;
             proto.parentDOM = document.querySelector(conf.selector);
           }
           hasInit = true;
         },
         afterTask: () => {
-          template.update(zone['targetTmp']);
+          template.update();
         }
       });
       target.prototype.zone = zone;

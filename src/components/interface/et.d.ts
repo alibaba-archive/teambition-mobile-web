@@ -14,7 +14,7 @@ declare module EtTemplate {
   }
 
   export interface IETProto {
-    update(data: IUpdateParam): void;
+    update(): void;
     get(): DocumentFragment;
     remove(): void;
     destroy(): void;

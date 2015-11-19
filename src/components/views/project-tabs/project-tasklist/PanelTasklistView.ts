@@ -81,15 +81,8 @@ module teambition {
       }
     }
 
-    public openTaskFilter(event: angular.IAngularEvent) {
+    public openTaskFilter() {
       this.taskFilter.show(this);
-      setTimeout(() => {
-        this.$ionicBackdrop.retain();
-      }, 100);
-    }
-
-    public closeFilter() {
-      this.$ionicBackdrop.release();
     }
 
     private initFetch() {

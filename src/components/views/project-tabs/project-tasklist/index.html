@@ -2,10 +2,12 @@
   <ion-content>
     <div class="list tasks-list">
       <div class="item item-group-selector"
-           ng-click="PanelTaskCtrl.openTaskFilter($event)">
+           on-tap="PanelTaskCtrl.openTaskFilter()">
         <div class="label">任务分组</div>
         <div class="selector">
-          <span class="group-name">{{PanelTaskCtrl.tasklistSelected.title}}</span>
+          <span class="group-name">
+            {{PanelTaskCtrl.tasklistSelected.title}}
+          </span>
           <i class="icon ion-arrow-down-b"></i>
         </div>
       </div>
@@ -13,7 +15,7 @@
       <div class="list task-list"
            ng-if="PanelTaskCtrl.tasks[stage._id].length"
            ng-repeat="stage in PanelTaskCtrl.stages track by stage._id">
-        <div class="item item-divider">{{::stage.name}}</div>
+        <div class="item item-divider">{{stage.name}}</div>
         <a class="item item-icon-left task-item"
            ng-class="{'task-has-done': task.isDone,
                       'task-priority': task.priority > 0,
@@ -24,10 +26,12 @@
           <i class="icon task-icon"
              ng-class="{'icon-checkbox-thin': !task.isDone,
                         'icon-checkbox-ios-checked': task.isDone}"></i>
-          <div class="task-content" ng-class="{'task-has-due': task.dueDate}">
-            <div class="task-title">{{::task.content}}</div>
-            <time ng-if="task.dueDate" ng-class="{'task-over-due': task.overDue}">
-              {{::task.dueDate | formatDate : 'MM月DD日'}}
+          <div class="task-content"
+               ng-class="{'task-has-due': task.dueDate}">
+            <div class="task-title">{{task.content}}</div>
+            <time ng-if="task.dueDate"
+                  ng-class="{'task-over-due': task.overDue}">
+              {{task.dueDate | formatDate : 'MM月DD日'}}
             </time>
           </div>
           <div class="icon task-avatar"
