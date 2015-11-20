@@ -12,8 +12,8 @@ module teambition {
     public ViewName = 'CreateEventView';
 
     public title: string;
-    public startDate: Date | string;
-    public endDate: Date | string;
+    public startDate: any;
+    public endDate: any;
     public involveMembers: string[];
     public location: string;
     public content: string;
@@ -127,7 +127,7 @@ module teambition {
     }
 
     public chooseRecurrence($index: number) {
-      if (this.lastRecurrneceIndex) {
+      if (typeof this.lastRecurrneceIndex !== 'undefined') {
         this.recurrence[this.lastRecurrneceIndex].isSelected = false;
       }
       this.lastRecurrneceIndex = $index;
@@ -208,14 +208,19 @@ module teambition {
     private createEvent() {
       if (typeof this.title !== 'undefined') {
         this.showLoading();
-        let nowStr = this.Rrule.timeToUntilString(Date.now());
-        let recurrence = this.recurrenceStr ?
-                         ['DTSTART=' + this.recurrenceStr.replace(';', `;${nowStr};`)] :
-                         null;
+        let recurrence: string[];
+        let dateNow = this.startDate;
+        dateNow.setMilliseconds(0);
+        dateNow.setSeconds(0);
+        if (this.recurrenceStr) {
+          let nowStr = 'DTSTART=' + this.Rrule.timeToUntilString(dateNow);
+          recurrence = [this.recurrenceStr.replace(';', `;${nowStr};`)];
+        }
         return this.DetailAPI.create('event', {
           _projectId: this.projectId,
+          _creatorId: this.$rootScope.userMe._id,
           title: this.title,
-          startDate: this.startDate,
+          startDate: dateNow,
           endDate: this.endDate,
           content: this.content,
           location: this.location,

@@ -16,6 +16,8 @@ module teambition {
 
       $ionicConfigProvider.views.forwardCache(false);
 
+      $ionicConfigProvider.views.transition('none');
+
       $ionicConfigProvider.views.maxCache(0);
 
       $ionicConfigProvider.tabs.position('bottom');

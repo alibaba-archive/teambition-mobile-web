@@ -11,9 +11,12 @@
             <span ng-bind="::event.startDate | formatDate : 'H:mm '"></span>
           </div>
           <div class="event-content">
-            <p ng-bind="event.title"></p>
-            <p ng-bind="event.content"></p>
+            <p ng-bind="event.title"
+               ng-class="{'single-title': !event.location}">
+            </p>
+            <p ng-bind="event.location" ng-if="event.location"></p>
           </div>
+          <div class="divider" ng-if="!$last"></div>
         </a>
       </div>
     </div>

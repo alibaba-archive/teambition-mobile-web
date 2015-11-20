@@ -22,11 +22,25 @@
 // Accent colors
 // -------------------------
 @blue: #03a9f4;
-@mint: #5bc0de;
-@green: #55d748;
-@orange: #fbb450;
-@red: #fb5a60;
+@mint: @blue; // Origin: #5677fc
+@green: #259b24;
+@orange: #ff9800;
+@red: #ff3c00; // Origin: #e51c23
 @inverse: #383838;
+
+//rewrite bootstrap.
+@gray-darker: @grayDarker;
+@gray-dark: @grayDark;
+@gray-light: @grayLight;
+@gray-lighter: @grayLighter;
+
+@brand-primary: @blue;
+@brand-success: @green;
+@brand-info: @mint;
+@brand-warning: @orange;
+@brand-danger: @red;
+
+@text-color: @grayDarker;
 
 // Text Color
 @darkTextColor: @grayDarker;
@@ -34,31 +48,38 @@
 @lightTextColor: @gray;
 
 // File Color
-@docColor: #53bae7;
-@xlsColor: #67c451;
-@pptColor: #ee5c26;
-@pdfColor: #cf2417;
-@rarColor: #da64ca;
-@audioColor: #f78925;
-@psdColor: #0f0c2e;
-@psdFontColor: #2ce6f4;
-@aiColor: #543004;
-@aiFontColor: #fdc35d;
-@inddColor: #e955a9;
+@docColor: #03a9f4;
+@xlsColor: #8bc34a;
+@pptColor: #ff5722;
+@pdfColor: #e51c23;
+@rarColor: #ab47bc;
+@audioColor: #ff9800;
+@psdColor: #00bcd4;
+@psdFontColor: #00bcd4;
+@aiColor: #795548;
+@aiFontColor: #795548;
+@inddColor: #ff4081;
 @fileColor: #383838;
 
 // collection cover color
-@collectionBlueColor: rgba(114,180,207,.9);
-@collectionBlueHightlightColor: #649eb5;
-@collectionOrangeColor: rgba(224,196,130,.9);
-@collectionOrangeHightlightColor: #c7ae73;
-@collectionGreenColor: rgba(136,194,150,.9);
-@collectionGreenHightlightColor: #76a882;
-@collectionRedColor: rgba(224,131,119,.9);
-@collectionRedHightlightColor: #e08377;
-@collectionInverseColor: rgba(137,138,143,.9);
-@collectionInverseHightlightColor: #717175;
+@collectionBlueColor: #03a9f4;
+@collectionBlueHightlightColor: lighten(@collectionBlueColor, 15%);
+@collectionOrangeColor: #ffc107;
+@collectionOrangeHightlightColor: lighten(@collectionOrangeColor, 15%);
+@collectionGreenColor: #bbc34a;
+@collectionGreenHightlightColor: lighten(@collectionGreenColor, 15%);
+@collectionRedColor: #ff5722;
+@collectionRedHightlightColor: lighten(@collectionRedColor, 15%);
+@collectionInverseColor: #a6a6a6;
+@collectionInverseHightlightColor: lighten(@collectionInverseColor, 15%);
 
+// tag color
+@tagRedColor: #ff5722;
+@tagYellowColor: #ffc107;
+@tagGreenColor: #bbc34a;
+@tagBlueColor: #03a9f4;
+@tagPurpleColor: #ab47bc;
+@tagGrayColor: #a6a6a6;
 
 // Links
 // -------------------------
@@ -348,7 +369,7 @@
 @font-size-large: @fontSizeLarge;
 @font-size-small: @fontSizeSmall;
 
-@line-height-base: @baseLineHeight;
+@line-height-base: 1.428571429; // 20/14
 @line-height-computed: floor(@font-size-base * @line-height-base);
 
 @padding-base-vertical: 8px;
@@ -368,6 +389,7 @@
 // ---------------------
 @uiImages: "../../images/ui-images.png";
 @uiRetinaImages: "../../images/ui-images@2x.png";
+
 
 // all border
 @card-border: 1px solid rgba(0, 0, 0, 0.15);

@@ -3,6 +3,7 @@ module teambition {
 	'use strict';
 	export interface IRrule {
     timeToUntilString: (time: any) => string;
+    untilStringToDate: (time: any) => Date;
   }
 
 	angular.module('teambition').factory('Rrule', [
@@ -27,6 +28,23 @@ module teambition {
             }
           }
           return comps.join('');
+        },
+        untilStringToDate: (until: any) => {
+          let re = /^(\d{4})(\d{2})(\d{2})(T(\d{2})(\d{2})(\d{2})Z)?$/;
+          let bits: any = re.exec(until);
+          if (!bits) {
+            return null;
+          }
+          return new Date(
+            Date.UTC(
+              bits[1],
+              bits[2] - 1,
+              bits[3],
+              bits[5] || 0,
+              bits[6] || 0,
+              bits[7] || 0
+            )
+          );
         }
       };
 		}

@@ -1,6 +1,10 @@
 .event-panel-content {
   .list {
     .item {
+      min-height: 76px;
+      .divider {
+        width: 95%;
+      }
       .event-time {
         position: absolute;
         width: 50px;
@@ -11,7 +15,10 @@
       .event-content {
         margin-left: 55px;
         p {
-          line-height: 22px;
+          line-height: 20px;
+          &.single-title {
+            line-height: 38px;
+          }
         }
       }
     }

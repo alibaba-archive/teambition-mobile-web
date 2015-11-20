@@ -138,28 +138,22 @@ gulp.task('compile-template', function() {
 
 gulp.task('concat-app', function() {
   merge2(
-    streamqueue({ objectMode: true },
-      gulp.src('.tmp/scripts/app.js'),
-      gulp.src('.tmp/scripts/Modules/MomentLocale.js'),
-      gulp.src('.tmp/scripts/Modules/WechatService.js'),
-      gulp.src('.tmp/scripts/Modules/DingService.js'),
-      gulp.src('.tmp/scripts/run.js'),
-      gulp.src('.tmp/scripts/components/lib/View.js'),
-      gulp.src('.tmp/scripts/components/lib/BaseAPI.js'),
-      gulp.src('.tmp/scripts/components/lib/BaseModel.js'),
-      gulp.src('.tmp/scripts/components/lib/ETComponents.js')
-    ),
-    streamqueue({ objectMode: true },
-      gulp.src([
-        '!.tmp/scripts/app.js',
-        '!.tmp/scripts/Modules/MomentLocale.js',
-        '!.tmp/scripts/Modules/WechatService.js',
-        '!.tmp/scripts/Modules/DingService.js',
-        '!.tmp/scripts/run.js',
-        '!.tmp/scripts/components/lib/*.js',
-        '.tmp/scripts/**/*.js'
-      ])
-    )
+    gulp.src([
+      '.tmp/scripts/app.js',
+      '.tmp/scripts/Modules/MomentLocale.js',
+      '.tmp/scripts/Modules/WechatService.js',
+      '.tmp/scripts/Modules/DingService.js',
+      '.tmp/scripts/run.js',
+      '.tmp/scripts/components/lib/View.js',
+      '.tmp/scripts/components/lib/BaseAPI.js',
+      '.tmp/scripts/components/lib/BaseModel.js',
+      '.tmp/scripts/components/lib/ETComponents.js'
+    ]),
+    gulp.src([
+      '.tmp/scripts/template/**/*.js',
+      '!.tmp/scripts/components/lib/*.js',
+      '.tmp/scripts/components/**/*.js'
+    ])
   )
   .pipe(sourcemaps.init())
   .pipe(concat('app.js'))

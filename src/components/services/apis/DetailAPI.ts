@@ -209,7 +209,7 @@ module teambition {
       }, content)
       .$promise
       .then((detail: any) => {
-        return this.DetailModel.setDetail(`${type}:detail:${detail._id}`, content);
+        return this.DetailModel.setDetail(`${type}:detail:${detail._id}`, detail);
       });
     }
 

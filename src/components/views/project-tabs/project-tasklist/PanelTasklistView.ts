@@ -13,8 +13,7 @@ module teambition {
   @inject([
     'StageAPI',
     'TasklistAPI',
-    'taskFilter',
-    '$ionicBackdrop'
+    'taskFilter'
   ])
   export class PanelTasklistView extends View {
 
@@ -33,7 +32,6 @@ module teambition {
 
     private TasklistAPI: ITasklistAPI;
     private StageAPI: IStageAPI;
-    private $ionicBackdrop: ionic.backdrop.IonicBackdropService;
 
     constructor() {
       super();

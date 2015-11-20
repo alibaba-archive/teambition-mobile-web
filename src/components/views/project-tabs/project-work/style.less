@@ -3,6 +3,9 @@
 
 .project-work-view {
   .list {
+    .divider {
+      width: 83%;
+    }
     .item-divider {
       padding-top: 2px;
       padding-bottom: 2px;
@@ -11,14 +14,32 @@
       min-height: 24px;
     }
     .item {
-      i {
-        background: #03A9F4;
+      i.icon-folder {
+        background: @collectionInverseColor;
         border-radius: 50%;
         width: 32px;
         height: 32px;
         margin: 10px 0 0 8px;
+        &.blue {
+          background: @collectionBlueColor;
+        }
+        &.yellow {
+          background: @collectionOrangeColor;
+        }
+        &.green {
+          background: @collectionGreenColor;
+        }
+        &.red {
+          background: @collectionRedColor;
+        }
+        &.gray {
+          background: @collectionInverseColor;
+        }
+        &.purple {
+          background-color: @tagPurpleColor;
+        }
       }
-      i::before {
+      i.icon-folder::before {
         color: white;
       }
       .item-thumbnail {

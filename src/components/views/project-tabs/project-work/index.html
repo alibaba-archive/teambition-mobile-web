@@ -1,25 +1,37 @@
 <ion-view class="project-work-view" ng-controller="PanelWorkView as PanelWorkCtrl">
   <ion-content>
-    <div class="list ionic">
+    <div class="list">
       <span class="item item-divider" ng-if="PanelWorkCtrl.collections.length">
         文件夹
       </span>
-      <a class="item item-icon-left"
-         ng-repeat="collection in PanelWorkCtrl.collections track by collection._id"
+      <div class="item item-icon-left item-icon-right"
+         ng-repeat="($index, collection) in PanelWorkCtrl.collections track by collection._id"
          on-tap="PanelWorkCtrl.openCollection(collection._id)">
-        <i class="icon icon-folder"></i>
-        <span ng-bind="::collection.title" class="collection-name"></span>
-      </a>
-      <span class="item item-divider" ng-if="works.length">
+        <i class="icon icon-folder {{collection.color}}"></i>
+        <span ng-bind="collection.title" class="collection-name"></span>
+        <div class="divider" ng-if="!$last"></div>
+        <i class="icon ion-ios-arrow-down"
+           ion-stop-event="tap"
+           on-tap="PanelWorkCtrl.fileOptions('collections', $index)">
+        </i>
+      </div>
+      <span class="item item-divider" ng-if="PanelWorkCtrl.works.length">
         文件
       </span>
-      <a class="item item-avatar" ng-repeat="work in PanelWorkCtrl.works track by work._id" on-tap="PanelWorkCtrl.openDetail(work._id)">
-        <img class="item-thumbnail" ng-if="work.thumbnail" ng-src="{{::work.thumbnail}}">
-        <div class="file-background {{::work.fileType}}" ng-if="!work.thumbnail">
-          <span ng-bind="::work.fileType" class="item-fileType {{::work.class}}"></span>
+      <div class="item item-avatar item-icon-right"
+           ng-repeat="work in PanelWorkCtrl.works track by work._id"
+           on-tap="PanelWorkCtrl.openDetail(work._id)">
+        <img class="item-thumbnail" ng-if="work.thumbnail" ng-src="{{work.thumbnail}}">
+        <div class="file-background {{work.fileType}}" ng-if="!work.thumbnail">
+          <span ng-bind="work.fileType" class="item-fileType {{work.class}}"></span>
         </div>
-        <span class="item-file-name" ng-bind="::work.fileName"></span>
-      </a>
+        <div class="divider" ng-if="!$last"></div>
+        <span class="item-file-name" ng-bind="work.fileName"></span>
+        <i class="icon ion-ios-arrow-down"
+           ion-stop-event="tap"
+           on-tap="PanelWorkCtrl.fileOptions('works', $index)">
+        </i>
+      </div>
     </div>
   </ion-content>
   <div ng-show="!PanelWorkCtrl.works.length && !PanelWorkCtrl.collections.length" class="empty-warn project-work"></div>
