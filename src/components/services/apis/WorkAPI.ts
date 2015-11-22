@@ -17,6 +17,7 @@ module teambition {
     fetchCollections: (_projectId: string, _collectionId: string) => angular.IPromise<ICollectionData[]>;
     createCollection: (title: string, parentId: string, description?: string, color?: string) => angular.IPromise<void>;
     rename: (type: string, id: string, name: string, description?: string, color?: string) => angular.IPromise<void>;
+    delete: (type: string, id: string) => angular.IPromise<void>;
   }
 
   @inject([

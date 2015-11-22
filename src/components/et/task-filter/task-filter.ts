@@ -7,7 +7,8 @@ module EtTemplate {
 
   @Component({
     templateUrl: 'et/task-filter/index',
-    selector: 'body'
+    selector: 'body',
+    lazy: true
   })
   @teambition.inject([
     '$ionicBackdrop'
@@ -17,39 +18,31 @@ module EtTemplate {
     public animateClass: string;
     public taskListGroup: Array<teambition.ITasklistData>;
     public selectedTaskList: teambition.ITasklistData;
-    private scope: any;
     private $ionicBackdrop: ionic.backdrop.IonicBackdropService;
 
-    constructor() {
-      super();
-      this.zone.run(teambition.noop);
-    }
-
-    public show(scope: teambition.PanelTasklistView) {
-      this.animateClass = 'animated slideInDown';
-      this.scope = scope;
-      this.taskListGroup = scope.tasklists;
-      this.selectedTaskList = scope.tasklistSelected;
-      this.insertDOM();
-      this.$ionicBackdrop.retain();
-    }
-
-    public selectFilter(id: string) {
+    public show(scope: any) {
       window.clearTimeout(dropDownTimer);
       window.clearTimeout(removeTimer);
-      this.scope.chooseTasklist(id);
       this.$ionicBackdrop.release();
+      this.animateClass = 'slideInDown';
+      this.bindContext(scope);
+      this.insertDOM();
+      this.$ionicBackdrop.retain();
+      return this;
     }
 
-    public closeFilter(e?: Event) {
-      e.stopPropagation();
-      this.animateClass = 'animated slideOutUp';
+    public close(e?: Event) {
+      if (e) {
+        e.stopPropagation();
+      }
+      this.animateClass = 'slideOutUp';
       dropDownTimer = setTimeout(() => {
         this.$ionicBackdrop.release();
       }, 200);
       removeTimer = setTimeout(() => {
         this.remove();
       }, 400);
+
     }
   }
 

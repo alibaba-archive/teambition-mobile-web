@@ -72,10 +72,11 @@ module teambition {
     }
 
     public removeObject(type: string, id: string) {
-      let cache = this._get<any>(`${type}:detail`, id);
+      let namespace = type.substr(0, type.length - 1) + ':detail';
+      let cache = this._get<any>(namespace, id);
       let parentId = cache._parentId;
       let projectId = cache._projectId;
-      let collectionsCache = this.getFolderFilesCollection(projectId, parentId);
+      let collectionsCache = this.getFoldersCollection(projectId, parentId);
       let cacheIndex = this._get<string[]>(`${type}:index`, `${projectId}:${parentId}`);
       if (collectionsCache) {
         let position = cacheIndex.indexOf(id);

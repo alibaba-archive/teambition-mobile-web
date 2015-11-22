@@ -4,10 +4,11 @@ module teambition {
 
   let projectId: string;
   let smartTitleMap = {
-    'smart-not-assigned': '待认领任务',
-    'smart-not-done': '未完成任务',
-    'smart-done': '已完成任务'
+    'notAssigned': '待认领任务',
+    'notDone': '未完成任务',
+    'done': '已完成任务'
   };
+  let filter: EtTemplate.TaskFilter;
 
   @parentView('TabsView')
   @inject([
@@ -54,23 +55,25 @@ module teambition {
       }
     }
 
-    public chooseTasklist(tasklist_id: string) {
-      if (tasklist_id) {
+    public chooseTasklist(e: Event, id: string) {
+      if (id) {
         angular.forEach(this.tasklists, (tasklist: ITasklistData) => {
-          if (tasklist._id === tasklist_id) {
+          if (tasklist._id === id) {
             this.tasklistSelected = tasklist;
           }
         });
-        this.fetchTasksByTasklistId(tasklist_id);
+        this.fetchTasksByTasklistId(id);
       }
+      filter.close(e);
     }
 
-    public chooseSmartlist(smartlist_type: string) {
+    public chooseSmartlist(e: Event, type: string) {
       let dummySelected = <ITasklistData>{};
-      dummySelected._id = smartlist_type;
-      dummySelected.title = smartTitleMap[smartlist_type];
+      dummySelected._id = type;
+      dummySelected.title = smartTitleMap[type];
       this.tasklistSelected = dummySelected;
-      // this.fetchTasksBySmartGroup(type);
+      filter.close();
+      this.fetchTasksBySmartGroup(type);
     }
 
     public openTaskDetail(_id: string) {
@@ -80,14 +83,17 @@ module teambition {
     }
 
     public openTaskFilter() {
-      this.taskFilter.show(this);
+      filter = this.taskFilter.show(this);
+    }
+
+    public closeTaskFilter(e?: Event) {
+      filter.close(e);
     }
 
     private initFetch() {
-      let self = this;
-      return self.getTaskLists()
+      return this.getTaskLists()
       .then(() => {
-        return self.fetchTasksByTasklistId(this.tasklistSelected._id);
+        return this.fetchTasksByTasklistId(this.tasklistSelected._id);
       });
     }
 
@@ -120,6 +126,10 @@ module teambition {
         });
         this.hideLoading();
       });
+    }
+
+    private fetchTasksBySmartGroup(type: string) {
+      console.log(123);
     }
 
     private insertTask(task: ITaskDataParsed, tasks: ITaskDataParsed[]) {

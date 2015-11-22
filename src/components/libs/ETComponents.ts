@@ -5,6 +5,7 @@ module EtTemplate {
   interface IComponentConfig {
     templateUrl: string;
     selector: string;
+    lazy?: boolean;
   }
 
   const notPatched = ['constructor', 'zone'];
@@ -15,25 +16,13 @@ module EtTemplate {
     public parentDOM: Element;
     public template: IETProto;
 
+    protected $rootScope: teambition.IRootScope;
+
+    private bindedScope = false;
+    private ETInstanceName: string;
+
     constructor() {
-      let keys = Object.keys(Object.getPrototypeOf(this));
-      this.zone['targetTmp'] = this;
-      angular.forEach(keys, (val: string) => {
-        if (typeof this[val] === 'function' && notPatched.indexOf(val) === -1) {
-          let originFn = this[val];
-          let fakeFn = (...args: any[]) => {
-            let val: any;
-            this.zone.run(() => {
-              val = originFn.apply(this, args);
-            });
-            return val;
-          };
-          this[val] = fakeFn;
-        }
-      });
-      if (this.template) {
-        this.template.update();
-      }
+      this.initZone();
     }
 
     public update() {
@@ -53,7 +42,48 @@ module EtTemplate {
     }
 
     protected insertDOM() {
-      this.parentDOM.appendChild(this.get());
+      let template = this.get();
+      this.parentDOM.appendChild(template);
+    }
+
+    protected bindContext(scope: any) {
+      if (typeof scope === 'object' && !this.bindedScope && this.ETInstanceName) {
+        let Constructor = teambition.$$injector.get(this.ETInstanceName);
+        scope.ETtemplate = this;
+        this.template = new Constructor(scope);
+        let zone = teambition.rootZone.fork({
+          afterTask: () => {
+            this.template.update();
+          }
+        });
+        this.zone = zone;
+        this.zone.run(teambition.noop);
+        this.initZone();
+        this.bindedScope = true;
+      }
+    }
+
+    private initZone() {
+      if (this.zone) {
+        let keys = Object.keys(Object.getPrototypeOf(this));
+        this.zone['targetTmp'] = this;
+        angular.forEach(keys, (val: string) => {
+          if (typeof this[val] === 'function' && notPatched.indexOf(val) === -1) {
+            let originFn = this[val];
+            let fakeFn = (...args: any[]) => {
+              let val: any;
+              this.zone.run(() => {
+                val = originFn.apply(this, args);
+              });
+              return val;
+            };
+            this[val] = fakeFn;
+          }
+        });
+        if (this.template) {
+          this.template.update();
+        }
+      }
     }
   }
 
@@ -62,23 +92,31 @@ module EtTemplate {
       let template: IETProto;
       let hasInit = false;
       let proto = target.prototype;
-      let zone = teambition.rootZone.fork({
-        beforeTask: () => {
-          let $$injector = teambition.$$injector;
-          if (!hasInit) {
-            let templateUrl = conf.templateUrl;
-            let instanceName = templateUrl.split('/').join('_');
-            let instance = new $$injector.get(instanceName)(zone['targetTmp']);
-            template = proto.template = instance;
-            proto.parentDOM = document.querySelector(conf.selector);
+      let targetTmp: any;
+      let templateUrl = conf.templateUrl;
+      let instanceName = templateUrl.split('/').join('_');
+      proto.ETInstanceName = instanceName;
+      proto.parentDOM = document.querySelector(conf.selector);
+      if (!conf.lazy) {
+        let zone = teambition.rootZone.fork({
+          beforeTask: () => {
+            if (!hasInit) {
+              let $$injector = teambition.$$injector;
+              let ETConstructor = $$injector.get(instanceName);
+              targetTmp = zone['targetTmp'];
+              let instance = new ETConstructor(targetTmp);
+              template = proto.template = instance;
+              proto.ETConstructor = ETConstructor;
+              hasInit = true;
+            }
+          },
+          afterTask: () => {
+            template = targetTmp.template || template;
+            template.update();
           }
-          hasInit = true;
-        },
-        afterTask: () => {
-          template.update();
-        }
-      });
-      target.prototype.zone = zone;
+        });
+        target.prototype.zone = zone;
+      }
     };
   }
 }

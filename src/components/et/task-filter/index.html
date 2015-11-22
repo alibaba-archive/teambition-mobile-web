@@ -1,38 +1,38 @@
 <div class="list tasks-list-filter tasks-list-filter-header">
-  <div class="item item-group-selector" (click)="it.closeFilter">
+  <div class="item item-group-selector" (click)="it.closeTaskFilter">
     <div class="label">任务分组</div>
     <div class="selector">
-      <span class="group-name">{{it.selectedTaskList && it.selectedTaskList.title}}</span>
+      <span class="group-name">{{it.tasklistSelected.title}}</span>
       <i class="icon ion-arrow-up-b"></i>
     </div>
   </div>
 </div>
 
-<div class="list tasks-list-filter tasks-list-filter-content {{it.animateClass}}">
+<div class="list tasks-list-filter tasks-list-filter-content animated {{it.ETtemplate.animateClass}}">
   <div class="item item-divider">
     智能分组
   </div>
 
-  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.notAssigned">
+  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.chooseSmartlist, 'notAssigned'">
     <i class="icon icon-circle-user"></i>
     <span>待认领任务</span>
-    [#if it.selectedTaskList && (it.selectedTaskList._id === 'smart-not-assigned')]
+    [#if (it.tasklistSelected._id === 'smart-not-assigned')]
       <i class="icon icon-tick-thin"></i>
     [/#if]
   </a>
 
-  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.notDone">
+  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.chooseSmartlist, 'notDone'">
     <i class="icon icon-checkbox-thin"></i>
     <span>未完成任务</span>
-    [#if it.selectedTaskList && (it.selectedTaskList._id === 'smart-not-done')]
+    [#if (it.tasklistSelected._id === 'smart-not-done')]
       <i class="icon icon-tick-thin"></i>
     [/#if]
   </a>
 
-  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.done">
+  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.chooseSmartlist, 'done'">
     <i class="icon icon-checkbox-checked"></i>
     <span>已完成任务</span>
-    [#if it.selectedTaskList && (it.selectedTaskList._id === 'smart-done')]
+    [#if (it.tasklistSelected._id === 'smart-done')]
       <i class="icon icon-tick-thin"></i>
     [/#if]
   </a>
@@ -41,9 +41,9 @@
     任务分组
   </div>
 
-  [#for item, index in it.taskListGroup]
+  [#for item, index in it.tasklists]
     <a class="item item-icon-left item-task-group item-icon-right"
-       (click)="it.selectItem, item._id">
+       (click)="it.chooseTasklist, item._id">
       <i class="icon icon icon-sharp"></i>
       <div class="task-group-content[#if item.description] has-description[/#if]">
         <span class="task-group-name">{{item.title}}</span>
@@ -52,7 +52,7 @@
           {{item.description}}
         </span>
       </div>
-      [#if item._id === it.selectedTaskList._id]
+      [#if item._id === it.tasklistSelected._id]
         <i class="icon icon-tick-thin"></i>
       [/#if]
     </a>

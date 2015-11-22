@@ -162,7 +162,7 @@ module teambition {
       console.log('create file');
     }
 
-    private renameFile(type: string, index: string) {
+    private renameFile(type: string, index: number) {
       let name = type === 'collections' ? 'title' : 'fileName';
       let object = this[type][index];
       let cacheName = object[name];
@@ -182,7 +182,7 @@ module teambition {
             })
             .catch((reason: any) => {
               let message = this.getFailureReason(reason);
-              this.showMsg('error', '创建失败', message);
+              this.showMsg('error', '重命名失败', message);
               this.hideLoading();
               object[name] = cacheName;
             });
@@ -192,8 +192,13 @@ module teambition {
       });
     }
 
-    private deleteFile(type: string, $index: string) {
-      console.log('delete file');
+    private deleteFile(type: string, $index: number) {
+      let id = this[type][$index]._id;
+      this.WorkAPI.delete(type, id)
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '删除失败', message);
+      });
     }
   }
 

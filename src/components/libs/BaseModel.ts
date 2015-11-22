@@ -32,10 +32,12 @@ module teambition {
         let namespace = id ? `${type}:${id}` : type;
         let value = this.Cache.get<T>(namespace);
         let keys = Object.keys(patch);
-        for (let index = 0; index < keys.length; index++) {
-          let element = keys[index];
-          if (__notPatch.indexOf(element) === -1) {
-            value[element] = patch[element];
+        if (value) {
+          for (let index = 0; index < keys.length; index++) {
+            let element = keys[index];
+            if (__notPatch.indexOf(element) === -1) {
+              value[element] = patch[element];
+            }
           }
         }
         return value;
@@ -44,7 +46,7 @@ module teambition {
 
     protected _delete(type: string, id: string) {
       let namespace = id ? `${type}:${id}` : type;
-      this._updateObj(type, id, {
+      this._updateObj(namespace, null, {
         deleted: true
       });
       this.Cache.remove(namespace);

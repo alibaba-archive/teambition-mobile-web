@@ -214,7 +214,7 @@ gulp.task('replaceForPublish', function() {
     .pipe(replace('8fadf360-fe9d-11e4-b300-55a8b3ba5938', 'c63fe5b0-15ad-11e5-90e6-bd2cee5c6f14'))
     .pipe(replace('55b93a33-952d-413c-8985-7b74c1a01a83', '27c134a7-15d3-43aa-8330-6742708c3f41'))
     .pipe(replace('http://m.wx.project.ci', 'https://weixin.teambition.com'))
-    .pipe(replace('http://project.ci/api', 'https://www.teambition.com/api'))
+    .pipe(replace('http://project.ci/api', 'https://api.teambition.com'))
     .pipe(replace('wx48744c9444d9824a', 'wx3197516ac7a4c96b'))
     .pipe(replace('ws://snapper.project.bi/', 'wss://push.teambition.com'))
     .pipe(replace('http://account.project.ci', 'https://account.teambition.com'))

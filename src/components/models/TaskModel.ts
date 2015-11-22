@@ -3,9 +3,9 @@ module teambition {
   'use strict';
 
   export interface ITaskModel extends IDetailModel {
-    setNoneExecutorCollection(projectId: string, content: ITaskDataParsed[]): void;
+    setNoneExecutorCollection(projectId: string, content: ITaskData[]): ITaskDataParsed[];
     getNoneExecutorCollection(projectId: string): ITaskDataParsed[];
-    setDueCollection(projectId: string, content: ITaskDataParsed[]): void;
+    setDueCollection(projectId: string, content: ITaskData[]): ITaskDataParsed[];
     getDueExecutorCollection(projectId: string): ITaskDataParsed[];
     setTasklistCollection(tasklistId: string, collection: ITaskData[]): ITaskDataParsed[];
     getTasklistCollection(tasklistId: string): ITaskDataParsed[];
@@ -20,12 +20,23 @@ module teambition {
 
     public setNoneExecutorCollection(projectId: string, content: ITaskDataParsed[]) {
       let cache = this._get<ITaskDataParsed[]>('noneExecutor:tasks', projectId);
+      let results = [];
       if (!cache) {
         angular.forEach(content, (task: ITaskDataParsed, index: number) => {
+          let taskCache = this._get('task:detail', task._id);
+          if (!taskCache) {
+            let result = this.taskParser(task);
+            results.push(result);
+            this._set('task:detail', result._id, result);
+          }else {
+            results.push(taskCache);
+          }
           this.noneExecutorCollectionIndex.push(task._id);
         });
-        this._set('noneExecutor:tasks', projectId, content);
+        this._set('noneExecutor:tasks', projectId, results);
+        return results;
       }
+      return cache;
     }
 
     public getNoneExecutorCollection(projectId: string) {
@@ -35,12 +46,23 @@ module teambition {
 
     public setDueCollection(projectId: string, content: ITaskDataParsed[]) {
       let cache = this._get<ITaskDataParsed[]>('due:tasks', projectId);
+      let results = [];
       if (!cache) {
         angular.forEach(content, (task: ITaskDataParsed, index: number) => {
+          let taskCache = this._get('task:detail', task._id);
+          if (!taskCache) {
+            let result = this.taskParser(task);
+            this._set('task:detail', result._id, result);
+            results.push(result);
+          }else {
+            results.push(taskCache);
+          }
           this.dueCollectionIndex.push(task._id);
         });
-        this._set('due:tasks', projectId, content);
+        this._set('due:tasks', projectId, results);
+        return results;
       }
+      return cache;
     }
 
     public getDueExecutorCollection(projectId: string) {
@@ -54,10 +76,15 @@ module teambition {
         let results: ITaskDataParsed[] = [];
         if (collection.length) {
           angular.forEach(collection, (task: ITaskData, index: number) => {
-            let result: ITaskDataParsed = this.taskParser(task);
-            this.setDetail(`task:detail:${task._id}`, task);
-            this.tasklistCollectionIndex.push(task._id);
-            results.push(result);
+            let cache = this._get<ITaskDataParsed>('task:detail', task._id);
+            if (!cache) {
+              let result: ITaskDataParsed = this.taskParser(task);
+              this.setDetail(`task:detail:${task._id}`, task);
+              this.tasklistCollectionIndex.push(task._id);
+              results.push(result);
+            }else {
+              results.push(cache);
+            }
           });
         }
         this._set('tasks:in', tasklistId, results);
@@ -65,9 +92,15 @@ module teambition {
       }else {
         angular.forEach(collection, (task: ITaskDataParsed, index: number) => {
           if (this.tasklistCollectionIndex.indexOf(task._id) === -1) {
-            let result = this.taskParser(task);
-            cache.push(result);
-            this.tasklistCollectionIndex.push(task._id);
+            let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+            if (!taskCache) {
+              let result = this.taskParser(task);
+              cache.push(result);
+              this._set('task:detail', result._id, result);
+              this.tasklistCollectionIndex.push(task._id);
+            }else {
+              cache.push(taskCache);
+            }
           }
         });
         return cache;

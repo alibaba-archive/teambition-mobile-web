@@ -100,22 +100,11 @@ module teambition {
     }
 
     private prepareTasks(tasks: ITaskData[], projectId: string, members: {[index: string]: IMemberData}, typesFilter: string, page: number): ITaskDataParsed[] {
-      let results: ITaskDataParsed[] = [];
-      if (tasks && tasks.length) {
-        angular.forEach(tasks, (task: ITaskDataParsed, index: number) => {
-          if (task._executorId) {
-            task.executor = members[task._executorId];
-          }
-          this.TaskModel.setDetail(`task:detail:${task._id}`, task);
-          results.push(task);
-        });
-      }
       if (typesFilter === 'noneExecutor') {
-        this.TaskModel.setNoneExecutorCollection(projectId, results);
+        return this.TaskModel.setNoneExecutorCollection(projectId, tasks);
       }else {
-        this.TaskModel.setDueCollection(projectId, results);
+        return this.TaskModel.setDueCollection(projectId, tasks);
       }
-      return results;
     }
   }
 

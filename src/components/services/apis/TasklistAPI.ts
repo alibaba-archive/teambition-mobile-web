@@ -104,6 +104,10 @@ module teambition {
         return tasks;
       });
     }
+
+    public fetchTasksBySmartGroup(type: string) {
+      console.log(123);
+    }
   }
 
   angular.module('teambition').service('TasklistAPI', TasklistAPI);
