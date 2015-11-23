@@ -1,6 +1,7 @@
 /// <reference path='../libs/ETComponents.ts' />
 /// <reference path='../et/notify/notify.ts' />
 /// <reference path='../et/task-filter/task-filter.ts' />
+/// <reference path='../et/input/input.ts' />
 
 declare module EtTemplate {
 

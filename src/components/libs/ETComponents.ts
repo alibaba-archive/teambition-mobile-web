@@ -15,6 +15,7 @@ module EtTemplate {
     public zone: Zone;
     public parentDOM: Element;
     public template: IETProto;
+    public element: DocumentFragment;
 
     protected $rootScope: teambition.IRootScope;
 
@@ -59,6 +60,7 @@ module EtTemplate {
         this.zone = zone;
         this.zone.run(teambition.noop);
         this.initZone();
+        this.element = this.template.get();
         this.bindedScope = true;
       }
     }
@@ -106,6 +108,7 @@ module EtTemplate {
               targetTmp = zone['targetTmp'];
               let instance = new ETConstructor(targetTmp);
               template = proto.template = instance;
+              proto.element = template.get();
               proto.ETConstructor = ETConstructor;
               hasInit = true;
             }

@@ -4,9 +4,21 @@ module teambition {
 
   let projectId: string;
 
+  let fileUploadQueue: {
+    progress: string;
+    request: angular.IPromise<void>;
+    content: any;
+  }[];
+
+  let fileContent = [];
+
+  fileUploadQueue = [];
+
   @parentView('TabsView')
   @inject([
-    'WorkAPI'
+    'WorkAPI',
+    'StrikerAPI',
+    'InputComponments'
   ])
   class PanelWorkView extends View {
 
@@ -18,7 +30,10 @@ module teambition {
     public folderName: string;
 
     private WorkAPI: IWorkAPI;
+    private StrikerAPI: IStrikerAPI;
     private collectionId: string;
+    private InputComponments: EtTemplate.InputComponments;
+    private fileContent: any[];
 
     // @ngInject
     constructor(
@@ -26,7 +41,9 @@ module teambition {
     ) {
       super();
       this.$scope = $scope;
-      this.zone.run(noop);
+      this.zone.run(() => {
+        this.fileContent = fileContent;
+      });
     }
 
     public onInit() {
@@ -85,6 +102,44 @@ module teambition {
           return true;
         }
       });
+    }
+
+    public uploadFile() {
+      let contents = [];
+      angular.forEach(this.fileContent, (file: any, index: number) => {
+        file.fileType = file.name.split('.').pop();
+        if (file.fileType.length > 4) {
+          file.fileType = file.fileType.substr(0, 1);
+          file.class = 'bigger-bigger';
+        }
+        if (
+          file.fileType.indexOf('png') !== -1 ||
+          file.fileType.indexOf('jpg') !== -1 ||
+          file.fileType.indexOf('jpeg') !== -1 ||
+          file.fileType.indexOf('gif') !== -1 ||
+          file.fileType.indexOf('bmp') !== -1
+        ) {
+          file.thumbnail = URL.createObjectURL(file);
+        }
+        let content = {
+          progress: '0',
+          request: null,
+          content: file
+        };
+        content.request = this.StrikerAPI.upload([file], content).then((res: IStrikerRes) => {
+          return this.WorkAPI.uploads(this.collectionId, projectId, [res]);
+        })
+        .then(() => {
+          contents.splice(index, 1);
+        })
+        .catch((reason: any) => {
+          let message = this.getFailureReason(reason);
+          this.showMsg('error', '上传出错', message);
+        });
+        contents.push(content);
+      });
+      this.fileContent = contents;
+      fileContent = contents;
     }
 
     private initFetch() {
@@ -159,7 +214,7 @@ module teambition {
     }
 
     private createFile() {
-      console.log('create file');
+      this.InputComponments.show(this);
     }
 
     private renameFile(type: string, index: number) {

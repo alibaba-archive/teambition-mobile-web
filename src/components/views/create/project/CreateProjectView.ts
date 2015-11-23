@@ -104,9 +104,17 @@ module teambition {
 
     private createProject() {
       if (this.projectName) {
-        this.ProjectsAPI.createProject(this.projectName)
+        let orgsId = organization._id;
+        this.showLoading();
+        this.ProjectsAPI.createProject(this.projectName, orgsId)
         .then(() => {
           window.history.back();
+          this.hideLoading();
+        })
+        .catch((reason: any) => {
+          let message = this.getFailureReason(reason);
+          this.showMsg('error', '创建失败', message);
+          this.hideLoading();
         });
       }else {
         this.showMsg('error', '参数错误', '项目名称是必须的');

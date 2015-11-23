@@ -5,6 +5,8 @@ module teambition {
   export interface IProjectDetailAPI {
     fetchActivities(_projectId: string, count: number, membersFilter: string, typesFilter: string, page?: number): angular.IPromise<IProjectActivitiesDataParsed[]>;
     fetchNoExecutorOrDuedateTasks(_projectId: string, typeFilter: string, count?: number, page?: number): angular.IPromise<ITaskDataParsed[]>;
+    getTasksDone(projectId: string): angular.IPromise<ITaskDataParsed[]>;
+    getTasksNotDone(projectId: string): angular.IPromise<ITaskDataParsed[]>;
   }
 
   @inject([
@@ -97,6 +99,44 @@ module teambition {
           });
         });
       }
+    }
+
+    public getTasksDone(projectId: string) {
+      let cache = this.TaskModel.getTasksDoneCollection(projectId);
+      if (cache) {
+        let defer = this.$q.defer();
+        defer.resolve(cache);
+        return defer.promise;
+      }
+      return this.RestAPI.query({
+        Type: 'projects',
+        Id: projectId,
+        Path1: 'tasks',
+        isDone: true
+      })
+      .$promise
+      .then((tasks: ITaskDataParsed[]) => {
+        return this.TaskModel.setTasksDoneCollection(projectId, tasks);
+      });
+    }
+
+    public getTasksNotDone(projectId: string) {
+      let cache = this.TaskModel.getTasksNotDoneCollection(projectId);
+      if (cache) {
+        let defer = this.$q.defer();
+        defer.resolve(cache);
+        return defer.promise;
+      }
+      return this.RestAPI.query({
+        Type: 'projects',
+        Id: projectId,
+        Path1: 'tasks',
+        isDone: false
+      })
+      .$promise
+      .then((tasks: ITaskDataParsed[]) => {
+        return this.TaskModel.setTasksNotDoneCollection(projectId, tasks);
+      });
     }
 
     private prepareTasks(tasks: ITaskData[], projectId: string, members: {[index: string]: IMemberData}, typesFilter: string, page: number): ITaskDataParsed[] {

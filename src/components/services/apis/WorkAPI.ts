@@ -35,7 +35,7 @@ module teambition {
         fileKey
       } = strikerRes;
       return this.RestAPI.save({
-        Type: 'work'
+        Type: 'works'
       }, {
         _parentId: _parentId,
         fileName: fileName,
@@ -60,6 +60,9 @@ module teambition {
       })
       .$promise
       .then((data: IFileData[]) => {
+        angular.forEach(data, (file: IFileData, index: number) => {
+          this.WorkModel.addFile(_parentId, file);
+        });
         return data;
       });
     }

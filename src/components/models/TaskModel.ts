@@ -9,7 +9,10 @@ module teambition {
     getDueExecutorCollection(projectId: string): ITaskDataParsed[];
     setTasklistCollection(tasklistId: string, collection: ITaskData[]): ITaskDataParsed[];
     getTasklistCollection(tasklistId: string): ITaskDataParsed[];
-
+    getTasksDoneCollection(projectId: string): ITaskDataParsed[];
+    setTasksDoneCollection(projectId: string, tasks: ITaskData[]): ITaskDataParsed[];
+    getTasksNotDoneCollection(projectId: string): ITaskDataParsed[];
+    setTasksNotDoneCollection(projectId: string, tasks: ITaskData[]): ITaskDataParsed[];
   }
 
   class TaskModel extends DetailModel implements ITaskModel {
@@ -17,6 +20,8 @@ module teambition {
     private noneExecutorCollectionIndex: string[] = [];
     private dueCollectionIndex: string[] = [];
     private tasklistCollectionIndex: string[] = [];
+    private tasksDoneCollectionIndex: string[] = [];
+    private tasksNotDoneCollectionIndex: string[] = [];
 
     public setNoneExecutorCollection(projectId: string, content: ITaskDataParsed[]) {
       let cache = this._get<ITaskDataParsed[]>('noneExecutor:tasks', projectId);
@@ -109,6 +114,56 @@ module teambition {
 
     public getTasklistCollection(tasklistId: string) {
       return this._get<ITaskDataParsed[]>('tasks:in', tasklistId);
+    }
+
+    public setTasksDoneCollection(projectId: string, tasks: ITaskData[]) {
+      let cache = this.getTasksDoneCollection(projectId);
+      let results: ITaskDataParsed[] = [];
+      if (!cache) {
+        angular.forEach(tasks, (task: ITaskData, index: number) => {
+          let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+          if (taskCache) {
+            results.push(taskCache);
+          }else {
+            let result = this.taskParser(task);
+            results.push(result);
+          }
+          this.tasksDoneCollectionIndex.push(task._id);
+        });
+        this._set('tasks:done', projectId, results);
+        return results;
+      }else {
+        return cache;
+      }
+    }
+
+    public getTasksDoneCollection(projectId: string) {
+      return this._get<ITaskDataParsed[]>('tasks:done', projectId);
+    }
+
+    public setTasksNotDoneCollection(projectId: string, tasks: ITaskData[]) {
+      let cache = this.getTasksNotDoneCollection(projectId);
+      let results: ITaskDataParsed[] = [];
+      if (!cache) {
+        angular.forEach(tasks, (task: ITaskData, index: number) => {
+          let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+          if (taskCache) {
+            results.push(taskCache);
+          }else {
+            let result = this.taskParser(task);
+            results.push(result);
+          }
+          this.tasksNotDoneCollectionIndex.push(task._id);
+        });
+        this._set('tasks:not:done', projectId, results);
+        return results;
+      }else {
+        return cache;
+      }
+    }
+
+    public getTasksNotDoneCollection(projectId: string) {
+      return this._get<ITaskDataParsed[]>('tasks:not:done', projectId);
     }
   }
 

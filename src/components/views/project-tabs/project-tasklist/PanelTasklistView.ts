@@ -14,6 +14,7 @@ module teambition {
   @inject([
     'StageAPI',
     'TasklistAPI',
+    'ProjectDetailAPI',
     'taskFilter'
   ])
   export class PanelTasklistView extends View {
@@ -33,6 +34,7 @@ module teambition {
 
     private TasklistAPI: ITasklistAPI;
     private StageAPI: IStageAPI;
+    private ProjectDetailAPI: IProjectDetailAPI;
 
     constructor() {
       super();
@@ -72,8 +74,8 @@ module teambition {
       dummySelected._id = type;
       dummySelected.title = smartTitleMap[type];
       this.tasklistSelected = dummySelected;
-      filter.close();
       this.fetchTasksBySmartGroup(type);
+      filter.close(e);
     }
 
     public openTaskDetail(_id: string) {
@@ -129,7 +131,36 @@ module teambition {
     }
 
     private fetchTasksBySmartGroup(type: string) {
-      console.log(123);
+      let promise: angular.IPromise<ITaskDataParsed[]>;
+      switch (type) {
+        case 'done':
+          promise = this.ProjectDetailAPI.getTasksDone(projectId);
+          break;
+        case 'notDone':
+          promise = this.ProjectDetailAPI.getTasksNotDone(projectId);
+          break;
+        case 'notAssigned':
+          promise = this.ProjectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'noneExecutor');
+          break;
+      }
+      promise.then((tasks: ITaskDataParsed[]) => {
+        this.stages = [{
+          _id: type,
+          name: smartTitleMap[type],
+          _creatorId: '',
+          _projectId: projectId,
+          _tasklistId: type,
+          isArchived: null,
+          totalCount: tasks.length,
+          order: 0
+        }];
+        this.tasks[type] = tasks;
+        this.taskLength = tasks.length;
+      })
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '获取数据时出错', message);
+      });
     }
 
     private insertTask(task: ITaskDataParsed, tasks: ITaskDataParsed[]) {

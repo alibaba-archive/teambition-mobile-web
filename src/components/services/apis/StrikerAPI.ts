@@ -3,7 +3,7 @@ module teambition {
   'use strict';
 
   export interface IStrikerAPI {
-    upload(blobs: File[]): angular.IPromise<angular.IHttpPromiseCallbackArg<{}>>;
+    upload(blobs: File[], scope?: any): angular.IPromise<angular.IHttpPromiseCallbackArg<{}>>;
   }
 
   @inject([
@@ -14,7 +14,7 @@ module teambition {
     private app: Iapp;
     private Upload: angular.angularFileUpload.IUploadService;
 
-    public upload (blobs: File[]) {
+    public upload (blobs: File[], scope?: any) {
       return this.strikerAuth().then((strikerAuth: string) => {
         return this.Upload.upload({
           url: this.app.strikerHost + 'upload',
@@ -28,6 +28,12 @@ module teambition {
         })
         .then((res: any) => {
           return res.data;
+        }, (resp: any) => {
+          console.log(resp);
+        }, (evt: any) => {
+          if (scope && scope.progress) {
+            scope.progress = 100.0 * evt.loaded / evt.total + '%';
+          }
         });
       });
     }
