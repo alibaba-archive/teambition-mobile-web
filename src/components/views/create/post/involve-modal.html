@@ -4,14 +4,13 @@
       <div class="list executor-members">
         <div class="item item-icon-left item-toggle">
           <i class="icon"
-            ng-class="{'icon-unlock': CreateEventCtrl.isVisiable, 'icon-lock': !CreateEventCtrl.isVisiable}"
-            >
+             ng-class="{'icon-unlock': !CreatePostCtrl.isVisiable, 'icon-lock': CreatePostCtrl.isVisiable}">
           </i>
           参与者可见
           <label class="toggle toggle-balanced">
             <input type="checkbox"
-                  ng-model="CreateEventCtrl.isVisiable"
-                  ng-checked="(CreateEventCtrl.visiable === 'involves')">
+                   ng-model="CreatePostCtrl.isVisiable"
+                   ng-checked="(CreatePostCtrl.visiable === 'involves')">
             <div class="track">
               <div class="handle"></div>
             </div>
@@ -22,8 +21,8 @@
         </div-title>
         <div class="item item-avatar item-icon-right"
             ng-if="member._id != 0"
-            ng-repeat="member in CreateEventCtrl.members track by member._id"
-            on-tap="CreateEventCtrl.selectInvolveMember(member._id)">
+            ng-repeat="member in CreatePostCtrl.members track by member._id"
+            on-tap="CreatePostCtrl.selectInvolveMember(member._id)">
           <div class="avatar item-image" style="background-image: url({{member.avatarUrl}})"></div>
           <h2 class="excutor-member-name">{{member.name}}</h2>
           <i ng-if="member.isSelected" class="icon icon-tick positive"></i>

@@ -7,6 +7,7 @@ module teambition {
     fetchNoExecutorOrDuedateTasks(_projectId: string, typeFilter: string, count?: number, page?: number): angular.IPromise<ITaskDataParsed[]>;
     getTasksDone(projectId: string): angular.IPromise<ITaskDataParsed[]>;
     getTasksNotDone(projectId: string): angular.IPromise<ITaskDataParsed[]>;
+    addMembers(projectId: string, emails: string[]): angular.IPromise<void>;
   }
 
   @inject([
@@ -14,13 +15,15 @@ module teambition {
     'Moment',
     'MemberAPI',
     'ProjectActivityModel',
-    'TaskModel'
+    'TaskModel',
+    'MemberModel'
   ])
   class ProjectDetailAPI extends BaseAPI implements IProjectDetailAPI {
     private Moment: moment.MomentStatic;
     private MemberAPI: IMemberAPI;
     private ProjectActivityModel: IProjectActivityModel;
     private TaskModel: ITaskModel;
+    private MemberModel: IMemberModel;
 
     private pageCounter: {
       [index: string]: number;
@@ -136,6 +139,31 @@ module teambition {
       .$promise
       .then((tasks: ITaskDataParsed[]) => {
         return this.TaskModel.setTasksNotDoneCollection(projectId, tasks);
+      });
+    }
+
+    public addMembers(projectId: string, emails: string[]) {
+      return this.RestAPI.post({
+        V2: 'V2',
+        Type: 'projects',
+        Id: projectId,
+        Path1: 'members'
+      }, {
+        email: emails
+      })
+      .$promise
+      .then((data: any) => {
+        for (let i = 0; i < data.length; i ++) {
+          let item = data[i];
+          let memberData: IMemberData;
+          memberData = {
+            _id: item._memberId,
+            avatarUrl: item.avatarUrl,
+            name: item.name,
+            title: item.title
+          };
+          this.MemberModel.addMember(projectId, memberData);
+        };
       });
     }
 

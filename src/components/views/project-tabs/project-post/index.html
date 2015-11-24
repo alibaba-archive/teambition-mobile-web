@@ -1,7 +1,9 @@
 <ion-view ng-controller="PanelPostView as PanelPostCtrl">
   <ion-content class="post-panel-content has-tabs">
     <div class="list ionic">
-      <div class="item item-avatar" ng-repeat="post in PanelPostCtrl.posts track by post._id" on-tap="PanelPostCtrl.openDetail(post._id)">
+      <div class="item item-avatar"
+           ng-repeat="post in PanelPostCtrl.posts track by post._id"
+           on-tap="PanelPostCtrl.openDetail(post._id)">
         <img ng-src="{{post.creatorAvatar}}">
         <p ng-bind="post.creatorName"></p>
         <p class="post-title" ng-bind="post.displayedTitle"></p>

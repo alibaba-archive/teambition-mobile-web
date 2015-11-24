@@ -47,7 +47,13 @@ module teambition {
       let userid = this.$rootScope.userMe._id;
       this.involveMembers = [];
       this.involveMembers.push(userid);
-      this.members[userid].isSelected = true;
+      angular.forEach(this.members, (member: IMemberData) => {
+        if (member._id === userid) {
+          member.isSelected = true;
+        }else {
+          member.isSelected = false;
+        }
+      });
       this.setHeader();
     }
 
@@ -69,7 +75,11 @@ module teambition {
       });
       return names.join('、');
     }
-    
+
+    public selectInvolveMember(_id: string) {
+      this.members[_id].isSelected = !this.members[_id].isSelected;
+    }
+
     private selectInvolve() {
       let involve = [];
       angular.forEach(this.members, (member: any) => {

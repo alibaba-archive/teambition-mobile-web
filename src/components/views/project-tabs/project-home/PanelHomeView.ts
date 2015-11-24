@@ -2,8 +2,6 @@
 module teambition {
   'use strict';
 
-  declare let $location;
-
   let loaded: boolean = false;
   let projectId: string;
   let lastCacheText: string = '';
@@ -49,6 +47,9 @@ module teambition {
     public _noneExecutorTasks: ITaskDataParsed[];
     public members: IMemberData[];
     public membersMap: {
+      [index: string]: IMemberData;
+    };
+    public organizationMembers: {
       [index: string]: IMemberData;
     };
 
@@ -202,6 +203,34 @@ module teambition {
       this.infinite = true;
     }
 
+    public openMembersModel() {
+      this.state = 'addMember';
+      this.setHeader();
+      this.openModal('project-tabs/project-home/add-member-modal.html', {
+        scope: this.$scope
+      });
+      this.showLoading();
+      this.MemberAPI.getOrganizationMembers(this.project.organizationId)
+      .then((members: {[index: string]: IMemberData}) => {
+        this.organizationMembers = members;
+        angular.forEach(this.membersMap, (member: IMemberData) => {
+          if (this.organizationMembers[member._id]) {
+            this.organizationMembers[member._id].isSelected = true;
+          }
+        });
+        this.hideLoading();
+      })
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '获取数据失败', message);
+        this.hideLoading();
+      });
+    }
+
+    public addMember(id: string) {
+      this.organizationMembers[id].isSelected = !this.organizationMembers[id].isSelected;
+    }
+
     private setHeader() {
       if (Ding) {
         switch (this.state) {
@@ -235,6 +264,20 @@ module teambition {
             });
             Ding.setRight('确定', true, false, () => {
               this.filterTasks();
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+            break;
+          case 'addMember':
+            Ding.setTitle('添加成员');
+            Ding.setLeft('取消', true, false, () => {
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+            Ding.setRight('确定', true, false, () => {
+              this.addMembers();
               this.cancelModal();
               this.state = 'origin';
               this.setHeader();
@@ -384,6 +427,26 @@ module teambition {
       obj.text = text.slice(0, text.length - 1);
       obj.cacheText = result.sort().toString();
       return obj;
+    }
+
+    private addMembers() {
+      let emails: string[] = [];
+      angular.forEach(this.organizationMembers, (member: IMemberData) => {
+        if (member.isSelected) {
+          emails.push(member.email);
+        }
+      });
+      this.showLoading();
+      this.ProjectDetailAPI.addMembers(projectId, emails)
+      .then(() => {
+        this.hideLoading();
+      })
+      .catch((reason: any) => {
+        alert(JSON.stringify(reason));
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '更新成员失败', message);
+        this.hideLoading();
+      });
     }
   }
 

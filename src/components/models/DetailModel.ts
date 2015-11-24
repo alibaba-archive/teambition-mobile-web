@@ -14,6 +14,7 @@ module teambition {
     'socketListener',
     'ActivityModel',
     'TaskModel',
+    'PostModel',
     'EventModel',
     'taskParser',
     'postParser',
@@ -28,6 +29,7 @@ module teambition {
     protected postParser: IPostParser;
     private socketListener: ISocketListener;
     private TaskModel: ITaskModel;
+    private PostModel: IPostModel;
     private EventModel: IEventModel;
     private ActivityModel: IActivityModel;
 
@@ -91,7 +93,9 @@ module teambition {
           this.TaskModel.addTask(result);
           return result;
         case 'post':
-          return this.postParser(detail);
+          result = this.postParser(detail);
+          this.PostModel.addPostToCollection(result);
+          return result;
         case 'work':
           return this.fileParser(detail);
         case 'event':

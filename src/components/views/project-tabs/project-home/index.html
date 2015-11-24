@@ -11,7 +11,7 @@
            ng-repeat="member in PanelHomeCtrl.members | limitTo: 7 track by member._id"
            ng-if="member._id != 0"
            style="background-image:url({{member.avatarUrl}})"></a>
-        <a class="involve-member-add clearfix" ng-click="">
+        <a class="involve-member-add clearfix" on-tap="PanelHomeCtrl.openMembersModel()">
           <span class="icon icon-circle-cross"></span>
         </a>
       </div>

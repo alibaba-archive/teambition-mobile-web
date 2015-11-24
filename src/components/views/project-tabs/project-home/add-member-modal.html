@@ -1,0 +1,15 @@
+<ion-view class="edit-exector-view">
+  <ion-content>
+    <div class="list executor-members">
+      <div class="item item-avatar item-icon-right"
+           ng-repeat="member in PanelHomeCtrl.organizationMembers track by member._id"
+           on-tap="PanelHomeCtrl.addMember(member._id)">
+        <div class="avatar item-image"
+             style="background-image: url({{member.avatarUrl}})">
+        </div>
+        <h2 class="excutor-member-name">{{member.name}}</h2>
+        <i ng-show="member.isSelected" class="icon icon-tick positive"></i>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
