@@ -37,7 +37,6 @@ module teambition {
     public $$id: string;
     public parentName: string;
     public parent: any;
-    public shouldFetchedTimes: number;
     public project: IProjectDataParsed;
 
     protected $rootScope: IRootScope;

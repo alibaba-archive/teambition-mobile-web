@@ -2,6 +2,8 @@
 module teambition {
   'use strict';
 
+  let setDetailIndex = [];
+
   export interface IDetailModel {
     setDetail(namespace: string, content: ITaskData | IEventData | IPostData | IFileData | IEntryData): ITaskData | IEventData | IPostData | IFileData | IEntryData;
     updateDetail(namespace: string, patch: any): void;
@@ -11,6 +13,7 @@ module teambition {
   @inject([
     'socketListener',
     'ActivityModel',
+    'TaskModel',
     'EventModel',
     'taskParser',
     'postParser',
@@ -24,21 +27,34 @@ module teambition {
     protected fileParser: IFileParser;
     protected postParser: IPostParser;
     private socketListener: ISocketListener;
+    private TaskModel: ITaskModel;
     private EventModel: IEventModel;
     private ActivityModel: IActivityModel;
 
     public setDetail(namespace: string, content: any) {
-      let type = namespace.split(':')[0];
-      this.socketListener('new', `activities/${content._id}`, (type: string, data: IActivityDataParsed) => {
-        console.log('type: new activities, ', 'data: ', data);
-        this.ActivityModel.addActivity(content._id, data);
-      });
-      this.socketListener('change', `${type}/${content._id}`, (type: string, data: any) => {
-        console.log('change, detail: ', data);
-        this.updateDetail(namespace, data);
-      });
-      this._set(namespace, null, content);
-      return this.parseDetail(namespace, content);
+      if (content._id && setDetailIndex.indexOf(content._id) === -1) {
+        let type = namespace.split(':')[0];
+        this.socketListener('new', `activities/${content._id}`, (type: string, data: IActivityDataParsed) => {
+          console.log('type: new activities, ', 'data: ', data);
+          this.ActivityModel.addActivity(content._id, data);
+        });
+        this.socketListener('change', `${type}/${content._id}`, (type: string, data: any) => {
+          console.log('change, detail: ', data);
+          this.updateDetail(namespace, data);
+        });
+        let result = this.parseDetail(namespace, content);
+        this._set(namespace, null, result);
+        setDetailIndex.push(content._id);
+        return result;
+      }else {
+        if (content.detailInfos) {
+          let result = this.parseDetail(namespace, content);
+          this._updateObj(namespace, null, result);
+          return result;
+        }else {
+          return this.getDetail(namespace);
+        }
+      }
     }
 
     public updateDetail(namespace: string, patch: any) {
@@ -68,15 +84,18 @@ module teambition {
           detail.members = [{name: '暂无参与者', avatarUrl: nobodyUrl}];
         }
       }
+      let result: any;
       switch (type) {
         case 'task':
-          return this.taskParser(detail);
+          result = this.taskParser(detail);
+          this.TaskModel.addTask(result);
+          return result;
         case 'post':
           return this.postParser(detail);
         case 'work':
           return this.fileParser(detail);
         case 'event':
-          let result = this.eventParser(detail);
+          result = this.eventParser(detail);
           this.EventModel.addEvent(result);
           return result;
       }

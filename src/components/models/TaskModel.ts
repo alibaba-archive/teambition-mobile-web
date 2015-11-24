@@ -6,72 +6,72 @@ module teambition {
     setNoneExecutorCollection(projectId: string, content: ITaskData[]): ITaskDataParsed[];
     getNoneExecutorCollection(projectId: string): ITaskDataParsed[];
     setDueCollection(projectId: string, content: ITaskData[]): ITaskDataParsed[];
-    getDueExecutorCollection(projectId: string): ITaskDataParsed[];
+    getDueCollection(projectId: string): ITaskDataParsed[];
     setTasklistCollection(tasklistId: string, collection: ITaskData[]): ITaskDataParsed[];
     getTasklistCollection(tasklistId: string): ITaskDataParsed[];
     getTasksDoneCollection(projectId: string): ITaskDataParsed[];
     setTasksDoneCollection(projectId: string, tasks: ITaskData[]): ITaskDataParsed[];
     getTasksNotDoneCollection(projectId: string): ITaskDataParsed[];
     setTasksNotDoneCollection(projectId: string, tasks: ITaskData[]): ITaskDataParsed[];
+    addTask(task: ITaskDataParsed): void;
   }
 
   class TaskModel extends DetailModel implements ITaskModel {
 
-    private noneExecutorCollectionIndex: string[] = [];
-    private dueCollectionIndex: string[] = [];
-    private tasklistCollectionIndex: string[] = [];
-    private tasksDoneCollectionIndex: string[] = [];
-    private tasksNotDoneCollectionIndex: string[] = [];
-
     public setNoneExecutorCollection(projectId: string, content: ITaskDataParsed[]) {
-      let cache = this._get<ITaskDataParsed[]>('noneExecutor:tasks', projectId);
-      let results = [];
+      let cache = this._get<ITaskDataParsed[]>('tasks:noneExecutor', projectId);
       if (!cache) {
+        let results = [];
+        let $index: string[] = [];
         angular.forEach(content, (task: ITaskDataParsed, index: number) => {
           let taskCache = this._get('task:detail', task._id);
+          let result = this.taskParser(task);
           if (!taskCache) {
-            let result = this.taskParser(task);
             results.push(result);
             this._set('task:detail', result._id, result);
           }else {
+            this._updateObj('task:detail', result._id, result);
             results.push(taskCache);
           }
-          this.noneExecutorCollectionIndex.push(task._id);
+          $index.push(task._id);
         });
-        this._set('noneExecutor:tasks', projectId, results);
+        this._set('tasks:noneExecutor:index', projectId, $index);
+        this._set('tasks:noneExecutor', projectId, results);
         return results;
       }
       return cache;
     }
 
     public getNoneExecutorCollection(projectId: string) {
-      let cache = this._get<ITaskDataParsed[]>('noneExecutor:tasks', projectId);
+      let cache = this._get<ITaskDataParsed[]>('tasks:noneExecutor', projectId);
       return cache;
     }
 
     public setDueCollection(projectId: string, content: ITaskDataParsed[]) {
-      let cache = this._get<ITaskDataParsed[]>('due:tasks', projectId);
-      let results = [];
+      let cache = this._get<ITaskDataParsed[]>('tasks:due', projectId);
       if (!cache) {
+        let results: ITaskDataParsed[] = [];
+        let $index: string[] = [];
         angular.forEach(content, (task: ITaskDataParsed, index: number) => {
-          let taskCache = this._get('task:detail', task._id);
+          let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+          let result = this.taskParser(task);
           if (!taskCache) {
-            let result = this.taskParser(task);
             this._set('task:detail', result._id, result);
             results.push(result);
           }else {
             results.push(taskCache);
           }
-          this.dueCollectionIndex.push(task._id);
+          $index.push(task._id);
         });
-        this._set('due:tasks', projectId, results);
+        this._set('tasks:due:index', projectId, $index);
+        this._set('tasks:due', projectId, results);
         return results;
       }
       return cache;
     }
 
-    public getDueExecutorCollection(projectId: string) {
-      let cache = this._get<ITaskDataParsed[]>('due:tasks', projectId);
+    public getDueCollection(projectId: string) {
+      let cache = this._get<ITaskDataParsed[]>('tasks:due', projectId);
       return cache;
     }
 
@@ -79,33 +79,38 @@ module teambition {
       let cache = this.getTasklistCollection(tasklistId);
       if (!cache) {
         let results: ITaskDataParsed[] = [];
+        let $index: string[] = [];
         if (collection.length) {
           angular.forEach(collection, (task: ITaskData, index: number) => {
             let cache = this._get<ITaskDataParsed>('task:detail', task._id);
+            let result = this.taskParser(task);
             if (!cache) {
-              let result: ITaskDataParsed = this.taskParser(task);
               this.setDetail(`task:detail:${task._id}`, task);
-              this.tasklistCollectionIndex.push(task._id);
               results.push(result);
             }else {
+              this._updateObj('task:detail', result._id, result);
               results.push(cache);
             }
+            $index.push(task._id);
           });
         }
-        this._set('tasks:in', tasklistId, results);
+        this._set('tasks:tasklist:index', tasklistId, $index);
+        this._set('tasks:tasklist', tasklistId, results);
         return results;
       }else {
-        angular.forEach(collection, (task: ITaskDataParsed, index: number) => {
-          if (this.tasklistCollectionIndex.indexOf(task._id) === -1) {
+        angular.forEach(collection, (task: ITaskData, index: number) => {
+          let $index = this._get<string[]>('tasks:tasklist:index', tasklistId);
+          if ($index.indexOf(task._id) === -1) {
             let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+            let result = this.taskParser(task);
             if (!taskCache) {
-              let result = this.taskParser(task);
-              cache.push(result);
               this._set('task:detail', result._id, result);
-              this.tasklistCollectionIndex.push(task._id);
+              cache.push(result);
             }else {
+              this._updateObj('task:detail', result._id, result);
               cache.push(taskCache);
             }
+            $index.push(task._id);
           }
         });
         return cache;
@@ -113,23 +118,26 @@ module teambition {
     }
 
     public getTasklistCollection(tasklistId: string) {
-      return this._get<ITaskDataParsed[]>('tasks:in', tasklistId);
+      return this._get<ITaskDataParsed[]>('tasks:tasklist', tasklistId);
     }
 
     public setTasksDoneCollection(projectId: string, tasks: ITaskData[]) {
       let cache = this.getTasksDoneCollection(projectId);
-      let results: ITaskDataParsed[] = [];
       if (!cache) {
+        let results: ITaskDataParsed[] = [];
+        let $index: string[] = [];
         angular.forEach(tasks, (task: ITaskData, index: number) => {
           let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+          let result = this.taskParser(task);
           if (taskCache) {
             results.push(taskCache);
           }else {
-            let result = this.taskParser(task);
             results.push(result);
+            this._set('task:detail', result._id, result);
           }
-          this.tasksDoneCollectionIndex.push(task._id);
+          $index.push(task._id);
         });
+        this._set('tasks:done:index', projectId, $index);
         this._set('tasks:done', projectId, results);
         return results;
       }else {
@@ -143,18 +151,21 @@ module teambition {
 
     public setTasksNotDoneCollection(projectId: string, tasks: ITaskData[]) {
       let cache = this.getTasksNotDoneCollection(projectId);
-      let results: ITaskDataParsed[] = [];
       if (!cache) {
+        let results: ITaskDataParsed[] = [];
+        let $index: string[] = [];
         angular.forEach(tasks, (task: ITaskData, index: number) => {
           let taskCache = this._get<ITaskDataParsed>('task:detail', task._id);
+          let result = this.taskParser(task);
           if (taskCache) {
             results.push(taskCache);
           }else {
-            let result = this.taskParser(task);
             results.push(result);
+            this._set('task:detail', result._id, result);
           }
-          this.tasksNotDoneCollectionIndex.push(task._id);
+          $index.push(task._id);
         });
+        this._set('tasks:not:done:index', projectId, $index);
         this._set('tasks:not:done', projectId, results);
         return results;
       }else {
@@ -164,6 +175,67 @@ module teambition {
 
     public getTasksNotDoneCollection(projectId: string) {
       return this._get<ITaskDataParsed[]>('tasks:not:done', projectId);
+    }
+
+    public addTask(task: ITaskDataParsed) {
+      if (task._executorId === null) {
+        this.addToNoneExecutorCollection(task);
+      }
+      if (new Date(task.dueDate).valueOf() <= Date.now() && !task.isDone) {
+        this.addToDueCollection(task);
+      }
+      if (task.isDone) {
+        this.addToDoneCollection(task);
+      }
+      if (!task.isDone) {
+        this.addToNotDoneCollection(task);
+      }
+      this.addToTasklistCollection(task);
+    }
+
+    private addToDueCollection(task: ITaskDataParsed) {
+      let $index = this._get<string[]>('tasks:due:index', task._tasklistId);
+      if ($index && $index.indexOf(task._id) === -1) {
+        let cache = this.getDueCollection(task._tasklistId);
+        $index.push(task._id);
+        cache.push(task);
+      }
+    }
+
+    private addToNoneExecutorCollection(task: ITaskDataParsed) {
+      let $index = this._get<string[]>('tasks:noneExecutor:index', task._tasklistId);
+      if ($index && $index.indexOf(task._id) === -1) {
+        let cache = this.getNoneExecutorCollection(task._tasklistId);
+        $index.push(task._id);
+        cache.push(task);
+      }
+    }
+
+    private addToTasklistCollection(task: ITaskDataParsed) {
+      let $index = this._get<string[]>('tasks:tasklist:index', task._tasklistId);
+      if ($index && $index.indexOf(task._id) === -1) {
+        let cache = this.getTasklistCollection(task._tasklistId);
+        $index.push(task._id);
+        cache.push(task);
+      }
+    }
+
+    private addToDoneCollection(task: ITaskDataParsed) {
+      let $index = this._get<string[]>('tasks:done:index', task._projectId);
+      if ($index && $index.indexOf(task._id) === -1) {
+        let cache = this.getTasksDoneCollection(task._projectId);
+        $index.push(task._id);
+        cache.push(task);
+      }
+    }
+
+    private addToNotDoneCollection(task: ITaskDataParsed) {
+      let $index = this._get<string[]>('tasks:not:done:index', task._projectId);
+      if ($index && $index.indexOf(task._id) === -1) {
+        let cache = this.getTasksNotDoneCollection(task._projectId);
+        $index.push(task._id);
+        cache.push(task);
+      }
     }
   }
 

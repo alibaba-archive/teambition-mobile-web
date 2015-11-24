@@ -2,8 +2,6 @@
 module teambition {
   'use strict';
 
-  let actionSheet: any;
-
   @parentView('DetailView')
   @inject([
     'DetailAPI'
@@ -36,14 +34,6 @@ module teambition {
       this.task = this.parent.detail;
       this.content = this.task.content;
       this.project = this.parent.project;
-      if (Ding) {
-        Ding.setLeft('返回', true, true, () => {
-          window.history.back();
-        });
-        Ding.setRight('更多', true, false, () => {
-          this.showOptions();
-        });
-      }
     }
 
     public getExecutorAvatar() {
@@ -75,22 +65,6 @@ module teambition {
           let message = this.getFailureReason(reason);
           this.showMsg('error', '网络错误', message);
           this.content = this.task.content;
-        });
-      }
-    }
-
-    private showOptions() {
-      if (actionSheet) {
-        actionSheet = actionSheet();
-      }else {
-        actionSheet = this.$ionicActionSheet.show({
-          buttons: [{
-            text: '<font color="red">删除任务</font>'
-          }],
-          cancelText: '取消',
-          buttonClicked: (index: number) => {
-            return true;
-          }
         });
       }
     }

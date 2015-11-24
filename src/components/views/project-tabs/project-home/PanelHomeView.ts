@@ -214,7 +214,11 @@ module teambition {
             break;
           case 'memberFilter':
             Ding.setTitle('选择成员');
-            Ding.setLeft('', false, false);
+            Ding.setLeft('取消', true, false, () => {
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
             Ding.setRight('确定', true, false, () => {
               this.filterMembers();
               this.cancelModal();
@@ -224,7 +228,11 @@ module teambition {
             break;
           case 'typeFilter':
             Ding.setTitle('选择类型');
-            Ding.setLeft('', false, false);
+            Ding.setLeft('取消', true, false, () => {
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
             Ding.setRight('确定', true, false, () => {
               this.filterTasks();
               this.cancelModal();

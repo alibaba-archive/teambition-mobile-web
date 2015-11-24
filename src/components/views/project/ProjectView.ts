@@ -169,7 +169,6 @@ module teambition {
             {text: '取消'},
             {
               text: '确认归档',
-              type: 'button-positive',
               onTap: function() {
                 this.ProjectsAPI.archiveProject(project._id)
                 .then((data: IProjectData) => {
@@ -202,7 +201,6 @@ module teambition {
             },
             {
               text: '确认退出',
-              type: 'button-assertive',
               onTap: () => {
                 this.ProjectsAPI.leaveProject(project._id)
                 .then((data: IProjectData) => {
@@ -235,7 +233,6 @@ module teambition {
             },
             {
               text: '确认删除',
-              type: 'button-assertive',
               onTap: () => {
                 this.ProjectsAPI.deleteProject(project._id)
                 .then((data: IProjectData) => {

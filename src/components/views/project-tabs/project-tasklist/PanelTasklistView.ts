@@ -10,6 +10,9 @@ module teambition {
   };
   let filter: EtTemplate.TaskFilter;
 
+  let stages: IStageData[];
+  let tasklistSelected: ITasklistData;
+
   @parentView('TabsView')
   @inject([
     'StageAPI',
@@ -38,12 +41,19 @@ module teambition {
 
     constructor() {
       super();
-      this.zone.run(noop);
+      this.zone.run(() => {
+        this.stages = stages;
+        this.tasklistSelected = tasklistSelected;
+      });
     }
 
     public onInit() {
       projectId = this.$state.params._id;
-      return this.initFetch();
+      return this.initFetch()
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '获取数据出错', message);
+      });
     }
 
     public onAllChangesDone() {
@@ -61,7 +71,7 @@ module teambition {
       if (id) {
         angular.forEach(this.tasklists, (tasklist: ITasklistData) => {
           if (tasklist._id === id) {
-            this.tasklistSelected = tasklist;
+            tasklistSelected = this.tasklistSelected = tasklist;
           }
         });
         this.fetchTasksByTasklistId(id);
@@ -73,7 +83,8 @@ module teambition {
       let dummySelected = <ITasklistData>{};
       dummySelected._id = type;
       dummySelected.title = smartTitleMap[type];
-      this.tasklistSelected = dummySelected;
+      dummySelected._projectId = projectId;
+      tasklistSelected = this.tasklistSelected = dummySelected;
       this.fetchTasksBySmartGroup(type);
       filter.close(e);
     }
@@ -95,7 +106,11 @@ module teambition {
     private initFetch() {
       return this.getTaskLists()
       .then(() => {
-        return this.fetchTasksByTasklistId(this.tasklistSelected._id);
+        let promise = this.fetchTasksBySmartGroup(this.tasklistSelected._id);
+        if (!promise) {
+          promise = this.fetchTasksByTasklistId(this.tasklistSelected._id);
+        }
+        return promise;
       });
     }
 
@@ -114,8 +129,8 @@ module teambition {
       this.taskLength = 0;
       this.showLoading();
       return this.StageAPI.fetch(_tasklistId)
-      .then((stages: IStageData[]) => {
-        this.stages = stages;
+      .then((data: IStageData[]) => {
+        stages = this.stages = data;
         return this.TasklistAPI.fetchTasksByTasklistId(_tasklistId);
       })
       .then((tasks: ITaskDataParsed[]) => {
@@ -126,6 +141,7 @@ module teambition {
           }
           this.insertTask(task, this.tasks[task._stageId]);
         });
+        console.log(JSON.stringify(this.tasks));
         this.hideLoading();
       });
     }
@@ -143,24 +159,27 @@ module teambition {
           promise = this.ProjectDetailAPI.fetchNoExecutorOrDuedateTasks(projectId, 'noneExecutor');
           break;
       }
-      promise.then((tasks: ITaskDataParsed[]) => {
-        this.stages = [{
-          _id: type,
-          name: smartTitleMap[type],
-          _creatorId: '',
-          _projectId: projectId,
-          _tasklistId: type,
-          isArchived: null,
-          totalCount: tasks.length,
-          order: 0
-        }];
-        this.tasks[type] = tasks;
-        this.taskLength = tasks.length;
-      })
-      .catch((reason: any) => {
-        let message = this.getFailureReason(reason);
-        this.showMsg('error', '获取数据时出错', message);
-      });
+      if (promise) {
+        return promise.then((tasks: ITaskDataParsed[]) => {
+          stages = this.stages = [{
+            _id: type,
+            name: smartTitleMap[type],
+            _creatorId: '',
+            _projectId: projectId,
+            _tasklistId: type,
+            isArchived: null,
+            totalCount: tasks.length,
+            order: 0
+          }];
+          this.tasks = {};
+          this.tasks[type] = tasks;
+          this.taskLength = tasks.length;
+        })
+        .catch((reason: any) => {
+          let message = this.getFailureReason(reason);
+          this.showMsg('error', '获取数据时出错', message);
+        });
+      }
     }
 
     private insertTask(task: ITaskDataParsed, tasks: ITaskDataParsed[]) {

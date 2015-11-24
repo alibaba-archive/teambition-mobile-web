@@ -4,14 +4,14 @@
 module teambition {
   'use strict';
 
-  export let host = 'http://m.wx.project.ci';
+  export let host = 'http://yinan.project.ci';
 
   angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
   .constant('Moment', moment)
   .constant('Marked', marked)
   .constant('app', {
-    NAME: 'teambition-wechat',
-    VERSION: 'v0.7.0',
+    NAME: 'teambition-mobile-web',
+    VERSION: 'v0.9.0',
     LANGUAGE: 'zh',
     apiHost: 'http://project.ci/api',
     strikerHost: 'https://striker.teambition.net/',

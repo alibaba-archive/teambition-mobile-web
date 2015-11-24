@@ -93,6 +93,12 @@
       background: white;
       margin-bottom: 15px;
 
+      .task-type-title {
+        margin-left: 2px;
+        position: relative;
+        bottom: 2px;
+      }
+
       .list.list-today,
       .list.list-none-executor {
         margin-bottom: 0px;
@@ -144,16 +150,6 @@
             top: 2px;
             padding: 0 4px 0 2px;
           }
-          .task-content {
-            // color: #808080;
-            // position: absolute;
-            // right: 16px;
-            // margin-left: 0;
-            // max-width: 60%;
-            // display: block;
-            // overflow-x: hidden;
-            // text-overflow: ellipsis;
-          }
           .task-duedate {
             border-radius: 2px;
             padding-left: 25px;
@@ -167,15 +163,6 @@
               }
             }
           }
-          // .task-avatar {
-          //   width: 30px;
-          //   height: 30px;
-          //   border-radius: 50%;
-          //   background-size: cover;
-          //   position: absolute;
-          //   top: 12px;
-          // }
-
         }
         .item-more {
           padding-top: 12px;
@@ -201,6 +188,8 @@
           .task-content {
             max-width: 100%;
             margin-left: 0;
+            position:relative;
+            bottom: 2px;
             &:after {
               content: none;
             }
@@ -457,8 +446,8 @@
       i.icon-alert-clock {
         position: relative;
         top: 10px;
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
         margin-right: 1px;
         border-radius: 50%;
         background-color: #808080;
@@ -467,8 +456,8 @@
           left: 5px;
           color: #ffffff;
           height: 14px;
-          top: -10px;
-          font-size: 14px;
+          top: -12px;
+          font-size: 12px;
         }
       }
 

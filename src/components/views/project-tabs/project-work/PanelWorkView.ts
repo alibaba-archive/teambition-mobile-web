@@ -124,17 +124,31 @@ module teambition {
         let content = {
           progress: '0',
           request: null,
-          content: file
+          content: file,
+          index: index
         };
         content.request = this.StrikerAPI.upload([file], content).then((res: IStrikerRes) => {
           return this.WorkAPI.uploads(this.collectionId, projectId, [res]);
         })
         .then(() => {
-          contents.splice(index, 1);
+          let $index: number;
+          angular.forEach(this.fileContent, (_content: any, i: number) => {
+            if (_content.index === content.index) {
+              $index = i;
+            }
+          });
+          contents.splice($index, 1);
         })
         .catch((reason: any) => {
           let message = this.getFailureReason(reason);
           this.showMsg('error', '上传出错', message);
+          let $index: number;
+          angular.forEach(this.fileContent, (_content: any, i: number) => {
+            if (_content.index === content.index) {
+              $index = i;
+            }
+          });
+          contents.splice($index, 1);
         });
         contents.push(content);
       });
@@ -214,7 +228,9 @@ module teambition {
     }
 
     private createFile() {
-      this.InputComponments.show(this);
+      if (!this.fileContent || !this.fileContent.length) {
+        this.InputComponments.show(this);
+      }
     }
 
     private renameFile(type: string, index: number) {

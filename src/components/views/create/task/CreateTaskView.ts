@@ -5,25 +5,28 @@ module teambition {
   @inject([
     'DetailAPI',
     'MemberAPI',
+    'ProjectsAPI',
+    'TasklistAPI',
     'Rrule'
   ])
-  class CreateEventView extends View {
+  class CreateTaskView extends View {
 
-    public ViewName = 'CreateEventView';
+    public ViewName = 'CreateTaskView';
 
-    public title: string;
-    public startDate: any;
-    public endDate: any;
+    public _executorId: string;
+    public dueDate: any;
     public involveMembers: string[];
-    public location: string;
     public content: string;
-    public recurrenceStr: string;
+    public note: string;
+
     public isVisiable = false;
     public members: {
       [index: string]: IMemberData;
     };
     public visiable = 'members';
 
+    public recurrenceStr: string;
+    public recurrenceName: string;
     public recurrence = [
       {
         name: '从不',
@@ -52,12 +55,37 @@ module teambition {
       }
     ];
 
-    public recurrenceName: string;
+    public priority: number;
+    public PRIORITY = [
+      {
+        priority: 0,
+        name: '普通',
+        isSelected: false
+      },
+      {
+        priority: 1,
+        name: '紧急',
+        isSelected: false
+      },
+      {
+        priority: 2,
+        name: '非常紧急',
+        isSelected: false
+      }
+    ];
+
+    public tasklist: ITasklistData;
+    public stage: IStageData;
+
+
+    private tasklists: ITasklistData[];
 
     private state: string;
     private projectId: string;
     private DetailAPI: IDetailAPI;
     private MemberAPI: IMemberAPI;
+    private ProjectsAPI: IProjectsAPI;
+    private TasklistAPI: ITasklistAPI;
     private lastRecurrneceIndex: number;
     private Rrule: IRrule;
 
@@ -67,8 +95,9 @@ module teambition {
     ) {
       super();
       this.$scope = $scope;
-      this.startDate = new Date();
-      this.endDate = new Date(Date.now() + 3600000);
+      this.priority = 0;
+      this._executorId = '0';
+      this.involveMembers = [];
       this.state = 'origin';
       this.zone.run(() => {
         this.projectId = this.$state.params._id;
@@ -76,15 +105,24 @@ module teambition {
     }
 
     public onInit() {
-      return this.MemberAPI.fetch(this.projectId)
-      .then((members: any) => {
-        this.members = members;
-      });
+      return this.$q.all([
+        this.MemberAPI.fetch(this.projectId)
+        .then((members: {[index: string]: IMemberData}) => {
+          this.members = members;
+        }),
+        this.ProjectsAPI.fetchById(this.projectId)
+        .then((project: IProjectDataParsed) => {
+          this.project = project;
+          return this.TasklistAPI.fetchAll(this.projectId);
+        })
+        .then((tasklists: ITasklistData[]) => {
+          this.tasklists = tasklists;
+        })
+      ]);
     }
 
     public onAllChangesDone() {
       let userid = this.$rootScope.userMe._id;
-      this.involveMembers = [];
       this.involveMembers.push(userid);
       angular.forEach(this.members, (member: IMemberData) => {
         if (member._id === userid) {
@@ -93,28 +131,53 @@ module teambition {
           member.isSelected = false;
         }
       });
+      this.tasklist = this.tasklists[0];
+      this.stage = this.tasklists[0].hasStages[0];
       this.setHeader();
-    }
-
-    public openInvolve() {
-      this.state = 'involve';
-      this.setHeader();
-      this.openModal('create/event/involve-modal.html', {
-        scope: this.$scope
-      });
     }
 
     public openNote() {
-      this.openModal('create/event/content.html', {
+      this.openModal('create/task/note.html', {
         scope: this.$scope,
         animation: 'slide-in-left'
       });
-      this.state = 'content';
+      this.state = 'note';
       this.setHeader();
     }
 
+    // executor
+    public getExecutorAvatar() {
+      let avatar = this.members ? this.members[this._executorId].avatarUrl : nobodyUrl;
+      return avatar;
+    }
+
+    public getExecutorName() {
+      let name =  this.members ? this.members[this._executorId].name : '选择执行者';
+      return name;
+    }
+
+    public openExecutor() {
+      this.openModal('create/task/executor.html', {
+        scope: this.$scope,
+        animation: 'slide-in-left'
+      });
+      this.state = 'executor';
+      this.setHeader();
+    }
+
+    public chooseExecutor(id: string) {
+      if (id === this._executorId) {
+        return ;
+      }
+      this._executorId = id;
+      this.cancelModal();
+      this.state = 'origin';
+      this.setHeader();
+    }
+
+
     public openRecurrence() {
-      this.openModal('create/event/recurrence.html', {
+      this.openModal('create/task/recurrence.html', {
         scope: this.$scope,
         animation: 'slide-in-left'
       });
@@ -122,18 +185,27 @@ module teambition {
       this.setHeader();
     }
 
+    public openInvolve() {
+      this.state = 'involve';
+      this.setHeader();
+      this.openModal('create/task/involve-modal.html', {
+        scope: this.$scope
+      });
+    }
+
     public getInvolveNames() {
       let names = [];
       angular.forEach(this.members, (member: IMemberData) => {
-        if (member.isSelected) {
+        if (member.isSelected && member._id !== '0') {
           names.push(member.name);
         }
       });
       return names.join('、');
     }
 
+
     public chooseRecurrence($index: number) {
-      if (typeof this.lastRecurrneceIndex !== 'undefined') {
+      if (this.lastRecurrneceIndex) {
         this.recurrence[this.lastRecurrneceIndex].isSelected = false;
       }
       this.lastRecurrneceIndex = $index;
@@ -145,8 +217,51 @@ module teambition {
       this.setHeader();
     }
 
+    // priority
+    public getPriorityName() {
+      return this.PRIORITY[this.priority].name;
+    }
+
+    public openPriority() {
+      this.openModal('create/task/priority.html', {
+        scope: this.$scope,
+        animation: 'slide-in-left'
+      });
+      this.state = 'priority';
+      this.setHeader();
+    }
+
+    public choosePriority($index: number) {
+      if ($index === this.priority) {
+        return ;
+      }
+      this.PRIORITY.map((obj: any, index: number) => {
+        if (index === $index) {
+          obj.isSelected = true;
+          this.priority = $index;
+        } else {
+          obj.isSelected = false;
+        }
+      });
+      this.cancelModal();
+      this.state = 'origin';
+      this.setHeader();
+    }
+
     public selectInvolveMember(_id: string) {
       this.members[_id].isSelected = !this.members[_id].isSelected;
+    }
+
+    // involve
+    private selectInvolve() {
+      let involve = [];
+      angular.forEach(this.members, (member: IMemberData) => {
+        if (member.isSelected) {
+          involve.push(member._id);
+        }
+      });
+      this.involveMembers = involve;
+      this.visiable = this.isVisiable ? 'involves' : 'members';
     }
 
     private setHeader() {
@@ -154,7 +269,7 @@ module teambition {
         case 'origin':
           if (Ding) {
             Ding.setRight('确定', true, false, () => {
-              this.createEvent();
+              this.createTask();
               this.state = 'origin';
             });
             Ding.setLeft('取消', true, false, () => {
@@ -183,7 +298,7 @@ module teambition {
             });
           }
           break;
-        case 'content':
+        case 'note':
           if (Ding) {
             Ding.setRight('确定', true, false, () => {
               this.cancelModal();
@@ -212,58 +327,68 @@ module teambition {
             });
           }
           break;
+        case 'executor':
+          if (Ding) {
+            Ding.setRight('', false, false);
+            Ding.setLeft('取消', true, false, () => {
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+          }
+          break;
+        case 'priority':
+          if (Ding) {
+            Ding.setRight('', false, false);
+            Ding.setLeft('取消', true, false, () => {
+              this.cancelModal();
+              this.state = 'origin';
+              this.setHeader();
+            });
+          }
+          break;
       }
     }
 
-    private createEvent() {
-      if (typeof this.title !== 'undefined') {
+    private createTask() {
+      if (typeof this.content !== 'undefined') {
         this.showLoading();
         let recurrence: string[];
-        let dateNow = this.startDate;
+        let dateNow = new Date();
         dateNow.setMilliseconds(0);
         dateNow.setSeconds(0);
         if (this.recurrenceStr) {
           let nowStr = 'DTSTART=' + this.Rrule.timeToUntilString(dateNow);
           recurrence = [this.recurrenceStr.replace(';', `;${nowStr};`)];
         }
-        return this.DetailAPI.create('event', {
-          _projectId: this.projectId,
-          _creatorId: this.$rootScope.userMe._id,
-          title: this.title,
-          startDate: dateNow,
-          endDate: this.endDate,
+        return this.DetailAPI.create('task', {
+          _tasklistId: this.tasklist._id,
           content: this.content,
-          location: this.location,
+          note: this.note,
+          _executorId: this._executorId === '0' ? null : this._executorId,
+          dueDate: this.dueDate,
+          priority: this.priority,
           involveMembers: this.involveMembers,
           recurrence: recurrence,
           visiable: this.visiable
         })
-        .then((event: IEventDataParsed) => {
-          this.showMsg('success', '创建成功', '已成功创建日程', `#/detail/event/${event._id}`);
+        .then((task: ITaskDataParsed) => {
+          this.showMsg('success', '创建成功', '已成功创建任务', `#/detail/task/${task._id}`);
           this.hideLoading();
           window.history.back();
         })
         .catch((reason: any) => {
           let message = this.getFailureReason(reason);
           alert(JSON.stringify(reason));
-          this.showMsg('error', JSON.stringify(reason), message);
+          this.showMsg('error', '创建失败', message);
           this.hideLoading();
           window.history.back();
         });
       }
     }
 
-    private selectInvolve() {
-      let involve = [];
-      angular.forEach(this.members, (member: any) => {
-        if (member.isSelected) {
-          involve.push(member._id);
-        }
-      });
-      this.involveMembers = involve;
-      this.visiable = this.isVisiable ? 'involves' : 'members';
-    }
+
   }
 
-  angular.module('teambition').controller('CreateEventView', CreateEventView);
+  angular.module('teambition').controller('CreateTaskView', CreateTaskView);
 }

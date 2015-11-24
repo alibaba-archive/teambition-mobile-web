@@ -48,7 +48,7 @@ module EtTemplate {
     }
 
     protected bindContext(scope: any) {
-      if (typeof scope === 'object' && !this.bindedScope && this.ETInstanceName) {
+      if (typeof scope === 'object' && this.ETInstanceName) {
         let Constructor = teambition.$$injector.get(this.ETInstanceName);
         scope.ETtemplate = this;
         this.template = new Constructor(scope);

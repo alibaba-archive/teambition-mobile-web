@@ -2,7 +2,9 @@
   <div class="list">
     <div class="event-main-wrap">
       <div class="item">
-        <p class="event-title">{{EventCtrl.event.title}}</p>
+        <input class="event-title"
+               ng-model="EventCtrl.event.title"
+               ng-blur="EventCtrl.updateTitle()">
         <p class="event-time" ng-bind="EventCtrl.event.eventTime1"></p>
         <p><span ng-bind="EventCtrl.event.eventTime2"></span></p>
       </div>
@@ -10,17 +12,18 @@
     <div class="item list-title">
       信息
     </div>
-    <div class="ionic">
-      <div class="item item-icon-left">
-        <i class="icon icon-location"></i>
-        <span class="event-location" ng-bind="EventCtrl.event.location || '添加地点'"></span>
-      </div>
+    <div class="item item-icon-left">
+      <i class="icon icon-location"></i>
+      <input class="event-location"
+              ng-model="EventCtrl.event.location"
+              ng-blur="EventCtrl.updateLocation()"
+              placeholder="添加地点">
     </div>
     <div class="item list-title">
       更多
     </div>
     <div class="event-detail-wrap ionic">
-      <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('note')">
+      <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('content')">
         <i class="icon icon-wall"></i>
         <span class="event-content margin-left" ng-bind-html="EventCtrl.event.contentToDisplay || '添加备注'"></span>
       </a>
