@@ -46,7 +46,7 @@
       <div class="list ionic list-none-executor">
         <div-title class="item item-title">
           <i class="icon icon-alert-clock"></i>
-          待认领的任务
+          <span class="task-type-title">待认领的任务</span>
           <!--<span class="icon icon-chevron-right"></span>-->
         </div-title>
         <div class="ion-title-line"></div>
@@ -70,10 +70,10 @@
       <div class="list ionic list-today"
             ng-if="PanelHomeCtrl.eventGroup.length || PanelHomeCtrl.dueTasks.length">
         <div-title class="item item-title">
-            <span class="item-title-icon">
-              <i class="icon icon-alert-clock"></i>
-            </span>
-          今天的事
+          <span class="item-title-icon">
+            <i class="icon icon-alert-clock"></i>
+          </span>
+          <span class="task-type-title">今天的事</span>
         </div-title>
         <div class="ion-title-line"></div>
         <div-item class="item item-event"

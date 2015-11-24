@@ -1,4 +1,6 @@
 <input class="et-input-file"
        multiple="true"
+       [files]=it.fileContent
+       (change)=it.uploadFile
        type="file"
        style="opacity: 0;"/>

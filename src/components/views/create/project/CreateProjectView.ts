@@ -35,6 +35,7 @@ module teambition {
       return this.OrganizationAPI.fetch()
       .then((organizations: IOrganizationData[]) => {
         this.organizations = organizations;
+        organization = organizations[0];
       });
     }
 

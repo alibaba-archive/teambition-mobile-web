@@ -64,7 +64,7 @@ module teambition {
     public fetchNoExecutorOrDuedateTasks(_projectId: string, typesFilter: string, count: number = 20, page: number = 1) {
       let tasksCache: ITaskDataParsed [];
       if (typesFilter === 'due') {
-        tasksCache = this.TaskModel.getDueExecutorCollection(_projectId);
+        tasksCache = this.TaskModel.getDueCollection(_projectId);
       }else {
         tasksCache = this.TaskModel.getNoneExecutorCollection(_projectId);
       }

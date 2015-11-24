@@ -9,24 +9,30 @@ module teambition {
 
   const objectTpls = {
     task: {
-      title: '任务详情'
+      title: '任务详情',
+      name: '任务'
     },
     post: {
-      title: '分享详情'
+      title: '分享详情',
+      name: '分享'
     },
     event: {
-      title: '日程详情'
+      title: '日程详情',
+      name: '日程'
     },
     work: {
-      title: '文件详情'
+      title: '文件详情',
+      name: '文件'
     },
     entry: {
-      title: '记账详情'
+      title: '记账详情',
+      name: '记账'
     }
   };
 
   let popup: ionic.popup.IonicPopupPromise;
   let boundToObjectId: string;
+  let actionSheet: any;
 
   @inject([
     'DetailAPI',
@@ -109,6 +115,14 @@ module teambition {
 
     public onAllChangesDone() {
       this.title = objectTpls[this._boundToObjectType].title;
+      if (Ding) {
+        Ding.setLeft('返回', true, true, () => {
+          window.history.back();
+        });
+        Ding.setRight('更多', true, false, () => {
+          this.showOptions();
+        });
+      }
     }
 
     public showLikes() {
@@ -237,6 +251,22 @@ module teambition {
         this.showMsg('error', '评论失败', msg);
         this.hideLoading();
       });
+    }
+
+    private showOptions() {
+      if (actionSheet) {
+        actionSheet = actionSheet();
+      }else {
+        actionSheet = this.$ionicActionSheet.show({
+          buttons: [{
+            text: `<font color="red">删除${objectTpls[this._boundToObjectType].name}</font>`
+          }],
+          cancelText: '取消',
+          buttonClicked: (index: number) => {
+            return true;
+          }
+        });
+      }
     }
 
   }

@@ -120,6 +120,10 @@ module teambition {
         url: '/detail/:type/:_id/note',
         templateUrl: 'detail/task/note/index.html'
       })
+      .state('edit_detail_content', {
+        url: '/detail/:type/:_id/content',
+        templateUrl: 'edit/content/index.html'
+      })
       .state('subtask', {
         url: '/detail/task/:_id/subtasks',
         templateUrl: 'detail/task/subtask/index.html'

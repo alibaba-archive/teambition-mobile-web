@@ -46,11 +46,13 @@ module teambition {
           task.overDue = true;
         }
       }
-      task.executor = task.executor ? task.executor : {
-        name: '还没有设置执行者',
-        avatarUrl: teambition.nobodyUrl,
-        _id: ''
-      };
+      if (!task.executor) {
+        task.executor = {
+          name: '还没有设置执行者',
+          avatarUrl: teambition.nobodyUrl,
+          _id: ''
+        };
+      }
       task.displayDuedate = task.dueDate ? new Date(task.dueDate) : null;
       task.executorAvatar = task.executor.avatarUrl;
       task.executorName = task.executor.name;

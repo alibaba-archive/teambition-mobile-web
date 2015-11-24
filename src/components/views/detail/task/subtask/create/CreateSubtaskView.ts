@@ -63,6 +63,13 @@ module teambition {
     }
 
     public openExecutor() {
+      angular.forEach(this.members, (member: IMemberData) => {
+        if (member._id === '0') {
+          member.isSelected = true;
+        }else {
+          member.isSelected = false;
+        }
+      });
       this.openModal('detail/task/subtask/create/executor.html', {
         scope: this.$scope
       });
