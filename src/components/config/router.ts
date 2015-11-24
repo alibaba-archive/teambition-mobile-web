@@ -75,6 +75,10 @@ module teambition {
         url: '/project/:_id/event/create',
         templateUrl: 'create/event/index.html'
       })
+      .state('create_post', {
+        url: '/project/:_id/post/create',
+        templateUrl: 'create/post/index.html'
+      })
       .state('collections', {
         url: '/project/:_id/work/:_collectionId',
         templateUrl: 'project-tabs/project-work/index.html'
