@@ -4,7 +4,10 @@
       <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
     </a>
     <div-item class="item item-icon-left task-content">
-      <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"></i>
+      <i class="icon"
+         ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"
+         on-tap="TaskCtrl.doTask()">
+      </i>
       <input class="task-content-input"
              ng-model="TaskCtrl.content"
              ng-blur="TaskCtrl.updateTaskContent()">

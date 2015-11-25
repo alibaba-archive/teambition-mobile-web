@@ -34,14 +34,14 @@ module teambition {
         return this.MemberAPI.fetch(projectId)
         .then((members: {[index: string]: IMemberData}) => {
           this.members = members;
-          let exector = this.members[this.detail._executorId];
-          if (exector) {
-            exector.isSelected = true;
-            this.lastSelected = this.detail._executorId;
-          }else {
-            this.members['0'].isSelected = true;
-            this.lastSelected = '0';
-          }
+          let executorId = this.detail._executorId ? this.detail._executorId : '0';
+          angular.forEach(this.members, (member: IMemberData) => {
+            if (member._id === executorId) {
+              member.isSelected = true;
+            }else {
+              member.isSelected = false;
+            }
+          });
         });
       });
     }
@@ -56,7 +56,9 @@ module teambition {
         _executorId: _id
       })
       .then((patch: any) => {
-        this.members[this.lastSelected].isSelected = false;
+        if (this.lastSelected) {
+          this.members[this.lastSelected].isSelected = false;
+        }
         this.members[id].isSelected = true;
         this.lastSelected = id;
         this.showMsg('success', '更新成功', '已成功更新任务执行者');
@@ -64,7 +66,8 @@ module teambition {
         window.history.back();
       })
       .catch((reason: any) => {
-        this.showMsg('error', '网络错误', '更新任务执行者失败');
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '网络错误', message);
         this.hideLoading();
         window.history.back();
       });

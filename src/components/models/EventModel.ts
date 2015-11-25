@@ -6,6 +6,7 @@ module teambition {
     addEvent(data: IEventDataParsed): void;
     getProjectEventsCollection(projectId: string): IEventsResult;
     setProjectEventsCollection(projectId: string, collection: IEventData[]): IEventsResult;
+    removeEvent(projectId: string, id: string): void;
   }
 
   class EventModel extends DetailModel implements IEventModel {
@@ -37,6 +38,25 @@ module teambition {
           collections.raw.push(data);
           collections.counter ++;
           collections.index.push(data._id);
+        }
+      }
+    }
+
+    public removeEvent(projectId: string, id: string) {
+      let $rawData = this._get<IEventsResult>('events', projectId);
+      let data = this._get<IEventDataParsed>('event:detail', id);
+      if ($rawData) {
+        let $index = $rawData.index;
+        let position = $index.indexOf(id);
+        if (position !== -1) {
+          $rawData.counter --;
+          let startDate = data.startDate.substr(0, 10);
+          let dataCollection = $rawData.data[startDate];
+          angular.forEach(dataCollection, (event: IEventDataParsed, index: number) => {
+            if (event._id === id) {
+              dataCollection.splice(index, 1);
+            }
+          });
         }
       }
     }

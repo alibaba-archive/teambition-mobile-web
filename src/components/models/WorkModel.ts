@@ -8,14 +8,14 @@ module teambition {
     getFoldersCollection(projectId: string, parentId: string): ICollectionData[];
     setFoldersCollection(projectId: string, parentId: string, collection: ICollectionData[]): ICollectionData[];
     addFolder(folder: ICollectionData): void;
-    removeObject(type: string, id: string): void;
+    removeObj(type: string, id: string): void;
     addFile(parentId: string, file: IFileData): void;
   }
 
   class WorkModel extends DetailModel implements IWorkModel {
 
     public getFolderFilesCollection(projectId: string, folderId: string) {
-      return this._get<IFileDataParsed[]>('works', folderId);
+      return this._get<IFileDataParsed[]>('files', folderId);
     }
 
     public setFolderFilesCollection(projectId: string, folderId: string, collection: IFileData[]) {
@@ -27,12 +27,12 @@ module teambition {
           let _id = file._id;
           let result = this.fileParser(file);
           result._parentId = folderId;
-          this.setDetail(`work:detail:${_id}`, file);
+          this.setDetail(`file:detail:${_id}`, file);
           results.push(result);
           $index.push(file._id);
         });
-        this._set('works:index', folderId, $index);
-        this._set('works', folderId, results);
+        this._set('files:index', folderId, $index);
+        this._set('files', folderId, results);
         return results;
       }else {
         return cache;
@@ -80,17 +80,17 @@ module teambition {
     public addFile(parentId: string, file: IFileData) {
       let collectionCache = this.getFolderFilesCollection(file._projectId, parentId);
       let result = this.fileParser(file);
-      let index = this._get<string[]>('works:index', parentId);
+      let index = this._get<string[]>('files:index', parentId);
       if (collectionCache && index.indexOf(file._id) === -1) {
         index.unshift(file._id);
         collectionCache.unshift(result);
-        this._set('work:detail', file._id, result);
+        this._set('file:detail', file._id, result);
       }else {
-        this._set('work:detail', file._id, result);
+        this._set('file:detail', file._id, result);
       }
     }
 
-    public removeObject(type: string, id: string) {
+    public removeObj(type: string, id: string) {
       let namespace = type.substr(0, type.length - 1) + ':detail';
       let cache = this._get<any>(namespace, id);
       let parentId = cache._parentId;

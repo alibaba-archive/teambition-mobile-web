@@ -199,7 +199,6 @@ module teambition {
         })
         .then((project: IProjectDataParsed) => {
           let collectionId = project._defaultCollectionId;
-          console.log(strikerRes);
           return this.WorkAPI.uploads(collectionId, _projectId, strikerRes);
         })
         .then((resp: IFileDataParsed[]) => {
@@ -230,6 +229,22 @@ module teambition {
         });
         return involves.join('、');
       }
+    }
+
+    public removeObject() {
+      this.DetailAPI.delete(this._boundToObjectType, this._boundToObjectId)
+      .then(() => {
+        window.history.back();
+        this.showMsg('success', '删除成功', '');
+      })
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '删除失败', message);
+      });
+    }
+
+    public previewFile() {
+      Ding.previewImages([this.detail.downloadUrl]);
     }
 
     private addTextComment(attachments?: string[]) {
@@ -263,6 +278,7 @@ module teambition {
           }],
           cancelText: '取消',
           buttonClicked: (index: number) => {
+            this.removeObject();
             return true;
           }
         });

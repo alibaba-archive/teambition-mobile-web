@@ -4,14 +4,14 @@
       <div class="project-header-img" style="background-image: url({{PanelHomeCtrl.project.logo}})"></div>
       <div class="project-header-info">
         <h2 class="project-title">{{PanelHomeCtrl.project.name}}</h2>
-        <a class="project-member-count">{{PanelHomeCtrl.members.length - 1}}个成员</a>
+        <a class="project-member-count">{{PanelHomeCtrl.getMemberLength()}}个成员</a>
       </div>
       <div class="project-header-list">
         <a class="involve-member avatar img-circle"
-           ng-repeat="member in PanelHomeCtrl.members | limitTo: 7 track by member._id"
+           ng-repeat="member in PanelHomeCtrl.membersMap | memberLimit: 8 track by member._id"
            ng-if="member._id != 0"
            style="background-image:url({{member.avatarUrl}})"></a>
-        <a class="involve-member-add clearfix" ng-click="">
+        <a class="involve-member-add clearfix" on-tap="PanelHomeCtrl.openMembersModel()">
           <span class="icon icon-circle-cross"></span>
         </a>
       </div>

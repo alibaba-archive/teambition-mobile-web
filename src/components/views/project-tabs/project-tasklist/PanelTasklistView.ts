@@ -141,7 +141,6 @@ module teambition {
           }
           this.insertTask(task, this.tasks[task._stageId]);
         });
-        console.log(JSON.stringify(this.tasks));
         this.hideLoading();
       });
     }

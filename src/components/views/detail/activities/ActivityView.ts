@@ -32,6 +32,14 @@ module teambition {
         window.location.hash = `/detail/${linked.objectType}/${linked._objectId}`;
       }
     }
+
+    public openAtta(atta: IFileDataParsed) {
+      if (atta.fileCategory === 'image') {
+        Ding.previewImages([atta.downloadUrl]);
+      }else {
+        window.location.hash = `/detail/work/${atta._id}`;
+      }
+    }
   }
 
   angular.module('teambition').controller('ActivityView', ActivityView);

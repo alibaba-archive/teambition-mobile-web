@@ -127,6 +127,7 @@ module teambition {
     fetch(_id: string, type: string, linkedId?: string): angular.IPromise<any>;
     update(_id: string, type: string, patch: any, param?: string): angular.IPromise<any>;
     create(type: string, content: any): angular.IPromise<any>;
+    delete(type: string, id: string): angular.IPromise<void>;
   }
 
   @inject([
@@ -210,6 +211,17 @@ module teambition {
       .$promise
       .then((detail: any) => {
         return this.DetailModel.setDetail(`${type}:detail:${detail._id}`, detail);
+      });
+    }
+
+    public delete(type: string, id: string) {
+      return this.RestAPI.delete({
+        Type: `${type}s`,
+        Id: id
+      })
+      .$promise
+      .then(() => {
+        this.DetailModel.removeObject(type, id);
       });
     }
 

@@ -2,6 +2,14 @@
 module teambition {
   'use strict';
 
+  const TaskCollections = [
+    'tasks:noneExecutor',
+    'tasks:due',
+    'tasks:tasklist',
+    'tasks:done',
+    'tasks:not:done'
+  ];
+
   export interface ITaskModel extends IDetailModel {
     setNoneExecutorCollection(projectId: string, content: ITaskData[]): ITaskDataParsed[];
     getNoneExecutorCollection(projectId: string): ITaskDataParsed[];
@@ -14,6 +22,7 @@ module teambition {
     getTasksNotDoneCollection(projectId: string): ITaskDataParsed[];
     setTasksNotDoneCollection(projectId: string, tasks: ITaskData[]): ITaskDataParsed[];
     addTask(task: ITaskDataParsed): void;
+    removeTask(projectId: string, id: string): void;
   }
 
   class TaskModel extends DetailModel implements ITaskModel {
@@ -191,6 +200,21 @@ module teambition {
         this.addToNotDoneCollection(task);
       }
       this.addToTasklistCollection(task);
+    }
+
+    public removeTask(projectId: string, id: string) {
+      angular.forEach(TaskCollections, (val: string) => {
+        let $index = this._get<string[]>(`${val}:index`, projectId);
+        if ($index) {
+          let position = $index.indexOf(id);
+          if (position !== -1) {
+            let cache = this._get<ITaskDataParsed[]>(val, projectId);
+            $index.splice(position, 1);
+            cache.splice(position, 1);
+          }
+        }
+      });
+      this._delete('task:detail', id);
     }
 
     private addToDueCollection(task: ITaskDataParsed) {

@@ -1,0 +1,26 @@
+<ion-view class="create-post-view"
+          ng-controller="CreatePostView as CreatePostCtrl">
+  <ion-content>
+    <div class="list">
+      <div class="item item-input post-title">
+        <input type="text" placeholder="标题" ng-model="CreatePostCtrl.title">
+      </div>
+      
+      <div role="separator" class="divider"></div>
+      
+      <div class="item item-input post-content">
+        <textarea type="text" placeholder="内容" ng-model="CreatePostCtrl.content"></textarea>
+      </div>
+      <div class="item list-title">
+        参与者
+      </div>
+      <div class="ionic">
+        <a class="item item-icon-left"
+             on-tap="CreatePostCtrl.openInvolve()">
+          <i class="icon icon-users"></i>
+          <span ng-bind="CreatePostCtrl.getInvolveNames()"></span>
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

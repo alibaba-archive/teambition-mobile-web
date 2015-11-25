@@ -235,7 +235,7 @@ module teambition {
       if ($index === this.priority) {
         return ;
       }
-      this.PRIORITY.map((obj: any, index: number) => {
+      angular.forEach(this.PRIORITY, (obj: any, index: number) => {
         if (index === $index) {
           obj.isSelected = true;
           this.priority = $index;
@@ -250,6 +250,16 @@ module teambition {
 
     public selectInvolveMember(_id: string) {
       this.members[_id].isSelected = !this.members[_id].isSelected;
+    }
+
+    public selectPriority(priority: number) {
+      if (priority === this.priority) {
+        return ;
+      }
+      this.priority = priority;
+      this.cancelModal();
+      this.state = 'origin';
+      this.setHeader();
     }
 
     // involve

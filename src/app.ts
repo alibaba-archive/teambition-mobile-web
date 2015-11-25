@@ -6,10 +6,7 @@ module teambition {
 
   export let host = 'http://yinan.project.ci';
 
-  angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
-  .constant('Moment', moment)
-  .constant('Marked', marked)
-  .constant('app', {
+  export let app = {
     NAME: 'teambition-mobile-web',
     VERSION: 'v0.9.0',
     LANGUAGE: 'zh',
@@ -20,6 +17,12 @@ module teambition {
     wxid: 'wx48744c9444d9824a',
     spiderHost: 'https://spider.teambition.com/api/track',
     dingAgentId: '6837452',
+    // dingApiHost: 'http://cai.project.ci:8081'
     dingApiHost: 'http://yinan.project.ci:6040'
-  });
+  };
+
+  angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
+  .constant('Moment', moment)
+  .constant('Marked', marked)
+  .constant('app', app);
 }

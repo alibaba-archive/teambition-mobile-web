@@ -6,12 +6,14 @@ module teambition {
     _id: string;
     name: string;
     avatarUrl: string;
+    email?: string;
     title?: string;
     isSelected?: boolean;
   }
 
   export interface IMemberAPI {
-    fetch: (_projectId: string) => angular.IPromise<{[index: string]: IMemberData}>;
+    fetch(_projectId: string): angular.IPromise<{[index: string]: IMemberData}>;
+    getOrganizationMembers(organizationId: string): angular.IPromise<{[index: string]: IMemberData}>;
   }
 
   @inject([
@@ -39,6 +41,25 @@ module teambition {
           return this.MemberModel.setMemberCollection(_id, data);
         });
       }
+    }
+
+    public getOrganizationMembers(organizationId: string) {
+      let cache = this.MemberModel.getOrganizationMembers(organizationId);
+      if (cache) {
+        let defer = this.$q.defer();
+        defer.resolve(cache);
+        return defer.promise;
+      }
+      return this.RestAPI.query({
+        V2: 'v2',
+        Type: 'organizations',
+        Id: organizationId,
+        Path1: 'members'
+      })
+      .$promise
+      .then((members: IMemberData[]) => {
+        return this.MemberModel.setOrganizationMembers(organizationId, members);
+      });
     }
   }
 
