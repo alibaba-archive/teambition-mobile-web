@@ -51,7 +51,7 @@ module teambition {
         return defer.promise;
       }
       return this.RestAPI.query({
-        V2: 'V2',
+        V2: 'v2',
         Type: 'organizations',
         Id: organizationId,
         Path1: 'members'

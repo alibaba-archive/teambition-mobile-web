@@ -36,7 +36,7 @@ module teambition {
     }
 
     public onInit() {
-      let visible: string = this.getParameterByName(window.location.hash, 'visible');
+      let visible = this.getParameterByName(window.location.hash, 'visible');
       if (!visible) {
         this.zone.hasCreated = true;
         if (this.userMe && this.$rootScope.pending) {
@@ -65,18 +65,21 @@ module teambition {
           return defer.promise;
         })
         .then(() => {
-          return this.RestAPI.get({
-            Type: 'users',
-            Id: 'me'
-          })
-          .$promise
-          .then((userMe: IUserMe) => {
-            this.initUser(userMe);
-          })
-          .catch((reason: any) => {
-            let message = this.getFailureReason(reason);
-            this.showMsg('error', 'error', message);
-          });
+          if (!this.userMe) {
+            return this.RestAPI.get({
+              Type: 'users',
+              Id: 'me'
+            })
+            .$promise
+            .then((userMe: IUserMe) => {
+              this.initUser(userMe);
+            })
+            .catch((reason: any) => {
+              alert(JSON.stringify(reason));
+              let message = this.getFailureReason(reason);
+              this.showMsg('error', 'error', message);
+            });
+          }
         })
         .catch((reason: any) => {
           let message = this.getFailureReason(reason);

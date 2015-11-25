@@ -1,17 +1,29 @@
 <div class="list activities" ng-controller="ActivityView as ActivityCtrl">
   <div class="item list-title">
     动态
-    <span class="like-count" ng-if="DetailCtrl.detail.likesCount" on-tap="DetailCtrl.showLikes()">{{DetailCtrl.detail.likesCount}}个赞</span>
+    <span class="like-count"
+          ng-if="DetailCtrl.detail.likesCount"
+          on-tap="DetailCtrl.showLikes()">
+      {{DetailCtrl.detail.likesCount}}个赞
+    </span>
   </div>
 
   <div class="item item-avatar" ng-repeat="item in ActivityCtrl.activities">
     <i class="icon activities-icon" ng-class="item.icon" ng-if="!item.isComment"></i>
     <div ng-if="item.isComment" class="avatar item-image activities-comment-avatar"
-      style="background-image: url({{::item.creatorAvatar}})"></div>
+      style="background-image: url({{item.creatorAvatar}})"></div>
     <time>{{item.created | formatDate}}</time>
-    <p ng-if="item.isComment" class="activity-creator">{{item.creatorName}}</p>
-    <div ng-if="item.isComment" class="activity-content" ng-bind-html="item.comment"></div>
-    <div class="activity-content attachments" ng-repeat="atta in item.content.attachments" on-tap="ActivityCtrl.openAtta(atta)">
+    <p ng-if="item.isComment"
+       class="activity-creator">
+      {{item.creatorName}}
+    </p>
+    <div ng-if="item.isComment"
+         class="activity-content"
+         ng-bind-html="item.comment">
+    </div>
+    <div class="activity-content attachments"
+         ng-repeat="atta in item.content.attachments"
+         on-tap="ActivityCtrl.openAtta(atta)">
       <span ng-bind="atta.fileName" ng-if="atta.fileCategory !== 'image' && !ActivityCtrl.playable(atta)"></span>
       <a class="activity-image-preview item item-avatar" ng-if="atta.fileCategory === 'image'">
         <img ng-src="{{atta.thumbnail}}" />

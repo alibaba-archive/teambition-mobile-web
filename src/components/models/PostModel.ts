@@ -6,6 +6,7 @@ module teambition {
     getProjectPostsCollection(projectId: string): IPostDataParsed[];
     setProjectPostsCollection(projectId: string, collection: IPostData[]): IPostDataParsed[];
     addPostToCollection(post: IPostDataParsed): void;
+    removePost(projectId: string, id: string): void;
   }
 
   class PostModel extends DetailModel implements IPostModel {
@@ -32,8 +33,22 @@ module teambition {
       }
     }
 
+    public removePost(projectId: string, id: string) {
+      let $index = this._get<string[]>('post:index', projectId);
+      console.log(projectId, id, $index);
+      if ($index) {
+        let position = $index.indexOf(id);
+        if (position !== -1) {
+          let cache = this._get<IPostDataParsed[]>('posts', projectId);
+          cache.splice(position, 1);
+          $index.splice(position, 1);
+        }
+      }
+    }
+
     private preparePosts (_projectId: string, posts: IPostData[]) {
       if (!posts.length) {
+        this._set('post:index', _projectId, []);
         return [];
       }
       let results = [];

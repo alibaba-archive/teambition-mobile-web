@@ -9,7 +9,7 @@
            ng-href="{{ProjectCtrl.href}}/{{project._id}}/home"
            style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
            ng-repeat="(py, project) in ProjectCtrl.projects track by project._id"
-           ng-if="project.isStar">
+           ng-if="project.isStar && !project.deleted">
           <p>{{project.name}}</p>
           <i class="icon icon-star"></i>
         </a>

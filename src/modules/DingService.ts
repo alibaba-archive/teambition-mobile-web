@@ -6,15 +6,16 @@ module Ding {
 
   export class DingService {
 
-    public $q: angular.IQService;
-
     public code: string;
+    public $http: angular.IHttpService;
 
     private agentid: string;
     private corpId: string;
     private timeStamp: number;
     private nonceStr: string;
     private signature: string;
+
+    private isSetForce: boolean;
 
     constructor(
       agentid: string,
@@ -98,6 +99,13 @@ module Ding {
       });
     }
 
+    public previewImages(urls: string[]) {
+      dd.biz.util.previewImage({
+        urls: urls,
+        current: urls[0]
+      });
+    }
+
     private initDing() {
       dd.config({
         corpId: this.corpId,
@@ -110,15 +118,33 @@ module Ding {
           'biz.navigation.setTitle',
           'biz.navigation.setRight',
           'biz.chat.chooseConversation',
-          'biz.ding.post'
+          'biz.ding.post',
+          'biz.util.previewImage'
         ]
       });
 
       dd.ready(() => {
         this.setTitle('Teambition');
       });
+      this.handlerError();
+    }
+
+    private handlerError() {
       dd.error((error: any) => {
-        alert(`config err: ${JSON.stringify(error)}`);
+        let requestStr = `${teambition.app.dingApiHost}/signature?corpId=${this.corpId}`;
+        requestStr = this.isSetForce ? `${requestStr}&force=true` : requestStr;
+        this.isSetForce = true;
+        this.$http.get(requestStr)
+        .then((data: teambition.IDingSignature) => {
+          this.signature = data.signature;
+          this.timeStamp = data.timeStamp;
+          this.nonceStr = data.nonceStr;
+          this.initDing();
+          this.isSetForce = false;
+        })
+        .catch((reason: any) => {
+          alert(reason);
+        });
         console.log(`error: ${JSON.stringify(error)}`);
       });
     }

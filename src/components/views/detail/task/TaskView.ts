@@ -56,6 +56,17 @@ module teambition {
       return name;
     }
 
+    public doTask() {
+      let isDone = !this.task.isDone;
+      this.DetailAPI.update(this.task._id, 'task', {
+        isDone: isDone
+      }, 'isDone')
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '更改任务状态失败', message);
+      });
+    }
+
     public updateTaskContent() {
       if (this.task.content !== this.content) {
         this.DetailAPI.update(this.task._id, 'task', {
