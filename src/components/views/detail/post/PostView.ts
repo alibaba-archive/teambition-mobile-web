@@ -43,6 +43,8 @@ module teambition {
       this.openModal('detail/post/post-content-modal.html', {
         scope: this.$scope
       });
+      this.state = 'postContent';
+      this.setHeader();
     }
 
     public updatePostTitle() {

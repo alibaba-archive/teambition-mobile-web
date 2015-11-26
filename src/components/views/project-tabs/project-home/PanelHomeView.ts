@@ -13,6 +13,14 @@ module teambition {
   };
   cacheActivities = {};
 
+  const typeMap = {
+    'task': '任务',
+    'event': '日程',
+    'entry': '账目',
+    'post': '分享',
+    'work': '文件'
+  };
+
   @parentView('TabsView')
   @inject([
     'ProjectsAPI',
@@ -62,14 +70,6 @@ module teambition {
     private activities: IProjectActivitiesDataParsed [];
     private eventGroup: IEventData[];
     private state: string;
-
-    private typeMap = {
-      'task': '任务',
-      'event': '日程',
-      'entry': '账目',
-      'post': '分享',
-      'work': '文件'
-    };
 
     // @ngInject
     constructor(
@@ -122,7 +122,7 @@ module teambition {
 
     public openDetail(href: string, type: string) {
       if (href === 'deleted') {
-        this.showMsg('err', '不能查看详情', `该${this.typeMap[type]}已经被删除`);
+        this.showMsg('error', '不能查看详情', `该${typeMap[type]}已经被删除`);
       }else if (href !== '#') {
         window.location.hash = href;
       }
@@ -190,7 +190,7 @@ module teambition {
 
     public filterTasks() {
       let cacheText;
-      this.filterResultParser(this.selectedTypes, this.selectedTypes.types, this.typeMap, 'tasks');
+      this.filterResultParser(this.selectedTypes, this.selectedTypes.types, typeMap, 'tasks');
       cacheText = this.selectedMembers.cacheText + ' ' + this.selectedTypes.cacheText;
       if (cacheText !== lastCacheText) {
         this.showLoading();
@@ -229,6 +229,22 @@ module teambition {
 
     public addMember(id: string) {
       this.organizationMembers[id].isSelected = !this.organizationMembers[id].isSelected;
+    }
+
+    public getMemberLength() {
+      if (this.membersMap) {
+        return Object.keys(this.membersMap).length - 1;
+      }else {
+        return 0;
+      }
+    }
+
+    public openCreator(type: string) {
+      if (type !== 'file') {
+        window.location.href = `${host}${window.location.search}/#/project/${projectId}/${type}/create`;
+      }else {
+        window.location.href = `${host}${window.location.search}/#/project/${projectId}/work`;
+      }
     }
 
     private setHeader() {

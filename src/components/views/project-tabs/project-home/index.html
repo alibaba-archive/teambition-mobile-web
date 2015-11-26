@@ -18,15 +18,35 @@
       <div class="project-header-line"></div>
       <div class="create-new-tab">
         <ul>
-          <li class="create-tab task"><a href=""><span class="icon icon-board"></span>任务</a></li>
-          <li class="create-tab wall"><a href=""><span class="icon icon-wall"></span>分享</a></li>
-          <li class="create-tab file"><a href=""><span class="icon icon-upload-file"></span>文件</a></li>
-          <li class="create-tab event"><a href=""><span class="icon icon-new-schedule"></span>日程</a></li>
+          <li class="create-tab task">
+            <a on-tap="PanelHomeCtrl.openCreator('task')">
+              <span class="icon icon-board"></span>
+              任务
+            </a>
+          </li>
+          <li class="create-tab wall">
+            <a on-tap="PanelHomeCtrl.openCreator('post')">
+              <span class="icon icon-wall"></span>
+              分享
+            </a>
+          </li>
+          <li class="create-tab file">
+            <a on-tap="PanelHomeCtrl.openCreator('file')">
+              <span class="icon icon-upload-file"></span>
+              文件
+            </a>
+          </li>
+          <li class="create-tab event">
+            <a on-tap="PanelHomeCtrl.openCreator('event')">
+              <span class="icon icon-new-schedule"></span>
+              日程
+            </a>
+          </li>
         </ul>
       </div>
     </div>
 
-    <div class="activity-filter-wrap ion-wrap">
+    <!--<div class="activity-filter-wrap ion-wrap">
       <span class="project-filter" on-tap="PanelHomeCtrl.openMembersFilterModal()">
         {{PanelHomeCtrl.selectedMembers.text}}<i class="icon icon-chevron-down"></i>
        </span>
@@ -34,13 +54,7 @@
         {{PanelHomeCtrl.selectedTypes.text}}
         <i class="icon icon-chevron-down"></i>
       </span>
-    </div>
-
-    <div class="activities-new" style="display:none">
-      <span class="activities-new-title">最新动态</span>
-      <!-- new activities 插入口 -->
-    </div>
-    <!-- end 新动态 -->
+    </div>-->
 
     <div class="ion-wrap" ng-if="PanelHomeCtrl.noneExecutorTasks.length">
       <div class="list ionic list-none-executor">
@@ -82,7 +96,7 @@
           <i class="icon icon-calendar2"></i>
           <span class="task-content">
             <p ng-bind="event.title"></p>
-            <p class="event-date"><span ng-bind="event.startDate | eventDateFormat: event.endDate"></span></p>
+            <p class="event-date"><span ng-bind="event.startDate | eventDateFormat: event.endDate : event.title"></span></p>
           </span>
         </div-item>
         <div-item class="item item-task"
@@ -125,8 +139,8 @@
                 </p>
               </a>
             </div>
-            <span class="icon icon-chevron-right"></span>
-            <div class="like-comment-wrapper">
+            <!--<span class="icon icon-chevron-right"></span>-->
+            <!--<div class="like-comment-wrapper">
               <a class="object-btn btn-like" ng-class="{'liked': activity.isLike}">
                 <i class="icon icon-dig"></i>
                 赞
@@ -135,7 +149,7 @@
                 <i class="icon icon-comment"></i>
                 评论
               </a>
-            </div>
+            </div>-->
           </div>
 
           <!-- end 动态类型是非文件类型的item 容器-->

@@ -163,9 +163,9 @@ module teambition {
         this.collectionId = this.collectionId || project._rootCollectionId;
         return this.$q.all([
           this.WorkAPI.fetchWorks(projectId, this.collectionId)
-          .then((works: IFileDataParsed[]) => {
-            this.works = works;
-            return works;
+          .then((files: IFileDataParsed[]) => {
+            this.works = files;
+            return files;
           }),
           this.WorkAPI.fetchCollections(projectId, this.collectionId)
           .then((collections: ICollectionData[]) => {

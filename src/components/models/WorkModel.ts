@@ -15,7 +15,7 @@ module teambition {
   class WorkModel extends DetailModel implements IWorkModel {
 
     public getFolderFilesCollection(projectId: string, folderId: string) {
-      return this._get<IFileDataParsed[]>('files', folderId);
+      return this._get<IFileDataParsed[]>('works', folderId);
     }
 
     public setFolderFilesCollection(projectId: string, folderId: string, collection: IFileData[]) {
@@ -27,12 +27,12 @@ module teambition {
           let _id = file._id;
           let result = this.fileParser(file);
           result._parentId = folderId;
-          this.setDetail(`file:detail:${_id}`, file);
+          this.setDetail(`work:detail:${_id}`, file);
           results.push(result);
           $index.push(file._id);
         });
-        this._set('files:index', folderId, $index);
-        this._set('files', folderId, results);
+        this._set('works:index', folderId, $index);
+        this._set('works', folderId, results);
         return results;
       }else {
         return cache;
@@ -80,13 +80,13 @@ module teambition {
     public addFile(parentId: string, file: IFileData) {
       let collectionCache = this.getFolderFilesCollection(file._projectId, parentId);
       let result = this.fileParser(file);
-      let index = this._get<string[]>('files:index', parentId);
+      let index = this._get<string[]>('works:index', parentId);
       if (collectionCache && index.indexOf(file._id) === -1) {
         index.unshift(file._id);
         collectionCache.unshift(result);
-        this._set('file:detail', file._id, result);
+        this._set('work:detail', file._id, result);
       }else {
-        this._set('file:detail', file._id, result);
+        this._set('work:detail', file._id, result);
       }
     }
 

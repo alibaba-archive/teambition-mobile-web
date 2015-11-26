@@ -75,7 +75,7 @@ module teambition {
           case 'event':
             this.EventModel.removeEvent(projectId, id);
             break;
-          case 'file':
+          case 'work':
             this.WorkModel.removeObj(type, id);
             break;
         }

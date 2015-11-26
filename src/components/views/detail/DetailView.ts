@@ -117,7 +117,13 @@ module teambition {
       this.title = objectTpls[this._boundToObjectType].title;
       if (Ding) {
         Ding.setLeft('返回', true, true, () => {
-          window.history.back();
+          if (window.history.length > 2) {
+            window.history.back();
+          }else {
+            let type = this._boundToObjectType;
+            type = type === 'task' ? 'tasklist' : type;
+            window.location.hash = `/project/${this.project._id}/${type}`;
+          }
         });
         Ding.setRight('更多', true, false, () => {
           this.showOptions();
@@ -268,17 +274,79 @@ module teambition {
       });
     }
 
+    private openContact() {
+      let defer = this.$q.defer();
+      Ding.openConcatChoose(true, null, (data: Ding.IDingMemberData[]) => {
+        let users = [];
+        angular.forEach(data, (user: Ding.IDingMemberData) => {
+          users.push(user.emplId);
+        });
+        defer.resolve(users);
+      });
+      return defer.promise;
+    }
+
+    private openDing() {
+      this.openContact().then((users: string[]) => {
+        let name: string;
+        let title = objectTpls[this._boundToObjectType].title;
+        switch (this._boundToObjectType) {
+          case 'task':
+            name = this.detail.content;
+            break;
+          case 'post':
+          case 'event':
+            name = this.detail.title;
+            break;
+          case 'work':
+            name = this.detail.fileName;
+            break;
+        };
+        let link = `${host}/${window.location.search}#/detail/${this._boundToObjectType}/${this._boundToObjectId}`;
+        Ding.createDing(users, link, title, name);
+      });
+    }
+
+    private openCall() {
+      this.openContact().then((users: string[]) => {
+        Ding.createCall(users);
+      });
+    }
+
+    private pickConversation() {
+      Ding.pickConversation();
+    }
+
     private showOptions() {
       if (actionSheet) {
         actionSheet = actionSheet();
       }else {
         actionSheet = this.$ionicActionSheet.show({
           buttons: [{
+            text: 'Ding 一下'
+          }, {
+            text: '语音通话'
+          }, {
+            text: '发送到聊天'
+          }, {
             text: `<font color="red">删除${objectTpls[this._boundToObjectType].name}</font>`
           }],
           cancelText: '取消',
           buttonClicked: (index: number) => {
-            this.removeObject();
+            switch (index) {
+              case 0:
+                this.openDing();
+                break;
+              case 1:
+                this.openCall();
+                break;
+              case 2:
+                this.pickConversation();
+                break;
+              case 3:
+                this.removeObject();
+                break;
+            }
             return true;
           }
         });

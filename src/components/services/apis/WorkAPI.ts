@@ -160,7 +160,7 @@ module teambition {
       })
       .$promise
       .then(() => {
-        this.WorkModel.removeObject(type, id);
+        this.WorkModel.removeObj(type, id);
       });
     }
 
