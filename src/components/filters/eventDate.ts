@@ -11,7 +11,7 @@ module teambition {
       let end   = new Date(date2).valueOf();
       let dateString: string;
       let result: string;
-      if (moment(start).isSame('day', end + '')) {
+      if (Moment(start).isSame('day', end + '')) {
         dateString = `${Moment(date1).format('HH:mm')} ~ ${Moment(date2).format('HH:mm')}`;
       }else {
         if (Moment().isSame(date1, 'day')) {

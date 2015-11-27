@@ -62,7 +62,7 @@ module teambition {
             location.href = location.href.replace(window.location.hash, '') + '#/projects';
           });
         }
-        Ding.setRight('新建文件(夹)', true, false, () => {
+        Ding.setRight('新建', true, false, () => {
           this.showOptions();
         });
       }

@@ -1,7 +1,7 @@
 <ion-view class="padding" ng-controller="PanelTasklistView as PanelTaskCtrl">
   <ion-content>
     <div class="list tasks-list">
-      <div class="item item-group-selector"
+      <!--<div class="item item-group-selector"
            on-tap="PanelTaskCtrl.openTaskFilter()">
         <div class="label">任务分组</div>
         <div class="selector">
@@ -10,7 +10,7 @@
           </span>
           <i class="icon ion-arrow-down-b"></i>
         </div>
-      </div>
+      </div>-->
 
       <div class="list task-list"
            ng-if="PanelTaskCtrl.tasks[stage._id].length"
@@ -35,7 +35,7 @@
             </time>
           </div>
           <div class="icon task-avatar"
-               ng-style="{'background-image': 'url(' + task.executorAvatar + ')'}">
+               ng-style="{'background-image': 'url(' + PanelTaskCtrl.getAvatar(task) + ')'}">
           </div>
         </a>
       </div>

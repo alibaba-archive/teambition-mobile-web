@@ -16,6 +16,7 @@ module teambition {
   @parentView('TabsView')
   @inject([
     'StageAPI',
+    'MemberAPI',
     'TasklistAPI',
     'ProjectDetailAPI',
     'taskFilter'
@@ -38,6 +39,11 @@ module teambition {
     private TasklistAPI: ITasklistAPI;
     private StageAPI: IStageAPI;
     private ProjectDetailAPI: IProjectDetailAPI;
+    private MemberAPI: IMemberAPI;
+
+    private members: {
+      [index: string]: IMemberData;
+    };
 
     constructor() {
       super();
@@ -103,15 +109,28 @@ module teambition {
       filter.close(e);
     }
 
+    public getAvatar(task: ITaskDataParsed) {
+      let avatarUrl = (task.executorAvatar === nobodyUrl) ?
+                      this.members[task._executorId].avatarUrl :
+                      task.executorAvatar;
+      return avatarUrl;
+    }
+
     private initFetch() {
-      return this.getTaskLists()
-      .then(() => {
-        let promise = this.fetchTasksBySmartGroup(this.tasklistSelected._id);
-        if (!promise) {
-          promise = this.fetchTasksByTasklistId(this.tasklistSelected._id);
-        }
-        return promise;
-      });
+      return this.$q.all([
+        this.getTaskLists()
+        .then(() => {
+          let promise = this.fetchTasksBySmartGroup(this.tasklistSelected._id);
+          if (!promise) {
+            promise = this.fetchTasksByTasklistId(this.tasklistSelected._id);
+          }
+          return promise;
+        }),
+        this.MemberAPI.fetch(projectId)
+        .then((members: {[index: string]: IMemberData}) => {
+          this.members = members;
+        })
+      ]);
     }
 
     private getTaskLists() {

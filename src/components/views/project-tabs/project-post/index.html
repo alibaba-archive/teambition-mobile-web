@@ -4,7 +4,7 @@
       <div class="item item-avatar"
            ng-repeat="post in PanelPostCtrl.posts track by post._id"
            on-tap="PanelPostCtrl.openDetail(post._id)">
-        <img ng-src="{{post.creatorAvatar}}">
+        <img ng-src="{{PanelPostCtrl.getAvatar(post)}}">
         <p ng-bind="post.creatorName"></p>
         <p class="post-title" ng-bind="post.displayedTitle"></p>
         <p class="post-content" ng-bind-html="post.displayContent"></p>

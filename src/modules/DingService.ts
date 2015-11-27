@@ -53,6 +53,12 @@ module Ding {
       });
     }
 
+    public closePage() {
+      dd.ready(() => {
+        dd.biz.navigation.close();
+      });
+    }
+
     public setTitle(title: string) {
       dd.ready(() => {
         dd.biz.navigation.setTitle({
@@ -183,6 +189,7 @@ module Ding {
         signature: this.signature,
         jsApiList: [
           'runtime.permission.requestAuthCode',
+          'biz.navigation.close',
           'biz.navigation.setLeft',
           'biz.navigation.setTitle',
           'biz.navigation.setRight',

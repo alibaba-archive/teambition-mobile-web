@@ -9,18 +9,24 @@ module teambition {
     email?: string;
     title?: string;
     isSelected?: boolean;
+    emplId?: string;
   }
+
+  let hasResolved = {};
 
   export interface IMemberAPI {
     fetch(_projectId: string): angular.IPromise<{[index: string]: IMemberData}>;
     getOrganizationMembers(organizationId: string): angular.IPromise<{[index: string]: IMemberData}>;
+    getDingId(userIds: string[], projectId: string): angular.IPromise<{_userId: string, emplId: string}[]>;
   }
 
   @inject([
-    'MemberModel'
+    'MemberModel',
+    'DingRestAPI'
   ])
   class MemberAPI extends BaseAPI implements IMemberAPI {
     private MemberModel: IMemberModel;
+    private DingRestAPI: IRestAPI;
 
     public fetch(_id: string) {
       let members = this.MemberModel.getMemberCollection(_id);
@@ -60,6 +66,25 @@ module teambition {
       .then((members: IMemberData[]) => {
         return this.MemberModel.setOrganizationMembers(organizationId, members);
       });
+    }
+
+    public getDingId(userIds: string[], projectId: string) {
+      let cache = hasResolved[projectId];
+      if (!cache) {
+        return this.DingRestAPI.query({
+          Type: 'userIds',
+          type: '_userId',
+          corpId: DingCorpid,
+          conditions: userIds.join(',')
+        }, (data: any) => {
+          hasResolved[projectId] = data;
+        })
+        .$promise;
+      }else {
+        let defer = this.$q.defer();
+        defer.resolve(cache);
+        return defer.promise;
+      }
     }
   }
 

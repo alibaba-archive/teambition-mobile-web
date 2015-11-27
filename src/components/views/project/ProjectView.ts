@@ -22,6 +22,8 @@ module teambition {
     public staredProject: IProjectDataParsed[] = [];
     public projects: IProjectDataParsed[] = [];
 
+    public organizationId: string;
+
     public href: string;
 
     private ProjectsAPI: IProjectsAPI;
@@ -49,10 +51,14 @@ module teambition {
     public onAllChangesDone() {
       this.href = window.location.href.replace('projects', 'project');
       if (Ding) {
+        Ding.setLeft('关闭', true, true, () => {
+          Ding.closePage();
+        });
         Ding.setRight('创建项目', true, true, () => {
           window.location.hash = '/projects/create';
         });
       }
+      this.organizationId = OrganizationId;
     }
 
     public starProject(project: IProjectData) {
@@ -146,11 +152,26 @@ module teambition {
       let hasStar = false;
       for (index = 0; index < projects.length; index++) {
         let project = projects[index];
-        if (project.isStar) {
+        if (project.isStar && project.organization._id === this.organizationId) {
           hasStar = true;
         }
       }
       return hasStar;
+    }
+
+    public countProject() {
+      if (this.projects) {
+        let count = 0;
+        angular.forEach(this.projects, (project: IProjectDataParsed) => {
+          if (
+              project.organization &&
+              project.organization._id === this.organizationId
+          ) {
+            count ++;
+          }
+        });
+        return count;
+      }
     }
 
     public openProject(id: string) {

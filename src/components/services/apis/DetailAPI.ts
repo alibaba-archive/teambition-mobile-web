@@ -82,6 +82,7 @@ module teambition {
   export interface IPostData {
     _id: string;
     postMode: string;
+    _creatorId: string;
     _projectId: string;
     involveMembers: string[];
     updated: string | number;

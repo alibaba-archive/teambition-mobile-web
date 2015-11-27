@@ -16,6 +16,7 @@ module teambition {
   export let Wechat: WechatService;
   export let Ding: DingService;
   export let DingCorpid: string;
+  export let OrganizationId: string;
 
   export let spider: any;
 
@@ -26,6 +27,7 @@ module teambition {
   }
 
   export interface IDingSignature {
+    _organizationId: string;
     corpId: string;
     nonceStr: string;
     signature: string;
@@ -72,6 +74,7 @@ module teambition {
       $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`)
       .then((data: any) => {
         let info: IDingSignature = data.data;
+        OrganizationId = info._organizationId;
         Ding = new DingService(app.dingAgentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
         Ding.$http = $http;
         defer.resolve();

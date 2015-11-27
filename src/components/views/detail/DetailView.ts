@@ -102,7 +102,27 @@ module teambition {
             .then((project: IProjectDataParsed) => {
               this.project = project;
             })
-          ]);
+          ])
+          .then(() => {
+            let members = Object.keys(this.projectMembers);
+            let index = members.indexOf('0');
+            members.splice(index, 1);
+            return this.MemberAPI.getDingId(members, this.project._id).then((data: any) => {
+              angular.forEach(data, (dingMember: {_userId: string, emplId: string}) => {
+                this.projectMembers[dingMember._userId].emplId = dingMember.emplId;
+              });
+            })
+            .catch((reason: any) => {
+              let message = this.getFailureReason(reason);
+              this.showMsg('error', '数据获取失败', message);
+              window.history.back();
+            });
+          })
+          .catch((reason: any) => {
+            let message = this.getFailureReason(reason);
+            this.showMsg('error', '数据获取失败', message);
+            window.history.back();
+          });
         });
       }else {
         return this.EntryAPI.fetch(this._boundToObjectId)
@@ -276,7 +296,13 @@ module teambition {
 
     private openContact() {
       let defer = this.$q.defer();
-      Ding.openConcatChoose(true, null, (data: Ding.IDingMemberData[]) => {
+      let defaultUsers = [];
+      angular.forEach(this.detail.involveMembers, (userId: string) => {
+        if (userId !== this.$rootScope.userMe._id) {
+          defaultUsers.push(this.projectMembers[userId].emplId);
+        }
+      });
+      Ding.openConcatChoose(true, defaultUsers, (data: Ding.IDingMemberData[]) => {
         let users = [];
         angular.forEach(data, (user: Ding.IDingMemberData) => {
           users.push(user.emplId);

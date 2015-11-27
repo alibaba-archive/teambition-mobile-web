@@ -9,12 +9,12 @@
            ng-href="{{ProjectCtrl.href}}/{{project._id}}/home"
            style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
            ng-repeat="(py, project) in ProjectCtrl.projects track by project._id"
-           ng-if="project.isStar && !project.deleted">
+           ng-if="project.isStar && !project.deleted && project.organization._id === ProjectCtrl.organizationId">
           <p>{{project.name}}</p>
           <i class="icon icon-star"></i>
         </a>
       </div>
-      <div class="item item-divider" ng-if="ProjectCtrl.personalProjects.length">
+      <!--<div class="item item-divider" ng-if="ProjectCtrl.personalProjects.length">
         个人项目
       </div>
       <ion-list class="project-wrap ionic"
@@ -33,7 +33,7 @@
           <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject(project)"
                              ng-show="project.isStar">取消星标</ion-option-button>
         </ion-item>
-      </ion-list>
+      </ion-list>-->
       <!-- 个人项目结束 -->
       <!-- 组织项目 -->
       <section ng-repeat="organization in ProjectCtrl.organization track by organization.id | orderBy: 'name'">
@@ -42,7 +42,7 @@
         </div>
         <ion-list class="project-wrap ionic"
                   ng-repeat="project in organization.projects track by project._id"
-                  ng-show="!project.deleted">
+                  ng-show="!project.deleted && project.organization._id === ProjectCtrl.organizationId">
           <ion-item class="item"
                     ng-class="{'item-icon-right': editing}"
                     ng-href="{{ProjectCtrl.href}}/{{project._id}}/home">
@@ -74,4 +74,5 @@
       <!-- 组织项目结束 -->
     </div>
   </ion-content>
+  <div ng-if="!ProjectCtrl.countProject()" class="empty-warn project-task"></div>
 </ion-view>

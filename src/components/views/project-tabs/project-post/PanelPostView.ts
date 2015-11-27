@@ -6,7 +6,8 @@ module teambition {
 
   @parentView('TabsView')
   @inject([
-    'PostAPI'
+    'PostAPI',
+    'MemberAPI'
   ])
   export class PanelPostView extends View {
 
@@ -15,6 +16,11 @@ module teambition {
     public posts: IPostData[];
 
     private PostAPI: IPostAPI;
+    private MemberAPI: IMemberAPI;
+
+    private members: {
+      [index: string]: IMemberData;
+    };
 
     constructor() {
       super();
@@ -44,11 +50,24 @@ module teambition {
       window.location.hash = `/detail/post/${postId}`;
     }
 
+    public getAvatar(post: IPostDataParsed) {
+      let avatarUrl = post.creatorAvatar === nobodyUrl ?
+                      this.members[post._creatorId].avatarUrl :
+                      post.creatorAvatar;
+      return avatarUrl;
+    }
+
     private initFetch() {
-      return this.PostAPI.fetchAll(projectId)
-      .then((posts: IPostData[]) => {
-        this.posts = posts;
-      });
+      return this.$q.all([
+        this.PostAPI.fetchAll(projectId)
+        .then((posts: IPostData[]) => {
+          this.posts = posts;
+        }),
+        this.MemberAPI.fetch(projectId)
+        .then((members: any) => {
+          this.members = members;
+        })
+      ]);
     }
   }
 
