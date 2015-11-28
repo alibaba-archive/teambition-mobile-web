@@ -325,8 +325,8 @@ gulp.task('ding', ['before:build'], function() {
     .pipe(gulp.dest('www'))
 })
 
-gulp.task('build:wechat', sequence('before:wechat', 'revall'))
+gulp.task('build:wechat', sequence('wechat', 'revall'))
 
-gulp.task('build:ding', sequence('before:ding', 'revall'))
+gulp.task('build:ding', sequence('ding', 'revall'))
 
 gulp.task('build', sequence('default', 'revall'))

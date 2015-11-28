@@ -206,7 +206,7 @@ module teambition {
 
     public chooseRecurrence($index: number) {
       if (this.lastRecurrneceIndex) {
-        this.recurrence[this.lastRecurrneceIndex].isSelected = false;
+        this.recurrence[this.lastRecurrneceIndex || 0].isSelected = false;
       }
       this.lastRecurrneceIndex = $index;
       this.recurrence[$index].isSelected = true;
