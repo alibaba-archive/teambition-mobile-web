@@ -151,8 +151,8 @@ gulp.task('concat-app', function() {
     ]),
     gulp.src([
       '.tmp/scripts/template/**/*.js',
-      '!.tmp/scripts/components/lib/*.js',
-      '.tmp/scripts/components/**/*.js'
+      '.tmp/scripts/components/**/*.js',
+      '!.tmp/scripts/components/lib/*.js'
     ])
   )
   .pipe(sourcemaps.init())

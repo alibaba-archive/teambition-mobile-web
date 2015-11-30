@@ -241,9 +241,9 @@ module teambition {
 
     public openCreator(type: string) {
       if (type !== 'file') {
-        window.location.href = `${host}${window.location.search}/#/project/${projectId}/${type}/create`;
+        window.location.hash = `/project/${projectId}/${type}/create`;
       }else {
-        window.location.href = `${host}${window.location.search}/#/project/${projectId}/work`;
+        window.location.hash = `/project/${projectId}/work`;
       }
     }
 

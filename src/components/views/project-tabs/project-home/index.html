@@ -61,7 +61,6 @@
         <div-title class="item item-title">
           <i class="icon icon-alert-clock"></i>
           <span class="task-type-title">待认领的任务</span>
-          <!--<span class="icon icon-chevron-right"></span>-->
         </div-title>
         <div class="ion-title-line"></div>
         <a class="item item-task"
@@ -69,7 +68,6 @@
            on-tap="PanelHomeCtrl.openDetail('/detail/task/{{task._id}}', 'task')">
           <i class="icon icon-checkbox-thin"></i>
           <span class="task-content" ng-bind="task.content"></span>
-          <!-- <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div> -->
         </a>
         <a class="item item-icon-left item-more"
            ng-if="PanelHomeCtrl.noneExecutorTasks.length !== PanelHomeCtrl._noneExecutorTasks.length"
@@ -107,11 +105,6 @@
             <p ng-bind="task.content"></p>
             <p class="task-duedate" ng-class="{'badge-assertive': task.overDue, 'badge-energized': task.oneDay}"><span class="due-date-display" ng-bind="task.dueDate | formatDate: 'calendar'"></span></p>
           </span>
-          <!-- <div class="task-avatar" style="background-image:url({{task.executorAvatar}});"></div> -->
-          <!--<span class="task-duedate badge" ng-class="{'badge-assertive': task.overDue, 'badge-energized': task.oneDay}">
-            <i class="icon icon-td-calendar"></i>
-            <span class="due-date-display" ng-bind="task.dueDate | formatDate: 'calendar'"></span>
-          </span>-->
         </div-item>
         <div-item class="item item-icon-left item-more" ng-if="PanelHomeCtrl.dueTasks.length !== PanelHomeCtrl._dueTasks.length" on-tap="PanelHomeCtrl.loadDue()">
           <i class="icon ion-more positive"></i>
@@ -127,29 +120,26 @@
           <div ng-show="activity.type !== 'work'"
              class="item item-avatar activity-item activity-item-{{activity.type}}"
              on-tap="PanelHomeCtrl.openDetail(activity.objectHref, activity.type)">
-            <img ng-src="{{activity.avatarUrl}}" class="activity-avatar">
+            <img ng-src="{{activity.avatarUrl}}"
+                 class="activity-avatar">
             <time>{{activity.created | formatDate}}</time>
             <p class="activity-creator"><span>{{activity.title}}</span></p>
             <div class="object-content">
               <a class="item">
-                <p class="activity-content" ng-if="activity.type !== 'work'">
+                <p class="activity-content"
+                   ng-if="activity.type !== 'work'">
                   <i class="icon {{activity.icon}}"></i>
-                  <span class="post-title title" ng-if="activity.type === 'post'" ng-bind="activity.postTitle"></span>
-                  <p ng-if="activity.type !== 'work'" ng-class="{'title': activity.type !== 'post', 'activity-task-done': activity.isDone}" ng-bind-html="activity.objectContent" class="activity-content-html {{activity.type}}"></p>
+                  <span class="post-title title"
+                        ng-if="activity.type === 'post'"
+                        ng-bind="activity.postTitle"></span>
+                  <p ng-if="activity.type !== 'work'"
+                     ng-class="{'title': activity.type !== 'post', 'activity-task-done': activity.isDone}"
+                     ng-bind-html="activity.objectContent"
+                     class="activity-content-html {{activity.type}}">
+                  </p>
                 </p>
               </a>
             </div>
-            <!--<span class="icon icon-chevron-right"></span>-->
-            <!--<div class="like-comment-wrapper">
-              <a class="object-btn btn-like" ng-class="{'liked': activity.isLike}">
-                <i class="icon icon-dig"></i>
-                赞
-              </a>
-              <a class="object-btn btn-comment">
-                <i class="icon icon-comment"></i>
-                评论
-              </a>
-            </div>-->
           </div>
 
           <!-- end 动态类型是非文件类型的item 容器-->
@@ -161,14 +151,21 @@
             <p class="activity-creator"><span>{{activity.title}}</span></p>
             <p class="activity-folder">文件夹：{{activity.files[0].folder}}</p>
             <div class="activity-file-wrapper">
-              <a class="activity-content item" ng-repeat="file in activity.files" on-tap="PanelHomeCtrl.openDetail(file.objectHref, 'work')">
-                <span ng-if="!file.thumbnailUrl" class="file-background {{file.fileType}}">
-                  <span class="activity-fileType {{file.class}}" ng-bind="file.fileType"></span>
+              <a class="activity-content item"
+                 ng-repeat="file in activity.files"
+                 on-tap="PanelHomeCtrl.openDetail(file.objectHref, 'work')">
+                <span ng-if="!file.thumbnailUrl"
+                      class="file-background {{file.fileType}}">
+                  <span class="activity-fileType {{file.class}}"
+                        ng-bind="file.fileType"></span>
                 </span>
-                <span class="pic-preview" ng-if="file.thumbnailUrl" style="background-image:url({{file.thumbnailUrl}})">
+                <span class="pic-preview"
+                      ng-if="file.thumbnailUrl"
+                      style="background-image:url({{file.thumbnailUrl}})">
                   <span class="activity-file-placeholder">&nbsp;</span>
                 </span>
-                <span ng-bind="file.fileName" class="activity-file-name"></span>
+                <span ng-bind="file.fileName"
+                      class="activity-file-name"></span>
               </a>
             </div>
           </div>

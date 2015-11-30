@@ -4,7 +4,10 @@
       <div class="item list-title">子任务</div>
       <div ng-repeat="subtask in SubtaskCtrl.subtasks"
            class="item item-icon-left">
-        <i class="icon" ng-class="{'icon-checkbox-thin': !subtask.isDone, 'icon-checkbox-ios-checked': subtask.isDone}"></i>
+        <i class="icon"
+           ng-class="{'icon-checkbox-thin': !subtask.isDone, 'icon-checkbox-ios-checked': subtask.isDone}"
+           on-tap="SubtaskCtrl.doSubTask(subtask)">
+        </i>
         <span ng-bind="subtask.content"></span>
         <img class="subtask-avatar" ng-src="{{subtask.executor.avatarUrl || SubtaskCtrl.nobodyUrl}}">
       </div>

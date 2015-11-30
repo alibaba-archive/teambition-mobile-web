@@ -140,7 +140,7 @@ module teambition {
     }
 
     private goHome(): void {
-      window.location.hash = 'login';
+      window.location.hash = '/login';
     }
 
   }

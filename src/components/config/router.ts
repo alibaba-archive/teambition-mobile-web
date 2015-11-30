@@ -19,14 +19,6 @@ module teambition {
         url: '/projects/create',
         templateUrl: 'create/project/index.html'
       })
-      .state('subscribe', {
-        url: '/qrcode?subscribe',
-        templateUrl: 'qrcode/index.html'
-      })
-      .state('qrcode', {
-        url: '/qrcode/:projectId/:signCode/:invitorId',
-        templateUrl: 'qrcode/index.html'
-      })
       .state('project', {
         url: '/project/:_id',
         templateUrl: 'project-tabs/index.html'

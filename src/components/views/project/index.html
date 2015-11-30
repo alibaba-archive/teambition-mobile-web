@@ -36,8 +36,8 @@
       </ion-list>-->
       <!-- 个人项目结束 -->
       <!-- 组织项目 -->
-      <section ng-repeat="organization in ProjectCtrl.organization track by organization.id | orderBy: 'name'"
-               ng-if="$index === ProjectCtrl.organizationId">
+      <section ng-repeat="(_id, organization) in ProjectCtrl.organization track by organization.id | orderBy: 'name'"
+               ng-if="_id === ProjectCtrl.organizationId">
         <div class="item item-divider">
           {{organization.name}}
         </div>
