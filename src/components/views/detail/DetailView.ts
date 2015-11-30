@@ -35,6 +35,7 @@ module teambition {
   let actionSheet: any;
 
   @inject([
+    '$filter',
     'DetailAPI',
     'ActivityAPI',
     'ProjectsAPI',
@@ -61,6 +62,7 @@ module teambition {
     protected _linkedId: string;
     protected detail: any;
 
+    private $filter: any;
     private DetailAPI: IDetailAPI;
     private ActivityAPI: IActivityAPI;
     private StrikerAPI: IStrikerAPI;
@@ -70,6 +72,11 @@ module teambition {
     private LikeAPI: ILikeAPI;
     private MemberAPI: IMemberAPI;
     private images: IImagesData[];
+    private name: string;
+    private forms: {
+      key: string;
+      value: string;
+    }[];
 
     // @ngInject
     constructor(
@@ -149,6 +156,37 @@ module teambition {
           this.showOptions();
         });
       }
+      switch (this._boundToObjectType) {
+        case 'task':
+          this.name = this.detail.content;
+          this.forms = [{
+            key: '执行者: ',
+            value: this.detail._executorId ? this.projectMembers[this.detail._executorId].name : '待认领'
+          }, {
+            key: '截止日期: ',
+            value: this.detail.dueDate ? this.$filter('formatDate')(this.detail.dueDate, 'll') : '未指定'
+          }];
+          console.log(this.forms);
+          break;
+        case 'post':
+          this.name = this.detail.title;
+          this.forms = [];
+          break;
+        case 'event':
+          this.name = this.detail.title;
+          this.forms = [{
+            key: '时间: ',
+            value: this.$filter('eventDateFormat')(this.detail.startDate, this.detail.endDate)
+          }];
+          break;
+        case 'work':
+          this.name = this.detail.fileName;
+          this.forms = [{
+            key: '文件大小: ',
+            value: this.$filter('formatFileSize')(this.detail.fileSize)
+          }];
+          break;
+      };
     }
 
     public showLikes() {
@@ -314,22 +352,9 @@ module teambition {
 
     private openDing() {
       this.openContact().then((users: string[]) => {
-        let name: string;
         let title = objectTpls[this._boundToObjectType].title;
-        switch (this._boundToObjectType) {
-          case 'task':
-            name = this.detail.content;
-            break;
-          case 'post':
-          case 'event':
-            name = this.detail.title;
-            break;
-          case 'work':
-            name = this.detail.fileName;
-            break;
-        };
         let link = `${host}/${window.location.search}#/detail/${this._boundToObjectType}/${this._boundToObjectId}`;
-        Ding.createDing(users, link, title, name);
+        Ding.createDing(users, link, title, this.name);
       });
     }
 
@@ -340,7 +365,20 @@ module teambition {
     }
 
     private pickConversation() {
-      Ding.pickConversation();
+      let sender = this.projectMembers[this.$rootScope.userMe._id].emplId;
+      Ding.pickConversation((cid: string) => {
+        Ding.sendContentToChat(cid, sender, window.location.href, {
+          title: this.name,
+          form: this.forms
+        })
+        .then(() => {
+          this.showMsg('success', '发送成功', '');
+        })
+        .catch((reason: any) => {
+          let message = this.getFailureReason(reason);
+          this.showMsg('error', '发送失败', message);
+        });
+      });
     }
 
     private showOptions() {

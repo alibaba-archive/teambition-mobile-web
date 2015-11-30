@@ -116,14 +116,21 @@ module teambition {
       if (typeof reason === 'string') {
         try {
           reason = JSON.parse(reason);
-          console.log(reason);
-          message = reason.data.message;
+          if (reason.data && reason.data.message) {
+            message = reason.data.message;
+          }else if (reason.status) {
+            message = reason.status;
+          }
         } catch (error) {
           message = reason;
           console.error(error);
         }
       }else {
-        message = reason.data ? reason.data.message : JSON.stringify(reason);
+        if (reason.data && reason.data.message) {
+          message = reason.data.message;
+        }else {
+          message = reason.status;
+        }
       }
       return message;
     }

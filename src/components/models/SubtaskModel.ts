@@ -38,7 +38,7 @@ module teambition {
     }
 
     public updateSubtask(subtaskId: string, patch: any) {
-      this._updateObj('task:subtask', subtaskId, patch);
+      this._updateObj('subtask:detail', subtaskId, patch);
     }
   }
 

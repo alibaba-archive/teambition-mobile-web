@@ -172,12 +172,31 @@ module Ding {
       });
     }
 
-    public pickConversation() {
+    public pickConversation(callback: (chatid: string) => any) {
       dd.ready(() => {
         dd.biz.chat.pickConversation({
           corpId: this.corpId,
-          isConfirm: 'true'
+          isConfirm: 'true',
+          onSuccess: (data: any) => {
+            if (typeof callback === 'function') {
+              callback(data.cid);
+            }
+          }
         });
+      });
+    }
+
+    public sendContentToChat(
+      cid: string,
+      sender: string,
+      url: string,
+      msgBody: any
+    ) {
+      return this.$http.post(`${teambition.app.dingApiHost}/message/oa?corpId=${this.corpId}`, {
+        chatId: cid,
+        sender: sender,
+        messageUrl: url,
+        messageBody: msgBody
       });
     }
 
