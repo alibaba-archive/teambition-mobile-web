@@ -75,7 +75,6 @@ module teambition {
               this.initUser(userMe);
             })
             .catch((reason: any) => {
-              alert(JSON.stringify(reason));
               let message = this.getFailureReason(reason);
               this.showMsg('error', 'error', message);
             });

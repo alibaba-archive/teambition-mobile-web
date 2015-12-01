@@ -1,9 +1,10 @@
 {
-  "version": "1.6.2",
+  "version": "1.7.3",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "experimentalAsyncFunctions": true,
+    "target": "ES6",
     "module": "umd",
     "declaration": false,
     "noImplicitAny": false,
