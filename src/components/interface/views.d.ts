@@ -1,4 +1,5 @@
 /// <reference path='../../../.tmp/typings/tsd.d.ts' />
+/// <reference path='../views/RootView.ts' />
 /// <reference path='../views/project/ProjectView.ts' />
 /// <reference path='../views/project-tabs/TabsView.ts' />
 /// <reference path='../views/project-tabs/project-home/PanelHomeView.ts' />
@@ -28,7 +29,7 @@ declare module teambition {
     id: string;
   }
 
-  export interface IUserMe {
+  interface IUserMe extends angular.resource.IResource<any> {
     _id: string;
     email: string;
     name: string;

@@ -51,3 +51,4 @@ public/app.dist.less
 account-wx-service.iml
 
 .tsdrc
+jsconfig.json

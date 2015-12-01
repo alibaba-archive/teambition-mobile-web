@@ -1,60 +1,62 @@
+/* global process */
 'use strict';
 
-var gulp = require('gulp');
-var gutil = require('gulp-util');
+const gulp    = require('gulp')
+const gutil   = require('gulp-util')
 
-var path = require('path');
-var Tsd = require('tsd');
-
-var tsdJson = 'tsd.json';
-var tsdApi = new Tsd.getAPI(tsdJson);
+const path    = require('path')
+const Tsd     = require('tsd')
+const co      = require('co')
+const tsdJson = 'tsd.json'
+const GetAPI  = Tsd.getAPI
+const tsdApi  = new GetAPI(tsdJson)
 
 gulp.task('tsd:install', function () {
-  var bower = require(path.join(process.cwd(), 'bower.json'));
+  return co(function * () {
+    let bower = require(path.join(process.cwd(), 'bower.json'))
+    let npmDependency = require(path.join(process.cwd(), 'package.json'))
 
-  var dependencies = [].concat(
-    Object.keys(bower.dependencies),
-    Object.keys(bower.devDependencies)
-  );
+    delete npmDependency.dependencies['zone.js']
 
-  var query = new Tsd.Query();
-  dependencies.forEach(function (dependency) {
-    query.addNamePattern(dependency);
-  });
+    let dependencies = [].concat(
+      Object.keys(bower.dependencies),
+      Object.keys(bower.devDependencies),
+      Object.keys(npmDependency.dependencies)
+    )
 
-  var options = new Tsd.Options();
-  options.resolveDependencies = true;
-  options.overwriteFiles = true;
-  options.saveBundle = true;
-
-  return tsdApi.readConfig()
-    .then(function () {
-      return tsdApi.select(query, options);
+    let query = new Tsd.Query()
+    dependencies.forEach(function (dependency) {
+      query.addNamePattern(dependency)
     })
-    .then(function (selection) {
-      return tsdApi.install(selection, options);
+
+    let options = new Tsd.Options()
+    options.resolveDependencies = true
+    options.overwriteFiles = true
+    options.saveBundle = true
+
+    yield tsdApi.readConfig()
+    let selection = yield tsdApi.select(query, options)
+    let installResult = yield tsdApi.install(selection, options)
+    let written = Object.keys(installResult.written.dict)
+    let removed = Object.keys(installResult.removed.dict)
+    let skipped = Object.keys(installResult.skipped.dict)
+
+    written.forEach(function (dts) {
+      gutil.log('Definition file written: ' + dts)
     })
-    .then(function (installResult) {
-      var written = Object.keys(installResult.written.dict);
-      var removed = Object.keys(installResult.removed.dict);
-      var skipped = Object.keys(installResult.skipped.dict);
 
-      written.forEach(function (dts) {
-        gutil.log('Definition file written: ' + dts);
-      });
+    removed.forEach(function (dts) {
+      gutil.log('Definition file removed: ' + dts)
+    })
 
-      removed.forEach(function (dts) {
-        gutil.log('Definition file removed: ' + dts);
-      });
-
-      skipped.forEach(function (dts) {
-        gutil.log('Definition file skipped: ' + dts);
-      });
-    });
-});
+    skipped.forEach(function (dts) {
+      gutil.log('Definition file skipped: ' + dts)
+    })
+  })
+})
 
 gulp.task('tsd:purge', function () {
-  return tsdApi.purge(true, true);
-});
+  return tsdApi.purge(true, true)
+})
 
-gulp.task('tsd', ['tsd:install']);
+gulp.task('tsd', ['tsd:install'])

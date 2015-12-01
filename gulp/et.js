@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var gulp         = require('gulp')
-var watch        = require('gulp-watch')
-var batch        = require('gulp-batch')
-var through      = require('through2')
-var ET           = require('et-template')
+const gulp    = require('gulp')
+const watch   = require('gulp-watch')
+const batch   = require('gulp-batch')
+const through = require('through2')
+const ET      = require('et-template')
 
 
 var EtPath = ['src/components/et/**/*.html']

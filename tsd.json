@@ -5,8 +5,29 @@
   "path": ".tmp/typings",
   "bundle": ".tmp/typings/tsd.d.ts",
   "installed": {
-    "zone/zone.d.ts": {
-      "commit": "055b3172e8eb374a75826710c4d08677872620d3"
+    "chai/chai.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "assertion-error/assertion-error.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "sinon-chai/sinon-chai.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "sinon/sinon.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "angularjs/angular.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "angularjs/angular-mocks.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "e850b6ac0d59fee86dd7cb6a1be2caf6400bde14"
     }
   }
 }

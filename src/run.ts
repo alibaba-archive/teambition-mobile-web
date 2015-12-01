@@ -28,8 +28,8 @@ module teambition {
 
   export interface IDingSignature {
     _organizationId: string;
-    corpId: string;
     agentId: string;
+    corpId: string;
     nonceStr: string;
     signature: string;
     timeStamp: number;
@@ -62,14 +62,18 @@ module teambition {
     let initDD = () => {
       DingCorpid = getParameterByName(window.location.search, 'corpId');
       let defer = $q.defer();
-      $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`)
-      .then((data: any) => {
-        let info: IDingSignature = data.data;
-        OrganizationId = info._organizationId;
-        Ding = new DingService(info.agentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
-        Ding.$http = $http;
+      if (DingCorpid && DingCorpid.length) {
+        $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`)
+        .then((data: any) => {
+          let info: IDingSignature = data.data;
+          OrganizationId = info._organizationId;
+          Ding = new DingService(info.agentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
+          Ding.$http = $http;
+          defer.resolve();
+        });
+      }else {
         defer.resolve();
-      });
+      }
       return defer.promise;
     };
 

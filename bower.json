@@ -12,7 +12,6 @@
     "spider": "git@code.teambition.com:spider/spiderjs.git",
     "ionic": "driftyco/ionic",
     "ng-file-upload": "~5.0.9",
-    "zone.js": "angular/zone.js#~0.5.5",
     "snapper-consumer": "~1.0.0"
   },
   "devDependencies": {}
