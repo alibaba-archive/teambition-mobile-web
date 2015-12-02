@@ -1,34 +1,58 @@
+/* global process */
 'use strict'
 
-var gulp         = require('gulp')
-var watch        = require('gulp-watch')
-var batch        = require('gulp-batch')
-var rimraf       = require('gulp-rimraf')
-var concat       = require('gulp-concat')
-var less         = require('gulp-less')
-var replace      = require('gulp-replace')
-var sourcemaps   = require('gulp-sourcemaps')
-var order        = require('gulp-order')
-var typescript   = require('gulp-typescript')
-var tslint       = require('gulp-tslint')
-var stylish      = require('gulp-tslint-stylish')
-var ngAnnotate   = require('gulp-ng-annotate')
-var minifyHtml   = require('gulp-minify-html')
-var ngTemplate   = require('gulp-ng-template')
-var sequence     = require('gulp-sequence')
-var uglify       = require('gulp-uglify')
-var minifyCss    = require('gulp-minify-css')
-var RevAll       = require('gulp-rev-all')
-var plumber      = require('gulp-plumber')
-var autoprefixer = require('gulp-autoprefixer')
-var util         = require('gulp-util')
-var merge2       = require('merge2')
-var cdnUploader  = require('cdn-uploader')
-var clientId     = require('./package.json').ACCOUNT_CLIENTID
-var wrench       = require('wrench')
-var streamqueue  = require('streamqueue')
+const gulp         = require('gulp')
+const watch        = require('gulp-watch')
+const batch        = require('gulp-batch')
+const rimraf       = require('gulp-rimraf')
+const concat       = require('gulp-concat')
+const less         = require('gulp-less')
+const replace      = require('gulp-replace')
+const sourcemaps   = require('gulp-sourcemaps')
+const order        = require('gulp-order')
+const typescript   = require('gulp-typescript')
+const tslint       = require('gulp-tslint')
+const stylish      = require('gulp-tslint-stylish')
+const ngAnnotate   = require('gulp-ng-annotate')
+const minifyHtml   = require('gulp-minify-html')
+const ngTemplate   = require('gulp-ng-template')
+const sequence     = require('gulp-sequence')
+const uglify       = require('gulp-uglify')
+const minifyCss    = require('gulp-minify-css')
+const RevAll       = require('gulp-rev-all')
+const plumber      = require('gulp-plumber')
+const autoprefixer = require('gulp-autoprefixer')
+const util         = require('gulp-util')
+const merge2       = require('merge2')
+const cdnUploader  = require('cdn-uploader')
+const wrench       = require('wrench')
+const streamqueue  = require('streamqueue')
 
-var cdnPrefix = 'https://dn-st.teambition.net/tb-weixin'
+const CDNs = [
+  {
+    host: 'v0.ftp.upyun.com',
+    user: 'teambition/dn-st',
+    password: process.env.CDN_UPYUN_PWD
+  },
+  {
+    host: 'ftp.keycdn.com',
+    user: 'teambition',
+    password: process.env.CDN_UPYUN_PWD
+  }
+]
+
+let cdnNamespace = 'tb-mobile'
+
+if (process.env.BUILD_TARGET === 'ding') {
+  cdnNamespace = 'tb-ding'
+}else if (process.env.BUILD_TARGET === 'wechat') {
+  cdnNamespace = 'tb-wechat'
+}
+
+const cdnPrefix = `https://dn-st.teambition.net/${cdnNamespace}`
+
+const dingScript = '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'
+const wechatScript = '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'
 
 //将gulp 文件夹里面所有的gulp 任务load进来
 wrench.readdirSyncRecursive('./gulp').filter(function(file) {
@@ -37,13 +61,13 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
   require('./gulp/' + file);
 })
 
-var catchError = true
-var logError  = function(stream) {
+let catchError = true
+let logError  = function(stream) {
   if(!catchError) return stream
   return stream.on('error', console.log.bind(console))
 }
 
-var paths = {
+const paths = {
   images: ['src/images/*'],
   less: [
     'src/less/app.less',
@@ -209,16 +233,15 @@ gulp.task('lib-js', function() {
     .pipe(gulp.dest('www/js/'))
 })
 
-gulp.task('replaceForPublish', function() {
-  return gulp.src('.tmp/scripts/app.js')
-    .pipe(replace('8fadf360-fe9d-11e4-b300-55a8b3ba5938', 'c63fe5b0-15ad-11e5-90e6-bd2cee5c6f14'))
-    .pipe(replace('55b93a33-952d-413c-8985-7b74c1a01a83', '27c134a7-15d3-43aa-8330-6742708c3f41'))
-    .pipe(replace('http://m.wx.project.ci', 'https://weixin.teambition.com'))
-    .pipe(replace('http://project.ci/api', 'https://api.teambition.com'))
-    .pipe(replace('wx48744c9444d9824a', 'wx3197516ac7a4c96b'))
-    .pipe(replace('ws://snapper.project.bi/', 'wss://push.teambition.com'))
-    .pipe(replace('http://account.project.ci', 'https://account.teambition.com'))
-    .pipe(gulp.dest('.tmp/scripts/'))
+gulp.task('config', function() {
+  let source = gulp.src('.tmp/scripts/app.js')
+  const defaultConfig = require('./config/default.json')
+  const config = require(`./config/${process.env.BUILD_ENV || 'default'}.json`)
+  const keys = Object.keys(config)
+  keys.forEach((key) => {
+    source.pipe(replace(defaultConfig[key], config[key]))
+  })
+  return source.pipe(gulp.dest('.tmp/scripts/'))
 })
 
 gulp.task('revall', function() {
@@ -251,13 +274,12 @@ gulp.task('revall', function() {
 })
 
 function watchTs(event) {
-  var reg1 = /src\/components/
-  var reg2 = /src\/modules/
-  var path = event.path
-  var dest
+  const reg1 = /src\/components/
+  const reg2 = /src\/modules/
+  const path = event.path
+  let dest
   if (reg1.test(path) || reg2.test(path)) {
-    var _test
-    var _dest
+    let _test, _dest
     if (reg1.test(path)) {
       _test = 'src/components/'
       _dest = 'components'
@@ -293,40 +315,30 @@ gulp.task('watch', ['watch-et'], function() {
   }))
 })
 
-gulp.task('ci', sequence('clean', 'tsd:install', 'compile', 'concat-app',
+gulp.task('before:default', sequence('clean', 'tsd:install', 'compile', 'config', 'concat-app',
   ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
 ))
 
-gulp.task('ci:ding', ['ci'], function() {
+gulp.task('default', ['before:default'], function() {
+  let str = '';
+  if (process.env.BUILD_TARGET === 'wechat') {
+    str = wechatScript
+  }else if(process.env.BUILD_TARGET === 'ding') {
+    str = dingScript
+  }
   return gulp.src('www/index.html')
-    .pipe(replace('{{__third.lib.script}}', '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'))
+    .pipe(replace('{{__third.lib.script}}', str))
     .pipe(gulp.dest('www'))
 })
-
-gulp.task('before:build', sequence('clean', 'tsd:install', 'compile', 'replaceForPublish', 'concat-app',
-  ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
-))
-
-gulp.task('default', ['before:build'], function() {
-  return gulp.src('www/index.html')
-    .pipe(replace('{{__third.lib.script}}', ''))
-    .pipe(gulp.dest('www'))
-})
-
-gulp.task('wechat', ['before:build'], function() {
-  return gulp.src('www/index.html')
-    .pipe(replace('{{__third.lib.script}}', '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'))
-    .pipe(gulp.dest('www'))
-})
-
-gulp.task('ding', ['before:build'], function() {
-  return gulp.src('www/index.html')
-    .pipe(replace('{{__third.lib.script}}', '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'))
-    .pipe(gulp.dest('www'))
-})
-
-gulp.task('build:wechat', sequence('wechat', 'revall'))
-
-gulp.task('build:ding', sequence('ding', 'revall'))
 
 gulp.task('build', sequence('default', 'revall'))
+
+gulp.task('cdn', function() {
+  return gulp.src(['dist/**', '!dist/index.html'])
+    .pipe(cdnUploader(cdnNamespace, CDNs))
+})
+
+gulp.task('deploy', function(done) {
+  catchError = false
+  sequence('build', 'cdn')(done)
+})

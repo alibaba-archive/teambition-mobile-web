@@ -1,0 +1,8 @@
+{
+  "host": "https://ding.teambition.com",
+  "apiHost": "https://api.teambition.com",
+  "wsHost": "wss://push.teambition.com",
+  "wxid": "wx3197516ac7a4c96b",
+  "spiderHost": "https://spider.teambition.com/api/track",
+  "dingApiHost": "https://ding.teambition.com"
+}
