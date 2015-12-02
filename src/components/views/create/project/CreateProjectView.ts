@@ -35,7 +35,12 @@ module teambition {
       return this.OrganizationAPI.fetch()
       .then((organizations: IOrganizationData[]) => {
         this.organizations = organizations;
-        organization = organizations[0];
+        angular.forEach(organizations, (_organization: IOrganizationData) => {
+          if (_organization._id === OrganizationId) {
+            organization = _organization;
+            return false;
+          }
+        });
       });
     }
 
