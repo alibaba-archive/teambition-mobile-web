@@ -255,6 +255,7 @@ gulp.task('revall', function() {
 
   return merge2([
     gulp.src([
+      'www/index.html',
       'www/fonts/**',
       'www/images/**'
     ]),

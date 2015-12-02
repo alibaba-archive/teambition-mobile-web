@@ -16,7 +16,7 @@ module teambition {
     wsHost: 'ws://snapper.project.bi',
     wxid: 'wx48744c9444d9824a',
     spiderHost: 'https://spider.teambition.com/api/track',
-    dingApiHost: 'http://cai.project.ci:8083'
+    dingApiHost: 'http://ding.project.ci'
   };
 
   angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
