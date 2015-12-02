@@ -16,7 +16,7 @@ module Ding {
     public code: string;
     public $http: angular.IHttpService;
 
-    private agentid: string;
+    private agentId: string;
     private corpId: string;
     private timeStamp: number;
     private nonceStr: string;
@@ -25,13 +25,13 @@ module Ding {
     private isSetForce: boolean;
 
     constructor(
-      agentid: string,
+      agentId: string,
       corpId: string,
       timeStamp: number,
       nonceStr: string,
       signature: string
     ) {
-      this.agentid = agentid;
+      this.agentId = agentId;
       this.corpId = corpId;
       this.timeStamp = timeStamp;
       this.nonceStr = nonceStr;
@@ -115,9 +115,6 @@ module Ding {
           params: {
             id: id,
             corpId: this.corpId
-          },
-          onSuccess: (...params: any[]) => {
-            alert(JSON.stringify(params));
           }
         });
       });
@@ -129,7 +126,6 @@ module Ding {
       callback: (data: IDingMemberData[]) => any
     ) {
       dd.ready(() => {
-        console.log(this.corpId);
         dd.biz.contact.choose({
           startWithDepartmentId: 0,
           multiple: multiple,
@@ -201,7 +197,8 @@ module Ding {
     }
 
     private initDing() {
-      dd.config({
+      let dingConf = {
+        agentId: this.agentId,
         corpId: this.corpId,
         timeStamp: this.timeStamp,
         nonceStr: this.nonceStr,
@@ -220,7 +217,9 @@ module Ding {
           'biz.telephone.call',
           'biz.chat.pickConversation'
         ]
-      });
+      };
+      console.log(dingConf);
+      dd.config(dingConf);
       this.handlerError();
     }
 
@@ -243,9 +242,7 @@ module Ding {
         });
         console.log(`error: ${JSON.stringify(error)}`);
       });
-      dd.ready(() => {
-        this.setTitle('Teambition');
-      });
+      this.setTitle('Teambition');
     }
   }
 
