@@ -1,10 +1,11 @@
 {
   "name": "teambition-mobile-web",
-  "version": "0.7.0",
+  "version": "0.9.0",
   "description": "Teambition mobile web application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "betad": "BUILD_TARGET=ding BUILD_ENV=beta gulp && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views"
   },
   "repository": {
     "type": "git",

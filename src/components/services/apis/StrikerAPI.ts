@@ -17,7 +17,7 @@ module teambition {
     public upload (blobs: File[], scope?: any) {
       return this.strikerAuth().then((strikerAuth: string) => {
         return this.Upload.upload({
-          url: this.app.strikerHost + 'upload',
+          url: `${this.app.strikerHost}/upload`,
           headers: {
             'Authorization': strikerAuth,
             'Content-Type': 'multipart/form-data'
