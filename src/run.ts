@@ -42,7 +42,6 @@ module teambition {
   export let $$injector: any;
 
   export let URL: URL = URL || webkitURL;
-  export let nobodyUrl = 'images/nobody-avator@2x.png';
 
   export function noop() {
     return false;
