@@ -248,7 +248,7 @@ gulp.task('revall', function() {
   var revall = new RevAll({
     prefix: cdnPrefix,
     dontGlobal: [/\/favicon\.ico$/],
-    dontRenameFile: [/\.html$/],
+    dontRenameFile: [/\.html$/, /images\/nobody-avator@2x\.png/],
     dontUpdateReference: [/\.html$/],
     dontSearchFile: [/\.js$/, /images/]
   })

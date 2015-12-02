@@ -19,6 +19,8 @@ module teambition {
     dingApiHost: 'http://ding.project.ci'
   };
 
+  export const nobodyUrl = `${app.cdnHost}/tb-ding/images/nobody-avator@2x.png`;
+
   angular.module('teambition', ['ionic', 'ngResource', 'tbTemplates', 'ngFileUpload', 'et.template'])
   .constant('Moment', moment)
   .constant('Marked', marked)
