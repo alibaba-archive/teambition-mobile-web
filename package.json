@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "locald": "BUILD_TARGET=ding BUILD_ENV=default gulp",
-    "betad": "BUILD_TARGET=ding BUILD_ENV=beta gulp deploy && scp -r dist/index.html iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views"
+    "betad": "BUILD_TARGET=ding BUILD_ENV=beta gulp && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views"
   },
   "repository": {
     "type": "git",
