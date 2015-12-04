@@ -13,29 +13,29 @@ module teambition {
     'RestAPI',
     'MessageAPI'
   ])
-  class RootView extends View {
+  export class RootView extends View {
 
     public ViewName = 'RootView';
     public $$id = 'RootView';
 
-    protected $state: angular.ui.IStateService;
+    public userMe: IUserMe;
 
-    private app: Iapp;
-    private $http: angular.IHttpService;
-    private socket: any;
-    private socketListener: ISocketListener;
-    private getParameterByName: IGetParmByName;
-    private RestAPI: IRestAPI;
-    private MessageAPI: IMessageAPI;
+    public $state: angular.ui.IStateService;
 
-    private userMe: IUserMe;
+    public app: Iapp;
+    public $http: angular.IHttpService;
+    public socket: any;
+    public socketListener: ISocketListener;
+    public getParameterByName: IGetParmByName;
+    public RestAPI: IRestAPI;
+    public MessageAPI: IMessageAPI;
 
     constructor() {
       super();
       this.zone.run(noop);
     }
 
-    public onInit() {
+    public onInit(): angular.IPromise<any> {
       let visible = this.getParameterByName(window.location.hash, 'visible');
       if (!visible) {
         this.zone.hasCreated = true;
@@ -106,7 +106,7 @@ module teambition {
       });
     }
 
-    private initRootscope(userMe: teambition.IUserMe): void {
+    private initRootscope(userMe: IUserMe): void {
       let $rootScope: teambition.IRootScope = this.$rootScope;
       $rootScope.global = {
         title: 'Teambition'

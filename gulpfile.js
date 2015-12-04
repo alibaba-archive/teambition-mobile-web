@@ -27,6 +27,8 @@ const merge2       = require('merge2')
 const cdnUploader  = require('cdn-uploader')
 const wrench       = require('wrench')
 const streamqueue  = require('streamqueue')
+const browserSync  = require('browser-sync')
+const reload       = browserSync.reload
 
 const CDNs = [
   {
@@ -51,7 +53,7 @@ if (process.env.BUILD_TARGET === 'ding') {
 
 const cdnPrefix = `https://dn-st.teambition.net/${cdnNamespace}`
 
-const dingScript = '<script src="https://g.alicdn.com/ilw/ding/0.5.1/scripts/dingtalk.js"></script>'
+const dingScript = '<script src="https://g.alicdn.com/ilw/ding/0.6.6/scripts/dingtalk.js"></script>'
 const wechatScript = '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'
 
 //将gulp 文件夹里面所有的gulp 任务load进来
@@ -121,10 +123,10 @@ gulp.task('less', function() {
 
 function compileTypescript(resources, dest) {
   var _dest = dest ? dest : '.tmp/scripts'
-  console.log('compile resource', resources);
-  console.log('compile dest', _dest);
+  console.log('compile resource', resources)
+  console.log('compile dest', _dest)
   return gulp.src(resources)
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(tslint())
     .pipe(tslint.report(stylish, {
       emitError: false,
@@ -136,8 +138,8 @@ function compileTypescript(resources, dest) {
       'experimentalDecorators': true,
       'target': 'ES5'
     }))
-    .pipe(sourcemaps.write())
     .pipe(ngAnnotate())
+    .pipe(sourcemaps.write(_dest))
     .pipe(gulp.dest(_dest))
 }
 
@@ -179,7 +181,7 @@ gulp.task('concat-app', function() {
       '!.tmp/scripts/components/lib/*.js'
     ])
   )
-  .pipe(sourcemaps.init())
+  .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(concat('app.js'))
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('www/js/'))
@@ -217,9 +219,8 @@ gulp.task('lib-js', function() {
   gulp.src([
     'bower_components/ionic/release/js/ionic.bundle.js',
     'bower_components/angular-resource/angular-resource.js',
-    'bower_components/zone.js/dist/zone.js',
+    'node_modules/zone.js/dist/zone.js',
     'bower_components/marked/lib/marked.js',
-    'bower_components/store2/dist/store2.js',
     'bower_components/moment/moment.js',
     'bower_components/ng-file-upload/ng-file-upload.js',
     'bower_components/gta/lib/index.js',
@@ -257,7 +258,8 @@ gulp.task('revall', function() {
     gulp.src([
       'www/index.html',
       'www/fonts/**',
-      'www/images/**'
+      'www/images/**',
+      'www/index.html'
     ]),
     gulp.src([
       'www/js/**'
@@ -302,7 +304,7 @@ function watchTs(event) {
   compileTypescript(path, dest)
 }
 
-gulp.task('watch', ['watch-et'], function() {
+gulp.task('watch', ['watch-et', 'watch-test'], function() {
   watch(paths.less, batch(function(events, done) {
     gulp.start('less', done)
   }))

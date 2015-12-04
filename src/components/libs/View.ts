@@ -61,7 +61,7 @@ module teambition {
       this.initZone();
     }
 
-    public onInit() {
+    public onInit(): angular.IPromise<any> {
       return this.$rootScope.pending;
     }
 

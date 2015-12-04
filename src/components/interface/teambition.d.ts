@@ -7,6 +7,7 @@
 /// <reference path='views.d.ts' />
 /// <reference path='models.d.ts' />
 /// <reference path='app.d.ts' />
+/// <reference path='zone.d.ts' />
 /// <reference path='services.d.ts' />
 /// <reference path='et.d.ts' />
 /// <reference path='../config/router.ts' />

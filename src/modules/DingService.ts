@@ -218,7 +218,6 @@ module Ding {
           'biz.chat.pickConversation'
         ]
       };
-      console.log(dingConf);
       dd.config(dingConf);
       this.handlerError();
     }

@@ -20,20 +20,21 @@ module teambition {
     public ViewName = 'ProjectView';
     public personalProjects: IProjectDataParsed[] = [];
     public staredProject: IProjectDataParsed[] = [];
-    public projects: IProjectDataParsed[] = [];
+    public projects: angular.resource.IResourceArray<IProjectDataParsed> = [];
 
     public organizationId: string;
+
+    public organization: {
+      [index: string]: {
+        id: string;
+        name: string;
+        projects: angular.resource.IResourceArray<IProjectDataParsed>;
+      }
+    } = {};
 
     public href: string;
 
     private ProjectsAPI: IProjectsAPI;
-    private organization: {
-      [index: string]: {
-        id: string;
-        name: string;
-        projects: IProjectDataParsed[];
-      }
-    } = {};
 
     // @ngInject
     constructor(
@@ -61,9 +62,9 @@ module teambition {
       this.organizationId = OrganizationId;
     }
 
-    public starProject(project: IProjectData) {
+    public starProject(project: IProjectData): any {
       if (!project.isStar) {
-        this.ProjectsAPI.starProject(project._id)
+        return this.ProjectsAPI.starProject(project._id)
         .then((data: IProjectData) => {
           let str: string;
           if (!project.isStar) {
@@ -83,9 +84,9 @@ module teambition {
       return false;
     }
 
-    public unStarProject(project: IProjectData) {
+    public unStarProject(project: IProjectData): any {
       if (project.isStar) {
-        this.ProjectsAPI.unStarProject(project._id)
+        return this.ProjectsAPI.unStarProject(project._id)
         .then((data: IProjectData) => {
           let str: string;
           if (project.isStar) {
@@ -152,7 +153,11 @@ module teambition {
       let hasStar = false;
       for (index = 0; index < projects.length; index++) {
         let project = projects[index];
-        if (project.isStar && project.organization._id === this.organizationId) {
+        if (this.organizationId) {
+          if (project.isStar && project.organization._id === this.organizationId) {
+            hasStar = true;
+          }
+        }else if (project.isStar) {
           hasStar = true;
         }
       }
@@ -163,10 +168,14 @@ module teambition {
       if (this.projects) {
         let count = 0;
         angular.forEach(this.projects, (project: IProjectDataParsed) => {
-          if (
+          if (this.organizationId) {
+            if (
               project.organization &&
               project.organization._id === this.organizationId
-          ) {
+            ) {
+              count ++;
+            }
+          }else {
             count ++;
           }
         });

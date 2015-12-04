@@ -13,10 +13,17 @@
     "url": "git@github.com:teambition/teambition-mobile-web.git"
   },
   "dependencies": {
-    "streamqueue": "^1.1.1"
+    "angular-mocks": "^1.4.8",
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0",
+    "zone.js": "github:angular/zone.js"
   },
   "devDependencies": {
+    "browser-sync": "^2.10.0",
     "cdn-uploader": "^0.1.1",
+    "co": "^4.6.0",
     "et-template": "^0.3.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
@@ -41,6 +48,8 @@
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "merge2": "^0.3.6",
+    "requirejs": "^2.1.22",
+    "streamqueue": "^1.1.1",
     "through2": "^2.0.0",
     "tsd": "^0.6.4",
     "typescript": "^1.6.2",
