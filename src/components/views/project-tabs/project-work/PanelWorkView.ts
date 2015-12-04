@@ -12,6 +12,9 @@ module teambition {
 
   let fileContent = [];
 
+  let hide: any;
+  let hideOptions: any;
+
   fileUploadQueue = [];
 
   @parentView('TabsView')
@@ -82,7 +85,10 @@ module teambition {
     }
 
     public fileOptions(type: string, $index: any) {
-      this.$ionicActionSheet.show({
+      if (typeof hide === 'function') {
+        hide();
+      }
+      hide = this.$ionicActionSheet.show({
         buttons: [{
           text: '<font>重命名</font>'
         },
@@ -177,7 +183,10 @@ module teambition {
     }
 
     private showOptions() {
-      this.$ionicActionSheet.show({
+      if (typeof hideOptions === 'function') {
+        hideOptions();
+      }
+      hideOptions = this.$ionicActionSheet.show({
         buttons: [{
           text: '<font>新建文件</font>'
         },

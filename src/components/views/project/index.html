@@ -20,7 +20,7 @@
       </div>
       <ion-list class="project-wrap ionic"
                 ng-repeat="project in ProjectCtrl.personalProjects track by project._id"
-                ng-show="!project.deleted">
+                ng-if="!project.deleted && !ProjectCtrl.organizationId">
         <ion-item class="item"
                   ng-class="{'item-icon-right': editing}"
                   ng-href="{{ProjectCtrl.href}}/{{project._id}}/home">
