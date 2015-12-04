@@ -166,7 +166,6 @@ module teambition {
             key: '截止日期: ',
             value: this.detail.dueDate ? this.$filter('formatDate')(this.detail.dueDate, 'll') : '未指定'
           }];
-          console.log(this.forms);
           break;
         case 'post':
           this.name = this.detail.title;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "locald": "BUILD_TARGET=ding BUILD_ENV=default gulp",
+    "locald": "BUILD_TARGET=ding BUILD_ENV=default gulp && scp -r www/** node4@192.168.0.21:/home/node4/apps/ding-ding/source/views",
     "betad": "BUILD_TARGET=ding BUILD_ENV=beta gulp && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views"
   },
   "repository": {
@@ -18,7 +18,7 @@
     "mocha": "^2.3.4",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
-    "zone.js": "github:angular/zone.js"
+    "zone.js": "github:Brooooooklyn/zone.js"
   },
   "devDependencies": {
     "browser-sync": "^2.10.0",
