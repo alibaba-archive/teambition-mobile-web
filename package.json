@@ -1,6 +1,6 @@
 {
   "name": "teambition-mobile-web",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Teambition mobile web application",
   "main": "index.js",
   "scripts": {
