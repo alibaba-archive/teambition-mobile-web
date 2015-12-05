@@ -1,5 +1,5 @@
 <div class="list tasks-list-filter tasks-list-filter-header">
-  <div class="item item-group-selector" (click)="it.closeTaskFilter">
+  <div class="item item-group-selector" (tap)="it.closeTaskFilter">
     <div class="label">任务分组</div>
     <div class="selector">
       <span class="group-name">{{it.tasklistSelected.title}}</span>
@@ -13,7 +13,7 @@
     智能分组
   </div>
 
-  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.chooseSmartlist, 'notAssigned'">
+  <a class="item item-icon-left item-auto-group item-icon-right" (tap)="it.chooseSmartlist('notAssigned')">
     <i class="icon icon-circle-user"></i>
     <span>待认领任务</span>
     [#if (it.tasklistSelected._id === 'notAssigned')]
@@ -21,7 +21,7 @@
     [/#if]
   </a>
 
-  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.chooseSmartlist, 'notDone'">
+  <a class="item item-icon-left item-auto-group item-icon-right" (tap)="it.chooseSmartlist('notDone')">
     <i class="icon icon-checkbox-thin"></i>
     <span>未完成任务</span>
     [#if (it.tasklistSelected._id === 'notDone')]
@@ -29,7 +29,7 @@
     [/#if]
   </a>
 
-  <a class="item item-icon-left item-auto-group item-icon-right" (click)="it.chooseSmartlist, 'done'">
+  <a class="item item-icon-left item-auto-group item-icon-right" (tap)="it.chooseSmartlist('done')">
     <i class="icon icon-checkbox-checked"></i>
     <span>已完成任务</span>
     [#if (it.tasklistSelected._id === 'done')]
@@ -43,7 +43,7 @@
 
   [#for item, index in it.tasklists]
     <a class="item item-icon-left item-task-group item-icon-right"
-       (click)="it.chooseTasklist, item._id">
+       (tap)="it.chooseTasklist(item._id)">
       <i class="icon icon icon-sharp"></i>
       <div class="task-group-content[#if item.description] has-description[/#if]">
         <span class="task-group-name">{{item.title}}</span>

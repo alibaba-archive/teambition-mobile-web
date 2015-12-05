@@ -26,7 +26,8 @@ module teambition {
     'ProjectsAPI',
     'ProjectDetailAPI',
     'EventAPI',
-    'MemberAPI'
+    'MemberAPI',
+    'ProjectHomeActivity'
   ])
   export class PanelHomeView extends View {
 
@@ -69,6 +70,7 @@ module teambition {
     private infinite = true;
     private activities: IProjectActivitiesDataParsed [];
     private eventGroup: IEventData[];
+    private ProjectHomeActivity: EtTemplate.ProjectHomeActivity;
     private state: string;
 
     // @ngInject
@@ -89,6 +91,7 @@ module teambition {
     public onAllChangesDone() {
       this.state = 'origin';
       this.setHeader();
+      this.ProjectHomeActivity.show(this);
     }
 
     public scrollHandler() {
@@ -329,6 +332,9 @@ module teambition {
           if (counter > 1) {
             this.infinite = false;
           }
+        }
+        if (this.ProjectHomeActivity) {
+          this.ProjectHomeActivity.update();
         }
         this.activities = cache;
         loaded = false;

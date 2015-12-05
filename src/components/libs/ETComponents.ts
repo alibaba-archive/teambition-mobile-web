@@ -18,6 +18,7 @@ module EtTemplate {
     public element: DocumentFragment;
 
     protected $rootScope: teambition.IRootScope;
+    protected parentSelector: string;
 
     private bindedScope = false;
     private ETInstanceName: string;
@@ -27,7 +28,9 @@ module EtTemplate {
     }
 
     public update() {
-      this.template.update();
+      if (this.template) {
+        this.template.update();
+      }
     }
 
     public destroy() {
@@ -44,6 +47,7 @@ module EtTemplate {
 
     protected insertDOM() {
       let template = this.get();
+      this.parentDOM = document.querySelector(this.parentSelector);
       this.parentDOM.appendChild(template);
     }
 
@@ -98,6 +102,7 @@ module EtTemplate {
       let templateUrl = conf.templateUrl;
       let instanceName = templateUrl.split('/').join('_');
       proto.ETInstanceName = instanceName;
+      proto.parentSelector = conf.selector;
       proto.parentDOM = document.querySelector(conf.selector);
       if (!conf.lazy) {
         let zone = teambition.rootZone.fork({
@@ -115,7 +120,9 @@ module EtTemplate {
           },
           afterTask: () => {
             template = targetTmp.template || template;
-            template.update();
+            if (template) {
+              template.update();
+            }
           }
         });
         target.prototype.zone = zone;

@@ -1,0 +1,64 @@
+[#for activity in it.activities]
+  <div>
+    <!-- 动态类型是非文件类型的item 容器-->
+    [#if activity.type !== 'work']
+    <div class="item item-avatar activity-item activity-item-{{activity.type}}"
+        (click)="it.openDetail(activity.objectHref, activity.type)">
+      <img src="{{activity.avatarUrl}}"
+           class="activity-avatar">
+      <time>{{it.ETtemplate.formatDate(activity.created)}}</time>
+      <p class="activity-creator"><span>{{activity.title}}</span></p>
+      <div class="object-content">
+        <a class="item">
+          [#if activity.type !== 'work']
+            <p class="activity-content">
+              <i class="icon {{activity.icon}}"></i>
+              [#if activity.type === 'post']
+                <span class="post-title title"
+                      >{{activity.postTitle}}</span>
+              [/#if]
+              [#if activity.type !== 'work']
+                <p class="activity-content-html {{activity.type}}
+                    [#if activity.type !== 'post']title[/#if]
+                    [#if activity.isDone]activity-task-done[/#if]">
+                  [#html]{{activity.objectContent}}[/#html]
+                </p>
+              [/#if]
+            </p>
+          [/#if]
+        </a>
+      </div>
+    </div>
+    [/#if]
+
+    <!-- end 动态类型是非文件类型的item 容器-->
+    <!-- 动态类型是文件的item 容器-->
+    [#if activity.type === 'work']
+      <div class="item item-avatar activity-item activity-item-{{activity.type}}">
+        <img src="{{activity.avatarUrl}}" class="activity-avatar">
+        <time>{{it.ETtemplate.formatDate(activity.created)}}</time>
+        <p class="activity-creator"><span>{{activity.title}}</span></p>
+        <p class="activity-folder">文件夹：{{activity.files[0].folder}}</p>
+        <div class="activity-file-wrapper">
+          [#for file in activity.files]
+            <a class="activity-content item"
+                (click)="it.openDetail(file.objectHref, 'work')">
+              [#if !file.thumbnailUrl]
+                <span class="file-background {{file.fileType}}">
+                  <span class="activity-fileType {{file.class}}">{{file.fileType}}</span>
+                </span>
+              [/#if]
+              [#if file.thumbnailUrl]
+                <span class="pic-preview"
+                      style="background-image:url({{file.thumbnailUrl}})">
+                </span>
+              [/#if]
+              <span class="activity-file-name">{{file.fileName}}</span>
+            </a>
+          [/#for]
+        </div>
+      </div>
+    [/#if]
+    <!-- end 动态类型是文件的item 容器-->
+  </div>
+[/#for]
