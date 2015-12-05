@@ -115,62 +115,7 @@
 
     <div class="ion-wrap activities-wrap">
       <div class="list activities-list">
-        <div ng-repeat="activity in PanelHomeCtrl.activities track by activity._id">
-          <!-- 动态类型是非文件类型的item 容器-->
-          <div ng-show="activity.type !== 'work'"
-             class="item item-avatar activity-item activity-item-{{activity.type}}"
-             on-tap="PanelHomeCtrl.openDetail(activity.objectHref, activity.type)">
-            <img ng-src="{{activity.avatarUrl}}"
-                 class="activity-avatar">
-            <time>{{activity.created | formatDate}}</time>
-            <p class="activity-creator"><span>{{activity.title}}</span></p>
-            <div class="object-content">
-              <a class="item">
-                <p class="activity-content"
-                   ng-if="activity.type !== 'work'">
-                  <i class="icon {{activity.icon}}"></i>
-                  <span class="post-title title"
-                        ng-if="activity.type === 'post'"
-                        ng-bind="activity.postTitle"></span>
-                  <p ng-if="activity.type !== 'work'"
-                     ng-class="{'title': activity.type !== 'post', 'activity-task-done': activity.isDone}"
-                     ng-bind-html="activity.objectContent"
-                     class="activity-content-html {{activity.type}}">
-                  </p>
-                </p>
-              </a>
-            </div>
-          </div>
-
-          <!-- end 动态类型是非文件类型的item 容器-->
-          <!-- 动态类型是文件的item 容器-->
-          <div ng-show="activity.type === 'work'"
-               class="item item-avatar activity-item activity-item-{{activity.type}}">
-            <img ng-src="{{activity.avatarUrl}}" class="activity-avatar">
-            <time>{{activity.created | formatDate}}</time>
-            <p class="activity-creator"><span>{{activity.title}}</span></p>
-            <p class="activity-folder">文件夹：{{activity.files[0].folder}}</p>
-            <div class="activity-file-wrapper">
-              <a class="activity-content item"
-                 ng-repeat="file in activity.files"
-                 on-tap="PanelHomeCtrl.openDetail(file.objectHref, 'work')">
-                <span ng-if="!file.thumbnailUrl"
-                      class="file-background {{file.fileType}}">
-                  <span class="activity-fileType {{file.class}}"
-                        ng-bind="file.fileType"></span>
-                </span>
-                <span class="pic-preview"
-                      ng-if="file.thumbnailUrl"
-                      style="background-image:url({{file.thumbnailUrl}})">
-                  <span class="activity-file-placeholder">&nbsp;</span>
-                </span>
-                <span ng-bind="file.fileName"
-                      class="activity-file-name"></span>
-              </a>
-            </div>
-          </div>
-          <!-- end 动态类型是文件的item 容器-->
-        </div>
+        
       </div>
     </div>
     <ion-infinite-scroll immediate-check="false" ng-if="PanelHomeCtrl.infinite">

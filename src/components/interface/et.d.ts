@@ -2,6 +2,7 @@
 /// <reference path='../et/notify/notify.ts' />
 /// <reference path='../et/task-filter/task-filter.ts' />
 /// <reference path='../et/input/input.ts' />
+/// <reference path='../et/project-home-activity/ProjectHomeActivity.ts' />
 
 declare module EtTemplate {
 
