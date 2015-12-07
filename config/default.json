@@ -3,5 +3,5 @@
   "apiHost": "http://project.ci/api",
   "wsHost": "ws://snapper.project.bi/",
   "wxid": "wx48744c9444d9824a",
-  "dingApiHost": "http://ding.project.ci"
+  "dingApiHost": "http://ding.project.ci/dingTalk"
 }

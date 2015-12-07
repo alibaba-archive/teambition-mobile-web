@@ -4,7 +4,7 @@
 module teambition {
   'use strict';
 
-  export const host = 'http://ding.project.ci';
+  export const host = 'http://ding.project.ci/dingTalk';
 
   export const app = {
     NAME: 'teambition-mobile-web',
@@ -16,7 +16,7 @@ module teambition {
     wsHost: 'ws://snapper.project.bi',
     wxid: 'wx48744c9444d9824a',
     spiderHost: 'https://spider.teambition.com/api/track',
-    dingApiHost: 'http://ding.project.ci'
+    dingApiHost: 'http://ding.project.ci/dingTalk'
   };
 
   export const nobodyUrl = `${app.cdnHost}/tb-ding/images/nobody-avator@2x.png`;
