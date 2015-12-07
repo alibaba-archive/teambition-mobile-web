@@ -3,5 +3,5 @@
   "apiHost": "https://api.teambition.com",
   "wsHost": "wss://push.teambition.com",
   "wxid": "wx3197516ac7a4c96b",
-  "dingApiHost": "https://ding.teambition.com"
+  "dingApiHost": "https://ding.teambition.com/dingTalk"
 }
