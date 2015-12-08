@@ -10,7 +10,7 @@ module teambition {
     NAME: 'teambition-mobile-web',
     VERSION: 'v0.9.0',
     LANGUAGE: 'zh',
-    apiHost: 'http://project.ci/api',
+    apiHost: 'http://api.project.ci',
     strikerHost: 'https://striker.teambition.net',
     cdnHost: 'https://dn-st.teambition.net',
     wsHost: 'ws://snapper.project.bi',
