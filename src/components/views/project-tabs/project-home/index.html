@@ -1,7 +1,9 @@
 <ion-view ng-controller="PanelHomeView as PanelHomeCtrl" class="pane">
-  <ion-content class="panel-content has-tabs" on-scroll-complete="PanelHomeCtrl.scrollHandler()">
+  <ion-content class="panel-content has-tabs" on-scroll="PanelHomeCtrl.scrollHandler()">
     <div class="project-header">
-      <div class="project-header-img" style="background-image: url({{PanelHomeCtrl.project.logo}})"></div>
+      <div class="project-header-img"
+           ng-style="{'background-image': 'url(' + PanelHomeCtrl.project.logo + ')'}">
+      </div>
       <div class="project-header-info">
         <h2 class="project-title">{{PanelHomeCtrl.project.name}}</h2>
         <a class="project-member-count">{{PanelHomeCtrl.getMemberLength()}}个成员</a>
@@ -10,7 +12,7 @@
         <a class="involve-member avatar img-circle"
            ng-repeat="member in PanelHomeCtrl.membersMap | memberLimit: 8 track by member._id"
            ng-if="member._id != 0"
-           style="background-image:url({{member.avatarUrl}})"></a>
+           ng-style="{'background-image': 'url(' + member.avatarUrl + ')'}"></a>
         <a class="involve-member-add clearfix" on-tap="PanelHomeCtrl.openMembersModel()">
           <span class="icon icon-circle-cross"></span>
         </a>
@@ -115,10 +117,10 @@
 
     <div class="ion-wrap activities-wrap">
       <div class="list activities-list">
-        
       </div>
     </div>
-    <ion-infinite-scroll immediate-check="false" ng-if="PanelHomeCtrl.infinite">
+    <ion-infinite-scroll immediate-check="false"
+         ng-if="PanelHomeCtrl.infinite">
     </ion-infinite-scroll>
   </ion-content>
 </ion-view>

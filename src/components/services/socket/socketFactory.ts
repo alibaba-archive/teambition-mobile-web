@@ -1,22 +1,19 @@
-/// <reference path="../../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
+'use strict';
 
-  angular.module('teambition').factory('socket',
-  // @ngInject
-  (
-    app: Iapp,
-    ngConsumer: any
-  ) => {
-    return (token: string) => {
-      let ws = ngConsumer.connect(app.wsHost, {
-        path: '/websocket',
-        token: token
-      });
-      ws.on = (eventName: string, callback?: Function) => {
-        return ngConsumer.onmessage(eventName, callback);
-      };
-      return ws;
+import {app} from '../../config/config';
+import {Iapp} from 'teambition';
+
+angular.module('teambition').factory('socket',['ngConsumer', (
+  ngConsumer: any
+) => {
+  return (token: string) => {
+    let ws = ngConsumer.connect(app.wsHost, {
+      path: '/websocket',
+      token: token
+    });
+    ws.on = (eventName: string, callback?: Function) => {
+      return ngConsumer.onmessage(eventName, callback);
     };
-  });
-}
+    return ws;
+  };
+}]);

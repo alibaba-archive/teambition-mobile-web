@@ -1,28 +1,21 @@
-/// <reference path="../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
+'use strict';
+import BaseModel from '../bases/BaseModel';
+import {ILikeData} from 'teambition';
 
-  export interface ILikeModel {
-    set(_boundToObjectId: string, likeData: ILikeData): ILikeData;
-    get(_boundToObjectId: string): ILikeData;
-    update(_boundToObjectId: string, patch: any): void;
+class LikeModel extends BaseModel {
+
+  public set(_boundToObjectId: string, likeData: ILikeData) {
+    this._set('like', _boundToObjectId, likeData);
+    return likeData;
   }
 
-  class LikeModel extends BaseModel implements ILikeModel {
-
-    public set(_boundToObjectId: string, likeData: ILikeData) {
-      this._set('like', _boundToObjectId, likeData);
-      return likeData;
-    }
-
-    public get(_boundToObjectId: string) {
-      return this._get<ILikeData>('like', _boundToObjectId);
-    }
-
-    public update(_boundToObjectId: string, patch: any) {
-      this._updateObj('like', _boundToObjectId, patch);
-    }
+  public get(_boundToObjectId: string) {
+    return this._get<ILikeData>('like', _boundToObjectId);
   }
 
-  angular.module('teambition').service('LikeModel', LikeModel);
+  public update(_boundToObjectId: string, patch: any) {
+    this._updateObj('like', _boundToObjectId, patch);
+  }
 }
+
+export default new LikeModel();
