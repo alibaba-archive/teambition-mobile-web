@@ -4,12 +4,15 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "experimentalAsyncFunctions": true,
-    "target": "ES6",
-    "module": "umd",
+    "target": "ES5",
+    "module": "commonjs",
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": true,
-    "noLib": false,
-    "outDir": "www/js/"
-  }
+    "noLib": false
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": false
 }

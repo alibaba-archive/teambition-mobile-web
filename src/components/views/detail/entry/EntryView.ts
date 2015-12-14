@@ -1,26 +1,25 @@
-/// <reference path="../../../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
-  @parentView('DetailView')
-  class EntryView extends View {
+'use strict';
+import {parentView} from '../../../bases/Utils';
+import {View} from '../../../bases/View';
+import {IEntryData} from 'teambition';
 
-    public ViewName = 'EntryView';
+@parentView('DetailView')
+export class EntryView extends View {
 
-    public entry: IEntryData;
+  public ViewName = 'EntryView';
 
-    constructor() {
-      super();
-      this.zone.run(noop);
-    }
+  public entry: IEntryData;
 
-    public onInit() {
-      return this.parent.onInit();
-    }
-
-    public onAllChangesDone() {
-      this.entry = this.parent.detail;
-    }
+  constructor() {
+    super();
+    this.zone.run(angular.noop);
   }
 
-  angular.module('teambition').controller('EntryView', EntryView);
+  public onInit() {
+    return this.parent.onInit();
+  }
+
+  public onAllChangesDone() {
+    this.entry = this.parent.detail;
+  }
 }

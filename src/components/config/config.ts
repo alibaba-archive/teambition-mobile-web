@@ -1,28 +1,17 @@
-/// <reference path="../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
-  angular.module('teambition').config(
-    // @ngInject
-    (
-      $stateProvider: angular.ui.IStateProvider,
-      $urlRouterProvider: angular.ui.IUrlRouterProvider,
-      $locationProvider: angular.ILocationProvider,
-      $ionicConfigProvider: ionic.utility.IonicConfigProvider,
-      $compileProvider: angular.ICompileProvider,
-      $httpProvider: angular.IHttpProvider
-    ) => {
+export const host = 'http://ding.project.ci/dingTalk';
 
-      $httpProvider.defaults.withCredentials = true;
+export const app = {
+  NAME: 'teambition-mobile-web',
+  VERSION: '{{__version}}',
+  LANGUAGE: 'zh',
+  apiHost: 'http://api.project.ci',
+  strikerHost: 'https://striker.teambition.net',
+  cdnHost: 'https://dn-st.teambition.net',
+  wsHost: 'ws://snapper.project.bi',
+  wxid: 'wx48744c9444d9824a',
+  spiderHost: 'https://spider.teambition.com/api/track',
+  dingApiHost: host,
+  socket: null
+};
 
-      $ionicConfigProvider.views.forwardCache(false);
-
-      $ionicConfigProvider.views.transition('none');
-
-      $ionicConfigProvider.views.maxCache(0);
-
-      $ionicConfigProvider.tabs.position('bottom');
-
-      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|wxlocalresource):|data:image\//);
-    }
-  );
-}
+export const nobodyUrl = `${app.cdnHost}/tb-ding/images/nobody-avator@2x.png`;

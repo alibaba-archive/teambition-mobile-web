@@ -1,41 +1,25 @@
-module teambition {
-  'use strict';
-  export interface IqueryFileds {
-    activityFileds: string;
-    taskFileds: string;
-    postFileds: string;
-    eventFileds: string;
-    workFileds: string;
-    entryFileds: string;
-    projectFileds: string;
-    projectActivityFileds: string;
-    memberFileds: string;
-  }
-  var fields: IqueryFileds = {
-    activityFileds: '',
+'use strict';
 
-    taskFileds: '_executorId,_id,_projectId,_stageId,_tasklistId,content,dueDate,updated,created,note,' +
-                'executor,likesCount,likedPeople,isDone,priority,recurrence,linked,isLike,likesGroup,' +
-                'involveMembers,subtaskCount,tagIds,visiable',
+export const fields = {
+  activityFileds: '',
 
-    postFileds: '_id,_projectId,attachments,linked,involveMembers,html,postMode,title,updated,creator,content,visiable',
+  taskFileds: '_executorId,_id,_projectId,_stageId,_tasklistId,content,dueDate,updated,created,note,' +
+              'executor,likesCount,likedPeople,isDone,priority,recurrence,linked,isLike,likesGroup,' +
+              'involveMembers,subtaskCount,tagIds,visiable',
 
-    eventFileds: '_id,_projectId,title,location,content,linked,involveMembers,startDate,endDate,updated,visiable,recurrence',
+  postFileds: '_id,_projectId,attachments,linked,involveMembers,html,postMode,title,updated,creator,content,visiable',
 
-    workFileds: '_id,_projectId,creator,updated,involveMembers,fileType,fileName,fileSize,' +
-                'thumbnail,downloadUrl,linked,previewUrl,fileCategory,visiable,folder',
+  eventFileds: '_id,_projectId,title,location,content,linked,involveMembers,startDate,endDate,updated,visiable,recurrence',
 
-    entryFileds: '_id,_projectId,_entryCategoryId,amount,content,note,date,status,involveMembers,tags,type,title,visiable',
+  workFileds: '_id,_projectId,creator,updated,involveMembers,fileType,fileName,fileSize,' +
+              'thumbnail,downloadUrl,linked,previewUrl,fileCategory,visiable,folder',
 
-    projectFileds:  '_id,_defaultCollectionId,_rootCollectionId,created,logo,name,isPublic,' +
-                    'organization,py,signCode,isStar,canDelete,canQuit,canArchive',
+  entryFileds: '_id,_projectId,_entryCategoryId,amount,content,note,date,status,involveMembers,tags,type,title,visiable',
 
-    projectActivityFileds: '_id,creator,created,title,action,objectType,boundToObjectType,content',
+  projectFileds:  '_id,_defaultCollectionId,_rootCollectionId,created,logo,name,isPublic,' +
+                  'organization,py,signCode,isStar,canDelete,canQuit,canArchive',
 
-    memberFileds: '_id,name,title,avatarUrl'
-  };
+  projectActivityFileds: '_id,creator,created,title,action,objectType,boundToObjectType,content',
 
-  angular.module('teambition').service('queryFileds', [ () => {
-    return fields;
-  }]);
-}
+  memberFileds: '_id,name,title,avatarUrl'
+};

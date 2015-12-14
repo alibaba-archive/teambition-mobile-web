@@ -1,26 +1,25 @@
-/// <reference path="../../../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
-  @parentView('DetailView')
-  class FileView extends View {
+'use strict';
+import {parentView, inject} from '../../../bases/Utils';
+import {View} from '../../../bases/View';
+import {IFileData} from 'teambition';
 
-    public ViewName = 'FileView';
+@parentView('DetailView')
+export class FileView extends View {
 
-    public file: IFileDataParsed;
+  public ViewName = 'FileView';
 
-    constructor() {
-      super();
-      this.zone.run(noop);
-    }
+  public file: IFileData;
 
-    public onInit() {
-      return this.parent.onInit();
-    }
-
-    public onAllChangesDone() {
-      this.file = this.parent.detail;
-    }
+  constructor() {
+    super();
+    this.zone.run(angular.noop);
   }
 
-  angular.module('teambition').controller('FileView', FileView);
+  public onInit() {
+    return this.parent.onInit();
+  }
+
+  public onAllChangesDone() {
+    this.file = this.parent.detail;
+  }
 }

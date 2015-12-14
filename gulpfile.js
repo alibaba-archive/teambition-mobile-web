@@ -9,11 +9,6 @@ const concat       = require('gulp-concat')
 const less         = require('gulp-less')
 const replace      = require('gulp-replace')
 const sourcemaps   = require('gulp-sourcemaps')
-const order        = require('gulp-order')
-const typescript   = require('gulp-typescript')
-const tslint       = require('gulp-tslint')
-const stylish      = require('gulp-tslint-stylish')
-const ngAnnotate   = require('gulp-ng-annotate')
 const minifyHtml   = require('gulp-minify-html')
 const ngTemplate   = require('gulp-ng-template')
 const sequence     = require('gulp-sequence')
@@ -57,14 +52,12 @@ const dingScript = '<script src="https://g.alicdn.com/ilw/ding/0.6.6/scripts/din
 const wechatScript = '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'
 
 //将gulp 文件夹里面所有的gulp 任务load进来
-wrench.readdirSyncRecursive('./gulp').filter(function(file) {
-  return (/\.(js|coffee)$/i).test(file);
-}).map(function(file) {
-  require('./gulp/' + file);
-})
+wrench.readdirSyncRecursive('./tools/gulp').filter((file) => {
+  return (/\.(js)$/i).test(file);
+}).map(file => require('./tools/gulp/' + file))
 
 let catchError = true
-let logError  = function(stream) {
+let logError  = (stream) => {
   if(!catchError) return stream
   return stream.on('error', console.log.bind(console))
 }
@@ -85,12 +78,15 @@ const paths = {
   ],
   tbui: [
     'src/less/tb-fonts-variables.less',
-    'bower_components/UI/less/teambition-ui-variables.less',
-    'bower_components/UI/less/teambition-ui-icons.less'
+    'node_modules/teambition-ui/less/teambition-ui-variables.less',
+    'node_modules/teambition-ui/less/teambition-ui-icons.less'
+  ],
+  et: [
+    'src/components/et/**/*.html'
   ]
 }
 
-gulp.task('clean', ['tsd:purge'], function() {
+gulp.task('clean', ['tsd:purge'], () => {
   gulp.src('www/*')
     .pipe(rimraf({force: true}))
 
@@ -101,7 +97,7 @@ gulp.task('clean', ['tsd:purge'], function() {
     .pipe(rimraf({force: true}))
 })
 
-gulp.task('less', function() {
+gulp.task('less', () => {
   return merge2(
     gulp.src(paths.tbui)
       .pipe(concat('tbui.less'))
@@ -121,29 +117,7 @@ gulp.task('less', function() {
   .pipe(gulp.dest('www/css/'))
 })
 
-function compileTypescript(resources, dest) {
-  var _dest = dest ? dest : '.tmp/scripts'
-  console.log('compile resource', resources)
-  console.log('compile dest', _dest)
-  return gulp.src(resources)
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(tslint())
-    .pipe(tslint.report(stylish, {
-      emitError: false,
-      sort: true,
-      bell: true
-    }))
-    .pipe(typescript({
-      'module': 'umd',
-      'experimentalDecorators': true,
-      'target': 'ES5'
-    }))
-    .pipe(ngAnnotate())
-    .pipe(sourcemaps.write(_dest))
-    .pipe(gulp.dest(_dest))
-}
-
-function compileTemplate() {
+gulp.task('compile-template', () => {
   return gulp.src(paths.html)
     .pipe(minifyHtml({empty: true, quotes: true}))
     .pipe(ngTemplate({
@@ -152,100 +126,63 @@ function compileTemplate() {
       filePath: 'templates.js'
     }))
     .pipe(gulp.dest('.tmp/scripts/template/'))
-}
-
-gulp.task('compile-ts', function() {
-  return compileTypescript(paths.app)
 })
 
-gulp.task('compile-template', function() {
-  return compileTemplate()
-})
-
-gulp.task('concat-app', function() {
-  merge2(
-    gulp.src([
-      '.tmp/scripts/app.js',
-      '.tmp/scripts/Modules/MomentLocale.js',
-      '.tmp/scripts/Modules/WechatService.js',
-      '.tmp/scripts/Modules/DingService.js',
-      '.tmp/scripts/run.js',
-      '.tmp/scripts/components/lib/View.js',
-      '.tmp/scripts/components/lib/BaseAPI.js',
-      '.tmp/scripts/components/lib/BaseModel.js',
-      '.tmp/scripts/components/lib/ETComponents.js'
-    ]),
-    gulp.src([
-      '.tmp/scripts/template/**/*.js',
-      '.tmp/scripts/components/**/*.js',
-      '!.tmp/scripts/components/lib/*.js'
-    ])
-  )
-  .pipe(sourcemaps.init({loadMaps: true}))
+gulp.task('concat-app', () => {
+  gulp.src([
+    './.tmp/scripts/**/*.js',
+    './.tmp/app.js'
+  ])
+  .pipe(sourcemaps.init({
+    loadMaps: true
+  }))
   .pipe(concat('app.js'))
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('www/js/'))
 })
 
-gulp.task('compile', sequence(['compile-ts', 'compile-template', 'compile-et']))
+gulp.task('compile', sequence(['compile-template','compile-et', 'compile-ts'], 'concat-app'))
 
-gulp.task('html', function() {
+gulp.task('html', () => {
   return gulp.src('src/index.html')
     .pipe(gulp.dest('www/'))
 })
 
-gulp.task('images', function() {
+gulp.task('images', () => {
   return gulp.src(paths.images)
     .pipe(gulp.dest('www/images/'))
 })
 
-gulp.task('lib-css', function() {
+gulp.task('lib-css', () => {
   return gulp.src([
-      'bower_components/ionic/release/css/ionic.css'
+      'node_modules/ionic-npm/css/ionic.css'
     ])
     .pipe(concat('lib.css'))
     .pipe(gulp.dest('www/css/'))
 })
 
-gulp.task('lib-font', function() {
+gulp.task('lib-font', () => {
   return gulp.src([
-    'bower_components/ionic/release/fonts/*',
-    'bower_components/UI/fonts/teambition*'
+    'node_modules/ionic-npm/fonts/*',
+    'node_modules/teambition-ui/fonts/teambition*'
   ])
     .pipe(gulp.dest('www/fonts/'))
 })
 
-gulp.task('lib-js', function() {
-  gulp.src([
-    'bower_components/ionic/release/js/ionic.bundle.js',
-    'bower_components/angular-resource/angular-resource.js',
-    'node_modules/zone.js/dist/zone.js',
-    'bower_components/marked/lib/marked.js',
-    'bower_components/moment/moment.js',
-    'bower_components/ng-file-upload/ng-file-upload.js',
-    'bower_components/gta/lib/index.js',
-    'node_modules/et-template/es5/dependency.ng.js',
-    'bower_components/jsonrpc-lite/jsonrpc.js',
-    'bower_components/engine.io-client/engine.io.js',
-    'bower_components/snapper-consumer/index.js',
-    'bower_components/spider/index.js'
-  ])
-    .pipe(concat('lib.js'))
-    .pipe(gulp.dest('www/js/'))
-})
-
-gulp.task('config', function() {
-  let source = gulp.src('.tmp/scripts/app.js')
+gulp.task('config', () => {
+  const source = gulp.src('www/js/app.js')
   const defaultConfig = require('./config/default.json')
   const config = require(`./config/${process.env.BUILD_ENV || 'default'}.json`)
   const keys = Object.keys(config)
+  const version = require('./package.json').version
   keys.forEach((key) => {
     source.pipe(replace(defaultConfig[key], config[key]))
   })
-  return source.pipe(gulp.dest('.tmp/scripts/'))
+  return source.pipe(replace('{{__version}}', version))
+    .pipe(gulp.dest('www/js/'))
 })
 
-gulp.task('revall', function() {
+gulp.task('revall', () => {
   var revall = new RevAll({
     prefix: cdnPrefix,
     dontGlobal: [/\/favicon\.ico$/],
@@ -276,53 +213,32 @@ gulp.task('revall', function() {
     .pipe(gulp.dest('dist'))
 })
 
-function watchTs(event) {
-  const reg1 = /src\/components/
-  const reg2 = /src\/modules/
-  const path = event.path
-  let dest
-  if (reg1.test(path) || reg2.test(path)) {
-    let _test, _dest
-    if (reg1.test(path)) {
-      _test = 'src/components/'
-      _dest = 'components'
-    }else if(reg2.test(path)) {
-      _test = 'src/modules/'
-      _dest = 'modules'
-    }
-    var _pos = path.indexOf(_test)
-    var _subLength = path.length - _pos - _test.length
-    var _subPos = _pos + _test.length
-    var _subStr = path.substr(_subPos, _subLength)
-    var _subPath = _subStr.split('/')
-    _subPath.pop()
-    _subPath = _subPath.join('/')
-    _subPath = (_subPath.substr(-1) === '/') ? _subPath : _subPath + '/'
-    _subPath = (_subPath.substr(0) === '/') ? _subPath : '/' + _subPath
-    dest = '.tmp/scripts/' + _dest + _subPath
-  }
-  compileTypescript(path, dest)
-}
-
-gulp.task('watch', ['watch-et', 'watch-test'], function() {
-  watch(paths.less, batch(function(events, done) {
+gulp.task('watch', ['watch-et', 'watch-test'], () => {
+  watch(paths.html, batch((events, done) => {
+    gulp.start('compile-template', done)
+  }))
+  watch(paths.less, batch((events, done) => {
     gulp.start('less', done)
   }))
-  watch(paths.app, watchTs)
-  watch(paths.html, compileTemplate)
-  watch(paths.images, batch(function(events, done) {
+  watch(paths.et, batch((events, done) => {
+    gulp.start('compile-et')
+  }))
+  watch(paths.images, batch((events, done) => {
     gulp.start('images', done)
   }))
-  watch('.tmp/scripts/**/*.js', batch(function(events, done) {
+  watch(paths.app, batch((events, done) => {
+    gulp.start('compile-ts', done)
+  }))
+  watch(['./.tmp/app.js', './.tmp/scripts/**/*.js'], batch((events, done) => {
     gulp.start('concat-app', done)
   }))
 })
 
-gulp.task('before:default', sequence('clean', 'tsd:install', 'compile', 'config', 'concat-app',
-  ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images']
+gulp.task('before:default', sequence('clean', 'tsd:install', 'compile',
+  ['lib-css', 'lib-font', 'lib-js', 'less', 'html', 'images'], 'config'
 ))
 
-gulp.task('default', ['before:default'], function() {
+gulp.task('default', ['before:default'], () => {
   let str = '';
   if (process.env.BUILD_TARGET === 'wechat') {
     str = wechatScript
@@ -336,12 +252,12 @@ gulp.task('default', ['before:default'], function() {
 
 gulp.task('build', sequence('default', 'revall'))
 
-gulp.task('cdn', function() {
+gulp.task('cdn', () => {
   return gulp.src(['dist/**', '!dist/index.html'])
     .pipe(cdnUploader(cdnNamespace, CDNs))
 })
 
-gulp.task('deploy', function(done) {
+gulp.task('deploy', (done) => {
   catchError = false
   sequence('build', 'cdn')(done)
 })

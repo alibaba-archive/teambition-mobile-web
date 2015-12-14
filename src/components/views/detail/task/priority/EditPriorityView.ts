@@ -1,75 +1,75 @@
-/// <reference path="../../../../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
-  @inject([
-    'DetailAPI'
-  ])
-  class EditPriorityView extends View {
+'use strict';
+import {inject} from '../../../../bases/Utils';
+import {View} from '../../../../bases/View';
+import {DetailAPI} from '../../../../services/service';
+import {ITaskData} from 'teambition';
 
-    public ViewName = 'EditPriorityView';
+@inject([
+  'DetailAPI'
+])
+export class EditPriorityView extends View {
 
-    public task: ITaskDataParsed;
-    public priority = [
-      {
-        priority: 0,
-        name: '普通',
-        isSelected: false
-      },
-      {
-        priority: 1,
-        name: '紧急',
-        isSelected: false
-      },
-      {
-        priority: 2,
-        name: '非常紧急',
-        isSelected: false
-      }
-    ];
+  public ViewName = 'EditPriorityView';
 
-    private taskid: string;
-    private DetailAPI: IDetailAPI;
-    private lastSelected: number;
-
-    constructor() {
-      super();
-      this.zone.run(() => {
-        this.taskid = this.$state.params._id;
-      });
+  public task: ITaskData;
+  public priority = [
+    {
+      priority: 0,
+      name: '普通',
+      isSelected: false
+    },
+    {
+      priority: 1,
+      name: '紧急',
+      isSelected: false
+    },
+    {
+      priority: 2,
+      name: '非常紧急',
+      isSelected: false
     }
+  ];
 
-    public onInit() {
-      return this.DetailAPI.fetch(this.taskid, 'task')
-      .then((task: ITaskDataParsed) => {
-        this.task = task;
-        this.lastSelected = task.priority;
-        this.priority[task.priority].isSelected = true;
-      });
-    }
+  private taskid: string;
+  private DetailAPI: DetailAPI;
+  private lastSelected: number;
 
-    public selectPriority(priority: number) {
-      if (priority === this.task.priority) {
-        return ;
-      }
-      this.showLoading();
-      return this.DetailAPI.update(this.taskid, 'task', {
-        priority: priority
-      })
-      .then(() => {
-        this.priority[this.lastSelected].isSelected = false;
-        this.priority[priority].isSelected = true;
-        this.showMsg('success', '更新成功', '已更新任务优先级');
-        this.hideLoading();
-        window.history.back();
-      })
-      .catch((reason: any) => {
-        let message = this.getFailureReason(reason);
-        this.showMsg('error', '更新失败', message);
-        this.hideLoading();
-        window.history.back();
-      });
-    }
+  constructor() {
+    super();
+    this.zone.run(() => {
+      this.taskid = this.$state.params._id;
+    });
   }
 
-  angular.module('teambition').controller('EditPriorityView', EditPriorityView);
+  public onInit() {
+    return this.DetailAPI.fetch(this.taskid, 'task')
+    .then((task: ITaskData) => {
+      this.task = task;
+      this.lastSelected = task.priority;
+      this.priority[task.priority].isSelected = true;
+    });
+  }
+
+  public selectPriority(priority: number) {
+    if (priority === this.task.priority) {
+      return ;
+    }
+    this.showLoading();
+    return this.DetailAPI.update(this.taskid, 'task', {
+      priority: priority
+    })
+    .then(() => {
+      this.priority[this.lastSelected].isSelected = false;
+      this.priority[priority].isSelected = true;
+      this.showMsg('success', '更新成功', '已更新任务优先级');
+      this.hideLoading();
+      window.history.back();
+    })
+    .catch((reason: any) => {
+      let message = this.getFailureReason(reason);
+      this.showMsg('error', '更新失败', message);
+      this.hideLoading();
+      window.history.back();
+    });
+  }
 }

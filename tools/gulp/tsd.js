@@ -13,14 +13,11 @@ const tsdApi  = new GetAPI(tsdJson)
 
 gulp.task('tsd:install', function () {
   return co(function * () {
-    let bower = require(path.join(process.cwd(), 'bower.json'))
     let npmDependency = require(path.join(process.cwd(), 'package.json'))
 
     delete npmDependency.dependencies['zone.js']
 
-    let dependencies = [].concat(
-      Object.keys(bower.dependencies),
-      Object.keys(bower.devDependencies),
+    let dependencies = ['ionic'].concat(
       Object.keys(npmDependency.dependencies)
     )
 

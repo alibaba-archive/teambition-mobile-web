@@ -1,35 +1,15 @@
-/// <reference path="../../interface/teambition.d.ts" />
-module teambition {
-  'use strict';
-  export interface IFileDataParsed extends IFileData {
-    class: string;
-    creatorName: string;
-    creatorAvatar: string;
-    updated: number;
-    fileType: string;
-    linked?: ILinkedData[];
-    isLike?: boolean;
-    likedPeople?: string;
-    likesCount?: number;
+'use strict';
+import {nobodyUrl} from '../../config/config';
+import {IFileData} from 'teambition';
+
+export const fileParser = (file: IFileData) => {
+  file.creator = file.creator || {_id: null, name: null, avatarUrl: nobodyUrl};
+  file.creatorName = file.creator.name;
+  file.creatorAvatar = file.creator.avatarUrl;
+  file.updated = Date.now();
+  if (file.fileType.length > 4) {
+    file.class = 'bigger-bigger';
+    file.fileType = file.fileType.charAt(0);
   }
-
-  export type IFileParser = (file: IFileData) => IFileDataParsed;
-
-  angular.module('teambition').factory('fileParser',
-  // @ngInject
-  (
-    $sanitize: any
-  ) => {
-    return (file: IFileDataParsed) => {
-      file.creator = file.creator || {_id: null, name: null, avatarUrl: nobodyUrl};
-      file.creatorName = file.creator.name;
-      file.creatorAvatar = file.creator.avatarUrl;
-      file.updated = Date.now();
-      if (file.fileType.length > 4) {
-        file.class = 'bigger-bigger';
-        file.fileType = file.fileType.charAt(0);
-      }
-      return file;
-    };
-  });
-}
+  return file;
+};
