@@ -1,5 +1,6 @@
-/// <reference path='../../src/components/interface/teambition.d.ts' />
 import userMe from '../mock/userme.mock';
+import {RootView, app, socketListener} from '../../src/app';
+import {IRootScope} from 'teambition';
 
 declare let sinonChai;
 
@@ -10,14 +11,14 @@ chai.should();
 export default describe('RootView test', () => {
 
   let controller: angular.IControllerService;
-  let rootScope: teambition.IRootScope;
+  let rootScope: IRootScope;
   let scope: angular.IScope;
   let httpBackend: angular.IHttpBackendService;
-  let RootView: teambition.RootView;
+  let RootView: RootView;
 
   beforeEach(() => {
     angular.mock.inject((
-      $rootScope: teambition.IRootScope,
+      $rootScope: IRootScope,
       $controller: angular.IControllerService,
       $httpBackend: angular.IHttpBackendService
     ) => {
@@ -25,9 +26,9 @@ export default describe('RootView test', () => {
       scope = $rootScope.$new();
       controller = $controller;
       httpBackend = $httpBackend;
-      RootView = controller<teambition.RootView>('RootView as RootCtrl', {$scope: scope});
+      RootView = controller<RootView>('RootView as RootCtrl', {$scope: scope});
     });
-    httpBackend.whenGET('http://project.ci/api/users/me').respond(userMe);
+    httpBackend.whenGET(`${app.apiHost}/users/me`).respond(userMe);
   });
 
   it('get user me should ok', function (done: Function) {
@@ -40,14 +41,6 @@ export default describe('RootView test', () => {
       done();
     });
     httpBackend.flush();
-  });
-
-  it('onAllChangesDone should ok', () => {
-    let mockListener = sinon.spy();
-    RootView.socketListener = mockListener;
-    RootView.onAllChangesDone();
-    mockListener.should.have.been.calledWith('new', 'message');
-    mockListener.should.have.been.calledWith('change', 'message');
   });
 
   it('init rootScope should ok', (done: Function) => {

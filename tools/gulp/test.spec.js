@@ -4,14 +4,14 @@ const gulp        = require('gulp')
 const concat      = require('gulp-concat')
 const batch       = require('gulp-batch')
 const watch       = require('gulp-watch')
-const tslint      = require('gulp-tslint')
-const stylish     = require('gulp-tslint-stylish')
-const typescript  = require('gulp-typescript')
+const browserify  = require('browserify')
+const tsify       = require('tsify')
 const sequence    = require('gulp-sequence')
-const sourcemap   = require('gulp-sourcemaps')
+const sourcemaps  = require('gulp-sourcemaps')
 const browserSync = require('browser-sync')
+const merge2      = require('merge2')
+const buildBundle = require('./build')
 const reload      = browserSync.reload
-
 
 const cssLibsPath = [
   'node_modules/mocha/mocha.css'
@@ -23,39 +23,44 @@ gulp.task('build-css', () => {
     .pipe(gulp.dest('.tmp/test/css/'))
 })
 
-gulp.task('compile-test', () => {
-  return gulp.src([
-    './test/**/*.ts'
-  ])
-    .pipe(sourcemap.init({loadMaps: true}))
-    .pipe(tslint())
-    .pipe(tslint.report(stylish, {
-      emitError: false,
-      sort: true,
-      bell: true
+gulp.task('compile-test', ['compile-et', 'compile-template'], () => {
+  const bundler = browserify({
+    entries: './test/entry.ts',
+    debug: true
+  })
+  .plugin(tsify, {
+    target: 'ES5'
+  })
+  return merge2(
+    gulp.src('./.tmp/scripts/**/*.js'),
+    buildBundle(bundler)
+    .pipe(sourcemaps.init({
+      loadMaps: true
     }))
-    .pipe(typescript({
-      'module': 'umd',
-      'experimentalDecorators': true,
-      'target': 'ES5'
-    }))
-    .pipe(sourcemap.write())
-    .pipe(gulp.dest('./.tmp/test/js/'))
+    .pipe(sourcemaps.write())
+  )
+  .pipe(sourcemaps.init({
+    loadMaps: true
+  }))
+  .pipe(concat('app.js'))
+  .pipe(sourcemaps.write())
+  .pipe(gulp.dest('./.tmp/test/js/'))
 })
 
 gulp.task('move-app', () => {
-  gulp.src('test/index.html')
+  return gulp.src('test/index.html')
     .pipe(gulp.dest('.tmp/test'))
-  return gulp.src('www/js/**')
-    .pipe(gulp.dest('.tmp/test/js/'))
 })
 
 gulp.task('watch-test', () => {
-  watch(['./test/**/*.ts'], batch((events, done) => {
+  watch([
+    './test/**/*.ts',
+    './src/**/*.ts'
+  ], batch((events, done) => {
     gulp.start('compile-test', done)
   }))
 
-  watch(['www/js/**/*.js', './test/index.html'], batch((events, done) => {
+  watch(['./test/index.html'], batch((events, done) => {
     gulp.start('move-app', done)
   }))
 

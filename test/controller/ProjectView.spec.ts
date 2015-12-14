@@ -1,5 +1,7 @@
-/// <reference path='../../src/components/interface/teambition.d.ts' />
 import projects from '../mock/projects.mock';
+import {Ding} from '../../src/run';
+import {ProjectView, fields, app} from '../../src/app';
+import {IRootScope, IProjectData} from 'teambition';
 
 declare let sinonChai;
 
@@ -9,22 +11,18 @@ chai.should();
 export default describe('ProjectView test', () => {
 
   let controller: angular.IControllerService;
-  let rootScope: teambition.IRootScope;
+  let rootScope: IRootScope;
   let scope: angular.IScope;
   let httpBackend: angular.IHttpBackendService;
-  let ProjectView: teambition.ProjectView;
+  let ProjectView: ProjectView;
 
   let ProjectsAPIHost: string;
 
-  angular.mock.inject((
-    fields: teambition.IqueryFileds
-  ) => {
-    ProjectsAPIHost = `http://project.ci/api/projects?fields=${fields.projectFileds}`;
-  });
+  ProjectsAPIHost = `${app.apiHost}/projects?fields=${fields.projectFileds}`;
 
   beforeEach(() => {
     angular.mock.inject((
-      $rootScope: teambition.IRootScope,
+      $rootScope: IRootScope,
       $controller: angular.IControllerService,
       $httpBackend: angular.IHttpBackendService
     ) => {
@@ -32,13 +30,12 @@ export default describe('ProjectView test', () => {
       scope = $rootScope.$new();
       controller = $controller;
       httpBackend = $httpBackend;
-      ProjectView = controller<teambition.ProjectView>('ProjectView as ProjectCtrl', {$scope: scope});
+      ProjectView = controller<ProjectView>('ProjectView as ProjectCtrl', {$scope: scope});
       httpBackend.whenGET(ProjectsAPIHost).respond(projects);
     });
   });
 
   describe('onInit should ok', () => {
-
     it('public property should ok', (done: Function) => {
       ProjectView.onInit().then(() => {
         expect(ProjectView.projects).to.be.an.instanceof(Array);
@@ -49,7 +46,7 @@ export default describe('ProjectView test', () => {
           let organizationName = val.name;
           expect(organizationId).to.equal(val.id);
           angular.forEach(val.projects, (
-            project: teambition.IProjectDataParsed,
+            project: IProjectData,
             index: number
           ) => {
             expect(project.organization._id).to.equal(organizationId);
@@ -66,12 +63,14 @@ export default describe('ProjectView test', () => {
     it ('project parsed should have no effect to raw data', (done: Function) => {
       ProjectView.onInit().then(() => {
         angular.forEach(ProjectView.projects, (
-          project: teambition.IProjectDataParsed,
-          index: number
+          project: IProjectData
         ) => {
-          let rawProject = projects[index];
-          angular.forEach(rawProject, (val: any, key: string) => {
-            expect(project[key]).to.deep.equal(rawProject[key]);
+          angular.forEach(projects, (rawProject: IProjectData) => {
+            if (rawProject._id === project._id) {
+              angular.forEach(rawProject, (val: any, key: string) => {
+                expect(project[key]).to.deep.equal(val);
+              });
+            }
           });
         });
         done();
@@ -81,10 +80,8 @@ export default describe('ProjectView test', () => {
   });
 
   it('onAllChangesDone should ok', () => {
-    let mockSetLeft = sinon.spy();
-    let mockRight = sinon.spy();
-    teambition.Ding.setLeft  = mockSetLeft;
-    teambition.Ding.setRight = mockRight;
+    let mockSetLeft = sinon.spy(Ding, 'setLeft');
+    let mockRight = sinon.spy(Ding, 'setRight');
     ProjectView.onAllChangesDone();
     mockSetLeft.should.have.been.calledWith('关闭', true, true);
     mockRight.should.have.been.calledWith('创建项目', true, true);
@@ -92,19 +89,19 @@ export default describe('ProjectView test', () => {
 
   it('starProject should ok', (done: Function) => {
     let isStar: boolean;
-    let project: teambition.IProjectDataParsed;
+    let project: IProjectData;
     ProjectView.onInit().then(() => {
       project = ProjectView.projects[1];
       isStar = project.isStar;
       httpBackend
-      .when('PUT', `http://project.ci/api/projects/${project._id}/star`)
+      .when('PUT', `${app.apiHost}/projects/${project._id}/star`)
       .respond({
         _id: project._id,
         isStar: true,
         starsCount: 1
       });
       httpBackend
-      .when('DELETE', `http://project.ci/api/projects/${project._id}/star`)
+      .when('DELETE', `${app.apiHost}/projects/${project._id}/star`)
       .respond({
         _id: project._id,
         isStar: false,

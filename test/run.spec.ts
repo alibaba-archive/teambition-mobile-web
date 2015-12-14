@@ -1,18 +1,20 @@
-/// <reference path='../src/components/interface/teambition.d.ts' />
 import dingSignature from './mock/dingsignature.mock';
+import {DingService} from '../src/components/bases/DingService';
+import {app} from '../src/app';
 
-export default beforeEach(() => {
+beforeEach(() => {
   angular.mock.module('teambition');
   angular.mock.inject((
     $httpBackend: angular.IHttpBackendService
   ) => {
-    $httpBackend.whenGET('http://ding.project.ci/signature?corpId=').respond(dingSignature);
-    teambition.Ding = new Ding.DingService(
-      dingSignature.agentId,
-      dingSignature.corpId,
-      dingSignature.timeStamp,
-      dingSignature.nonceStr,
-      dingSignature.signature
-    );
+    $httpBackend.whenGET(`${app.dingApiHost}/signature?corpId=dinga9c60a58f418f010`).respond(dingSignature);
   });
 });
+
+export const Ding = new DingService(
+  dingSignature.agentId,
+  dingSignature.corpId,
+  dingSignature.timeStamp,
+  dingSignature.nonceStr,
+  dingSignature.signature
+);

@@ -73,7 +73,7 @@ const paths = {
     'src/scripts/directives/**/*.html'
   ],
   app: [
-    'src/**/*.ts',
+    './src/**/*.ts',
     '!src/components/interface/zone.d.ts'
   ],
   tbui: [
@@ -213,7 +213,7 @@ gulp.task('revall', () => {
     .pipe(gulp.dest('dist'))
 })
 
-gulp.task('watch', ['watch-et', 'watch-test'], () => {
+gulp.task('watch', ['watch-et'], () => {
   watch(paths.html, batch((events, done) => {
     gulp.start('compile-template', done)
   }))
