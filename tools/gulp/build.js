@@ -82,3 +82,5 @@ gulp.task('compile-ts', () => {
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('.tmp/'))
 })
+
+module.exports = buildBundle

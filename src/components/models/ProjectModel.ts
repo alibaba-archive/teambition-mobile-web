@@ -62,6 +62,7 @@ class ProjectModel extends BaseModel {
       return left._py - right._py;
     });
     this._set('projects', null, collection);
+    return collection;
   }
 
   public getCollection() {

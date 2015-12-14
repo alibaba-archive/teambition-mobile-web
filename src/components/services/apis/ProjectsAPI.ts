@@ -25,8 +25,7 @@ export class ProjectsAPI extends BaseAPI {
     })
     .$promise
     .then((projects: IProjectData[]) => {
-      ProjectModel.setCollection(projects);
-      return projects;
+      return ProjectModel.setCollection(projects);
     });
   }
 

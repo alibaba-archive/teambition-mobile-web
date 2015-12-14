@@ -6,8 +6,7 @@ const batch   = require('gulp-batch')
 const through = require('through2')
 const ET      = require('et-template')
 
-
-var EtPath = ['src/components/et/**/*.html']
+const EtPath = ['src/components/et/**/*.html']
 
 function compileET() {
   var option = {

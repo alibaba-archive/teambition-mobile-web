@@ -1,4 +1,5 @@
 /// <reference path="./typings.d.ts" />
+export * from './bootstrap';
 import {app} from './components/config/config';
 import {RunFn, rootZone} from './run';
 import {
@@ -94,6 +95,9 @@ rootZone.run(() => {
   });
 });
 
+export * from './components/config/config';
+export * from './components/services/service';
+export * from './components/views/Views';
 export * from './components/config/ngConfig';
 export * from './components/config/router';
 export * from './components/directives/directive';

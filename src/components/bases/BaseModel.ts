@@ -29,16 +29,15 @@ export default class BaseModel {
   protected _updateObj<T>(type: string, id: string, patch: any) {
     if (typeof patch === 'object') {
       let namespace = id ? `${type}:${id}` : type;
-      let value = this.Cache.get<T>(namespace);
+      let value = this.Cache.get<T>(namespace) || Object.create(null);
       let keys = Object.keys(patch);
-      if (value) {
-        for (let index = 0; index < keys.length; index++) {
-          let element = keys[index];
-          if (__notPatch.indexOf(element) === -1) {
-            value[element] = patch[element];
-          }
+      for (let index = 0; index < keys.length; index++) {
+        let element = keys[index];
+        if (__notPatch.indexOf(element) === -1) {
+          value[element] = patch[element];
         }
       }
+      this._set(type, id, value);
       return value;
     }
   }

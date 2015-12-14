@@ -10,7 +10,6 @@ import {
   IWxSignature
 } from 'teambition';
 
-declare let webkitURL;
 declare let wx;
 declare let dd;
 declare let zone: Zone;
@@ -22,20 +21,10 @@ export let OrganizationId: string;
 
 export let rootZone = zone.fork();
 
-export let $$injector: any;
-
-export let URL: URL = window.URL || webkitURL;
-
-export function noop() {
-  return false;
-};
-
-// @ngInject
 export const RunFn = function(
   $http: any,
   $q: angular.IQService,
-  $rootScope: IRootScope,
-  moment: moment.MomentStatic
+  $rootScope: IRootScope
 ) {
 
   let initWechat = () => {
@@ -78,3 +67,5 @@ export const RunFn = function(
 
   MomentLocale(app.LANGUAGE, moment);
 };
+
+RunFn.$inject = ['$http', '$q', '$rootScope'];

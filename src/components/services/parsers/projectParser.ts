@@ -2,11 +2,8 @@
 
 import {IProjectData} from 'teambition';
 
-export const projectParser = (project: IProjectData): IProjectData => {
+export const projectParser = (project: IProjectData) => {
   if (project) {
-    if (project.parsed) {
-      return project;
-    }
     let result: IProjectData = project;
     if (result.organization) {
       result.organizationId = project.organization._id;
