@@ -1,26 +1,39 @@
 Teambition Mobile Web App(TMWA)
 ======================================
 
-## 依赖
+## global dependency
 ```
 npm i -g gulp
 npm i -g ionic
-npm i -g bower
 ```
-
-## 编译
+## Compile
 ```
 gulp
-gulp before:wechat
-gulp before:ding
 ```
-## 打包
+## Build
 ```
 gulp build
-gulp build:wechat
-gulp build:ding
 ```
-## 启动
+## Env variable
+```
+BUILD_TARGET=default/ding/wechat
+```
+undefined as default
+```
+BUILD_ENV=default/beta/release
+```
+undefined as default
+
+## deployment
+### DingDing in ci
+```
+npm run locald
+```
+### DingDing in beta
+```
+npm run betad
+```
+## startup
 ```
 ionic serve
 ```
