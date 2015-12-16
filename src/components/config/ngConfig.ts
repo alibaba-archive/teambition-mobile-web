@@ -20,6 +20,8 @@ export default angular.module('teambition').config(
 
     $ionicConfigProvider.tabs.position('bottom');
 
+    $ionicConfigProvider.tabs.style('standard');
+
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|wxlocalresource):|data:image\//);
   }
 );

@@ -50,7 +50,9 @@ export class ETComponent {
   protected insertDOM() {
     let template = this.get();
     this.parentDOM = document.querySelector(this.parentSelector);
-    this.parentDOM.appendChild(template);
+    if (this.parentDOM) {
+      this.parentDOM.appendChild(template);
+    }
   }
 
   protected bindContext(scope: any) {

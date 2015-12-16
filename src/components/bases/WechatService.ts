@@ -20,9 +20,9 @@ const wxShareMsgConfig = {
   imgUrl: 'https://dn-st.teambition.net/tb-weixin/images/teambition.a9debe2c.png'
 };
 
-export class WechatService {
-  'use strict';
-  constructor(appid: string, noncestr: string, timestamp: number, signature: string) {
+class WechatService {
+
+  public init(appid: string, noncestr: string, timestamp: number, signature: string) {
     wx.config({
       debug: false,
       appId: appid,
@@ -50,3 +50,5 @@ export class WechatService {
     return link;
   }
 }
+
+export default new WechatService();

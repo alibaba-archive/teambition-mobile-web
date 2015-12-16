@@ -11,20 +11,21 @@ export interface IDingMemberData {
   [index: string]: any;
 }
 
-export class DingService {
+class DingService {
 
   public code: string;
+  public organizationId: string;
+  public corpId: string;
   public $http: angular.IHttpService;
 
   private agentId: string;
-  private corpId: string;
   private timeStamp: number;
   private nonceStr: string;
   private signature: string;
 
   private isSetForce: boolean;
 
-  constructor(
+  public initDing(
     agentId: string,
     corpId: string,
     timeStamp: number,
@@ -36,7 +37,11 @@ export class DingService {
     this.timeStamp = timeStamp;
     this.nonceStr = nonceStr;
     this.signature = signature;
-    this.initDing();
+    this._init();
+  }
+
+  public initOrganization(id: string) {
+    this.organizationId = id;
   }
 
   public getCode(callback: Function) {
@@ -196,7 +201,7 @@ export class DingService {
     });
   }
 
-  private initDing() {
+  private _init() {
     let dingConf = {
       agentId: this.agentId,
       corpId: this.corpId,
@@ -233,7 +238,7 @@ export class DingService {
         this.signature = data.signature;
         this.timeStamp = data.timeStamp;
         this.nonceStr = data.nonceStr;
-        this.initDing();
+        this._init();
         this.isSetForce = false;
       })
       .catch((reason: any) => {
@@ -244,3 +249,5 @@ export class DingService {
     this.setTitle('Teambition');
   }
 }
+
+export default new DingService();
