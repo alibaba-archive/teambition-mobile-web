@@ -1,7 +1,7 @@
+'use strict';
 import {inject} from '../../bases/Utils';
 import {Iapp} from 'teambition';
 
-'use strict';
 interface IRestPaths {
   V2?: string;
   Type: string;

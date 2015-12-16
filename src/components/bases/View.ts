@@ -1,3 +1,4 @@
+'use strict';
 import {rootZone, Wechat} from '../../run';
 import {inject} from './Utils';
 import {
@@ -7,7 +8,7 @@ import {
 } from 'teambition';
 import {Notify} from '../et/ETs';
 
-'use strict';
+declare let wx;
 
 let viewsMap = {};
 
@@ -145,7 +146,7 @@ export class View {
     this.zone = parentZone.fork({
       'afterTask': () => {
         userMe = userMe ? userMe : this.$rootScope.userMe;
-        if (Wechat && this.project) {
+        if (typeof wx !== 'undefined' && Wechat && this.project) {
           Wechat.reconfigShare(userMe, this.project);
         }
       },

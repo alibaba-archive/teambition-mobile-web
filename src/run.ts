@@ -1,5 +1,5 @@
-import {DingService} from './components/bases/DingService';
-import {WechatService} from './components/bases/WechatService';
+import DingService from './components/bases/DingService';
+import WechatService from './components/bases/WechatService';
 import {MomentLocale} from './components/bases/MomentLocale';
 import {getParam} from './components/bases/Utils';
 import {app} from './components/config/config';
@@ -14,10 +14,8 @@ declare let wx;
 declare let dd;
 declare let zone: Zone;
 
-export let Wechat: WechatService;
-export let Ding: DingService;
-export let DingCorpid: string;
-export let OrganizationId: string;
+export let Wechat = WechatService;
+export let Ding = typeof dd === 'undefined' ? undefined : DingService;
 
 export let rootZone = zone.fork();
 
@@ -32,14 +30,14 @@ export const RunFn = function(
   };
 
   let initDD = () => {
-    DingCorpid = getParam(window.location.search, 'corpId');
+    let DingCorpid = getParam(window.location.search, 'corpId');
     let defer = $q.defer();
     if (DingCorpid && DingCorpid.length) {
       $http.get(app.dingApiHost + `/signature?corpId=${DingCorpid}`)
       .then((data: any) => {
         let info: IDingSignature = data.data;
-        OrganizationId = info._organizationId;
-        Ding = new DingService(info.agentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
+        Ding.initDing(info.agentId, info.corpId, info.timeStamp, info.nonceStr, info.signature);
+        Ding.initOrganization(info._organizationId);
         Ding.$http = $http;
         defer.resolve();
       });
@@ -52,7 +50,7 @@ export const RunFn = function(
   if (typeof wx === 'object') {
     $rootScope.pending = initWechat()
     .then((data: IWxSignature) => {
-      Wechat = new WechatService(app.wxid, data.noncestr, data.timestamp, data.signature);
+      Wechat.init(app.wxid, data.noncestr, data.timestamp, data.signature);
     })
     .catch((reason: any) => {
       console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');

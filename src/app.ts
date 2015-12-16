@@ -3,41 +3,6 @@ export * from './bootstrap';
 import {app} from './components/config/config';
 import {RunFn, rootZone} from './run';
 import {
-  RootView,
-  ProjectView,
-  TabsView,
-  PanelHomeView,
-  PanelEventView,
-  PanelPostView,
-  PanelTasklistView,
-  PanelWorkView,
-  DetailView,
-  ActivityView,
-  TaskView,
-  EditDuedateView,
-  EditExectorView,
-  EditNoteView,
-  EditPriorityView,
-  EditRecurrenceView,
-  SubtaskView,
-  CreateSubtaskView,
-  PostView,
-  FileView,
-  LinkView,
-  EditInvolveView,
-  EventView,
-  EntryView,
-  EditContentView,
-  TaskPositionSelectorView,
-  ChooseProjectsView,
-  ChooseStageView,
-  ChooseTasklistView,
-  CreateEventView,
-  CreatePostView,
-  CreateProjectView,
-  CreateTaskView
-} from './components/views/Views';
-import {
   Notify,
   InputComponments,
   ProjectHomeActivity,
@@ -54,40 +19,7 @@ angular.module('teambition')
 .constant('app', app)
 .constant('moment', moment)
 .constant('marked', marked)
-.run(RunFn)
-.controller('RootView', RootView)
-.controller('ProjectView', ProjectView)
-.controller('TabsView', TabsView)
-.controller('PanelHomeView', [PanelHomeView])
-.controller('PanelEventView', PanelEventView)
-.controller('PanelPostView', PanelPostView)
-.controller('PanelTasklistView', PanelTasklistView)
-.controller('PanelWorkView', PanelWorkView)
-.controller('ActivityView', ActivityView)
-.controller('DetailView', DetailView)
-.controller('TaskView', TaskView)
-.controller('EditDuedateView', EditDuedateView)
-.controller('EditExectorView', EditExectorView)
-.controller('EditNoteView', EditNoteView)
-.controller('EditPriorityView', EditPriorityView)
-.controller('EditRecurrenceView', EditRecurrenceView)
-.controller('SubtaskView', SubtaskView)
-.controller('CreateSubtaskView', CreateSubtaskView)
-.controller('PostView', PostView)
-.controller('FileView', FileView)
-.controller('LinkView', LinkView)
-.controller('EditInvolveView', EditInvolveView)
-.controller('EventView', EventView)
-.controller('EntryView', EntryView)
-.controller('EditContentView', EditContentView)
-.controller('TaskPositionSelectorView', TaskPositionSelectorView)
-.controller('ChooseProjectsView', ChooseProjectsView)
-.controller('ChooseStageView', ChooseStageView)
-.controller('ChooseTasklistView', ChooseTasklistView)
-.controller('CreateEventView', CreateEventView)
-.controller('CreatePostView', CreatePostView)
-.controller('CreateProjectView', [CreateProjectView])
-.controller('CreateTaskView', CreateTaskView);
+.run(RunFn);
 
 rootZone.run(() => {
   angular.element(document).ready(() => {
@@ -97,7 +29,7 @@ rootZone.run(() => {
 
 export * from './components/config/config';
 export * from './components/services/service';
-export * from './components/views/Views';
+export * from './components/dingtalk/Views';
 export * from './components/config/ngConfig';
 export * from './components/config/router';
 export * from './components/directives/directive';

@@ -31,7 +31,7 @@
     "snapper-consumer": "^1.0.0",
     "spiderjs": "git+ssh://git@code.teambition.com:spider/spiderjs.git",
     "teambition-ui": "git+ssh://git@code.teambition.com:components/tb-ui.git",
-    "zone.js": "^0.5.9"
+    "zone.js": "^0.5.10"
   },
   "devDependencies": {
     "browser-sync": "^2.10.0",

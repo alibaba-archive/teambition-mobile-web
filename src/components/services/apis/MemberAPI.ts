@@ -4,7 +4,7 @@ import BaseAPI from '../../bases/BaseAPI';
 import {DingRestAPI} from '../service';
 import MemberModel from '../../models/MemberModel';
 import {IMemberData} from 'teambition';
-import {DingCorpid} from '../../../Run';
+import {Ding} from '../../../Run';
 
 let hasResolved = {};
 
@@ -56,6 +56,7 @@ export class MemberAPI extends BaseAPI {
 
   public getDingId(userIds: string[], projectId: string) {
     let cache = hasResolved[projectId];
+    let DingCorpid = Ding.corpId;
     if (!cache) {
       return this.DingRestAPI.query({
         Type: 'userIds',

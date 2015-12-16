@@ -155,7 +155,7 @@ gulp.task('images', () => {
 
 gulp.task('lib-css', () => {
   return gulp.src([
-      'node_modules/ionic-npm/css/ionic.css'
+      'node_modules/ionic-release/css/ionic.css'
     ])
     .pipe(concat('lib.css'))
     .pipe(gulp.dest('www/css/'))
@@ -163,7 +163,7 @@ gulp.task('lib-css', () => {
 
 gulp.task('lib-font', () => {
   return gulp.src([
-    'node_modules/ionic-npm/fonts/*',
+    'node_modules/ionic-release/fonts/*',
     'node_modules/teambition-ui/fonts/teambition*'
   ])
     .pipe(gulp.dest('www/fonts/'))
