@@ -1,4 +1,4 @@
-/* global __dirname */
+/* global __dirname, process */
 'use strict'
 
 const gulp       = require('gulp')
@@ -13,6 +13,8 @@ const source     = require('vinyl-source-stream')
 const buffer     = require('vinyl-buffer')
 const merge      = require('utils-merge')
 const chalk      = require('chalk')
+
+const entry = `./src/${process.env.BUILD_TARGET}/index.ts`
 
 function map_error(err) {
   if (err.fileName) {
@@ -68,7 +70,10 @@ let buildBundle = (bundler) => {
 
 gulp.task('compile-ts', () => {
   const bundler = browserify({
-    entries: './src/app.ts',
+    entries: [
+      './src/typings.d.ts',
+      './src/app.ts'
+    ],
     debug: true
   })
   .plugin(tsify, {

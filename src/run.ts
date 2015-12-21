@@ -5,7 +5,6 @@ import {getParam} from './components/bases/Utils';
 import {app} from './components/config/config';
 import {
   IRootScope,
-  Iapp,
   IDingSignature,
   IWxSignature
 } from 'teambition';

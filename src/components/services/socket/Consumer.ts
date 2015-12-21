@@ -3,6 +3,8 @@
 import {IRootScope} from 'teambition';
 import {RestAPI} from '../service';
 
+declare let Consumer: any;
+
 export interface IConsumer {
   _join(roomId: string, consumerId: string): void;
   join(roomId: string): angular.IPromise<any>;

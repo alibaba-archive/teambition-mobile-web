@@ -1,13 +1,12 @@
-/// <reference path="./typings.d.ts" />
 export * from './bootstrap';
-import {app} from './components/config/config';
+import {app} from './components/config';
 import {RunFn, rootZone} from './run';
 import {
   Notify,
   InputComponments,
   ProjectHomeActivity,
   TaskFilter
-} from './components/et/ETs';
+} from './components/et';
 
 angular.module('et.template')
 .service('notify', Notify)
@@ -27,9 +26,10 @@ rootZone.run(() => {
   });
 });
 
-export * from './components/config/config';
+export * from './Run';
 export * from './components/services/service';
-export * from './components/dingtalk/Views';
-export * from './components/config/ngConfig';
-export * from './components/config/router';
 export * from './components/directives/directive';
+export * from './components/config';
+export * from './components/bases';
+export * from './components/et';
+export * from './ding';

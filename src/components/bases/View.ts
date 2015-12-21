@@ -6,7 +6,7 @@ import {
   IProjectData,
   IRootScope
 } from 'teambition';
-import {Notify} from '../et/ETs';
+import {Notify} from '../et';
 
 declare let wx;
 

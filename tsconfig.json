@@ -1,15 +1,15 @@
 {
-  "version": "1.7.3",
+  "version": "1.8.0",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "experimentalAsyncFunctions": true,
-    "target": "ES5",
+    "target": "es5",
     "module": "commonjs",
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": true,
-    "noLib": false
+    "noLib": false,
+    "outDir": ".tmp/scripts/components"
   },
   "exclude": [
     "node_modules"

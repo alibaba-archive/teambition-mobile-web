@@ -1,5 +1,5 @@
 import userMe from '../mock/userme.mock';
-import {RootView, app, socketListener} from '../../src/app';
+import {RootView, app, socketListener} from '../../src/ding';
 import {IRootScope} from 'teambition';
 
 declare let sinonChai;
