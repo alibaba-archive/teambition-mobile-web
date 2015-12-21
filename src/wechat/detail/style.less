@@ -1,0 +1,80 @@
+// Global reference
+@import "../../less/reference.less";
+
+.detail-view {
+  background: #f7f7f7;
+  .involve-wrap {
+    color: @grayDarker;
+    overflow: hidden;
+    .item.detail-involves {
+      height: 48px;
+      .member-name-wrap {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 95%;
+        display: inline-block;
+        position: relative;
+        bottom: 3px;
+      }
+    }
+  }
+  &.big-footer {
+    & > ion-content {
+      bottom: 162px;
+    }
+    & > ion-footer-bar {
+      height: 162px;
+    }
+    .item-input-wrapper {
+      margin-bottom: 120px;
+    }
+  }
+  .item-comment {
+    width: 100%;
+    padding: 0px 12px;
+    position: relative;
+    i.icon{
+      color: #808080;
+      font-size: 18px;
+    }
+    .button-send-comment{
+      color: #A6A6A6;
+      font-weight: 600;
+      font-size: 15px;
+      &.btnActive{
+        color: #03A9F4;
+      }
+    }
+  }
+  .item-input-wrapper {
+    position: relative;
+    background: white;
+    color: #A6A6A6;
+    input{
+      font-size: 15px;
+      width: 100%;
+    }
+  }
+  .comment-images {
+    position: absolute;
+    top: 30px;
+    left: 8px;
+    overflow-x: auto;
+  }
+  .comment-image {
+    display: inline-block;
+    position: relative;
+    min-height: 30px;
+    margin-right: 3px;
+    //overflow: hidden;
+    vertical-align: bottom;
+    img {
+      max-height: 120px;
+    }
+  }
+  .comment-image-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}

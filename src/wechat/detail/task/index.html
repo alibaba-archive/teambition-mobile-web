@@ -1,0 +1,69 @@
+<div class="task-detail list" ng-controller="TaskView as TaskCtrl">
+  <div class="task-name-wrap">
+    <div class="task-belong item">
+      <div class="task-belong-wrap">
+        <span>{{TaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{TaskCtrl.task.tasklist}}<span>,&nbsp;</span><span>{{TaskCtrl.task.stage}}</span></span>
+      </div>
+    </div>
+    <div class="item item-icon-left task-content">
+      <i class="icon" ng-class="{'icon-checkbox-thin': !task.isDone, 'icon-checkbox-ios-checked': TaskCtrl.task.isDone}"></i>
+      <span>{{TaskCtrl.task.content}}</span>
+    </div>
+  </div>
+  <div class="task-info-wrap">
+    <div class="item list-title">
+      信息
+    </div>
+    <div class="item item-detail-avatar">
+      <img ng-src="{{TaskCtrl.task.executorAvatar}}" class="task-executor-avatar">
+      <span class="task-executor-name">{{TaskCtrl.task.executorName}}</span>
+    </div>
+    <div class="item item-icon-left">
+      <i class="icon icon-calendar2"></i>
+      <span ng-if="!TaskCtrl.task.dueDate">没有设置截止日期</span>
+      <span ng-if="TaskCtrl.task.dueDate" ng-class="{'assertive': TaskCtrl.task.overdue}">{{TaskCtrl.task.dueDate | formatDate:'ll'}}</span>
+    </div>
+  </div>
+  <div class="task-more-wrap ionic">
+    <div-title class="item list-title">
+      更多
+    </div-title>
+    <div-item class="item item-icon-left item-taks-note" ng-if='task.note'>
+      <i class="icon icon-wall"></i>
+      <span ng-bind-html="task.note" class="task-note"></span>
+    </div-item>
+    <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskCount.total">
+      <i class="icon icon-sub-task"></i>
+      <span><span>{{TaskCtrl.task.subtaskCount.total}}</span>个子任务，<span>{{TaskCtrl.task.subtaskCount.done}}</span>个已完成</span>
+    </a>
+    <div-item class="item item-icon-left">
+      <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
+      <span>{{TaskCtrl.task.priority | priorityStr}}</span>
+    </div-item>
+    <div-item class="item item-icon-left">
+      <i class="icon icon-repeat"></i>
+      <span>{{TaskCtrl.task.recurrence | recurrenceStr}}</span>
+    </div-item>
+    <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-show="TaskCtrl.task.linked.length">
+      <i class="icon icon-link2"></i>
+      <span>{{TaskCtrl.task.linked.length}}个关联</span>
+    </a>
+    <div-item class="item item-icon-left" on-tap="DetailCtrl.like()">
+      <i class="icon icon-dig" ng-class="{'positive': TaskCtrl.task.like.isLike}"></i>
+      <span>
+        <div class="liked-people" ng-bind="TaskCtrl.task.like.likesGroup | likedPeople"></div>
+        <span ng-bind="TaskCtrl.task.like.likesCount || ''"></span>
+        <span ng-if="TaskCtrl.task.like.likesCount">个赞</span>
+      </span>
+    </div-item>
+  </div>
+  <div class="task-executor-wrap" on-tap="DetailCtrl.showExecutors()">
+    <div class="item list-title">
+      参与者
+    </div>
+    <div class="item item-icon-left">
+      <i class="icon icon-users"></i>
+      <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+    </div>
+  </div>
+</div>

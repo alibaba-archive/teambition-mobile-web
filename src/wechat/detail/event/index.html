@@ -1,0 +1,34 @@
+<div class="event-detail" ng-controller="EventView as EventCtrl">
+  <div class="list">
+    <div class="event-main-wrap">
+      <div class="item">
+        <p class="event-title">{{EventCtrl.event.title}}</p>
+        <p class="event-time" ng-bind="EventCtrl.event.eventTime1"></p>
+        <p><span ng-bind="EventCtrl.event.eventTime2"></span></p>
+      </div>
+    </div>
+    <div class="event-detail-wrap">
+      <div class="item item-icon-left" ng-if="EventCtrl.event.content">
+        <i class="icon icon-wall"></i>
+        <span class="event-content margin-left" ng-bind-html="EventCtrl.event.content"></span>
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon icon-location"></i>
+        <span class="event-location margin-left" ng-bind="EventCtrl.event.location || '暂未安排地点'"></span>
+      </div>
+      <a class="item item-icon-left" on-tap="DetailCtrl.openLinked()" ng-if="EventCtrl.event.linked.length">
+        <i class="icon icon-link2"></i>
+        <span class="margin-left">{{EventCtrl.event.linked.length}}个关联</span>
+      </a>
+    </div>
+    <div class="event-executor-wrap" on-tap="DetailCtrl.showExecutors()">
+      <div class="item list-title">
+        参与者
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon icon-users"></i>
+        <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+      </div>
+    </div>
+  </div>
+</div>

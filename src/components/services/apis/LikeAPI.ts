@@ -24,11 +24,11 @@ export class LikeAPI extends BaseAPI {
     });
   }
 
-  public postLike <T>(detail: any) {
+  public postLike <T>(type: string, detail: any) {
     let promise: angular.IPromise<any>;
-    if (detail.liked) {
+    if (detail.like && detail.like.isLike) {
       promise = this.RestAPI.delete({
-        Type: `${detail.type}s`,
+        Type: `${type}s`,
         Id: detail._id,
         Path1: 'like'
       }, {
@@ -37,7 +37,7 @@ export class LikeAPI extends BaseAPI {
       .$promise;
     }else {
       promise = this.RestAPI.save({
-        Type: `${detail.type}s`,
+        Type: `${type}s`,
         Id: detail._id,
         Path1: 'like'
       }, {

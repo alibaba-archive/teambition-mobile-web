@@ -21,6 +21,7 @@ export * from './apis/ObjectLinkAPI';
 export * from './apis/LikeAPI';
 export * from './apis/TagsAPI';
 export * from './apis/OrganizationAPI';
+export * from './apis/ReportAPI';
 export * from './socket/socketListener';
 export * from './socket/Consumer';
 export * from './socket/socketFactory';
