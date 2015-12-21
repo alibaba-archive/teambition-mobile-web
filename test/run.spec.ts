@@ -1,6 +1,5 @@
 import dingSignature from './mock/dingsignature.mock';
-import {DingService} from '../src/components/bases/DingService';
-import {app} from '../src/app';
+import {app} from '../src/ding';
 
 beforeEach(() => {
   angular.mock.module('teambition');
@@ -11,10 +10,3 @@ beforeEach(() => {
   });
 });
 
-export const Ding = new DingService(
-  dingSignature.agentId,
-  dingSignature.corpId,
-  dingSignature.timeStamp,
-  dingSignature.nonceStr,
-  dingSignature.signature
-);

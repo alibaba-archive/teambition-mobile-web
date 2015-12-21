@@ -1,6 +1,5 @@
 import projects from '../mock/projects.mock';
-import {Ding} from '../../src/run';
-import {ProjectView, fields, app} from '../../src/app';
+import {ProjectView, fields, app, Ding} from '../../src/ding';
 import {IRootScope, IProjectData} from 'teambition';
 
 declare let sinonChai;

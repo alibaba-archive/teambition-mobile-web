@@ -38,11 +38,13 @@ const CDNs = [
   }
 ]
 
+const target = process.env.BUILD_TARGET
+
 let cdnNamespace = 'tb-mobile'
 
-if (process.env.BUILD_TARGET === 'ding') {
+if (target === 'ding') {
   cdnNamespace = 'tb-ding'
-}else if (process.env.BUILD_TARGET === 'wechat') {
+}else if (target === 'wechat') {
   cdnNamespace = 'tb-wechat'
 }
 
@@ -66,15 +68,14 @@ const paths = {
   images: ['src/images/*'],
   less: [
     'src/less/app.less',
-    'src/components/**/*.less'
+    'src/**/*.less'
   ],
   html: [
-    'src/components/views/**/*.html',
-    'src/scripts/directives/**/*.html'
+    `src/${target}/**/*.html`,
+    'src/components/directives/**/*.html'
   ],
   app: [
-    './src/**/*.ts',
-    '!src/components/interface/zone.d.ts'
+    './src/**/*.ts'
   ],
   tbui: [
     'src/less/tb-fonts-variables.less',

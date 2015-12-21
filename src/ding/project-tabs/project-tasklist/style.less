@@ -1,0 +1,120 @@
+// Global reference
+@import "../../../less/reference.less";
+
+.tasks-list,
+.tasks-list-filter {
+  .item-group-selector {
+    height: 50px;
+
+    .label {
+      width: 35%;
+      color: black;
+      font-size: 15px;
+      max-width: 200px;
+    }
+
+    .selector {
+      top: 0;
+      right: 0;
+      position: absolute;
+      padding-top: 14px;
+      padding-right: 15px;
+
+      .group-name {
+        margin-right: 5px;
+        font-size: 15px;
+        color: black;
+      }
+    }
+  }
+
+  .task-list {
+    margin-bottom: -2px;
+    padding-bottom: 0;
+
+    .item-divider {
+      height: 32px;
+      font-size: 14px;
+      color: #808080;
+      padding-top: 5px;
+      margin-bottom: 1px;
+      background-color: #F7F7F7;
+      border-top: 1px solid #D9D9D9;
+      border-bottom: 1px solid #D9D9D9;
+    }
+
+    .task-item {
+      height: 50px;
+
+      &::after {
+        content: '';
+        left: 15px;
+        right: 0;
+        bottom: 1px;
+        height: 1px;
+        position: absolute;
+        background-color: #D9D9D9;
+      }
+
+      &.task-priority::before {
+        content: '';
+        width: 5px;
+        height: 50px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+      }
+
+      &.task-priority.task-priority-high::before {
+        background-color: #F5A623;
+      }
+
+      &.task-priority.task-priority-urgent::before {
+        background-color: #E51C23;
+      }
+
+      &.task-has-done {
+        color: #808080;
+      }
+
+      .task-content {
+        margin-right: 40px;
+
+        .task-title {
+          max-width: 90%;
+          font-size: 15px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+          bottom: 2px;
+        }
+
+        &.task-has-due {
+          margin-top: -8px;
+
+          .task-title {
+            margin-bottom: -6px;
+          }
+        }
+
+        .task-over-due {
+          color: #E51C23;
+        }
+
+        time {
+          font-size: 11px;
+        }
+      }
+    }
+
+    .task-avatar {
+      top: 10px;
+      left: auto;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-size: cover;
+    }
+  }
+}

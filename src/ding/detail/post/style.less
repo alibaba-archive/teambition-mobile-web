@@ -1,0 +1,55 @@
+// Global reference
+@import "../../../less/reference.less";
+.post-detail {
+  margin-bottom: 0;
+  .post-executor-wrap{
+    .item{
+      i{
+        color: #808080;
+      }
+    }
+  }
+  .post-wrap{
+    margin-bottom: 15px;
+    .item {
+      .post-title {
+        margin: 0;
+        color: @darkTextColor;
+        white-space: normal;
+        input {
+          font-size: 20px;
+          width: 100%;
+        }
+      }
+      p {
+        overflow: initial;
+        text-overflow: initial;
+        white-space: normal;
+        color: @lightTextColor;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+    .post-content {
+      padding: 15px;
+      img{
+        width: 100%;
+      }
+
+    }
+    .item-post-title{
+      padding-bottom: 0;
+    }
+    .item-post-content{
+      white-space: normal;
+      padding-top: 12px;
+      p{
+        color: #212121;
+        font-size: 14px;
+      }
+      li {
+        white-space: pre;
+      }
+    }
+  }
+}
