@@ -3,11 +3,13 @@ import {eventDate} from './eventDate';
 import {formatFileSize} from './formatFileSize';
 import {memberLimit} from './projectMemberLimit';
 import {recurrenceStr} from './recurrenceStr';
+import {likedPeopleFilter} from './likedPeople';
 
 export * from './eventDate';
 export * from './formatFileSize';
 export * from './projectMemberLimit';
 export * from './recurrenceStr';
+export * from './likedPeople';
 
 export const priorityStr = (priority: number = 0): string => {
   let map: string[] = ['普通', '紧急', '非常紧急'];
@@ -72,4 +74,7 @@ angular.module('teambition')
 })
 .filter('recurrenceStr', () => {
   return recurrenceStr;
+})
+.filter('likedPeople', () => {
+  return likedPeopleFilter;
 });

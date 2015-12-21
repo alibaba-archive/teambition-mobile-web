@@ -72,7 +72,7 @@ gulp.task('compile-ts', () => {
   const bundler = browserify({
     entries: [
       './src/typings.d.ts',
-      './src/app.ts'
+      entry
     ],
     debug: true
   })

@@ -1,6 +1,6 @@
 'use strict';
 export const recurrenceStr = (rule: string) => {
-  if (!rule || rule === '') {
+  if (!rule || typeof rule !== 'string' || rule === '') {
     return '从不';
   }
   rule = rule.replace('RRULE:', '');

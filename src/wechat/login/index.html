@@ -1,0 +1,20 @@
+<ion-view class="login-view" ng-controller="LoginView as LoginCtrl">
+  <ion-content class="login-content" scroll=false>
+    <div class="login-wrap">
+      <div class="direct-in login-user">
+        <div class="login-user-wrap">
+          <h2>新用户</h2>
+          <p>还没有&nbsp;Teambition&nbsp;账号</p>
+          <a class="login-btn" href="/weixin/dev/login?noAccount=1&aid={{LoginCtrl.aid}}&state=mp_weixin">直接进入</a>
+        </div>
+      </div>
+      <div class="account-bind login-user">
+        <div class="login-user-wrap">
+          <h2>老用户</h2>
+          <p>已有&nbsp;Teambition&nbsp;账户</p>
+          <a class="login-btn" href="/weixin/dev/login?aid={{LoginCtrl.aid}}&state=mp_weixin">立即绑定</a>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

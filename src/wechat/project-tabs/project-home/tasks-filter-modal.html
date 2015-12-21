@@ -1,0 +1,24 @@
+<ion-modal-view class="tasks-filter-modal">
+  <ion-header-bar>
+    <h1 class="title">选择类型</h1>
+    <button class="button button-clear button-positive" on-tap="PanelHomeCtrl.filterTasks()">
+      确定
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.all"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types')">全部类型</ion-checkbox>
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.task"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','task')">任务</ion-checkbox>
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.post"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','post')">分享</ion-checkbox>
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.work"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','work')">文件</ion-checkbox>
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.event"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','event')">日程</ion-checkbox>
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedTypes.types.entry"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedTypes,'types','entry')">账目</ion-checkbox>
+    </div>
+  </ion-content>
+</ion-modal-view>

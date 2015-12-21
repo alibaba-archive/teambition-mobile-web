@@ -1,0 +1,49 @@
+<ion-view class="report-view" ng-controller="ReportView as ReportCtrl">
+  <ion-content class="padding">
+    <div class="report-card">
+      <div class="row report-title">
+        <div class="col col-33">完成任务</div>
+        <div class="col col-33">逾期任务</div>
+        <div class="col col-33">新增任务</div>
+      </div>
+      <div class="row report-count">
+        <div class="col col-33 balanced" ng-bind="::taskCountDone"></div>
+        <div class="col col-33 assertive" ng-bind="::taskCountDelay"></div>
+        <div class="col col-33 positive" ng-bind="::taskCountNew"></div>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item list-title">任务完成数量排行</div>
+      <div class="item counts-done" ng-repeat="item in taskRankDone track by item._id">
+        <span class="report-list-marker" ng-bind="::$index+1"></span>
+        <div class="report-avatar" style="background-image:url({{::item.avatarUrl}})"></div>
+        <span class="task-info"><span>{{::item.name}}</span>，完成<span>{{::item.count}}</span>项任务</span>
+      </div>
+      <div class="item list-title">逾期任务数量排行</div>
+      <div class="item conuts-expire" ng-repeat="item in taskRankDelay track by item._id">
+        <span class="report-list-marker" ng-bind="::$index+1"></span>
+        <div class="report-avatar" style="background-image:url('{{::item.avatarUrl}}')"></div>
+        <span class="task-info"><span>{{::item.name}}</span>，<span class="assertive">有<span ng-bind="::item.count"></span>项任务逾期</span></span>
+      </div>
+      <div class="item list-title">逾期的任务</div>
+      <a ng-repeat="item in delayTasks track by item._id" class="item item-icon-left tasks-expire" ng-href="#/wechat/task/conjunction/{{item._id}}">
+        <i class="icon icon-checkbox-thin"></i>
+        <div class="report-avatar" style="background-image:url('{{::item.avatar}}')"></div>
+        <span class="task-content" ng-bind="::item.content"></span><span class="project-name" ng-bind="::item.projectName"></span>
+        <span class="due-data assertive">{{::item.dueDate | formatDate : 'MM-DD'}}</span>
+      </a>
+      <div class="item list-title">完成的任务</div>
+      <a ng-repeat="item in doneTasks track by item._id" class="item item-icon-left tasks-done" ng-href="#/wechat/task/conjunction/{{item._id}}">
+        <i class="icon icon-checkbox-ios-checked"></i>
+        <div class="report-avatar" style="background-image:url('{{::item.avatar}}')"></div>
+        <div class="task-content"><span ng-bind="::item.content"></span><span class="project-name" ng-bind="::item.projectName"></span></div>
+      </a>
+      <div class="item list-title">新增的任务</div>
+      <a ng-repeat="item in newTasks track by item._id" class="item item-icon-left tasks-done" ng-href="#/wechat/task/conjunction/{{item._id}}">
+        <i class="icon icon-checkbox-thin"></i>
+        <div class="report-avatar" style="background-image:url('{{::item.avatar}}')"></div>
+        <div class="task-content"><span ng-bind="::item.content"></span><span class="project-name" ng-bind="::item.projectName"></span></div>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

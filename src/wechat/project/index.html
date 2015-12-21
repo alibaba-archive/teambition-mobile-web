@@ -1,0 +1,61 @@
+<ion-view class="padding" ng-controller="ProjectView as ProjectCtrl">
+  <ion-content>
+    <div class="list projects-list">
+      <div class="item item-divider" ng-if="ProjectCtrl.countStar()">
+        星标项目
+      </div>
+      <div class="project-wrap project-starred" ng-if="ProjectCtrl.countStar()">
+        <a class="project-item" href="/#/project/{{project._id}}/home"
+           style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
+           ng-repeat="(py, project) in ProjectCtrl.projects track by project._id" ng-if="project.isStar">
+          <p>{{::project.name}}</p>
+          <i class="icon icon-star"></i>
+        </a>
+      </div>
+      <div class="item item-divider" ng-if="ProjectCtrl.personalProjects.length">
+        个人项目
+      </div>
+      <!--<div class="item item-scanning" on-tap="ProjectCtrl.wxQrcode()">
+        <div class="project-list-icon icon-has-background">
+          <i class="icon icon-scanning"></i>
+        </div>
+        <p>扫一扫关注项目</p>
+      </div>-->
+      <!-- 个人项目 -->
+      <ion-list class="project-wrap ionic" ng-repeat="project in ProjectCtrl.personalProjects track by project._id" ng-show="!project.deleted">
+        <ion-item class="item" ng-class="{'item-icon-right': editing}" href="/#/project/{{project._id}}/home">
+          <div class="project-list-icon project-logo" style="{{project.style}}"></div>
+          <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
+
+          <p>{{project.name}}</p>
+          <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore(project)">更多</ion-option-button>
+          <ion-option-button class="project-item-star" on-tap="ProjectCtrl.starProject(project)"
+                             ng-hide="project.isStar">星标项目</ion-option-button>
+          <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject(project)"
+                             ng-show="project.isStar">取消星标</ion-option-button>
+        </ion-item>
+      </ion-list>
+      <!-- 个人项目结束 -->
+      <!-- 组织项目 -->
+      <section ng-repeat="organization in ProjectCtrl.organization track by organization.id | orderBy: 'name'">
+        <div class="item item-divider">
+          {{organization.name}}
+        </div>
+        <ion-list class="project-wrap ionic" ng-repeat="project in organization.projects track by project._id" ng-show="!project.deleted">
+          <ion-item class="item" ng-class="{'item-icon-right': editing}" href="/#/project/{{project._id}}/home">
+            <div class="project-list-icon project-logo" style="{{project.style}}"></div>
+            <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
+
+            <p>{{project.name}}</p>
+            <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore(project)">更多</ion-option-button>
+            <ion-option-button class="project-item-star" on-tap="ProjectCtrl.starProject(project)"
+                              ng-hide="project.isStar">星标项目</ion-option-button>
+            <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject(project)"
+                              ng-show="project.isStar">取消星标</ion-option-button>
+          </ion-item>
+        </ion-list>
+      </section>
+      <!-- 组织项目结束 -->
+    </div>
+  </ion-content>
+</ion-view>

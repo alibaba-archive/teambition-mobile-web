@@ -132,9 +132,7 @@ export class DetailAPI extends BaseAPI {
   }
 
   private detailParser (detail: any, type: string, detailInfos: IDetailInfos): any {
-    detail.isLike = detailInfos.like.isLike;
-    detail.likesGroup = detailInfos.like.likesGroup;
-    detail.likesCount = detailInfos.like.likesCount;
+    detail.like = detailInfos.like;
     detail.detailInfos = detailInfos;
     return DetailModel.setDetail(`${type}:detail:${detail._id}`, detail);
   }

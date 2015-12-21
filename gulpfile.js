@@ -68,7 +68,7 @@ const paths = {
   images: ['src/images/*'],
   less: [
     'src/less/app.less',
-    'src/**/*.less'
+    `src/${target}/**/*.less`
   ],
   html: [
     `src/${target}/**/*.html`,
@@ -241,9 +241,9 @@ gulp.task('before:default', sequence('clean', 'tsd:install', 'compile',
 
 gulp.task('default', ['before:default'], () => {
   let str = '';
-  if (process.env.BUILD_TARGET === 'wechat') {
+  if (target === 'wechat') {
     str = wechatScript
-  }else if(process.env.BUILD_TARGET === 'ding') {
+  }else if(target === 'ding') {
     str = dingScript
   }
   return gulp.src('www/index.html')

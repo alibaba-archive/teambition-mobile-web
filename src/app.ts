@@ -32,4 +32,3 @@ export * from './components/directives/directive';
 export * from './components/config';
 export * from './components/bases';
 export * from './components/et';
-export * from './ding';

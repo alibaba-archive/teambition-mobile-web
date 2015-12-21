@@ -1,0 +1,16 @@
+<ion-modal-view class="members-filter-modal">
+  <ion-header-bar>
+    <h1 class="title">选择成员</h1>
+    <button class="button button-clear button-positive" on-tap="PanelHomeCtrl.filterMembers()">
+      确定
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <ul class="list">
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedMembers.all"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedMembers,'members')">全部成员</ion-checkbox>
+      <ion-checkbox ng-model="PanelHomeCtrl.selectedMembers.members[member._id]" ng-repeat="member in PanelHomeCtrl.members track by member._id"
+                    ng-change="PanelHomeCtrl.checkItem(PanelHomeCtrl.selectedMembers,'members',member)">{{::member.name}}</ion-checkbox>
+    </ul>
+  </ion-content>
+</ion-modal-view>

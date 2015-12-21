@@ -1,0 +1,33 @@
+<div class="file-detail list" ng-controller="FileView as FileCtrl">
+  <div class="file-wrap">
+    <div class="item item-avatar">
+      <div class="avatar item-image" style="background-image: url({{FileCtrl.file.creatorAvatar}})"></div>
+      <p class="file-info">文件大小: <span ng-bind="FileCtrl.file.fileSize | formatFileSize"></span></p>
+      <p class="file-info">
+        上传时间:
+        <span ng-bind="FileCtrl.file.updated | formatDate:'lll'"></span>
+      </p>
+    </div>
+    <div class="item item-image {{FileCtrl.file.fileCategory}}">
+      <img class="file-image" ng-show="FileCtrl.file.fileCategory == 'image'" ng-src="{{FileCtrl.file.thumbnail}}">
+      <div ng-show="FileCtrl.file.fileCategory != 'image'" class="file-thubmail {{FileCtrl.file.fileType}}">
+        <div class="filetype {{FileCtrl.file.class}}" ng-bind="FileCtrl.file.fileType"></div>
+      </div>
+    </div>
+    <div class="item item-preview">
+      <p class="file-name">{{FileCtrl.file.fileName}}</p>
+      <a class="positive" on-tap="DetailCtrl.previewFile()" ng-if="FileCtrl.file.fileCategory === 'image'">
+        预览
+      </a>
+    </div>
+  </div>
+  <div class="file-executor-wrap" on-tap="DetailCtrl.showExecutors()">
+    <div class="item list-title">
+      参与者
+    </div>
+    <div class="item item-icon-left">
+      <i class="icon icon-users"></i>
+      <span><span ng-repeat="member in DetailCtrl.members track by member._id">{{member.name}} <span ng-if="!$last">、</span></span></span>
+    </div>
+  </div>
+</div>

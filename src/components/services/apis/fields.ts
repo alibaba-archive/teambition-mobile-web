@@ -21,5 +21,7 @@ export const fields = {
 
   projectActivityFileds: '_id,creator,created,title,action,objectType,boundToObjectType,content',
 
-  memberFileds: '_id,name,title,avatarUrl'
+  memberFileds: '_id,name,title,avatarUrl',
+
+  reportFileds: '_id,executor,content,dueDate,project'
 };
