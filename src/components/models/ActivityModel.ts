@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 import BaseModel from '../bases/BaseModel';
-import {activityParser} from '../services/service';
-import {IActivityData, IActivitySaveData} from 'teambition';
+import {activityParser} from '../services';
+import {IActivityData} from 'teambition';
 
 class ActivityModel extends BaseModel {
   private activitiesIndex: string[] = [];

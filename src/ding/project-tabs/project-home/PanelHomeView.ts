@@ -47,6 +47,8 @@ const typeMap = {
 ])
 export class PanelHomeView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'PanelHomeView';
 
   public selectedMembers = {
@@ -88,8 +90,6 @@ export class PanelHomeView extends View {
   private eventGroup: IEventData[];
   private ProjectHomeActivity: ProjectHomeActivity;
   private state: string;
-
-  private static $inject = ['$scope'];
 
   constructor($scope: angular.IScope) {
     super();
@@ -484,4 +484,4 @@ export class PanelHomeView extends View {
   }
 }
 
-angular.module('teambition').controller('PanelHomeView', [PanelHomeView]);
+angular.module('teambition').controller('PanelHomeView', PanelHomeView);

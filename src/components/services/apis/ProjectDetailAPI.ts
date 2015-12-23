@@ -1,7 +1,7 @@
 'use strict';
 import {inject} from '../../bases/Utils';
 import BaseAPI from '../../bases/BaseAPI';
-import {MemberAPI} from '../service';
+import {MemberAPI} from '..';
 import MemberModel from '../../models/MemberModel';
 import TaskModel from '../../models/TaskModel';
 import ProjectActivityModel from '../../models/ProjectActivityModel';

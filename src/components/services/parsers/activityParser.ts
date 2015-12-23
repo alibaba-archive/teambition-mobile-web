@@ -1,6 +1,8 @@
 'use strict';
 import {getDeps} from '../../bases/Utils';
-import {mdParser, mapfile, emojiParser} from '../service';
+import {mdParser} from './mdParser';
+import {mapfile} from './mapfile';
+import {emojiParser} from './emojiParser';
 import {IActivityData} from 'teambition';
 
 export const activityParser = function(activity: IActivityData) {

@@ -16,8 +16,6 @@ declare let zone: Zone;
 export let Wechat = WechatService;
 export let Ding = typeof dd === 'undefined' ? undefined : DingService;
 
-export let rootZone = zone.fork();
-
 export const RunFn = function(
   $http: any,
   $q: angular.IQService,

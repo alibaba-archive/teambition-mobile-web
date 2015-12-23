@@ -8,17 +8,20 @@
     <div id="mocha"></div>
     <script src="https://g.alicdn.com/ilw/ding/0.6.6/scripts/dingtalk.js"></script>
     <script src="js/lib.js"></script>
-    <script src="node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/mocha/mocha.js"></script>
     <script>
+      if (typeof window.initMochaPhantomJS === 'function') {
+        window.initMochaPhantomJS()
+      }
       mocha.setup({
         ui: 'bdd',
         ignoreLeaks: true
       })
     </script>
-    <script src="node_modules/angular-mocks/angular-mocks.js"></script>
-    <script src="node_modules/chai/chai.js"></script>
-    <script src="node_modules/sinon/pkg/sinon.js"></script>
-    <script src="node_modules/sinon-chai/lib/sinon-chai.js"></script>
+    <script src="../../node_modules/angular-mocks/angular-mocks.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
+    <script src="../../node_modules/sinon/pkg/sinon.js"></script>
+    <script src="../../node_modules/sinon-chai/lib/sinon-chai.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

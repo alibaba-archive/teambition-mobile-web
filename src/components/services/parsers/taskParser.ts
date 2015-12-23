@@ -1,7 +1,7 @@
 'use strict';
 import {nobodyUrl} from '../../config/config';
 import {getDeps} from '../../bases/Utils';
-import {mdParser} from '../service';
+import {mdParser} from './mdParser';
 import {ITaskData} from 'teambition';
 
 export const taskParser = (task: ITaskData) => {

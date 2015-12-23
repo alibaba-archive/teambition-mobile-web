@@ -13,6 +13,8 @@ const minifyHtml   = require('gulp-minify-html')
 const ngTemplate   = require('gulp-ng-template')
 const sequence     = require('gulp-sequence')
 const uglify       = require('gulp-uglify')
+const lint         = require('gulp-tslint')
+const stylish      = require('gulp-tslint-stylish')
 const minifyCss    = require('gulp-minify-css')
 const RevAll       = require('gulp-rev-all')
 const plumber      = require('gulp-plumber')
@@ -38,7 +40,7 @@ const CDNs = [
   }
 ]
 
-const target = process.env.BUILD_TARGET
+const target = process.env.BUILD_TARGET || 'ding'
 
 let cdnNamespace = 'tb-mobile'
 
@@ -65,25 +67,25 @@ let logError  = (stream) => {
 }
 
 const paths = {
-  images: ['src/images/*'],
+  images: ['./src/images/*'],
   less: [
-    'src/less/app.less',
-    `src/${target}/**/*.less`
+    './src/less/app.less',
+    `./src/${target}/**/*.less`
   ],
   html: [
-    `src/${target}/**/*.html`,
-    'src/components/directives/**/*.html'
+    `./src/${target}/**/*.html`,
+    './src/components/directives/**/*.html'
   ],
   app: [
     './src/**/*.ts'
   ],
   tbui: [
-    'src/less/tb-fonts-variables.less',
-    'node_modules/teambition-ui/less/teambition-ui-variables.less',
-    'node_modules/teambition-ui/less/teambition-ui-icons.less'
+    './src/less/tb-fonts-variables.less',
+    './node_modules/teambition-ui/less/teambition-ui-variables.less',
+    './node_modules/teambition-ui/less/teambition-ui-icons.less'
   ],
   et: [
-    'src/components/et/**/*.html'
+    './src/components/et/**/*.html'
   ]
 }
 
@@ -96,6 +98,17 @@ gulp.task('clean', ['tsd:purge'], () => {
 
   gulp.src('.tmp/*')
     .pipe(rimraf({force: true}))
+})
+
+gulp.task('lint', () => {
+  return gulp.src('src/**/*.ts')
+    .pipe(lint())
+    .pipe(lint.report(stylish, {
+      emitError: false,
+      sort: true,
+      bell: true,
+      fullPath: true
+    }))
 })
 
 gulp.task('less', () => {

@@ -1,6 +1,5 @@
 'use strict';
 import {
-  parentView,
   inject,
   Ding,
   View,
@@ -19,6 +18,8 @@ let lastIndex: number;
 ])
 export class CreateProjectView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'CreateProjectView';
 
   public organizations: IOrganizationData[];
@@ -28,8 +29,6 @@ export class CreateProjectView extends View {
   private OrganizationAPI: OrganizationAPI;
   private ProjectsAPI: ProjectsAPI;
   private state: string;
-
-  private static $inject = ['$scope'];
 
   constructor($scope: angular.IScope) {
     super();

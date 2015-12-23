@@ -1,5 +1,5 @@
 'use strict';
-import {View, inject, DetailAPI, ProjectsAPI, TasklistAPI} from '../../index';
+import {View, inject, DetailAPI, TasklistAPI} from '../../index';
 import {ITasklistData} from 'teambition';
 
 @inject([

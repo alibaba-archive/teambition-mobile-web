@@ -71,8 +71,7 @@
       ["indexSignature", "space"]
     ],
     "use-strict": [true,
-      "check-module",
-      "check-function"
+      "check-module"
     ],
     "variable-name": false,
     "whitespace": [true,

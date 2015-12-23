@@ -1,0 +1,29 @@
+<ion-view ng-controller="EditDuedateView as EditDuedateCtrl" class="edit-duedate-view">
+  <ion-content>
+    <ul class="list ionic">
+      <li class="item item-toggle">
+        截止日期
+        <label class="toggle toggle-positive">
+          <input type="checkbox"
+                 ng-model="EditDuedateCtrl.hasDueDate"
+                 ng-change="EditDuedateCtrl.resetDueDate()">
+          <div class="track">
+          <div class="handle"></div>
+          </div>
+        </label>
+      </li>
+      <label class="item item-input">
+        <span class="input-label">日期</span>
+        <div class="date-wrap">
+          <span ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'll'"
+                ng-if="EditDuedateCtrl.displayDuedate"></span>
+          <span ng-if="!EditDuedateCtrl.displayDuedate">暂未设置截止日期</span>
+          <input type="date"
+                ng-model="EditDuedateCtrl.displayDuedate"
+                ng-model-options="{ getterSetter: true }"
+                ng-disabled="!EditDuedateCtrl.hasDueDate">
+        </div>
+      </label>
+    </ul>
+  </ion-content>
+</ion-view>

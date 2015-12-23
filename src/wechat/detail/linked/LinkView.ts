@@ -1,5 +1,5 @@
 'use strict';
-import {inject, View, parentView, DetailAPI} from '../../index';
+import {inject, View, DetailAPI} from '../../index';
 import {ILinkedData} from 'teambition';
 
 const iconMap = {

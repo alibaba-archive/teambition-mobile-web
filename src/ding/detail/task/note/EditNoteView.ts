@@ -1,6 +1,5 @@
 'use strict';
 import {Ding, inject, View, DetailAPI} from '../../../index';
-import {ITaskData} from 'teambition';
 
 @inject([
   'DetailAPI'

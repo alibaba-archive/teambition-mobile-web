@@ -9,15 +9,13 @@ import {IActivityData} from 'teambition';
 export class ActivityView extends View {
 
   public ViewName = 'ActivityView';
-
   public activities: IActivityData[];
 
+  private ActivityAPI: ActivityAPI;
 
   constructor(
-    public ActivityAPI: ActivityAPI
   ) {
     super();
-    this.ActivityAPI = ActivityAPI;
     this.zone.run(angular.noop);
   }
 

@@ -18,6 +18,8 @@ export interface IonicOptionsButtonsOption {
 ])
 export class ProjectView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'ProjectView';
   public personalProjects: IProjectData[] = [];
   public staredProject: IProjectData[] = [];
@@ -37,7 +39,6 @@ export class ProjectView extends View {
 
   private ProjectsAPI: ProjectsAPI;
 
-  // @ngInject
   constructor(
     $scope: angular.IScope
   ) {

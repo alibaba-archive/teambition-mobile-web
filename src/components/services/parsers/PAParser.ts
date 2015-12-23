@@ -1,5 +1,5 @@
 'use strict';
-import {mapfile} from '../service';
+import {mapfile} from './mapfile';
 import {IProjectActivitiesData, IFileData, IMemberData} from 'teambition';
 
 export const PAParser = (activity: IProjectActivitiesData) => {

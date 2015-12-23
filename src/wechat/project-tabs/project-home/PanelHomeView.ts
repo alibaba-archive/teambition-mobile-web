@@ -46,6 +46,8 @@ const typeMap = {
 ])
 export class PanelHomeView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'PanelHomeView';
 
   public selectedMembers = {
@@ -86,9 +88,7 @@ export class PanelHomeView extends View {
   private activities: IProjectActivitiesData [];
   private eventGroup: IEventData[];
   private ProjectHomeActivity: ProjectHomeActivity;
-  private state: string;
 
-  private static $inject = ['$scope'];
 
   constructor($scope: angular.IScope) {
     super();
@@ -398,25 +398,6 @@ export class PanelHomeView extends View {
     return obj;
   }
 
-  private addMembers() {
-    let emails: string[] = [];
-    angular.forEach(this.organizationMembers, (member: IMemberData) => {
-      if (member.isSelected) {
-        emails.push(member.email);
-      }
-    });
-    this.showLoading();
-    this.ProjectDetailAPI.addMembers(projectId, emails)
-    .then(() => {
-      this.hideLoading();
-    })
-    .catch((reason: any) => {
-      alert(JSON.stringify(reason));
-      let message = this.getFailureReason(reason);
-      this.showMsg('error', '更新成员失败', message);
-      this.hideLoading();
-    });
-  }
 }
 
-angular.module('teambition').controller('PanelHomeView', [PanelHomeView]);
+angular.module('teambition').controller('PanelHomeView', PanelHomeView);

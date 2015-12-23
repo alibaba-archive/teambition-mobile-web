@@ -1,6 +1,5 @@
 'use strict';
 import {app} from '../../config/config';
-import {Iapp} from 'teambition';
 
 let listener = [];
 const typeMap = [

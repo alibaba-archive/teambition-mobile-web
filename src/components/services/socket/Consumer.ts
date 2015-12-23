@@ -1,7 +1,7 @@
 'use strict';
 
 import {IRootScope} from 'teambition';
-import {RestAPI} from '../service';
+import {RestAPI} from '../apis/RESTFul';
 
 declare let Consumer: any;
 
@@ -14,7 +14,7 @@ export interface IConsumer {
 let joined = [];
 let listener = {};
 
-angular.module('teambition').factory('ngConsumer',['$rootScope', 'RestAPI',
+angular.module('teambition').factory('ngConsumer', ['$rootScope', 'RestAPI',
 (
   $rootScope: IRootScope,
   RestAPI: RestAPI

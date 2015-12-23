@@ -1,6 +1,6 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {PAParser} from '../services/service';
+import {PAParser} from '../services';
 import {IProjectActivitiesData, IActivityData} from 'teambition';
 
 class ProjectActivityModel extends BaseModel {

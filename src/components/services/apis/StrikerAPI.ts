@@ -1,6 +1,6 @@
 'use strict';
 import {inject} from '../../bases/Utils';
-import BaseAPI from '../../bases/BaseAPI'
+import BaseAPI from '../../bases/BaseAPI';
 import {app} from '../../config/config';
 
 @inject([

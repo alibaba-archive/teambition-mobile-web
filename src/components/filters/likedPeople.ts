@@ -11,4 +11,4 @@ export const likedPeopleFilter = (likesGroup: string[]) => {
   }else {
     return '点赞';
   }
-}
+};

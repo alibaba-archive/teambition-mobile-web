@@ -1,6 +1,5 @@
 'use strict';
 import {
-  parentView,
   inject,
   host,
   View,
@@ -136,7 +135,7 @@ export class DetailView extends View {
           let index = members.indexOf('0');
           members.splice(index, 1);
           if (Ding && Ding.corpId) {
-            return this.MemberAPI.getDingId(members, this.project._id).then((data: any) => {
+            return this.MemberAPI.getDingId(members, this.project._id, Ding.corpId).then((data: any) => {
               angular.forEach(data, (dingMember: {_userId: string, emplId: string}) => {
                 this.projectMembers[dingMember._userId].emplId = dingMember.emplId;
               });
@@ -241,9 +240,7 @@ export class DetailView extends View {
     if (!this._boundToObjectType) {
       return;
     }
-    return this.LikeAPI.postLike(
-      this.detail
-    );
+    return this.LikeAPI.postLike(this._boundToObjectType, this.detail);
   }
 
   public openLinked() {

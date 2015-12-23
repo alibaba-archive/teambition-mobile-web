@@ -1,10 +1,9 @@
 'use strict';
 import {inject} from '../../bases/Utils';
 import BaseAPI from '../../bases/BaseAPI';
-import {DingRestAPI} from '../service';
+import {DingRestAPI} from '..';
 import MemberModel from '../../models/MemberModel';
 import {IMemberData} from 'teambition';
-import {Ding} from '../../../Run';
 
 let hasResolved = {};
 
@@ -54,14 +53,13 @@ export class MemberAPI extends BaseAPI {
     });
   }
 
-  public getDingId(userIds: string[], projectId: string) {
+  public getDingId(userIds: string[], projectId: string, corpId: string) {
     let cache = hasResolved[projectId];
-    let DingCorpid = Ding.corpId;
     if (!cache) {
       return this.DingRestAPI.query({
         Type: 'userIds',
         type: '_userId',
-        corpId: DingCorpid,
+        corpId: corpId,
         conditions: userIds.join(',')
       }, (data: any) => {
         hasResolved[projectId] = data;

@@ -1,12 +1,13 @@
 export * from './bootstrap';
 import {app} from './components/config';
-import {RunFn, rootZone} from './run';
+import {RunFn} from './run';
 import {
   Notify,
   InputComponments,
   ProjectHomeActivity,
   TaskFilter
 } from './components/et';
+import {rootZone} from './components/bases/Utils';
 
 angular.module('et.template')
 .service('notify', Notify)
@@ -27,8 +28,8 @@ rootZone.run(() => {
 });
 
 export * from './Run';
-export * from './components/services/service';
-export * from './components/directives/directive';
+export * from './components/services';
+export * from './components/directives';
 export * from './components/config';
 export * from './components/bases';
 export * from './components/et';
