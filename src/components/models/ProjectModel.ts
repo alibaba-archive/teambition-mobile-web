@@ -1,7 +1,7 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
 import {IProjectData} from 'teambition';
-import {projectParser} from '../services/service';
+import {projectParser} from '../services';
 
 class ProjectModel extends BaseModel {
 

@@ -89,6 +89,6 @@ export default angular.module('teambition').config([
     .state('invited', {
       url: '/invited/:projectId/:signCode/:inviterId',
       controller: 'InvitedView as InvitedCtrl'
-    })
+    });
   }
 ]);

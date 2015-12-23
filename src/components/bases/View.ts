@@ -1,8 +1,6 @@
 'use strict';
-import {rootZone, Wechat} from '../../run';
-import {inject} from './Utils';
+import {rootZone, inject} from './Utils';
 import {
-  IUserMe,
   IProjectData,
   IRootScope
 } from 'teambition';
@@ -19,8 +17,6 @@ let loadingZone: Zone;
 let pending: any;
 
 let currentModal: ionic.modal.IonicModalController;
-
-let userMe: IUserMe;
 
 @inject([
   '$rootScope',
@@ -65,6 +61,10 @@ export class View {
       this.parent = viewsMap[this.parentName];
     }
     this.initZone();
+  }
+
+  public static afterTaskHook(project: IProjectData) {
+    angular.noop();
   }
 
   public onInit(): angular.IPromise<any> {
@@ -145,10 +145,7 @@ export class View {
     let parentZone = (this.parent) ? this.parent.zone : rootZone;
     this.zone = parentZone.fork({
       'afterTask': () => {
-        userMe = userMe ? userMe : this.$rootScope.userMe;
-        if (typeof wx !== 'undefined' && Wechat && this.project) {
-          Wechat.reconfigShare(userMe, this.project);
-        }
+        View.afterTaskHook(this.project);
       },
       'beforeTask': () => {
         let $$id: string;
@@ -191,7 +188,7 @@ export class View {
       }
     });
     bindPromise = Zone.bindPromiseFn<any>(() => {
-      pending = pending || this.$rootScope.pending;
+      pending = pending || this.$rootScope.pending || this.$q.resolve();
       return pending
       .then(() => {
         let _pending = this.onInit();

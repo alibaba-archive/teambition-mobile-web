@@ -14,7 +14,7 @@ const buffer     = require('vinyl-buffer')
 const merge      = require('utils-merge')
 const chalk      = require('chalk')
 
-const entry = `./src/${process.env.BUILD_TARGET}/index.ts`
+const entry = `./src/${process.env.BUILD_TARGET || 'ding'}/index.ts`
 
 function map_error(err) {
   if (err.fileName) {

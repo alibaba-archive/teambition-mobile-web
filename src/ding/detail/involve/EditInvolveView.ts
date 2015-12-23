@@ -1,7 +1,6 @@
 'use strict';
 import {
   Ding,
-  parentView,
   inject,
   View,
   DetailAPI,

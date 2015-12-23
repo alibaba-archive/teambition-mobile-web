@@ -1,6 +1,6 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {taskParser} from '../services/service';
+import {taskParser} from '../services';
 import {ITaskData} from 'teambition';
 
 const TaskCollections = [

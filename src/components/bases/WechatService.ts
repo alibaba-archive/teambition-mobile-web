@@ -42,6 +42,7 @@ class WechatService {
     newConfig.desc = `你的好友${user.name}邀请你加入「${project.name}」, 点击加入该项目`;
     newConfig.link = url;
     wx.onMenuShareAppMessage(newConfig);
+    console.log(newConfig);
   }
 
   private buildWechatShareLink(redirect: string) {

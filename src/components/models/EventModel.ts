@@ -1,6 +1,6 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {eventParser} from '../services/service';
+import {eventParser} from '../services';
 import {IEventsResult, IEventData} from 'teambition';
 
 class EventModel extends BaseModel {
@@ -79,7 +79,7 @@ class EventModel extends BaseModel {
         result.fetchTime = Date.now();
         raw.push(result);
         results.index.push(event._id);
-        this._set(`event:detail`, event._id ,event);
+        this._set(`event:detail`, event._id, event);
       });
       results.counter = counter;
       results.raw = raw;

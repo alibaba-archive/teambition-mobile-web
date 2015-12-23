@@ -64,4 +64,4 @@ export const mapfile = (type: string): string => {
   };
   let icon = iconsMap[type] || 'icon-pencil';
   return icon;
-}
+};

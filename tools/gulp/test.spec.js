@@ -8,8 +8,10 @@ const browserify  = require('browserify')
 const tsify       = require('tsify')
 const sequence    = require('gulp-sequence')
 const sourcemaps  = require('gulp-sourcemaps')
+const PhantomJS   = require('gulp-mocha-phantomjs')
 const browserSync = require('browser-sync')
 const merge2      = require('merge2')
+const co          = require('co')
 const buildBundle = require('./build')
 const reload      = browserSync.reload
 
@@ -25,7 +27,10 @@ gulp.task('build-css', () => {
 
 gulp.task('compile-test', ['compile-et', 'compile-template'], () => {
   const bundler = browserify({
-    entries: './test/entry.ts',
+    entries: [
+      './src/typings.d.ts',
+      './test/entry.ts'
+    ],
     debug: true
   })
   .plugin(tsify, {
@@ -48,6 +53,8 @@ gulp.task('compile-test', ['compile-et', 'compile-template'], () => {
 })
 
 gulp.task('move-app', () => {
+  gulp.src('www/js/lib.js')
+    .pipe(gulp.dest('.tmp/test/js'))
   return gulp.src('test/index.html')
     .pipe(gulp.dest('.tmp/test'))
 })
@@ -66,7 +73,7 @@ gulp.task('watch-test', () => {
 
 })
 
-gulp.task('test-serve', () => {
+gulp.task('test-serve', ['build-css', 'compile-test', 'move-app'], () => {
   browserSync({
     notify: false,
     port: 9001,
@@ -82,4 +89,11 @@ gulp.task('test-serve', () => {
   gulp.watch('.tmp/test/**').on('change', reload)
 })
 
-gulp.task('test', sequence(['build-css', 'compile-test', 'move-app'], 'test-serve'))
+gulp.task('test-cl', () => {
+  gulp.src('.tmp/test/index.html')
+    .pipe(PhantomJS({
+      reporter: 'nyan'
+    }))
+})
+
+gulp.task('test', sequence(['build-css', 'compile-test', 'move-app'], 'test-cl'))

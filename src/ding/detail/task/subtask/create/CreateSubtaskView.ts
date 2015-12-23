@@ -1,14 +1,13 @@
 'use strict';
 import {
   Ding,
-  nobodyUrl,
   inject,
   View,
   DetailAPI,
   SubtasksAPI,
   MemberAPI
 } from '../../../../index';
-import {ITaskData, ISubtaskData, IMemberData} from 'teambition';
+import {ITaskData, IMemberData} from 'teambition';
 
 @inject([
   'DetailAPI',
@@ -16,6 +15,9 @@ import {ITaskData, ISubtaskData, IMemberData} from 'teambition';
   'SubtasksAPI'
 ])
 export class CreateSubtaskView extends View {
+
+  public static $inject = ['$scope'];
+
   public ViewName = 'CreateSubtaskView';
 
   public content: string;
@@ -30,8 +32,6 @@ export class CreateSubtaskView extends View {
   private members: {
     [index: string]: IMemberData;
   };
-
-  private static $inject = ['$scope'];
 
   constructor(
     $scope: angular.IScope

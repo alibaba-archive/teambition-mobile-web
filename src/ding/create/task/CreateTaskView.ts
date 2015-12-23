@@ -1,7 +1,6 @@
 'use strict';
 import {
   nobodyUrl,
-  parentView,
   inject,
   Ding,
   View,

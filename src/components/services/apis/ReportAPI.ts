@@ -9,7 +9,7 @@ export class ReportAPI extends BaseAPI {
       Path1: 'statistics',
       Path2: data,
       fields: this.fields.reportFileds
-    })
+    });
   }
 }
 

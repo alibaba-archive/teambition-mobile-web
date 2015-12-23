@@ -1,6 +1,6 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {postParser} from '../services/service';
+import {postParser} from '../services';
 import {IPostData} from 'teambition';
 
 class PostModel extends BaseModel {

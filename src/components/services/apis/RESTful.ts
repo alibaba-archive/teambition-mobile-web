@@ -1,6 +1,6 @@
 'use strict';
+import {app} from '../../config';
 import {inject} from '../../bases/Utils';
-import {Iapp} from 'teambition';
 
 interface IRestPaths {
   V2?: string;
@@ -90,18 +90,15 @@ let request = (target: any, key: string, value: any) => {
 };
 
 @inject([
-  '$resource',
-  'app'
+  '$resource'
 ])
 export class RestAPI {
   private resource: IRestMethod;
   private $resource: angular.resource.IResourceService;
-  private app: Iapp;
-  // @ngInject
   constructor() {
     // 大写开头是为了避免和后端的接口的 key 冲突
     let path: string = '/:V2/:Type/:Id/:Path1/:Path2/:Path3';
-    this.resource = this.$resource(this.app.apiHost + path, null , {
+    this.resource = this.$resource(app.apiHost + path, null , {
       query: {
         method: 'GET',
         isArray: true,
@@ -163,18 +160,15 @@ export class RestAPI {
 }
 
 @inject([
-  '$resource',
-  'app'
+  '$resource'
 ])
 export class DingRestAPI {
   private resource: IRestMethod;
   private $resource: angular.resource.IResourceService;
-  private app: Iapp;
-  // @ngInject
   constructor() {
     // 大写开头是为了避免和后端的接口的 key 冲突
     let path: string = '/:V2/:Type/:Id/:Path1/:Path2/:Path3';
-    this.resource = this.$resource(this.app.dingApiHost + path, null , {
+    this.resource = this.$resource(app.dingApiHost + path, null , {
       query: {
         method: 'GET',
         isArray: true,

@@ -9,9 +9,10 @@ import {
   socketListener,
   MessageAPI
 } from './';
-import {IUserMe, Iapp, IMessageData, IRootScope} from 'teambition';
+import {IUserMe, Iapp, IMessageData, IRootScope, IProjectData} from 'teambition';
 
 declare let Spiderjs: any;
+declare let wx: any;
 export let spider: any;
 
 @inject([
@@ -96,6 +97,11 @@ export class RootView extends View {
     }else {
       this.initRootscope(userMe);
       this.userMe = userMe;
+      View.afterTaskHook = (project: IProjectData) => {
+        if (typeof wx !== 'undefined' && Wechat && project) {
+          Wechat.reconfigShare(userMe, project);
+        }
+      };
       try {
         let spiderOptions = {
           _userId: userMe._id,

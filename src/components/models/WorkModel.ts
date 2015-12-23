@@ -1,6 +1,6 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {fileParser} from '../services/service';
+import {fileParser} from '../services';
 import {IFileData, ICollectionData} from 'teambition';
 
 class WorkModel extends BaseModel {

@@ -11,7 +11,7 @@ import {
   postParser,
   eventParser,
   fileParser
-} from '../services/service';
+} from '../services';
 import {nobodyUrl} from '../config/config';
 import {IMemberData, IActivityData} from 'teambition';
 

@@ -2,7 +2,6 @@
 import {app} from '../../config/config';
 import BaseAPI from '../../bases/BaseAPI';
 import {
-  Iapp,
   IProjectData,
   ITburlData,
   IProjectInviteData

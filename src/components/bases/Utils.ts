@@ -8,7 +8,7 @@ export let getDeps = (name: string) => {
   }else {
     return angular.noop;
   }
-}
+};
 
 export const inject = (services: string[]) => {
   if (!services || !services.length) {
@@ -51,3 +51,5 @@ export const getParam = (search: string, name: string) => {
     }
   }
 };
+
+export const rootZone = zone.fork();

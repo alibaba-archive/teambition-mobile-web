@@ -1,9 +1,9 @@
+'use strict';
+
 import {IETProto} from 'EtTemplate';
 import {IRootScope} from 'teambition';
-import {rootZone} from '../../run';
-import {getDeps} from './Utils';
+import {getDeps, rootZone} from './Utils';
 
-'use strict';
 interface IComponentConfig {
   templateUrl: string;
   selector: string;
@@ -98,6 +98,7 @@ export class ETComponent {
 }
 
 export function Component(conf: IComponentConfig) {
+  'use strict';
   return function(target: any) {
     let template: IETProto;
     let hasInit = false;

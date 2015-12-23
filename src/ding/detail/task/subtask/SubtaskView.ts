@@ -6,7 +6,7 @@ import {
   View,
   SubtasksAPI
 } from '../../../index';
-import {ITaskData, ISubtaskData} from 'teambition';
+import {ISubtaskData} from 'teambition';
 
 @inject([
   'SubtasksAPI'

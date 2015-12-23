@@ -1,5 +1,5 @@
 export * from './run.spec';
-export * from './controller/RootView.spec';
-export * from './controller/ProjectView.spec';
+export * from './dingtalk/RootView.spec';
+export * from './dingtalk/ProjectView.spec';
 
 mocha.run();

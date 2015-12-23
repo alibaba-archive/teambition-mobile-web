@@ -7,7 +7,7 @@ import {
   TagsAPI,
   MemberAPI,
   TasklistAPI
-} from '../service';
+} from '..';
 import DetailModel from '../../models/DetailModel';
 import {
   IDetailInfos,

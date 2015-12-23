@@ -4,7 +4,7 @@ import {IStageData} from 'teambition';
 
 class StageModel extends BaseModel {
   // set stages by tasklist id
-  public setStages(tasklistId, stages: IStageData[]) {
+  public setStages(tasklistId: string, stages: IStageData[]) {
     let result: IStageData[] = [];
     angular.forEach(stages, (stage: IStageData, index: number) => {
       let cache = this.getDetail(stage._id);

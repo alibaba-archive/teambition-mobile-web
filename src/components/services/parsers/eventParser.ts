@@ -1,6 +1,6 @@
 'use strict';
 import {getDeps} from '../../bases/Utils';
-import {mdParser} from '../service';
+import {mdParser} from './mdParser';
 import {IEventData} from 'teambition';
 
 export const eventParser = (event: IEventData) => {

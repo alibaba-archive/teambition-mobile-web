@@ -17,4 +17,4 @@ export * from './edit/tasklist/ChooseTasklistView';
 export * from './create/event/CreateEventView';
 export * from './create/post/CreatePostView';
 export * from './create/project/CreateProjectView';
-export * from './create/task/CreateTaskView'
+export * from './create/task/CreateTaskView';

@@ -26,7 +26,7 @@ class InvitedView extends View {
     .catch((reason: any) => {
       const message = this.getFailureReason(reason);
       this.showMsg('error', '加入项目失败', message);
-    })
+    });
   }
 }
 

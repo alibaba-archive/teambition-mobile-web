@@ -1,8 +1,8 @@
 'use strict';
 import {nobodyUrl} from '../../config/config';
 import {getDeps} from '../../bases/Utils';
-import {mdParser} from '../service';
-import {cutString} from '../../filters/filters';
+import {mdParser} from './mdParser';
+import {cutString} from '../../filters';
 import {IPostData} from 'teambition';
 
 export const postParser = (post: IPostData) => {

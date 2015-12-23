@@ -1,5 +1,5 @@
 'use strict';
-import {parentView, inject, Ding, View, DetailAPI, MemberAPI} from '../../index';
+import {inject, Ding, View, DetailAPI, MemberAPI} from '../../index';
 import {IMemberData, IPostData} from 'teambition';
 
 @inject([
