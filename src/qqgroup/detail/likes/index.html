@@ -1,0 +1,13 @@
+<div class="task-executors">
+  <div class="bar bar-header">
+    <h1 class="title">点赞的人</h1>
+    <a class="button-positive button button-clear" on-tap="DetailCtrl.hideLikes()">关闭</a>
+  </div>
+  <div class="list">
+    <div ng-repeat="member in DetailCtrl.detail.like.likesGroup track by member._id"
+         class="item item-detail-avatar">
+      <img class="task-executor-avatar" ng-src="{{member.avatarUrl}}">
+      <span class="task-executor-name">{{member.name}}</span>
+    </ion-item>
+  </div>
+</div>

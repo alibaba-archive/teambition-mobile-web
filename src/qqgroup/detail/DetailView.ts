@@ -65,7 +65,6 @@ export class DetailView extends View {
   public ViewName = 'DetailView';
 
   public title: string;
-  public fixWebkit = false;
   public comment: string;
   public project: IProjectData;
   public projectMembers: {
@@ -140,12 +139,10 @@ export class DetailView extends View {
       templateUrl: 'detail/likes/index.html',
       scope: this.$scope
     });
-    this.fixWebkit = true;
   }
 
   public hideLikes() {
     popup.close();
-    this.fixWebkit = false;
   }
 
   public loadImages (images: IImagesData[]) {
@@ -274,7 +271,7 @@ export class DetailView extends View {
 
 }
 
-angular.module('teambition').controller('DetailView', [DetailView]);
+angular.module('teambition').controller('DetailView', DetailView);
 
 export * from './activities/ActivityView';
 export * from './task/TaskView';

@@ -20,15 +20,29 @@ a {
   border-radius: 50%;
 }
 
-.popup-container.active {
+.popup-container {
   .popup {
-    width: 80%;
+    width: 100%;
     border-radius: 10px;
     background: rgba(248, 248, 248, 0.8);
     .popup-head {
       border-bottom: none;
     }
     .popup-body {
+      .bar-header {
+        border-radius: 10px;
+        background: transparent;
+      }
+      .item {
+        background: transparent;
+        .task-executor-avatar {
+          width: 40px;
+          height: 40px;
+        }
+        .task-executor-name {
+          bottom: 15px;
+        }
+      }
       input {
         border: 1px solid rgba(0, 0, 0, 0.1);
       }
@@ -110,46 +124,15 @@ i.positive.icon:before {
   background: rgba(0, 0, 0, 0.2);
 }
 
-.wrap-custom-popup{
-  .popup{
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.6);
-    .popup-head{
-      border-bottom: 0;
-      .popup-title{
-        .icon{
-          font-size: 32px;
-          color : white;
-        }
-      }
-    }
-    .popup-body{
-      text-align: center;
-      color:white;
-      overflow: hidden;
-    }
-    .popup-buttons{
-      padding: 10px 25px 25px 25px;
-      .button{
-        border-radius: 5px;
-        flex: 0.8;
-      }
-      .button:first-child{
-        right: 3px;
-      }
-      .button:last-child{
-        left: 3px;
-      }
-      .button-clarity{
-        background: none;
-        color: white;
-      }
-    }
-  }
-}
+
 .ion-loading-d{
   font-family: "Ionicons" !important;
 }
+
+.bar-footer {
+  background-color: #fff;
+}
+
 .buttons{
   .button{
     color:#03A9F4;
