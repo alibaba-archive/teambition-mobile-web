@@ -42,7 +42,6 @@ gulp.task('lib-js', () => {
   return gulp.src([
     './node_modules/ionic-release/js/ionic.bundle.js',
     './node_modules/zone.js/dist/zone.js',
-    './node_modules/spiderjs/index.js',
     './node_modules/moment/min/moment.min.js',
     './node_modules/et-dependency/ng/index.js',
     './node_modules/marked/lib/marked.js',
@@ -51,7 +50,8 @@ gulp.task('lib-js', () => {
     './node_modules/ng-file-upload/dist/ng-file-upload-all.js',
     './node_modules/engine.io-client/engine.io.js',
     './node_modules/jsonrpc-lite/jsonrpc.js',
-    './node_modules/snapper-consumer/index.js'
+    './node_modules/snapper-consumer/index.js',
+    './tools/libs/js/spider.js'
   ])
   .pipe(concat('lib.js'))
   .pipe(gulp.dest('www/js'))

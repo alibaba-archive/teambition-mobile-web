@@ -81,8 +81,8 @@ const paths = {
   ],
   tbui: [
     './src/less/tb-fonts-variables.less',
-    './node_modules/teambition-ui/less/teambition-ui-variables.less',
-    './node_modules/teambition-ui/less/teambition-ui-icons.less'
+    './tools/libs/less/teambition-ui-variables.less',
+    './tools/libs/less/teambition-ui-icons.less'
   ],
   et: [
     './src/components/et/**/*.html'
@@ -178,7 +178,7 @@ gulp.task('lib-css', () => {
 gulp.task('lib-font', () => {
   return gulp.src([
     'node_modules/ionic-release/fonts/*',
-    'node_modules/teambition-ui/fonts/teambition*'
+    'tools/libs/fonts/teambition*'
   ])
     .pipe(gulp.dest('www/fonts/'))
 })
