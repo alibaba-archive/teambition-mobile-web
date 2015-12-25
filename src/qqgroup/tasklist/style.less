@@ -1,29 +1,28 @@
 // Global reference
 @import "../../less/reference.less";
 
-.tasks-list,
-.tasks-list-filter {
-  .item-group-selector {
-    height: 50px;
+ion-content.has-bottom-bar {
+  bottom: 50px;
+}
 
-    .label {
-      width: 35%;
-      color: black;
-      font-size: 15px;
-      max-width: 200px;
-    }
+.tasks-list {
 
-    .selector {
-      top: 0;
-      right: 0;
-      position: absolute;
-      padding-top: 14px;
-      padding-right: 15px;
+  .item.item-divider.half-divider {
+    height: 20px;
+    min-height: 18px;
+  }
 
-      .group-name {
-        margin-right: 5px;
-        font-size: 15px;
-        color: black;
+  .task-create-btn {
+    height: 40px;
+    padding: 8px;
+    color: #03A9F4;
+    font-weight: bold;
+    text-align: center;
+
+    i.icon-plus {
+      vertical-align: top;
+      &:before {
+        color: #03A9F4;
       }
     }
   }
@@ -37,16 +36,22 @@
       font-size: 14px;
       color: #808080;
       padding-top: 5px;
+      font-weight: bold;
       margin-bottom: 1px;
       background-color: #F7F7F7;
-      border-top: 1px solid #D9D9D9;
-      border-bottom: 1px solid #D9D9D9;
+
+      .icon-chevron-down {
+        float: right;
+        &:before {
+          font-size: 12px;
+        }
+      }
     }
 
     .task-item {
       height: 50px;
 
-      &::after {
+      &:after {
         content: '';
         left: 15px;
         right: 0;
@@ -56,7 +61,7 @@
         background-color: #D9D9D9;
       }
 
-      &.task-priority::before {
+      &.task-priority:before {
         content: '';
         width: 5px;
         height: 50px;
@@ -65,11 +70,11 @@
         top: 0px;
       }
 
-      &.task-priority.task-priority-high::before {
+      &.task-priority.task-priority-high:before {
         background-color: #F5A623;
       }
 
-      &.task-priority.task-priority-urgent::before {
+      &.task-priority.task-priority-urgent:before {
         background-color: #E51C23;
       }
 
@@ -95,14 +100,31 @@
           .task-title {
             margin-bottom: -6px;
           }
-        }
 
-        .task-over-due {
-          color: #E51C23;
-        }
+          .bages {
+            position: relative;
+            time {
+              font-size: 11px;
+              color: #03A9F4;
 
-        time {
-          font-size: 11px;
+              &.task-over-due {
+                color: #E51C23;
+              }
+            }
+
+            i.icon {
+              display: inline-block;
+              position: relative;
+              margin-left: -12px;
+              margin-right: -5px;
+              line-height: 12px;
+              top: 2px;
+
+              &:before {
+                font-size: 13px;
+              }
+            }
+          }
         }
       }
     }
@@ -115,6 +137,38 @@
       height: 30px;
       border-radius: 50%;
       background-size: cover;
+    }
+  }
+}
+
+.bottom-bar {
+  position: absolute;
+  height: 50px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  border-top: 1px solid #D9D9D9;
+  background-color: #F7F7F7;
+
+  .container {
+    float: right;
+
+    & > * {
+      display: inline-block;
+      height: 50px;
+      font-size: 15px;
+      color: #A6A6A6;
+      padding: 14px;
+
+      &:not(:last-child):after {
+        content: '';
+        width: 1px;
+        height: 28px;
+        position: absolute;
+        background-color: #D9D9D9;
+        bottom: 11px;
+        margin-left: 15px;
+      }
     }
   }
 }
