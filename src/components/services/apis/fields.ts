@@ -5,7 +5,7 @@ export const fields = {
 
   taskFileds: '_executorId,_id,_projectId,_stageId,_tasklistId,content,dueDate,updated,created,note,' +
               'executor,likesCount,likedPeople,isDone,priority,recurrence,linked,isLike,likesGroup,' +
-              'involveMembers,subtaskCount,tagIds,visiable',
+              'involveMembers,subtaskCount,tagIds,visiable,attachmentsCount,objectlinksCount',
 
   postFileds: '_id,_projectId,attachments,linked,involveMembers,html,postMode,title,updated,creator,content,visiable',
 

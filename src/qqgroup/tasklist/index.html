@@ -1,10 +1,19 @@
 <ion-view class="padding" ng-controller="PanelTasklistView as PanelTaskCtrl">
-  <ion-content>
+  <ion-content class="has-bottom-bar">
     <div class="list tasks-list">
+      <div class="item item-divider half-divider"></div>
+      <a class="item task-create-btn">
+        <i class="icon icon-plus"></i>
+        <span>添加任务</span>
+      </a>
       <div class="list task-list"
            ng-if="PanelTaskCtrl.tasks[stage._id].length"
            ng-repeat="stage in PanelTaskCtrl.stages track by stage._id">
-        <div class="item item-divider">{{stage.name}}</div>
+        <div class="item item-divider"
+             ng-class="{'half-divider': !$last}">
+            <span ng-if="$last">{{stage.name}} ● {{PanelTaskCtrl.tasks[stage._id].length}}项</span>
+            <i ng-if="$last" class="icon icon-chevron-down"></i>
+        </div>
         <a class="item item-icon-left task-item"
            ng-class="{'task-has-done': task.isDone,
                       'task-priority': task.priority > 0,
@@ -18,10 +27,14 @@
           <div class="task-content"
                ng-class="{'task-has-due': task.dueDate}">
             <div class="task-title">{{task.content}}</div>
-            <time ng-if="task.dueDate"
-                  ng-class="{'task-over-due': task.overDue}">
-              {{task.dueDate | formatDate : 'MM月DD日'}}
-            </time>
+            <div class="bages">
+              <time ng-if="task.dueDate"
+                    ng-class="{'task-over-due': task.overDue}">
+                {{task.dueDate | formatDate : 'MM月DD日'}}
+              </time>
+              <i ng-if="task.attachmentsCount" class="icon icon-paperclip"></i>
+              <i ng-if="task.objectlinksCount" class="icon icon-link2"></i>
+            </div>
           </div>
           <div class="icon task-avatar"
                ng-style="{'background-image': 'url(' + PanelTaskCtrl.getAvatar(task) + ')'}">
@@ -30,5 +43,12 @@
       </div>
     </div>
   </ion-content>
+
+  <div class="bottom-bar">
+      <div class="container">
+        <a>成员管理</a>
+        <a>退出</a>
+      </div>
+  </div>
   <div ng-if="!PanelTaskCtrl.taskLength" class="empty-warn project-task"></div>
 </ion-view>

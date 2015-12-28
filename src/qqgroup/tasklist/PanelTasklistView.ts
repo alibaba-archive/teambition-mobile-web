@@ -67,7 +67,7 @@ export class PanelTasklistView extends View {
   }
 
   public getAvatar(task: ITaskData) {
-    let avatarUrl = (task.executorAvatar === nobodyUrl) ?
+    let avatarUrl = task._executorId ?
                     this.members[task._executorId].avatarUrl :
                     task.executorAvatar;
     return avatarUrl;
