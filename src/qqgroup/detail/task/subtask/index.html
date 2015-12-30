@@ -1,9 +1,10 @@
-<ion-view ng-controller="SubtaskView as SubtaskCtrl">
+<ion-view ng-controller="SubtaskView as SubtaskCtrl" class="subtaskView">
   <ion-content>
     <div class="list subtasks-wrap">
       <div class="item list-title">子任务</div>
       <div ng-repeat="subtask in SubtaskCtrl.subtasks"
-           class="item item-icon-left">
+           class="item item-icon-left"
+           on-tap="SubtaskCtrl.openDetail(subtask._id)">
         <i class="icon"
            ng-class="{'icon-checkbox-thin': !subtask.isDone, 'icon-checkbox-ios-checked': subtask.isDone}"
            on-tap="SubtaskCtrl.doSubTask(subtask)">
@@ -11,6 +12,10 @@
         <span ng-bind="subtask.content"></span>
         <img class="subtask-avatar" ng-src="{{subtask.executor.avatarUrl || SubtaskCtrl.nobodyUrl}}">
       </div>
+    </div>
+    <div class="button button-block button-positive"
+         on-tap="SubtaskCtrl.openCreate()">
+      添加子任务
     </div>
   </ion-content>
   <div ng-if="!SubtaskCtrl.subtasks.length" class="empty-warn subtask"></div>

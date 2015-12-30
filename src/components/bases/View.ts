@@ -163,6 +163,7 @@ export class View {
         }else {
           if (!pending || (pending && pending.$$state.status === 1)) {
             this.hideLoading();
+            this.$rootScope.loaded = true;
           }
         }
       }

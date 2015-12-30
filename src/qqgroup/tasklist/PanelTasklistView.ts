@@ -1,6 +1,5 @@
 'use strict';
 import {
-  nobodyUrl,
   parentView,
   inject,
   View,
@@ -71,6 +70,13 @@ export class PanelTasklistView extends View {
                     this.members[task._executorId].avatarUrl :
                     task.executorAvatar;
     return avatarUrl;
+  }
+
+  public openCreate() {
+    if (!projectId) {
+      return;
+    }
+    window.location.hash = `/project/${projectId}/task/create`;
   }
 
   private initFetch() {

@@ -1,0 +1,47 @@
+<ion-modal-view>
+  <ion-view class="edit-involve-view">
+    <ion-content>
+      <div class="list executor-members">
+        <div class="item item-icon-left item-toggle">
+          <i class="icon"
+            ng-class="{'icon-unlock': !CreateTaskCtrl.isVisiable, 'icon-lock': CreateTaskCtrl.isVisiable}"
+            >
+          </i>
+          仅参与者可见
+          <label class="toggle toggle-balanced">
+            <input type="checkbox"
+                  ng-model="CreateTaskCtrl.isVisiable"
+                  ng-checked="(CreateTaskCtrl.visiable === 'involves')">
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </div>
+        <div-title class="item list-title">
+          所有成员
+        </div-title>
+        <div class="item item-avatar item-icon-right"
+            ng-if="member._id != 0"
+            ng-repeat="member in CreateTaskCtrl.members track by member._id"
+            on-tap="CreateTaskCtrl.selectInvolveMember(member._id)">
+          <div class="avatar item-image" style="background-image: url({{member.avatarUrl}})"></div>
+          <h2 class="excutor-member-name">{{member.name}}</h2>
+          <i ng-if="member.isSelected" class="icon icon-tick positive"></i>
+        </div>
+      </div>
+    </ion-content>
+    <ion-footer-bar class="footer">
+    <div class="list">
+      <div class="item">
+        <span class="choose-text">
+          已选择{{CreateTaskCtrl.getMemberSelectedLength()}}位成员
+        </span>
+        <div class="button button-positive"
+             on-tap="CreateTaskCtrl.selectInvolve()">
+          确认
+        </div>
+      </div>
+    </div>
+  </ion-footer-bar>
+  </ion-view>
+</ion-modal-view>

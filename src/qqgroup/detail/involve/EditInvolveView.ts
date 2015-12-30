@@ -59,6 +59,18 @@ export class EditInvolveView extends View {
     this.members[id].isSelected = !this.members[id].isSelected;
   }
 
+  public getMemberSelectedLength() {
+    let length = 0;
+    if (this.members) {
+      angular.forEach(this.members, (member: IMemberData) => {
+        if (member.isSelected) {
+          length ++;
+        }
+      });
+    }
+    return length;
+  }
+
   public updateInvolve() {
     this.showLoading();
     let involveMembers = [];

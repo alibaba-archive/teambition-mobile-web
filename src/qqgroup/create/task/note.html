@@ -1,0 +1,21 @@
+<ion-modal-view>
+  <ion-view class="edit-note-view">
+    <ion-content>
+      <div class="list">
+        <div class="item item-input">
+          <textarea class="task-content"
+                    ng-model="CreateTaskCtrl.note">
+          </textarea>
+        </div>
+      </div>
+      <div class="button button-block button-positive"
+           on-tap="CreateTaskCtrl.confirmNote()">
+        确定
+      </div>
+      <div class="button button-block button-assertive"
+           on-tap="CreateTaskCtrl.cancelNote()">
+        取消
+      </div>
+    </ion-content>
+  </ion-view>
+</ion-modal-view>

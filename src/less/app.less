@@ -83,10 +83,10 @@ a {
 }
 
 .item ,.item-icon-left{
-  color: #383838;
+  color: @grayDarker;
   border: none;
   p{
-    color: #383838;
+    color: @grayDarker;
     margin-bottom: 0;
   }
   img{
@@ -129,7 +129,7 @@ i.positive.icon:before {
   font-family: "Ionicons" !important;
 }
 
-.bar-footer {
+.bar.bar-footer {
   background-color: #fff;
 }
 
@@ -143,6 +143,11 @@ i.positive.icon:before {
     color: #fff !important;
   }
 }
+
+.positive {
+  color: #03a9f4 !important;
+}
+
 .nav-mytasks-buttons{
   width: 50%;
   margin-right: 24%;
@@ -192,10 +197,10 @@ i.positive.icon:before {
 .list{
   .item.item-title {
     padding-bottom: 4px;
-    color: #a6a6a6;
+    color: @gray;
   }
   .item.list-title {
-    color: #808080;
+    color: @grayDark;
     font-size: 15px;
     font-weight: 700;
     padding: 0 0 0 16px !important;
@@ -206,8 +211,8 @@ i.positive.icon:before {
     min-height: 0;
   }
   .icon:before {
-    font-size: 18px;
-    color: #808080;
+    font-size: 20px;
+    color: @grayDark;
   }
   .icon-circle-bold {
     &.priority-2:before {
@@ -281,5 +286,37 @@ i.positive.icon:before {
         color: @blue;
       }
     }
+  }
+}
+
+.ionic a.item:after,
+.ionic div.item:after,
+.ionic button.item:after,
+.ionic .item[href] .item-content:after,
+.ionic .item[ng-click] .item-content:after {
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  display: block;
+  margin-top: -8px;
+  color: #ccc;
+  content: "\f125";
+  text-transform: none;
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-size: 16px;
+  font-family: 'Ionicons';
+  line-height: 1;
+  speak: none;
+}
+.ionic{
+  .item .h2-has-header{
+    margin: 16px 0 8px 0;
+  }
+  li{
+    white-space: normal;
   }
 }

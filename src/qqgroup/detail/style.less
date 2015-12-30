@@ -35,11 +35,11 @@
     padding: 0px 12px;
     position: relative;
     i.icon{
-      color: #808080;
+      color: @grayDark;
       font-size: 18px;
     }
     .button-send-comment{
-      color: #A6A6A6;
+      color: @gray;
       font-weight: 600;
       font-size: 15px;
       &.btnActive{
@@ -50,7 +50,7 @@
   .item-input-wrapper {
     position: relative;
     background: white;
-    color: #A6A6A6;
+    color: @gray;
     input{
       font-size: 15px;
       width: 100%;
@@ -78,4 +78,45 @@
     top: 10px;
     right: 10px;
   }
+  .detail-footer-wrap {
+    width: 100%;
+    .detail-button {
+      color: #aaaaaa;
+      font-size: 20px;
+      width: 33%;
+      height: 30px;
+      text-align: center;
+      margin-top: 2px;
+      border-right: solid 1px @grayLight;
+      float: left;
+      &:last-child {
+        border-right: none;
+        i {
+          color: #fff;
+          background-color: #aaaaaa;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          line-height: 22px;
+          margin-top: 4px;
+          font-size: 16px;
+          &:before {
+            margin-left: 2px;
+          }
+        }
+      }
+      i {
+        line-height: 30px;
+      }
+      .button-text {
+        position: relative;
+        bottom: 1px;
+        left: 2px;
+      }
+    }
+  }
+}
+
+.button.button-positive {
+  background-color: #03a9f4;
 }

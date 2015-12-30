@@ -1,0 +1,13 @@
+<ion-modal-view class="edit-priority-view">
+  <ion-content>
+    <div class="list">
+      <div ng-repeat="item in CreateTaskCtrl.PRIORITY"
+           class="item item-avatar item-icon-right"
+           on-tap="CreateTaskCtrl.selectPriority($index)">
+        <div class="icon icon-circle-bold priority-icon-left priority-{{item.priority}}"></div>
+        <span class="pirority-name">{{item.name}}</span>
+        <i ng-if="CreateTaskCtrl.priority === $index" class="icon icon-tick positive"></i>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

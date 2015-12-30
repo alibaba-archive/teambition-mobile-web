@@ -69,7 +69,8 @@ let logError  = (stream) => {
 const paths = {
   images: ['./src/images/*'],
   less: [
-    './src/less/app.less',
+    './src/less/*.less',
+    './src/components/**/*.less',
     `./src/${target}/**/*.less`
   ],
   html: [
@@ -114,20 +115,30 @@ gulp.task('lint', () => {
 gulp.task('less', () => {
   return merge2(
     gulp.src(paths.tbui)
+      .pipe(sourcemaps.init({
+        loadMaps: true
+      }))
       .pipe(concat('tbui.less'))
       .pipe(logError(less()))
       .pipe(autoprefixer({
         browsers: ['last 2 versions']
-      })),
+      }))
+      .pipe(sourcemaps.write()),
     gulp.src(paths.less)
-      .pipe(sourcemaps.init())
+      .pipe(sourcemaps.init({
+        loadMaps: true
+      }))
       .pipe(logError(less()))
       .pipe(autoprefixer({
         browsers: ['last 2 versions']
       }))
       .pipe(sourcemaps.write())
   )
+  .pipe(sourcemaps.init({
+    loadMaps: true
+  }))
   .pipe(concat('app.css'))
+  .pipe(sourcemaps.write())
   .pipe(gulp.dest('www/css/'))
 })
 

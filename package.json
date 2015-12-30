@@ -8,7 +8,7 @@
     "locald": "BUILD_TARGET=ding BUILD_ENV=default gulp && scp -r www/** node4@192.168.0.21:/home/node4/apps/ding-ding/source/views",
     "betad": "BUILD_TARGET=ding BUILD_ENV=beta gulp && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views",
     "localqq": "BUILD_TARGET=qqgroup BUILD_ENV=default gulp && scp -r www/** node4@192.168.0.21:/home/node4/apps/qqgroup/source/views",
-    "betaqq": "BUILD_TARGET=qqgroup BUILD_ENV=beta gulp && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views"
+    "betaqq": "BUILD_TARGET=qqgroup BUILD_ENV=beta gulp && scp -r www/** iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views"
   },
   "repository": {
     "type": "git",
@@ -21,9 +21,9 @@
     "bootstrap": "^3.3.6",
     "chai": "^3.4.1",
     "engine.io-client": "^1.6.4",
-    "et-dependency": "^0.3.0",
+    "et-dependency": "^0.3.3",
     "gta": "github:teambition/gta",
-    "ionic-release": "1.2.1-nightly-1867",
+    "ionic-release": "^1.2.4",
     "jsonrpc-lite": "^1.1.0",
     "marked": "^0.3.5",
     "mocha": "^2.3.4",

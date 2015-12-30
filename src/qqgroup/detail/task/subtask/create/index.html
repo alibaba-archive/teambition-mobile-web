@@ -13,13 +13,24 @@
         <i class="icon icon-calendar2"></i>
         <span ng-bind="CreateSubtaskCtrl.dueDate | formatDate : 'll'"
               ng-if="CreateSubtaskCtrl.dueDate"></span>
+        <span ng-bind="CreateSubtaskCtrl.dueDate | formatDate : 'HH:MM'"
+              ng-if="CreateSubtaskCtrl.dueDate"></span>
         <span ng-if="!CreateSubtaskCtrl.dueDate">
           设置一个截止日期
         </span>
-        <input type="date"
-                ng-model="CreateSubtaskCtrl.dueDate"
-                ng-model-options="{ getterSetter: true }">
+        <input class="date-time-year"
+               type="date"
+               ng-model="CreateSubtaskCtrl.dueDate"
+               ng-model-options="{ getterSetter: true }">
+        <input class="date-time-hour"
+               type="datetime-local"
+               ng-model="CreateSubtaskCtrl.dueDate"
+               ng-model-options="{ getterSetter: true }">
       </div>
+    </div>
+    <div class="button button-block button-positive"
+         on-tap="CreateSubtaskCtrl.createSubtask()">
+      确认
     </div>
   </ion-content>
 </ion-view>

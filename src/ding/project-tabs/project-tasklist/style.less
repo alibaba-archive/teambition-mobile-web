@@ -35,12 +35,12 @@
     .item-divider {
       height: 32px;
       font-size: 14px;
-      color: #808080;
+      color: @grayDark;
       padding-top: 5px;
       margin-bottom: 1px;
       background-color: #F7F7F7;
-      border-top: 1px solid #D9D9D9;
-      border-bottom: 1px solid #D9D9D9;
+      border-top: 1px solid @grayLight;
+      border-bottom: 1px solid @grayLight;
     }
 
     .task-item {
@@ -53,7 +53,7 @@
         bottom: 1px;
         height: 1px;
         position: absolute;
-        background-color: #D9D9D9;
+        background-color: @grayLight;
       }
 
       &.task-priority::before {
@@ -74,7 +74,7 @@
       }
 
       &.task-has-done {
-        color: #808080;
+        color: @grayDark;
       }
 
       .task-content {

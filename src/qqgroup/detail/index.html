@@ -1,16 +1,21 @@
-<ion-view class="detail-view" ng-class="{'big-footer': DetailCtrl.images.length}" ng-controller="DetailView as DetailCtrl">
+<ion-view class="detail-view"
+          ng-class="{'big-footer': DetailCtrl.images.length}"
+          ng-controller="DetailView as DetailCtrl">
   <ion-content>
     <div ui-view="object"></div>
     <div ui-view="detail-activities"></div>
   </ion-content>
   <ion-footer-bar class="bar-stable detail-footer">
-    <div class="item item-input-inset item-comment">
+    <div class="item item-input-inset item-comment"
+         ng-show="DetailCtrl.isComment">
       <i class="icon icon-paperclip"
-        open-file="DetailCtrl.loadImages(images)"
-        open-file-filter="DetailCtrl.isImageFile(file)"
-        open-file-multiple="true"></i>
+         open-file="DetailCtrl.loadImages(images)"
+         open-file-filter="DetailCtrl.isImageFile(file)"
+         open-file-multiple="true"></i>
       <div class="item-input-wrapper">
-        <input type="text" placeholder="评论..." ng-model="DetailCtrl.comment">
+        <input type="text" placeholder="评论..."
+               ng-model="DetailCtrl.comment"
+               ng-blur="DetailCtrl.closeComment()">
         <div class="comment-images">
           <div class="comment-image" ng-repeat="item in DetailCtrl.images">
             <img ng-src="{{item.url}}">
@@ -18,9 +23,32 @@
           </div>
         </div>
       </div>
-      <span class="button button-clear button-send-comment" ng-class="{'btnActive':DetailCtrl.hasContent()}" on-tap="DetailCtrl.addComment()">
+      <span class="button button-clear button-send-comment"
+            ng-class="{'btnActive':DetailCtrl.hasContent()}"
+            on-tap="DetailCtrl.addComment()">
         发送
       </span>
+    </div>
+    <div class="detail-footer-wrap"
+         ng-show="!DetailCtrl.isComment">
+      <div class="detail-button"
+           ng-class="{'positive': DetailCtrl.detail.like.isLike}"
+           on-tap="DetailCtrl.like()">
+        <i class="icon icon-dig"></i>
+        <span class="button-text"
+              ng-bind="DetailCtrl.detail.like.likesCount">
+        </span>
+      </div>
+      <div class="detail-button"
+           on-tap="DetailCtrl.openComment()">
+        <i class="icon icon-comment"></i>
+        <span class="button-text">评论</span>
+      </div>
+      <div class="detail-button"
+           on-tap="DetailCtrl.openOptions()">
+        <i class="icon icon-more"></i>
+        <span class="button-text">更多</span>
+      </div>
     </div>
   </ion-footer-bar>
 </ion-view>

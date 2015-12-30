@@ -80,7 +80,7 @@ export class TaskView extends View {
       }, 'content')
       .catch((reason: any) => {
         let message = this.getFailureReason(reason);
-        this.showMsg('error', '网络错误', message);
+        this.showMsg('error', '更新失败', message);
         this.content = this.task.content;
       });
     }

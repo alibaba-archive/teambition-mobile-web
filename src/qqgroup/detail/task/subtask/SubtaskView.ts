@@ -43,8 +43,17 @@ export class SubtaskView extends View {
       this.showMsg('error', '更新状态出错', message);
     });
   }
+
+  public openCreate() {
+    window.location.hash = `/detail/task/${this.taskid}/subtasks/create`;
+  }
+
+  public openDetail(_id: string) {
+    window.location.hash = `/detail/task/${this.taskid}/subtasks/${_id}/detail`;
+  }
 }
 
 angular.module('teambition').controller('SubtaskView', SubtaskView);
 
 export * from './create/CreateSubtaskView';
+export * from './detail/SubtaskDetailView';
