@@ -8,7 +8,7 @@ import {
   ProjectsAPI,
   WorkAPI,
   LikeAPI,
-  MemberAPI,
+  MemberAPI
 } from '../index';
 import {
   IProjectData,
@@ -155,10 +155,6 @@ export class DetailView extends View {
     this.isComment = true;
   }
 
-  public closeComment() {
-    this.isComment = false;
-  }
-
   public loadImages (images: IImagesData[]) {
     this.images = this.images.concat(images);
   }
@@ -197,6 +193,8 @@ export class DetailView extends View {
             this.removeObject();
             break;
           case shareIndex :
+            const options = this.shareToQQgroup();
+            window['openGroup'].share(options);
             break;
         };
         return true;
@@ -288,6 +286,21 @@ export class DetailView extends View {
       let message = this.getFailureReason(reason);
       this.showMsg('error', '删除失败', message);
     });
+  }
+
+  private shareToQQgroup() {
+    const executorName = this.projectMembers[this.detail._executorId].name || this.detail.executorName || '暂无执行者';
+    const dueDate = this.detail.dueDate ? `,截止日期: ${moment(this.detail.dueDate).calendar()}` : '';
+    return {
+      title: `我创建了任务: ${this.detail.content}`,
+      desc: `执行者: ${executorName} ${dueDate}`,
+      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}`,
+      image_url: `http://${window.location.host}/images/teambition.png`,
+      debug: 1,
+      onError: function() {
+        alert(JSON.stringify(arguments));
+      }
+    };
   }
 
   private addTextComment(attachments?: string[]) {

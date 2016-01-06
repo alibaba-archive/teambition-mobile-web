@@ -5,7 +5,8 @@ import {
   View,
   TasklistAPI,
   StageAPI,
-  MemberAPI
+  MemberAPI,
+  getParam
 } from '../index';
 import {IStageData, ITasklistData, ITaskData, IMemberData} from 'teambition';
 
@@ -22,6 +23,8 @@ let tasklistSelected: ITasklistData;
 ])
 export class PanelTasklistView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'PanelTasklistView';
 
   public stages: IStageData[];
@@ -33,6 +36,7 @@ export class PanelTasklistView extends View {
   };
 
   public taskLength: number;
+  public showNotify = false;
 
   private TasklistAPI: TasklistAPI;
   private StageAPI: StageAPI;
@@ -42,8 +46,17 @@ export class PanelTasklistView extends View {
     [index: string]: IMemberData;
   };
 
-  constructor() {
+  private shareOptions: any;
+
+  constructor(
+    $scope: angular.IScope
+  ) {
     super();
+    this.$scope = $scope;
+    $scope.$on('new:task', (event, ...args) => {
+      this.showNotify = true;
+      this.shareOptions = args[0][1];
+    });
     this.zone.run(() => {
       this.stages = stages;
       this.tasklistSelected = tasklistSelected;
@@ -77,6 +90,18 @@ export class PanelTasklistView extends View {
       return;
     }
     window.location.hash = `/project/${projectId}/task/create`;
+  }
+
+  public hideNotify() {
+    this.showNotify = false;
+  }
+
+  public shareTask() {
+    const search = window.location.search;
+    const appid = getParam(search, 'appid');
+    this.shareOptions['appid'] = appid;
+    console.log(this.shareOptions);
+    window['openGroup'].share(this.shareOptions);
   }
 
   private initFetch() {

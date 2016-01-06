@@ -8,8 +8,19 @@ ion-content.has-bottom-bar {
 .tasks-list {
 
   .item.item-divider.half-divider {
-    height: 20px;
-    min-height: 18px;
+    min-height: 20px;
+    .icon {
+      position: absolute;
+      right: 20px;
+      &:before {
+        font-size: 16px;
+        color: @gray;
+      }
+    }
+    .notify-text {
+      font-size: 14px;
+      margin-left: 40px;
+    }
   }
 
   .task-create-btn {

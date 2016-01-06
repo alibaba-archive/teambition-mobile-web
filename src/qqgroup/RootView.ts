@@ -22,6 +22,8 @@ export let spider: any;
 ])
 export class RootView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'RootView';
   public $$id = 'RootView';
 
@@ -35,8 +37,11 @@ export class RootView extends View {
   public RestAPI: RestAPI;
   public MessageAPI: MessageAPI;
 
-  constructor() {
+  constructor(
+    $scope: angular.IScope
+  ) {
     super();
+    this.$scope = $scope;
     this.zone.run(angular.noop);
   }
 
@@ -50,13 +55,24 @@ export class RootView extends View {
       Id: 'me'
     })
     .$promise
-    .then((userMe: IUserMe) => {
+    .then((userMe: IUserMe): any => {
       this.initUser(userMe);
-      const groupId = getParam(window.location.search, 'group_openid');
-      return this.$http.get(`/qqgroup/project?group_openid=${groupId}`);
+      const search = window.location.search;
+      const groupId = getParam(search, 'group_openid');
+      const objectType = getParam(search, '_boundToObjectType');
+      const objectId = getParam(search, '_boundToObjectId');
+      if (objectType.length && objectId.length) {
+        return [objectType, objectId];
+      }else {
+        return this.$http.get(`/qqgroup/project?group_openid=${groupId}`);
+      }
     })
-    .then((project: any) => {
-      window.location.hash = `/project/${project.data._id}/tasklist`;
+    .then((param: any) => {
+      if (param instanceof Array) {
+        window.location.hash = `/detail/${param[0]}/${param[1]}`;
+      }else {
+        window.location.hash = `/project/${param.data._id}/tasklist`;
+      }
     })
     .catch((reason: any) => {
       const message = this.getFailureReason(reason);
@@ -80,6 +96,11 @@ export class RootView extends View {
           this.showMsg('success', message.creator ? message.creator.name : message.subtitle, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
         }
       });
+    });
+    this.$scope.$on('transfer', (event, ...args) => {
+      window.setTimeout(() => {
+        this.$scope.$broadcast(args[0], args);
+      }, 200);
     });
   }
 

@@ -319,11 +319,12 @@ export class CreateTaskView extends View {
       .then((task: ITaskData) => {
         this.showMsg('success', '创建成功', '已成功创建任务', `#/detail/task/${task._id}`);
         this.hideLoading();
+        const options = this.shareToQQgroup(task._id);
+        this.$scope.$emit('transfer', 'new:task', options);
         window.history.back();
       })
       .catch((reason: any) => {
         let message = this.getFailureReason(reason);
-        alert(JSON.stringify(reason));
         this.showMsg('error', '创建失败', message);
         this.hideLoading();
         window.history.back();
@@ -333,6 +334,21 @@ export class CreateTaskView extends View {
 
   public blur() {
     this.height = 'auto';
+  }
+
+  private shareToQQgroup(taskId: string) {
+    const executorName = this.members[this._executorId].name || '暂无执行者';
+    const dueDate = this.dueDate ? `,截止日期: ${moment(this.dueDate).calendar()}` : '';
+    return {
+      title: `我创建了任务: ${this.content}`,
+      desc: `执行者: ${executorName} ${dueDate}`,
+      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=task&_boundToObjectId=${taskId}`,
+      image_url: `http://${window.location.host}/images/teambition.png`,
+      debug: 1,
+      onError: function() {
+        alert(JSON.stringify(arguments));
+      }
+    };
   }
 
 }

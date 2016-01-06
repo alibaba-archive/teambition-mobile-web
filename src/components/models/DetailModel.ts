@@ -51,7 +51,7 @@ class DetailModel extends BaseModel {
       let projectId = detail._projectId;
       switch (type) {
         case 'task':
-          TaskModel.removeTask(projectId, id);
+          TaskModel.removeTask(id);
           break;
         case 'post':
           PostModel.removePost(projectId, id);

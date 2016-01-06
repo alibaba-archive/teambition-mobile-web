@@ -4,11 +4,11 @@ import {taskParser} from '../services';
 import {ITaskData} from 'teambition';
 
 const TaskCollections = [
-  'tasks:noneExecutor',
-  'tasks:due',
-  'tasks:tasklist',
-  'tasks:done',
-  'tasks:not:done'
+  ['tasks:noneExecutor', '_projectId'],
+  ['tasks:due', '_projectId'],
+  ['tasks:tasklist', '_tasklistId'],
+  ['tasks:done', '_projectId'],
+  ['tasks:not:done', '_projectId']
 ];
 
 class TaskModel extends BaseModel {
@@ -188,13 +188,14 @@ class TaskModel extends BaseModel {
     this.addToTasklistCollection(task);
   }
 
-  public removeTask(projectId: string, id: string) {
+  public removeTask(id: string) {
+    const task = this._get<ITaskData>(`task:detail`, id);
     angular.forEach(TaskCollections, (val: string) => {
-      let $index = this._get<string[]>(`${val}:index`, projectId);
+      const $index = this._get<string[]>(`${val[0]}:index`, task[val[1]]);
       if ($index) {
-        let position = $index.indexOf(id);
+        const position = $index.indexOf(id);
         if (position !== -1) {
-          let cache = this._get<ITaskData[]>(val, projectId);
+          const cache = this._get<ITaskData[]>(val[0], task[val[1]]);
           $index.splice(position, 1);
           cache.splice(position, 1);
         }
