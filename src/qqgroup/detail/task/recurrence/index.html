@@ -3,7 +3,7 @@
     <div class="list">
       <div class="item item-icon-right" ng-repeat="item in EditRecurrenceCtrl.recurrence track by $index" on-tap="EditRecurrenceCtrl.chooseRecurrence($index)">
         <span class="recurrence-name">{{item.name}}</span>
-        <i ng-if="item.isSelected" class="icon icon-tick positive"></i>
+        <i ng-if="item.isSelected" class="icon icon-tick-thin positive"></i>
       </div>
     </div>
   </ion-content>

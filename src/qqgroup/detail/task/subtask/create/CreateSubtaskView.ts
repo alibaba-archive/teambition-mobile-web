@@ -90,7 +90,7 @@ export class CreateSubtaskView extends View {
         this.content,
         this.taskid,
         executorId,
-        new Date(this.dueDate).toISOString()
+        this.dueDate ? new Date(this.dueDate).toISOString(): null
       )
       .then(() => {
         this.hideLoading();

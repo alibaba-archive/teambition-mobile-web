@@ -1,7 +1,7 @@
 import {inject} from './Utils';
 
 'use strict';
-const __notPatch = ['$promise'];
+const __notPatch = ['$promise', '_id'];
 
 @inject([
   'Cache'

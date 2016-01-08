@@ -21,7 +21,7 @@
         <div class="item item-divider"
              ng-class="{'half-divider': !$last}"
              ng-if="$last || $first">
-            <span ng-if="$last">{{stage.name}} ● {{PanelTaskCtrl.tasks[stage._id].length}}项</span>
+            <span ng-if="$last">{{stage.name}} · {{PanelTaskCtrl.tasks[stage._id].length}}项</span>
             <i ng-if="$last" class="icon icon-chevron-down"></i>
         </div>
         <a class="item item-icon-left task-item"

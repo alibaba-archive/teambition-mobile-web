@@ -1,7 +1,7 @@
 <ion-view ng-controller="SubtaskDetailView as SubtaskDetailCtrl"
           class="subtask-detail-view">
   <ion-content>
-    <textarea ng-model="SubtaskDetailCtrl.subtask.content">
+    <textarea ng-model="SubtaskDetailCtrl.content">
     </textarea>
     <div class="list ionic">
       <a class="item avatar" on-tap="SubtaskDetailCtrl.openExecutor()">
@@ -38,7 +38,7 @@
          on-tap="SubtaskDetailCtrl.transformSubtask()">
       转换为任务
     </div>
-    <div class="button button-block button-assertive"
+    <div class="button button-block button-outline button-assertive"
          on-tap="SubtaskDetailCtrl.deleteSubtask()">
       删除子任务
     </div>

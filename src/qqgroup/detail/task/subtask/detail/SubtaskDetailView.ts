@@ -6,18 +6,25 @@ import {ISubtaskData, IMemberData, ITaskData} from 'teambition';
   'MemberAPI'
 ])
 export class SubtaskDetailView extends View {
+
+  public static $inject = ['$scope'];
+
   public ViewName = 'SubtaskDetailView';
   public subtask: ISubtaskData;
   public members: {
     [index: string]: IMemberData;
   };
   public dueDate: string;
+  public content: string;
 
   private subtaskId: string;
   private MemberAPI: MemberAPI;
   private SubtasksAPI: SubtasksAPI;
-  constructor() {
+  constructor(
+    $scope: angular.IScope
+  ) {
     super();
+    this.$scope = $scope;
     this.zone.run(() => {
       this.subtaskId = this.$state.params.subtaskId;
     });
@@ -28,6 +35,7 @@ export class SubtaskDetailView extends View {
     .then((subtask: ISubtaskData) => {
       this.subtask = subtask;
       this.dueDate = subtask.dueDate;
+      this.content = subtask.content;
       return this.MemberAPI.fetch(subtask._projectId);
     }).then((data: any) => {
       this.members = data;
@@ -61,10 +69,32 @@ export class SubtaskDetailView extends View {
     }
   }
 
+  public openExecutor() {
+    this.openModal('detail/task/subtask/detail/executor.html', {
+      scope: this.$scope,
+      animation: 'slide-in-up'
+    });
+  }
+
+  public chooseExecutor(id: string) {
+    this.SubtasksAPI.update(this.subtaskId, {
+      _executorId: id
+    }, '_executorId')
+    .then(() => {
+      this.cancelModal();
+    })
+    .catch((reason: any) => {
+      const message = this.getFailureReason(reason);
+      this.showMsg('error', '更新执行者失败', reason);
+      this.cancelModal();
+    });
+  }
+
   public updateSubtask() {
     this.SubtasksAPI.update(this.subtaskId, {
-      dueDate: new Date(this.dueDate).toISOString()
-    }, 'dueDate')
+      content: this.content,
+      dueDate: this.dueDate ? new Date(this.dueDate).toISOString() : null
+    })
     .then(() => {
       this.showMsg('success', '更新子任务成功', '');
       window.history.back();
