@@ -54,10 +54,11 @@ const cdnPrefix = `https://dn-st.teambition.net/${cdnNamespace}`
 
 const dingScript = '<script src="https://g.alicdn.com/ilw/ding/0.6.6/scripts/dingtalk.js"></script>'
 const wechatScript = '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'
+const qqScript = '<script src="http://s.url.cn/qqweb/m/qunopen/component/sdk/opengroup.js"></script>'
 
 //将gulp 文件夹里面所有的gulp 任务load进来
 wrench.readdirSyncRecursive('./tools/gulp').filter((file) => {
-  return (/\.(js)$/i).test(file);
+  return (/\.(js)$/i).test(file)
 }).map(file => require('./tools/gulp/' + file))
 
 let catchError = true
@@ -69,7 +70,8 @@ let logError  = (stream) => {
 const paths = {
   images: ['./src/images/*'],
   less: [
-    './src/less/app.less',
+    './src/less/*.less',
+    './src/components/**/*.less',
     `./src/${target}/**/*.less`
   ],
   html: [
@@ -114,20 +116,30 @@ gulp.task('lint', () => {
 gulp.task('less', () => {
   return merge2(
     gulp.src(paths.tbui)
+      .pipe(sourcemaps.init({
+        loadMaps: true
+      }))
       .pipe(concat('tbui.less'))
       .pipe(logError(less()))
       .pipe(autoprefixer({
         browsers: ['last 2 versions']
-      })),
+      }))
+      .pipe(sourcemaps.write()),
     gulp.src(paths.less)
-      .pipe(sourcemaps.init())
+      .pipe(sourcemaps.init({
+        loadMaps: true
+      }))
       .pipe(logError(less()))
       .pipe(autoprefixer({
         browsers: ['last 2 versions']
       }))
       .pipe(sourcemaps.write())
   )
+  .pipe(sourcemaps.init({
+    loadMaps: true
+  }))
   .pipe(concat('app.css'))
+  .pipe(sourcemaps.write())
   .pipe(gulp.dest('www/css/'))
 })
 
@@ -253,11 +265,13 @@ gulp.task('before:default', sequence('clean', 'tsd:install', 'compile',
 ))
 
 gulp.task('default', ['before:default'], () => {
-  let str = '';
+  let str = ''
   if (target === 'wechat') {
     str = wechatScript
   }else if(target === 'ding') {
     str = dingScript
+  }else if (target === 'qqgroup') {
+    str = qqScript
   }
   return gulp.src('www/index.html')
     .pipe(replace('{{__third.lib.script}}', str))

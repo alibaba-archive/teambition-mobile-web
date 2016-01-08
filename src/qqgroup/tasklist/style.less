@@ -8,21 +8,45 @@ ion-content.has-bottom-bar {
 .tasks-list {
 
   .item.item-divider.half-divider {
-    height: 20px;
-    min-height: 18px;
+    height: 15px;
+    min-height: 15px;
+
+    &.icon-right:before {
+      content: '';
+      position: absolute;
+      height: 1px;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: @paginationBorder;
+    }
+
+    .icon {
+      position: absolute;
+      right: 20px;
+      &:before {
+        font-size: 16px;
+        color: @gray;
+      }
+    }
+    .notify-text {
+      font-size: 14px;
+      margin-left: 40px;
+    }
   }
 
   .task-create-btn {
     height: 40px;
     padding: 8px;
     color: #03A9F4;
-    font-weight: bold;
     text-align: center;
+    height: 50px;
+    line-height: 36px;
 
     i.icon-plus {
       vertical-align: top;
       &:before {
-        color: #03A9F4;
+        color: @blue;
       }
     }
   }
@@ -34,11 +58,11 @@ ion-content.has-bottom-bar {
     .item-divider {
       height: 32px;
       font-size: 14px;
-      color: #808080;
+      color: @grayDark;
       padding-top: 5px;
       font-weight: bold;
       margin-bottom: 1px;
-      background-color: #F7F7F7;
+      background-color: @dropdownBackgroundHover;
 
       .icon-chevron-down {
         float: right;
@@ -58,7 +82,7 @@ ion-content.has-bottom-bar {
         bottom: 1px;
         height: 1px;
         position: absolute;
-        background-color: #D9D9D9;
+        background-color: @navTabBackground;
       }
 
       &.task-priority:before {
@@ -71,15 +95,21 @@ ion-content.has-bottom-bar {
       }
 
       &.task-priority.task-priority-high:before {
-        background-color: #F5A623;
+        background-color: @orange;
       }
 
       &.task-priority.task-priority-urgent:before {
-        background-color: #E51C23;
+        background-color: @red;
       }
 
       &.task-has-done {
-        color: #808080;
+        opacity: 0.7;
+        font-weight: lighter;
+        color: @grayDark;
+      }
+
+      .task-icon:before {
+        color: #929292;
       }
 
       .task-content {
@@ -105,10 +135,10 @@ ion-content.has-bottom-bar {
             position: relative;
             time {
               font-size: 11px;
-              color: #03A9F4;
+              color: @blue;
 
               &.task-over-due {
-                color: #E51C23;
+                color: @red;
               }
             }
 
@@ -147,8 +177,8 @@ ion-content.has-bottom-bar {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  border-top: 1px solid #D9D9D9;
-  background-color: #F7F7F7;
+  border-top: 1px solid @grayLight;
+  background-color: @dropdownBackgroundHover;
 
   .container {
     float: right;
@@ -157,7 +187,7 @@ ion-content.has-bottom-bar {
       display: inline-block;
       height: 50px;
       font-size: 15px;
-      color: #A6A6A6;
+      color: @gray;
       padding: 14px;
 
       &:not(:last-child):after {
@@ -165,7 +195,7 @@ ion-content.has-bottom-bar {
         width: 1px;
         height: 28px;
         position: absolute;
-        background-color: #D9D9D9;
+        background-color: @grayLight;
         bottom: 11px;
         margin-left: 15px;
       }

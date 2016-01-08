@@ -22,6 +22,7 @@
       <i class="icon icon-calendar2"></i>
       <span ng-if="!TaskCtrl.task.dueDate">没有设置截止日期</span>
       <span ng-if="TaskCtrl.task.dueDate" ng-class="{'assertive': TaskCtrl.task.overdue}">{{TaskCtrl.task.dueDate | formatDate:'ll'}}</span>
+      <span ng-if="TaskCtrl.task.dueDate" ng-class="{'assertive': TaskCtrl.task.overdue}">{{TaskCtrl.task.dueDate | formatDate:'HH: MM'}}</span>
     </a>
   </div>
   <div class="task-more-wrap ionic">

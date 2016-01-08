@@ -5,9 +5,9 @@
   margin-bottom: 0;
   .task-name-wrap{
     overflow: hidden;
-    background-color: #f7f7f7;
+    background-color: @dropdownBackgroundHover;
     .item {
-      background-color: #f7f7f7;
+      background-color: @dropdownBackgroundHover;
     }
     .task-belong{
       font-size: 14px;
@@ -19,19 +19,19 @@
     .task-content {
       white-space: normal;
       min-height: 40px;
-      font-size: 20px;
       color: black;
       span {
         font-size: 20px;
       }
       .task-content-input {
         border: none;
-        background: #f7f7f7;
+        background: @dropdownBackgroundHover;
         position: absolute;
         width: 80%;
-        top: 0;
-        height: 46px;
-        line-height: 46px;
+        top: 10px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 20px;
         padding: 0;
       }
     }
@@ -97,6 +97,6 @@
     position: relative;
     bottom: 5px;
     left: 10px;
-    color: #383838;
+    color: @grayDarker;
   }
 }

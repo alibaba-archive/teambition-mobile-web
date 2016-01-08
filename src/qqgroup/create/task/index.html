@@ -1,0 +1,78 @@
+<ion-view class="create-task-view"
+          ng-controller="CreateTaskView as CreateTaskCtrl">
+  <ion-content ng-class="{'height': CreateTaskCtrl.height}">
+    <div class="list ionic">
+      <!--<a class="task-belong item" on-tap="DetailCtrl.openEdit('position')">
+        <span>{{CreateTaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{CreateTaskCtrl.tasklist.title}}<span>,&nbsp;</span><span>{{CreateTaskCtrl.stage.name}}</span></span>
+      </a>-->
+      <div-item class="item item-input task-title">
+        <input type="text"
+               placeholder="任务标题"
+               ng-model="CreateTaskCtrl.content"
+               ng-blur="CreateTaskCtrl.blur()">
+      </div-item>
+
+      <div class="task-info-wrap ionic">
+        <div-item class="item list-title">
+          信息
+        </div-item>
+        <a class="item item-detail-avatar" on-tap="CreateTaskCtrl.openExecutor()">
+          <img ng-src="{{CreateTaskCtrl.getExecutorAvatar()}}" class="task-executor-avatar">
+          <span class="task-executor-name">{{CreateTaskCtrl.getExecutorName()}}</span>
+        </a>
+        <div class="item item-icon-left">
+          <i class="icon icon-calendar2"></i>
+          <div class="data-picker-wrap">
+            <div class="task-time">
+              <span ng-if="!CreateTaskCtrl.dueDate">没有设置截止日期</span>
+              <span ng-if="CreateTaskCtrl.dueDate">{{CreateTaskCtrl.dueDate | formatDate : 'MoDo dddd'}}</span>
+              <input type="date"
+                     class="date-yy-mm-dd"
+                     ng-model="CreateTaskCtrl.dueDate"
+                     ng-model-options="{ getterSetter: true }">
+            </div>
+            <div class="task-time">
+              <span ng-if="CreateTaskCtrl.dueDate">{{CreateTaskCtrl.dueDate | formatDate : 'hh:mm'}}</span>
+              <input type="datetime-local"
+                     class="date-dd-mm-ss"
+                     ng-model="CreateTaskCtrl.dueDate"
+                     ng-model-options="{ getterSetter: true }">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div-title class="item list-title">
+        参与者
+      </div-title>
+      <div class="ionic">
+        <a class="item item-icon-left"
+             on-tap="CreateTaskCtrl.openInvolve()">
+          <i class="icon icon-users"></i>
+          <span ng-bind="CreateTaskCtrl.getInvolveNames()"></span>
+        </a>
+      </div>
+      <div-title class="item list-title">
+        更多
+      </div-title>
+      <div class="ionic more-info-wrap">
+        <a class="item item-icon-left" on-tap="CreateTaskCtrl.openNote()">
+          <i class="icon icon-book"></i>
+          <span>{{CreateTaskCtrl.note}}<span ng-if="!CreateTaskCtrl.note">添加备注</span></span>
+        </a>
+        <a class="item item-icon-left" on-tap="CreateTaskCtrl.openPriority()">
+          <i class="icon icon-circle-bold priority-{{CreateTaskCtrl.priority || 0}}"></i>
+          <span>{{CreateTaskCtrl.getPriorityName()}}</span>
+        </a>
+        <a class="item item-icon-left" on-tap="CreateTaskCtrl.openRecurrence()">
+          <i class="icon icon-review"></i>
+          <span>{{CreateTaskCtrl.recurrenceName || '设置重复周期'}}</span>
+        </a>
+      </div>
+    </div>
+    <div class="button button-block button-positive"
+         on-tap="CreateTaskCtrl.createTask()">
+      确定
+    </div>
+  </ion-content>
+</ion-view>

@@ -47,6 +47,8 @@ export class EditNoteView extends View {
         this.hideLoading();
         window.history.back();
       });
+    }else {
+      window.history.back();
     }
   }
 

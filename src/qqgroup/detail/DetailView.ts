@@ -8,7 +8,7 @@ import {
   ProjectsAPI,
   WorkAPI,
   LikeAPI,
-  MemberAPI,
+  MemberAPI
 } from '../index';
 import {
   IProjectData,
@@ -20,6 +20,10 @@ import {
 interface IImagesData {
   data: File;
   url: string;
+}
+
+interface IonicOptionsButtonsOption {
+  text: string;
 }
 
 const objectTpls = {
@@ -70,6 +74,8 @@ export class DetailView extends View {
   public projectMembers: {
     [index: string]: IMemberData
   };
+
+  public isComment = false;
 
   protected _boundToObjectId: string;
   protected _boundToObjectType: string;
@@ -145,6 +151,10 @@ export class DetailView extends View {
     popup.close();
   }
 
+  public openComment() {
+    this.isComment = true;
+  }
+
   public loadImages (images: IImagesData[]) {
     this.images = this.images.concat(images);
   }
@@ -164,6 +174,34 @@ export class DetailView extends View {
     }
     return this.LikeAPI.postLike(this._boundToObjectType, this.detail);
   }
+
+  public openOptions() {
+    let index: number = -1;
+    let thisButtons: IonicOptionsButtonsOption[] = [];
+    let deleteIndex: number;
+    let shareIndex: number;
+    thisButtons.push({text: '<font color="red">删除</font>'});
+    deleteIndex = ++index;
+    thisButtons.push({text: '分享'});
+    shareIndex = ++index;
+    this.$ionicActionSheet.show({
+      buttons: thisButtons,
+      cancelText: '取消',
+      buttonClicked: (index: number) => {
+        switch (index) {
+          case deleteIndex :
+            this.removeObject();
+            break;
+          case shareIndex :
+            const options = this.shareToQQgroup();
+            window['openGroup'].share(options);
+            break;
+        };
+        return true;
+      }
+    });
+  }
+
 
   public openLinked() {
     if (this.detail.linked) {
@@ -217,6 +255,8 @@ export class DetailView extends View {
         return this.addTextComment(attachments);
       })
       .catch((reason: any) => {
+        const message = this.getFailureReason(reason);
+        this.showMsg('error', '评论失败', message);
         this.hideLoading();
       });
     }
@@ -248,6 +288,21 @@ export class DetailView extends View {
     });
   }
 
+  private shareToQQgroup() {
+    const executorName = this.projectMembers[this.detail._executorId].name || this.detail.executorName || '暂无执行者';
+    const dueDate = this.detail.dueDate ? `,截止日期: ${moment(this.detail.dueDate).calendar()}` : '';
+    return {
+      title: `我创建了任务: ${this.detail.content}`,
+      desc: `执行者: ${executorName} ${dueDate}`,
+      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}`,
+      image_url: `http://${window.location.host}/images/teambition.png`,
+      debug: 1,
+      onError: function() {
+        alert(JSON.stringify(arguments));
+      }
+    };
+  }
+
   private addTextComment(attachments?: string[]) {
     attachments = (attachments && attachments.length) ? attachments : [];
     return this.ActivityAPI.save({
@@ -262,9 +317,8 @@ export class DetailView extends View {
       this.hideLoading();
     })
     .catch((reason: any) => {
-      let msg = '网络错误';
-      msg = (reason && typeof(reason.data) === 'object') ? reason.data.message : msg;
-      this.showMsg('error', '评论失败', msg);
+      const message = this.getFailureReason(reason);
+      this.showMsg('error', '评论失败', message);
       this.hideLoading();
     });
   }
