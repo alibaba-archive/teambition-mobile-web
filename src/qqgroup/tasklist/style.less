@@ -8,7 +8,19 @@ ion-content.has-bottom-bar {
 .tasks-list {
 
   .item.item-divider.half-divider {
-    min-height: 20px;
+    height: 15px;
+    min-height: 15px;
+
+    &.icon-right:before {
+      content: '';
+      position: absolute;
+      height: 1px;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: @paginationBorder;
+    }
+
     .icon {
       position: absolute;
       right: 20px;
@@ -27,9 +39,8 @@ ion-content.has-bottom-bar {
     height: 40px;
     padding: 8px;
     color: #03A9F4;
-    font-weight: bold;
     text-align: center;
-    height: 52px;
+    height: 50px;
     line-height: 36px;
 
     i.icon-plus {
@@ -71,7 +82,7 @@ ion-content.has-bottom-bar {
         bottom: 1px;
         height: 1px;
         position: absolute;
-        background-color: @grayLight;
+        background-color: @navTabBackground;
       }
 
       &.task-priority:before {
@@ -92,7 +103,13 @@ ion-content.has-bottom-bar {
       }
 
       &.task-has-done {
+        opacity: 0.7;
+        font-weight: lighter;
         color: @grayDark;
+      }
+
+      .task-icon:before {
+        color: #929292;
       }
 
       .task-content {
