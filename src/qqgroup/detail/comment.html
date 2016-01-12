@@ -1,0 +1,44 @@
+<ion-modal-view class="comment-modal">
+  <div class="item-comment">
+    <span class="button button-clear button-cancel-comment"
+          on-tap="DetailCtrl.cancelComment()">
+      取消
+    </span>
+    <span class="button button-clear button-send-comment"
+          ng-class="{'btnActive': DetailCtrl.hasContent()}"
+          on-tap="DetailCtrl.addComment()">
+      发送
+    </span>
+    <div class="item item-input-wrapper">
+      <textarea type="text" placeholder="输入评论"
+                ng-model="DetailCtrl.comment"
+                auto-focus>
+      </textarea>
+    </div>
+    <i class="icon icon-paperclip"
+       on-tap="DetailCtrl.chooseFiles()"></i>
+    <div class="item item-avatar item-upload"
+         ng-repeat="work in DetailCtrl.fileContent track by $index">
+      <img class="item-thumbnail" ng-if="work.content.thumbnail" ng-src="{{work.content.thumbnail}}">
+      <div class="file-background {{work.content.fileType}}" ng-if="!work.content.thumbnail">
+        <span ng-bind="work.content.fileType" class="item-fileType {{work.content.class}}"></span>
+      </div>
+      <div ng-bind="work.content.name"></div>
+      <div class="progress" ng-hide="work.progress == '100%'">
+        <div class="progress-bar"
+             ng-style="{'width': work.progress}"></div>
+      </div>
+      <div ng-show="work.progress == '100%'">
+        上传完成
+      </div>
+      <div class="divider" ng-if="!$last"></div>
+      <span class="item-file-name" ng-bind="work.fileName"></span>
+    </div>
+    <div class="item comment-images">
+      <div class="comment-image" ng-repeat="item in DetailCtrl.images">
+        <img ng-src="{{item.url}}">
+        <i class="icon ion-ios-close comment-image-close" on-tap="DetailCtrl.removeImage($index)"></i>
+      </div>
+    </div>
+  </div>
+</ion-modal-view>

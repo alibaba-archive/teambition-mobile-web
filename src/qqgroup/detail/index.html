@@ -1,33 +1,10 @@
 <ion-view class="detail-view"
-          ng-class="{'big-footer': DetailCtrl.images.length}"
           ng-controller="DetailView as DetailCtrl">
   <ion-content>
     <div ui-view="object"></div>
     <div ui-view="detail-activities"></div>
   </ion-content>
   <ion-footer-bar class="bar-stable detail-footer">
-    <div class="item item-input-inset item-comment"
-         ng-show="DetailCtrl.isComment">
-      <i class="icon icon-paperclip"
-         open-file="DetailCtrl.loadImages(images)"
-         open-file-filter="DetailCtrl.isImageFile(file)"
-         open-file-multiple="true"></i>
-      <div class="item-input-wrapper">
-        <input type="text" placeholder="评论..."
-               ng-model="DetailCtrl.comment">
-        <div class="comment-images">
-          <div class="comment-image" ng-repeat="item in DetailCtrl.images">
-            <img ng-src="{{item.url}}">
-            <i class="icon ion-ios-close comment-image-close" on-tap="DetailCtrl.removeImage($index)"></i>
-          </div>
-        </div>
-      </div>
-      <span class="button button-clear button-send-comment"
-            ng-class="{'btnActive':DetailCtrl.hasContent()}"
-            on-tap="DetailCtrl.addComment()">
-        发送
-      </span>
-    </div>
     <div class="detail-footer-wrap"
          ng-show="!DetailCtrl.isComment">
       <div class="detail-button"

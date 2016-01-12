@@ -8,7 +8,8 @@ import {
   ProjectsAPI,
   WorkAPI,
   LikeAPI,
-  MemberAPI
+  MemberAPI,
+  InputComponments
 } from '../index';
 import {
   IProjectData,
@@ -51,8 +52,10 @@ const objectTpls = {
 
 let popup: ionic.popup.IonicPopupPromise;
 let boundToObjectId: string;
+let fileContent = [];
 
 @inject([
+  '$timeout',
   'DetailAPI',
   'ActivityAPI',
   'ProjectsAPI',
@@ -60,7 +63,8 @@ let boundToObjectId: string;
   'EntryAPI',
   'WorkAPI',
   'LikeAPI',
-  'StrikerAPI'
+  'StrikerAPI',
+  'InputComponments'
 ])
 export class DetailView extends View {
 
@@ -74,14 +78,16 @@ export class DetailView extends View {
   public projectMembers: {
     [index: string]: IMemberData
   };
-
-  public isComment = false;
+  public textareaHeight: string;
+  public transformY: string;
+  public fileContent: any[];
 
   protected _boundToObjectId: string;
   protected _boundToObjectType: string;
   protected _linkedId: string;
   protected detail: any;
 
+  private $timeout: angular.ITimeoutService;
   private DetailAPI: DetailAPI;
   private ActivityAPI: ActivityAPI;
   private StrikerAPI: StrikerAPI;
@@ -89,7 +95,8 @@ export class DetailView extends View {
   private WorkAPI: WorkAPI;
   private LikeAPI: LikeAPI;
   private MemberAPI: MemberAPI;
-  private images: IImagesData[];
+  private InputComponments: InputComponments;
+  private files: string[];
 
   constructor(
     $scope: angular.IScope
@@ -97,7 +104,8 @@ export class DetailView extends View {
     super();
     this.$scope = $scope;
     this.comment = '';
-    this.images = [];
+    this.fileContent = [];
+    this.files = [];
     this.zone.run(angular.noop);
   }
 
@@ -152,20 +160,77 @@ export class DetailView extends View {
   }
 
   public openComment() {
-    this.isComment = true;
+    this.openModal('detail/comment.html', {
+      scope: this.$scope
+    });
   }
 
-  public loadImages (images: IImagesData[]) {
-    this.images = this.images.concat(images);
+  public cancelComment() {
+    console.log(123);
+    this.cancelModal();
   }
 
-  public removeImage($index: number) {
-    let item = this.images.splice($index, 1)[0];
-    URL.revokeObjectURL(item.url);
+  public chooseFiles() {
+    this.InputComponments.show(this);
+  }
+
+  public uploadFile() {
+    let contents = fileContent;
+    angular.forEach(this.fileContent, (file: any, index: number) => {
+      file.fileType = file.name.split('.').pop();
+      if (file.fileType.length > 4) {
+        file.fileType = file.fileType.substr(0, 1);
+        file.class = 'bigger-bigger';
+      }
+      if (
+        file.fileType.indexOf('png') !== -1 ||
+        file.fileType.indexOf('jpg') !== -1 ||
+        file.fileType.indexOf('jpeg') !== -1 ||
+        file.fileType.indexOf('gif') !== -1 ||
+        file.fileType.indexOf('bmp') !== -1
+      ) {
+        file.thumbnail = URL.createObjectURL(file);
+      }
+      let content = {
+        progress: '0',
+        request: null,
+        content: file,
+        index: index
+      };
+      content.request = this.StrikerAPI.upload([file], content).then((res: IStrikerRes) => {
+        return this.WorkAPI.uploads(this.project._defaultCollectionId, this.project._id, [res]);
+      })
+      .then((data: any) => {
+        let $index: number;
+        this.files.push(data[0]._id)
+        angular.forEach(this.fileContent, (_content: any, i: number) => {
+          if (_content.index === content.index) {
+            $index = i;
+          }
+        });
+      })
+      .catch((reason: any) => {
+        let message = this.getFailureReason(reason);
+        this.showMsg('error', '上传出错', message);
+        let $index: number;
+        angular.forEach(this.fileContent, (_content: any, i: number) => {
+          if (_content.index === content.index) {
+            $index = i;
+          }
+        });
+      });
+      contents.push(content);
+    });
+    this.fileContent = contents;
+    fileContent = contents;
+  }
+
+  public removeFile($index: number) {
+    this.fileContent.splice($index, 1);
   }
 
   public hasContent() {
-    return !!(this.images.length || this.comment.length);
+    return !!(this.fileContent.length || this.comment.length);
   }
 
   public like() {
@@ -210,54 +275,26 @@ export class DetailView extends View {
   }
 
   public addComment() {
-    if (!this.comment && !this.images.length) {
+    if (!this.comment && !this.fileContent.length) {
       return ;
     }
     this.showLoading();
     let _projectId = this.detail._projectId;
-    if (!this.images.length) {
+    if (!this.fileContent.length) {
       return this.addTextComment()
       .then(() => {
         this.hideLoading();
       });
     }else {
-      let files = this.images.map((item: {data: File}) => {
-        return item.data;
-      });
-      let strikerRes: IStrikerRes[];
-      return this.StrikerAPI.upload(files)
-      .then((data: any) => {
-        if (data) {
-          if (data.length) {
-            strikerRes = data;
-          }else {
-            strikerRes = [data];
-          }
-        }else {
-          strikerRes = [];
-        }
-      })
+      return this.addTextComment(this.files)
       .then(() => {
-        return this.ProjectsAPI.fetchById(_projectId);
-      })
-      .then((project: IProjectData) => {
-        let collectionId = project._defaultCollectionId;
-        return this.WorkAPI.uploads(collectionId, _projectId, strikerRes);
-      })
-      .then((resp: IFileData[]) => {
-        let attachments = [];
-        angular.forEach(resp, (file: IFileData, index: number) => {
-          attachments.push(file._id);
-        });
-        return attachments;
-      })
-      .then((attachments: string[]) => {
-        return this.addTextComment(attachments);
+        this.cancelModal();
       })
       .catch((reason: any) => {
         const message = this.getFailureReason(reason);
         this.showMsg('error', '评论失败', message);
         this.hideLoading();
+        this.cancelModal();
       });
     }
   }
@@ -313,7 +350,7 @@ export class DetailView extends View {
     })
     .then(() => {
       this.comment = '';
-      this.images = [];
+      this.fileContent = [];
       this.hideLoading();
     })
     .catch((reason: any) => {

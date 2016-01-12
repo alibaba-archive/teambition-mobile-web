@@ -7,6 +7,7 @@
         <div class="icon icon-circle-bold priority-icon-left priority-{{item.priority}}"></div>
         <span class="pirority-name">{{item.name}}</span>
         <i ng-if="item.isSelected" class="icon icon-tick-thin positive"></i>
+        <div class="divider" ng-if="!$last"></div>
       </ion-item>
     </div>
   </ion-content>

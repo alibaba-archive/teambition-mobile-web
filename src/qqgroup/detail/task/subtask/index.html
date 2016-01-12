@@ -1,7 +1,6 @@
 <ion-view ng-controller="SubtaskView as SubtaskCtrl" class="subtaskView">
   <ion-content>
     <div class="list subtasks-wrap">
-      <div class="item list-title">子任务</div>
       <div ng-repeat="subtask in SubtaskCtrl.subtasks"
            class="item item-icon-left"
            on-tap="SubtaskCtrl.openDetail(subtask._id)">
@@ -11,6 +10,7 @@
         </i>
         <span ng-bind="subtask.content"></span>
         <img class="subtask-avatar" ng-src="{{subtask.executor.avatarUrl || SubtaskCtrl.nobodyUrl}}">
+        <div class="divider" ng-if="!$last"></div>
       </div>
     </div>
     <div class="button button-block button-positive"
