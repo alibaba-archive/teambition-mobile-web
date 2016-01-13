@@ -1,4 +1,5 @@
-/// <reference path="../../.tmp/typings/tsd.d.ts" />
+/// <reference path="./tsd.d.ts" />
+/// <reference path="./et.d.ts" />
 /// <reference path="./zone.d.ts" />
 declare module 'teambition' {
   interface Iapp {
