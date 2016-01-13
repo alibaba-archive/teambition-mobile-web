@@ -153,6 +153,10 @@ export class ProjectView extends View {
     return hasStar;
   }
 
+  public openProject(id: string) {
+    return id ? window.location.hash = `/project/${id}/home` : null;
+  }
+
   private archiveProject(project: IProjectData) {
     if (project.canArchive) {
       let popup = this.$ionicPopup.show({

@@ -37,10 +37,10 @@ export class TaskFilter extends ETComponent {
       e.stopPropagation();
     }
     this.animateClass = 'slideOutUp';
-    dropDownTimer = setTimeout(() => {
+    dropDownTimer = window.setTimeout(() => {
       this.$ionicBackdrop.release();
     }, 200);
-    removeTimer = setTimeout(() => {
+    removeTimer = window.setTimeout(() => {
       this.remove();
     }, 400);
 

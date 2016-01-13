@@ -32,11 +32,11 @@ export class Notify extends ETComponent {
     window.clearTimeout(removeFn);
     this.animateClass = 'animated fadeInUp';
     this.insertDOM();
-    fadeOutAnimate = setTimeout(() => {
+    fadeOutAnimate = window.setTimeout(() => {
       this.animateClass = 'animated fadeOutDown';
     }, 2000);
 
-    removeFn = setTimeout(() => {
+    removeFn = window.setTimeout(() => {
       this.animateClass = null;
       this.remove();
     }, 3000);

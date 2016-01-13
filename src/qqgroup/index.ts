@@ -1,8 +1,14 @@
 'use strict';
 
-export * from '../bootstrap';
-export * from '../components/services/apis/RESTFul';
-import {app} from '../components/config';
+angular.module('teambition', [
+  'ionic',
+  'ngResource',
+  'tbTemplates',
+  'ngFileUpload',
+  'et.template'
+]);
+
+import {app} from '../components/config/config';
 import {RunFn} from './run';
 import {rootZone} from '../components/bases/Utils';
 import {Notify} from '../components/et/notify/notify';

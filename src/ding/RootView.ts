@@ -156,3 +156,21 @@ export class RootView extends View {
 }
 
 angular.module('teambition').controller('RootView', RootView);
+
+export * from './project/ProjectView';
+export * from './project-tabs/TabsView';
+export * from './project-tabs/project-home/PanelHomeView';
+export * from './project-tabs/project-event/PanelEventView';
+export * from './project-tabs/project-post/PanelPostView';
+export * from './project-tabs/project-tasklist/PanelTasklistView';
+export * from './project-tabs/project-work/PanelWorkView';
+export * from './detail/DetailView';
+export * from './edit/content/EditContentView';
+export * from './edit/position/TaskPositionSelector';
+export * from './edit/projects/ChooseProjectsView';
+export * from './edit/stage/ChooseStageView';
+export * from './edit/tasklist/ChooseTasklistView';
+export * from './create/event/CreateEventView';
+export * from './create/post/CreatePostView';
+export * from './create/project/CreateProjectView';
+export * from './create/task/CreateTaskView';

@@ -7,8 +7,6 @@ import {
 } from 'teambition';
 import {Notify} from '../et';
 
-declare let wx;
-
 let viewsMap = {};
 
 let initedViews = {};

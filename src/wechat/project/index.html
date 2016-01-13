@@ -5,7 +5,8 @@
         星标项目
       </div>
       <div class="project-wrap project-starred" ng-if="ProjectCtrl.countStar()">
-        <a class="project-item" href="/#/project/{{project._id}}/home"
+        <a class="project-item"
+           on-tap="ProjectCtrl.openProject(project._id)"
            style="background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0) 60%), url({{project.logo}})"
            ng-repeat="(py, project) in ProjectCtrl.projects track by project._id" ng-if="project.isStar">
           <p>{{::project.name}}</p>
@@ -23,7 +24,9 @@
       </div>-->
       <!-- 个人项目 -->
       <ion-list class="project-wrap ionic" ng-repeat="project in ProjectCtrl.personalProjects track by project._id" ng-show="!project.deleted">
-        <ion-item class="item" ng-class="{'item-icon-right': editing}" href="/#/project/{{project._id}}/home">
+        <ion-item class="item"
+                  ng-class="{'item-icon-right': editing}"
+                  on-tap="ProjectCtrl.openProject(project._id)">
           <div class="project-list-icon project-logo" style="{{project.style}}"></div>
           <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
 
@@ -42,7 +45,9 @@
           {{organization.name}}
         </div>
         <ion-list class="project-wrap ionic" ng-repeat="project in organization.projects track by project._id" ng-show="!project.deleted">
-          <ion-item class="item" ng-class="{'item-icon-right': editing}" href="/#/project/{{project._id}}/home">
+          <ion-item class="item"
+                    ng-class="{'item-icon-right': editing}"
+                    on-tap="ProjectCtrl.openProject(project._id)">
             <div class="project-list-icon project-logo" style="{{project.style}}"></div>
             <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
 

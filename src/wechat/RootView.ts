@@ -1,9 +1,8 @@
 'use strict';
-
+import WechatService from '../components/bases/WechatService';
 import {
   inject,
   getParam,
-  Wechat,
   View,
   RestAPI,
   socketListener,
@@ -98,8 +97,8 @@ export class RootView extends View {
       this.initRootscope(userMe);
       this.userMe = userMe;
       View.afterTaskHook = (project: IProjectData) => {
-        if (typeof wx !== 'undefined' && Wechat && project) {
-          Wechat.reconfigShare(userMe, project);
+        if (typeof wx !== 'undefined' && WechatService && project) {
+          WechatService.reconfigShare(userMe, project);
         }
       };
       try {
