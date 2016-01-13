@@ -15,7 +15,6 @@ import {
   IProjectData,
   IMemberData,
   IStrikerRes,
-  IFileData
 } from 'teambition';
 
 interface IImagesData {
@@ -55,7 +54,6 @@ let boundToObjectId: string;
 let fileContent = [];
 
 @inject([
-  '$timeout',
   'DetailAPI',
   'ActivityAPI',
   'ProjectsAPI',
@@ -87,7 +85,6 @@ export class DetailView extends View {
   protected _linkedId: string;
   protected detail: any;
 
-  private $timeout: angular.ITimeoutService;
   private DetailAPI: DetailAPI;
   private ActivityAPI: ActivityAPI;
   private StrikerAPI: StrikerAPI;
@@ -202,7 +199,7 @@ export class DetailView extends View {
       })
       .then((data: any) => {
         let $index: number;
-        this.files.push(data[0]._id)
+        this.files.push(data[0]._id);
         angular.forEach(this.fileContent, (_content: any, i: number) => {
           if (_content.index === content.index) {
             $index = i;
@@ -279,7 +276,6 @@ export class DetailView extends View {
       return ;
     }
     this.showLoading();
-    let _projectId = this.detail._projectId;
     if (!this.fileContent.length) {
       return this.addTextComment()
       .then(() => {

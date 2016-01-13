@@ -50,7 +50,7 @@ a {
     .popup-buttons {
       padding: 10px 0 0 0;
       .button {
-        background-color: rgba(248, 248, 248, 0.8);
+        background-color: transparent;
         margin-right: -1px;
         padding: 0;
         border-style: rgba(0, 0, 0, 0.1);
@@ -60,6 +60,12 @@ a {
         &:last-child {
           margin-right: 0px;
           border-bottom-right-radius: 10px;
+        }
+        &.button-positive {
+          color: #03a9f4;
+        }
+        &.button-assertive {
+          color: #ef473a;
         }
       }
     }
@@ -195,35 +201,40 @@ i.positive.icon:before {
   margin-left: 20px;
 }
 .list{
-  .item.item-title {
-    padding-bottom: 4px;
-    color: @gray;
-  }
-  .item.list-title {
-    color: @grayDark;
-    font-size: 15px;
-    padding: 0 0 0 16px !important;
-    height: 30px !important;
-    line-height: 30px !important;
-    color: @grayDark;
-    background-color: #f7f7f7;
-    min-height: 0;
-  }
-  .icon:before {
-    font-size: 20px;
-    color: #929292;
-  }
-  .icon-circle-bold {
-    &.priority-2:before {
-      color: @red;
+  .item {
+    &.item-icon-left {
+      padding:14px 16px 14px 60px;
     }
-
-    &.priority-1:before {
-      color: @orange;
+    &.item-title {
+      padding-bottom: 4px;
+      color: @gray;
     }
-
-    &.priority-0:before {
+    &.list-title {
       color: @grayDark;
+      font-size: 15px;
+      padding: 0 0 0 16px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+      color: @grayDark;
+      background-color: #f7f7f7;
+      min-height: 0;
+    }
+    .icon:before {
+      font-size: 20px;
+      color: #929292;
+    }
+    .icon-circle-bold {
+      &.priority-2:before {
+        color: @red;
+      }
+
+      &.priority-1:before {
+        color: @orange;
+      }
+
+      &.priority-0:before {
+        color: @grayDark;
+      }
     }
   }
 }

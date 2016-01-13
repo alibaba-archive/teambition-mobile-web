@@ -143,99 +143,6 @@ export class PanelHomeView extends View {
     }
   }
 
-  public openMembersFilterModal() {
-    this.openModal('project-tabs/project-home/members-filter-modal.html', {scope: this.$scope});
-  }
-
-  public openTasksFilterModal() {
-    this.openModal('project-tabs/project-home/tasks-filter-modal.html', {scope: this.$scope});
-  }
-
-  public checkItem(filter: any, type: string, item?: any) {
-    if (!item) {
-      if (!filter.count) {
-        filter.all = true;
-      }else {
-        filter[type] = {};
-        filter.count = 0;
-      }
-    }else {
-      if (filter[type][item]) {
-        filter.count += 1;
-      }else {
-        filter.count -= 1;
-      }
-      filter.all = !filter.count;
-    }
-  }
-
-  public selectMember(id: string) {
-    if (id === 'all') {
-      this.selectedMembers.all = true;
-      angular.forEach(this.membersMap, (member: IMemberData) => {
-        member.isSelected = false;
-      });
-      this.checkItem(this.selectedMembers, 'members');
-    }else {
-      this.selectedMembers.all = false;
-      this.membersMap[id].isSelected = !this.membersMap[id].isSelected;
-      this.selectedMembers.members[id] = this.selectedMembers.members[id] ? null : this.membersMap[id].name;
-      this.checkItem(this.selectedMembers, 'members', this.membersMap[id]);
-    }
-  }
-
-  public filterMembers() {
-    let cacheText;
-    this.filterResultParser(this.selectedMembers, this.selectedMembers.members, this.selectedMembers.members, 'members');
-    cacheText = this.selectedMembers.cacheText + ' ' + this.selectedTypes.cacheText;
-    if (cacheText !== lastCacheText) {
-      this.showLoading();
-      this.getActivities(20, this.selectedMembers.cacheText, this.selectedTypes.cacheText)
-      .then(() => {
-        this.hideLoading();
-        this.cancelModal();
-      });
-    }
-    this.infinite = true;
-  }
-
-  public filterTasks() {
-    let cacheText;
-    this.filterResultParser(this.selectedTypes, this.selectedTypes.types, typeMap, 'tasks');
-    cacheText = this.selectedMembers.cacheText + ' ' + this.selectedTypes.cacheText;
-    if (cacheText !== lastCacheText) {
-      this.showLoading();
-      this.getActivities(20, this.selectedMembers.cacheText, this.selectedTypes.cacheText)
-      .then(() => {
-        this.hideLoading();
-        this.cancelModal();
-      });
-    }
-    this.infinite = true;
-  }
-
-  public openMembersModel() {
-    this.openModal('project-tabs/project-home/add-member-modal.html', {
-      scope: this.$scope
-    });
-    this.showLoading();
-    this.MemberAPI.getOrganizationMembers(this.project.organizationId)
-    .then((members: {[index: string]: IMemberData}) => {
-      this.organizationMembers = members;
-      angular.forEach(this.membersMap, (member: IMemberData) => {
-        if (this.organizationMembers[member._id]) {
-          this.organizationMembers[member._id].isSelected = true;
-        }
-      });
-      this.hideLoading();
-    })
-    .catch((reason: any) => {
-      let message = this.getFailureReason(reason);
-      this.showMsg('error', '获取数据失败', message);
-      this.hideLoading();
-    });
-  }
-
   public addMember(id: string) {
     this.organizationMembers[id].isSelected = !this.organizationMembers[id].isSelected;
   }
@@ -374,28 +281,6 @@ export class PanelHomeView extends View {
     .then(() => {
       return this.getActivities(20, null, null, 1);
     });
-  }
-
-  private filterResultParser(obj: any, arr: any, map: any, type: string) {
-    if (obj.all) {
-      obj.cacheText = '';
-      obj.text = (type === 'members') ? '全部成员' : '全部类型';
-      return;
-    }
-    let text = '';
-    let result = [];
-    for (let id in arr) {
-      if (arr.hasOwnProperty(id)) {
-        let value = arr[id];
-        if (value) {
-          text = text + map[id] + ',';
-          result.push(id);
-        }
-      }
-    }
-    obj.text = text.slice(0, text.length - 1);
-    obj.cacheText = result.sort().toString();
-    return obj;
   }
 
 }

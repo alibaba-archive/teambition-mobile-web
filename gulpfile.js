@@ -17,15 +17,11 @@ const lint         = require('gulp-tslint')
 const stylish      = require('gulp-tslint-stylish')
 const minifyCss    = require('gulp-minify-css')
 const RevAll       = require('gulp-rev-all')
-const plumber      = require('gulp-plumber')
 const autoprefixer = require('gulp-autoprefixer')
-const util         = require('gulp-util')
 const merge2       = require('merge2')
 const cdnUploader  = require('cdn-uploader')
 const wrench       = require('wrench')
-const streamqueue  = require('streamqueue')
-const browserSync  = require('browser-sync')
-const reload       = browserSync.reload
+const config = require(`./config/${process.env.BUILD_ENV || 'default'}.json`)
 
 const CDNs = [
   {
@@ -40,21 +36,15 @@ const CDNs = [
   }
 ]
 
-const target = process.env.BUILD_TARGET || 'ding'
+const target = process.env.BUILD_TARGET || 'mobile'
 
-let cdnNamespace = 'tb-mobile'
+let cdnNamespace, apphost, scriptStr
 
-if (target === 'ding') {
-  cdnNamespace = 'tb-ding'
-}else if (target === 'wechat') {
-  cdnNamespace = 'tb-wechat'
-}
+cdnNamespace = config.cdnNames[target]
+apphost = config.hosts[target]
+scriptStr = config.scripts[target]
 
 const cdnPrefix = `https://dn-st.teambition.net/${cdnNamespace}`
-
-const dingScript = '<script src="https://g.alicdn.com/ilw/ding/0.6.6/scripts/dingtalk.js"></script>'
-const wechatScript = '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>'
-const qqScript = '<script src="http://s.url.cn/qqweb/m/qunopen/component/sdk/opengroup.js"></script>'
 
 //将gulp 文件夹里面所有的gulp 任务load进来
 wrench.readdirSyncRecursive('./tools/gulp').filter((file) => {
@@ -198,11 +188,12 @@ gulp.task('lib-font', () => {
 gulp.task('config', () => {
   const source = gulp.src('www/js/app.js')
   const defaultConfig = require('./config/default.json')
-  const config = require(`./config/${process.env.BUILD_ENV || 'default'}.json`)
   const keys = Object.keys(config)
   const version = require('./package.json').version
   keys.forEach((key) => {
-    source.pipe(replace(defaultConfig[key], config[key]))
+    if (typeof config[key] === 'string') {
+      source.pipe(replace(defaultConfig[key], config[key]))
+    }
   })
   return source.pipe(replace('{{__version}}', version))
     .pipe(gulp.dest('www/js/'))
@@ -265,17 +256,14 @@ gulp.task('before:default', sequence('clean', 'tsd:install', 'compile',
 ))
 
 gulp.task('default', ['before:default'], () => {
-  let str = ''
-  if (target === 'wechat') {
-    str = wechatScript
-  }else if(target === 'ding') {
-    str = dingScript
-  }else if (target === 'qqgroup') {
-    str = qqScript
-  }
-  return gulp.src('www/index.html')
-    .pipe(replace('{{__third.lib.script}}', str))
-    .pipe(gulp.dest('www'))
+  return merge2(
+    gulp.src('www/index.html')
+      .pipe(replace('{{__third.lib.script}}', scriptStr))
+      .pipe(gulp.dest('www')),
+    gulp.src('www/js/app.js')
+      .pipe(replace('{{__apphost}}', apphost))
+      .pipe(gulp.dest('www/js'))
+  )
 })
 
 gulp.task('build', sequence('default', 'revall'))

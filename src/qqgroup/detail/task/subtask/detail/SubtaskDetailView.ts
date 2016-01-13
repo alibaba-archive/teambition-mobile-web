@@ -85,7 +85,7 @@ export class SubtaskDetailView extends View {
     })
     .catch((reason: any) => {
       const message = this.getFailureReason(reason);
-      this.showMsg('error', '更新执行者失败', reason);
+      this.showMsg('error', '更新执行者失败', message);
       this.cancelModal();
     });
   }

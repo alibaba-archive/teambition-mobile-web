@@ -1,4 +1,4 @@
-export const host = 'http://ding.project.ci/dingTalk';
+export const host = '{{__apphost}}';
 
 export const app = {
   NAME: 'teambition-mobile-web',

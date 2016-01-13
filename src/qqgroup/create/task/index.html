@@ -6,10 +6,11 @@
         <span>{{CreateTaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{CreateTaskCtrl.tasklist.title}}<span>,&nbsp;</span><span>{{CreateTaskCtrl.stage.name}}</span></span>
       </a>-->
       <div-item class="item item-input task-title">
-        <input type="text"
-               placeholder="任务标题"
-               ng-model="CreateTaskCtrl.content"
-               ng-blur="CreateTaskCtrl.blur()">
+        <textarea type="text"
+                  placeholder="任务标题"
+                  ng-model="CreateTaskCtrl.content"
+                  ng-blur="CreateTaskCtrl.blur()">
+        </textarea>
       </div-item>
 
       <div class="task-info-wrap ionic">
