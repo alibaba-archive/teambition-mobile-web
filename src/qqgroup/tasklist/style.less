@@ -36,10 +36,10 @@ ion-content.has-bottom-bar {
   }
 
   .task-create-btn {
-    height: 40px;
     padding: 8px;
     color: #03A9F4;
     text-align: center;
+    font-size: 15px;
     height: 50px;
     line-height: 36px;
 
@@ -47,6 +47,7 @@ ion-content.has-bottom-bar {
       vertical-align: top;
       &:before {
         color: @blue;
+        font-size: 15px;
       }
     }
   }
@@ -60,8 +61,8 @@ ion-content.has-bottom-bar {
       font-size: 14px;
       color: @grayDark;
       padding-top: 5px;
-      font-weight: bold;
       margin-bottom: 1px;
+      // font-weight: normal;
       background-color: @dropdownBackgroundHover;
 
       .icon-chevron-down {
@@ -113,6 +114,7 @@ ion-content.has-bottom-bar {
       }
 
       .task-content {
+        margin-top: 2px;
         margin-right: 40px;
 
         .task-title {
@@ -124,8 +126,8 @@ ion-content.has-bottom-bar {
           bottom: 2px;
         }
 
-        &.task-has-due {
-          margin-top: -8px;
+        &.task-has-bage {
+          margin-top: -5px;
 
           .task-title {
             margin-bottom: -6px;
@@ -152,6 +154,10 @@ ion-content.has-bottom-bar {
 
               &:before {
                 font-size: 13px;
+              }
+
+              &:first-child {
+                margin-left: -20px;
               }
             }
           }
