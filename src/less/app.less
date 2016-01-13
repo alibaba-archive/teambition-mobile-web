@@ -50,7 +50,7 @@ a {
     .popup-buttons {
       padding: 10px 0 0 0;
       .button {
-        background-color: rgba(248, 248, 248, 0.8);
+        background-color: transparent;
         margin-right: -1px;
         padding: 0;
         border-style: rgba(0, 0, 0, 0.1);
@@ -60,6 +60,12 @@ a {
         &:last-child {
           margin-right: 0px;
           border-bottom-right-radius: 10px;
+        }
+        &.button-positive {
+          color: #03a9f4;
+        }
+        &.button-assertive {
+          color: #ef473a;
         }
       }
     }
@@ -83,10 +89,10 @@ a {
 }
 
 .item ,.item-icon-left{
-  color: #383838;
+  color: @grayDarker;
   border: none;
   p{
-    color: #383838;
+    color: @grayDarker;
     margin-bottom: 0;
   }
   img{
@@ -121,7 +127,7 @@ i.positive.icon:before {
   right: 0;
   height: 1px;
   width: 90%;
-  background: rgba(0, 0, 0, 0.2);
+  background: #f2f2f2;
 }
 
 
@@ -129,7 +135,7 @@ i.positive.icon:before {
   font-family: "Ionicons" !important;
 }
 
-.bar-footer {
+.bar.bar-footer {
   background-color: #fff;
 }
 
@@ -143,6 +149,11 @@ i.positive.icon:before {
     color: #fff !important;
   }
 }
+
+.positive {
+  color: #03a9f4 !important;
+}
+
 .nav-mytasks-buttons{
   width: 50%;
   margin-right: 24%;
@@ -190,36 +201,40 @@ i.positive.icon:before {
   margin-left: 20px;
 }
 .list{
-  .item.item-title {
-    padding-bottom: 4px;
-    color: #a6a6a6;
-  }
-  .item.list-title {
-    color: #808080;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 0 0 0 16px !important;
-    height: 30px !important;
-    line-height: 30px !important;
-    color: @grayDark;
-    background-color: #f7f7f7;
-    min-height: 0;
-  }
-  .icon:before {
-    font-size: 18px;
-    color: #808080;
-  }
-  .icon-circle-bold {
-    &.priority-2:before {
-      color: @red;
+  .item {
+    &.item-icon-left {
+      padding:14px 16px 14px 60px;
     }
-
-    &.priority-1:before {
-      color: @orange;
+    &.item-title {
+      padding-bottom: 4px;
+      color: @gray;
     }
-
-    &.priority-0:before {
+    &.list-title {
       color: @grayDark;
+      font-size: 15px;
+      padding: 0 0 0 16px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+      color: @grayDark;
+      background-color: #f7f7f7;
+      min-height: 0;
+    }
+    .icon:before {
+      font-size: 20px;
+      color: #929292;
+    }
+    .icon-circle-bold {
+      &.priority-2:before {
+        color: @red;
+      }
+
+      &.priority-1:before {
+        color: @orange;
+      }
+
+      &.priority-0:before {
+        color: @grayDark;
+      }
     }
   }
 }
@@ -229,6 +244,10 @@ i.positive.icon:before {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+}
+
+ion-content {
+  border-top: solid 1px #DDD;
 }
 
 .empty-warn {
@@ -281,5 +300,37 @@ i.positive.icon:before {
         color: @blue;
       }
     }
+  }
+}
+
+.ionic a.item:after,
+.ionic div.item:after,
+.ionic button.item:after,
+.ionic .item[href] .item-content:after,
+.ionic .item[ng-click] .item-content:after {
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  display: block;
+  margin-top: -8px;
+  color: #ccc;
+  content: "\f125";
+  text-transform: none;
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-size: 16px;
+  font-family: 'Ionicons';
+  line-height: 1;
+  speak: none;
+}
+.ionic{
+  .item .h2-has-header{
+    margin: 16px 0 8px 0;
+  }
+  li{
+    white-space: normal;
   }
 }

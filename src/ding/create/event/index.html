@@ -21,14 +21,14 @@
         <div class="item event-startTime event-time event-date-time">
           {{CreateEventCtrl.startDate | formatDate : 'a hh:mm'}}
           <input type="datetime-local"
-                ng-model="CreateEventCtrl.startDate"
-                ng-model-options="{ getterSetter: true }">
+                 ng-model="CreateEventCtrl.startDate"
+                 ng-model-options="{ getterSetter: true }">
         </div>
         <div class="item event-endTime event-time event-date-time">
           {{CreateEventCtrl.endDate | formatDate : 'a hh:mm'}}
           <input type="datetime-local"
-                ng-model="CreateEventCtrl.endDate"
-                ng-model-options="{ getterSetter: true }">
+                 ng-model="CreateEventCtrl.endDate"
+                 ng-model-options="{ getterSetter: true }">
         </div>
       </div>
       <div class="item list-title">
@@ -36,7 +36,7 @@
       </div>
       <div class="ionic">
         <a class="item item-icon-left"
-             on-tap="CreateEventCtrl.openInvolve()">
+           on-tap="CreateEventCtrl.openInvolve()">
           <i class="icon icon-users"></i>
           <span ng-bind="CreateEventCtrl.getInvolveNames()"></span>
         </a>

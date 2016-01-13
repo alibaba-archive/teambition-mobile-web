@@ -24,8 +24,21 @@
            on-tap="EditInvolveCtrl.selectExecutor(member._id)">
         <div class="avatar item-image" style="background-image: url({{member.avatarUrl}})"></div>
         <h2 class="excutor-member-name">{{member.name}}</h2>
-        <i ng-if="member.isSelected" class="icon icon-tick positive"></i>
+        <i ng-if="member.isSelected" class="icon icon-tick-thin positive"></i>
       </div>
     </div>
   </ion-content>
+  <ion-footer-bar class="footer">
+    <div class="list">
+      <div class="item">
+        <span class="choose-text">
+          已选择{{EditInvolveCtrl.getMemberSelectedLength()}}位成员
+        </span>
+        <div class="button button-positive"
+             on-tap="EditInvolveCtrl.updateInvolve()">
+          确认
+        </div>
+      </div>
+    </div>
+  </ion-footer-bar>
 </ion-view>

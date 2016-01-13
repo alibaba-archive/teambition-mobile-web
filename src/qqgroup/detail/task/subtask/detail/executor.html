@@ -1,0 +1,15 @@
+<ion-modal-view class="edit-exector-view">
+  <ion-content>
+    <div class="list executor-members">
+      <div class="item item-avatar item-icon-right"
+           ng-repeat="member in SubtaskDetailCtrl.members track by member._id"
+           on-tap="SubtaskDetailCtrl.chooseExecutor(member._id)">
+        <div class="avatar item-image"
+             style="background-image: url({{member.avatarUrl}})">
+        </div>
+        <h2 class="excutor-member-name">{{member.name}}</h2>
+        <i ng-show="member._id === SubtaskDetailCtrl.subtask._executorId" class="icon icon-tick positive"></i>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

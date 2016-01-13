@@ -1,10 +1,12 @@
+// Global reference
+@import "../../../less/reference.less";
 .tasks-list-filter {
 	z-index: 20;
 	margin-bottom: 0;
 }
 
 .tasks-list-filter-header {
-	border-bottom: 1px solid #D9D9D9;
+	border-bottom: 1px solid @grayLight;
 }
 
 .tasks-list-filter-content {
@@ -17,7 +19,7 @@
 		height: 23px;
 		min-height: 23px;
 		font-size: 14px;
-		color: #808080;
+		color: @grayDark;
 		padding-top: 1px;
 	}
 
@@ -35,7 +37,7 @@
 		right: 0;
 		bottom: 0px;
 		height: 1px;
-		background-color: #D9D9D9;
+		background-color: @grayLight;
 	}
 
 	.item-task-group::after {
@@ -45,7 +47,7 @@
 		right: 0;
 		bottom: 0px;
 		height: 1px;
-		background-color: #D9D9D9;
+		background-color: @grayLight;
 	}
 
 	.item-task-group {
@@ -59,7 +61,7 @@
 				.task-group-description {
 					display: block;
 					font-size: 12px;
-					color: #808080;
+					color: @grayDark;
 				}
 			}
 		}

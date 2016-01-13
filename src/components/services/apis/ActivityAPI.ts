@@ -30,10 +30,7 @@ export class ActivityAPI extends BaseAPI {
     return this.RestAPI.save({
       Type: 'activities'
     }, data)
-    .$promise
-    .then((activity: IActivityData) => {
-      ActivityModel.addActivity(data._boundToObjectId, activity);
-    });
+    .$promise;
   }
 }
 

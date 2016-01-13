@@ -123,4 +123,4 @@ export class CreateSubtaskView extends View {
   }
 }
 
-angular.module('teambition').controller('CreateSubtaskView', [CreateSubtaskView]);
+angular.module('teambition').controller('CreateSubtaskView', CreateSubtaskView);

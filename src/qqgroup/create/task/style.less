@@ -1,0 +1,60 @@
+// Global reference
+@import "../../../less/reference.less";
+.create-task-view {
+  background: #f7f7f7;
+  .list {
+    border-top: solid 1px #DDD;
+    .task-title {
+      height: 100px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      margin-bottom: 1px;
+      textarea {
+        font-size: 20px;
+        line-height: 34px;
+        resize: none;
+      }
+    }
+    .task-info-wrap{
+      .item-detail-avatar{
+        padding:12px 16px;
+        height: 48px;
+        font-size: 16px;
+      }
+    }
+    .data-picker-wrap {
+      .task-time {
+        float: left;
+        margin: 0 20px 0 0;
+        color: @grayDark;
+        input {
+          position: absolute;
+          opacity: 0;
+          display: inline-block;
+          bottom: 10px;
+          width: 50%;
+          &.date-yy-mm-dd {
+            left: 0;
+          }
+        }
+      }
+    }
+    .more-info-wrap {
+      .item {
+        color: @grayDark;
+        &.item-input {
+          i {
+            margin-left: 2px;
+          }
+          input {
+            font-size: 16px;
+            padding-left: 18px;
+          }
+        }
+      }
+    }
+  }
+  .button-block {
+    width: 96%;
+    margin-left: 2%;
+  }
+}

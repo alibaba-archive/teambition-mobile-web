@@ -1,0 +1,46 @@
+<ion-view ng-controller="SubtaskDetailView as SubtaskDetailCtrl"
+          class="subtask-detail-view">
+  <ion-content>
+    <textarea ng-model="SubtaskDetailCtrl.content">
+    </textarea>
+    <div class="list ionic">
+      <a class="item avatar" on-tap="SubtaskDetailCtrl.openExecutor()">
+        <img ng-src="{{SubtaskDetailCtrl.getAvatar()}}">
+        <span ng-bind="SubtaskDetailCtrl.getExecutorName()"
+              class="executor-name"></span>
+      </a>
+      <div class="item item-icon-left">
+        <i class="icon icon-calendar2"></i>
+        <div class="data-picker-wrap">
+          <div class="task-time">
+            <span ng-if="!SubtaskDetailCtrl.dueDate">没有设置截止日期</span>
+            <span ng-if="SubtaskDetailCtrl.dueDate">{{SubtaskDetailCtrl.dueDate | formatDate : 'MoDo dddd'}}</span>
+            <input type="date"
+                    class="date-yy-mm-dd"
+                    ng-model="SubtaskDetailCtrl.dueDate"
+                    ng-model-options="{ getterSetter: true }">
+          </div>
+          <div class="task-time">
+            <span ng-if="SubtaskDetailCtrl.dueDate">{{SubtaskDetailCtrl.dueDate | formatDate : 'hh:mm'}}</span>
+            <input type="datetime-local"
+                    class="date-dd-mm-ss"
+                    ng-model="SubtaskDetailCtrl.dueDate"
+                    ng-model-options="{ getterSetter: true }">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button button-block button-positive"
+         on-tap="SubtaskDetailCtrl.updateSubtask()">
+      确认
+    </div>
+    <div class="button button-block button-outline button-positive"
+         on-tap="SubtaskDetailCtrl.transformSubtask()">
+      转换为任务
+    </div>
+    <div class="button button-block button-outline button-assertive"
+         on-tap="SubtaskDetailCtrl.deleteSubtask()">
+      删除子任务
+    </div>
+  </ion-content>
+</ion-view>

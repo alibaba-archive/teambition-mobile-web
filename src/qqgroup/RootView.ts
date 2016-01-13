@@ -22,6 +22,8 @@ export let spider: any;
 ])
 export class RootView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'RootView';
   public $$id = 'RootView';
 
@@ -35,30 +37,47 @@ export class RootView extends View {
   public RestAPI: RestAPI;
   public MessageAPI: MessageAPI;
 
-  constructor() {
+  constructor(
+    $scope: angular.IScope
+  ) {
     super();
+    this.$scope = $scope;
     this.zone.run(angular.noop);
   }
 
   public onInit(): angular.IPromise<any> {
-    let visible = getParam(window.location.hash, 'visible');
-    if (!visible) {
-      this.zone.hasCreated = true;
-      if (this.userMe && this.$rootScope.pending) {
-        return this.$rootScope.pending;
-      }
-      return this.RestAPI.get({
-        Type: 'users',
-        Id: 'me'
-      })
-      .$promise
-      .then((userMe: IUserMe) => {
-        this.initUser(userMe);
-      })
-      .catch((reason: any) => {
-        this.goHome();
-      });
+    this.zone.hasCreated = true;
+    if (this.userMe && this.$rootScope.pending) {
+      return this.$rootScope.pending;
     }
+    return this.RestAPI.get({
+      Type: 'users',
+      Id: 'me'
+    })
+    .$promise
+    .then((userMe: IUserMe): any => {
+      this.initUser(userMe);
+      const search = window.location.search;
+      const groupId = getParam(search, 'group_openid');
+      const objectType = getParam(search, '_boundToObjectType');
+      const objectId = getParam(search, '_boundToObjectId');
+      if (objectType.length && objectId.length) {
+        return [objectType, objectId];
+      }else {
+        return this.$http.get(`/qqgroup/project?group_openid=${groupId}`);
+      }
+    })
+    .then((param: any) => {
+      if (param instanceof Array) {
+        window.location.hash = `/detail/${param[0]}/${param[1]}`;
+      }else {
+        window.location.hash = `/project/${param.data._id}/tasklist`;
+      }
+    })
+    .catch((reason: any) => {
+      const message = this.getFailureReason(reason);
+      this.showMsg('error', '初始化失败', message);
+    });
   }
 
   public onAllChangesDone() {
@@ -66,7 +85,7 @@ export class RootView extends View {
       this.MessageAPI.getOne(data.msgId)
       .then((message: IMessageData) => {
         if (message.latestActivity && message.latestActivity.creator && message.latestActivity.creator._id !== this.userMe._id) {
-          this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
+          this.showMsg('success', message.creator ? message.creator.name : message.subtitle, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
         }
       });
     });
@@ -74,9 +93,14 @@ export class RootView extends View {
       this.MessageAPI.getOne(data.msgId)
       .then((message: IMessageData) => {
         if (message.latestActivity && message.latestActivity.creator && message.latestActivity.creator._id !== this.userMe._id) {
-          this.showMsg('success', message.creator.name, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
+          this.showMsg('success', message.creator ? message.creator.name : message.subtitle, data.title, `#/detail/${message.boundToObjectType}/${message._boundToObjectId}`);
         }
       });
+    });
+    this.$scope.$on('transfer', (event, ...args) => {
+      window.setTimeout(() => {
+        this.$scope.$broadcast(args[0], args);
+      }, 200);
     });
   }
 
@@ -105,10 +129,6 @@ export class RootView extends View {
       } catch (error) {
         console.error(error);
       }
-      let hash = window.location.hash;
-      if (!hash) {
-        this.$state.go('projects');
-      }
     }
   }
 
@@ -120,6 +140,7 @@ export class RootView extends View {
 
 angular.module('teambition').controller('RootView', RootView);
 
+export * from './create';
 export * from './detail/DetailView';
 export * from './edit';
 export * from './tasklist/PanelTasklistView';

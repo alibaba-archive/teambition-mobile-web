@@ -1,4 +1,5 @@
 'use strict';
+import {app} from '../config';
 import {rootZone, inject} from './Utils';
 import {
   IProjectData,
@@ -163,6 +164,9 @@ export class View {
         }else {
           if (!pending || (pending && pending.$$state.status === 1)) {
             this.hideLoading();
+            if (app.NAME === 'teambition-qqgroup' && !this.$rootScope.loaded) {
+              this.$rootScope.loaded = true;
+            }
           }
         }
       }

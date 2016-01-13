@@ -135,4 +135,4 @@ export class CreateProjectView extends View {
 
 }
 
-angular.module('teambition').controller('CreateProjectView', [CreateProjectView]);
+angular.module('teambition').controller('CreateProjectView', CreateProjectView);

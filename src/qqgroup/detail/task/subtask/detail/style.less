@@ -1,0 +1,48 @@
+// Global reference
+@import "../../../../../less/reference.less";
+
+.subtask-detail-view {
+  textarea {
+    width: 100%;
+    resize: none;
+    height: 120px;
+    font-size: 24px;
+    padding: 20px;
+  }
+  .item {
+    &.avatar {
+      img {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+      }
+      .executor-name {
+        line-height: 30px;
+        margin-left: 12px;
+        position: relative;
+        bottom: 5px;
+      }
+    }
+    .data-picker-wrap {
+      .task-time {
+        float: left;
+        margin: 0 20px 0 0;
+        color: @grayDark;
+        input {
+          position: absolute;
+          opacity: 0;
+          display: inline-block;
+          bottom: 10px;
+          width: 50%;
+          &.date-yy-mm-dd {
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+  .button {
+    width: 94%;
+    margin-left: 3%;
+  }
+}

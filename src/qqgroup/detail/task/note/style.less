@@ -1,10 +1,21 @@
+// Global reference
+@import "../../../../less/reference.less";
+
 .edit-note-view {
-  background: #f7f7f7;
+  background: @dropdownBackgroundHover;
   .list {
-    margin-top: 50px;
-    border: solid 1px rgba(0, 0, 0, 0.1);
+    padding-top: 15px;
+    margin-bottom: 24px;
     textarea {
-      min-height: 150px;
+      min-height: 290px;
+      font-size: 16px;
     }
+  }
+  .button-block {
+    width: 94%;
+    margin-left: 3%;
+  }
+  textarea {
+    resize: none;
   }
 }

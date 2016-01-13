@@ -20,7 +20,7 @@ export class CreateSubtaskView extends View {
 
   public content: string;
   public executorId = '0';
-  public dueDate: Date;
+  public dueDate: string;
 
   private DetailAPI: DetailAPI;
   private MemberAPI: MemberAPI;
@@ -63,13 +63,9 @@ export class CreateSubtaskView extends View {
   }
 
   public openExecutor() {
-    angular.forEach(this.members, (member: IMemberData) => {
-      if (member._id === '0') {
-        member.isSelected = true;
-      }else {
-        member.isSelected = false;
-      }
-    });
+    if (typeof this.executorId === 'undefined') {
+      this.members[0].isSelected = true;
+    }
     this.openModal('detail/task/subtask/create/executor.html', {
       scope: this.$scope
     });
@@ -78,7 +74,7 @@ export class CreateSubtaskView extends View {
   public selectExecutor(id: string) {
     if (id !== this.executorId) {
       this.members[id].isSelected = true;
-      if (this.executorId) {
+      if (typeof this.executorId !== 'undefined') {
         this.members[this.executorId].isSelected = false;
       }
       this.executorId = id;
@@ -90,7 +86,12 @@ export class CreateSubtaskView extends View {
     if (this.content && this.taskid) {
       this.showLoading();
       let executorId = this.executorId === '0' ? null : this.executorId;
-      this.SubtasksAPI.create(this.content, this.taskid, executorId)
+      this.SubtasksAPI.create(
+        this.content,
+        this.taskid,
+        executorId,
+        this.dueDate ? new Date(this.dueDate).toISOString() : null
+      )
       .then(() => {
         this.hideLoading();
         window.history.back();
@@ -105,4 +106,4 @@ export class CreateSubtaskView extends View {
   }
 }
 
-angular.module('teambition').controller('CreateSubtaskView', [CreateSubtaskView]);
+angular.module('teambition').controller('CreateSubtaskView', CreateSubtaskView);

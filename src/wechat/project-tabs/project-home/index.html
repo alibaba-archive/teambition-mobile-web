@@ -1,4 +1,4 @@
-<ion-view ng-controller="PanelHomeView as PanelHomeCtrl" class="pane">
+<ion-view ng-controller="PanelHomeView as PanelHomeCtrl" class="project-avtivities-pane">
   <ion-content class="panel-content has-tabs" on-scroll="PanelHomeCtrl.scrollHandler()">
     <div class="project-header">
       <div class="project-header-img"
@@ -13,50 +13,12 @@
            ng-repeat="member in PanelHomeCtrl.membersMap | memberLimit: 8 track by member._id"
            ng-if="member._id != 0"
            ng-style="{'background-image': 'url(' + member.avatarUrl + ')'}"></a>
-        <a class="involve-member-add clearfix" on-tap="PanelHomeCtrl.openMembersModel()">
-          <span class="icon icon-circle-cross"></span>
-        </a>
-      </div>
-      <div class="project-header-line"></div>
-      <div class="create-new-tab">
-        <ul>
-          <li class="create-tab task">
-            <a on-tap="PanelHomeCtrl.openCreator('task')">
-              <span class="icon icon-board"></span>
-              任务
-            </a>
-          </li>
-          <li class="create-tab wall">
-            <a on-tap="PanelHomeCtrl.openCreator('post')">
-              <span class="icon icon-wall"></span>
-              分享
-            </a>
-          </li>
-          <li class="create-tab file">
-            <a on-tap="PanelHomeCtrl.openCreator('file')">
-              <span class="icon icon-upload-file"></span>
-              文件
-            </a>
-          </li>
-          <li class="create-tab event">
-            <a on-tap="PanelHomeCtrl.openCreator('event')">
-              <span class="icon icon-new-schedule"></span>
-              日程
-            </a>
-          </li>
-        </ul>
+        <span class="involve-member-add clearfix"
+              ng-if="Object.keys(PanelHomeCtrl.membersMap).length < 9">
+          <i class="icon icon-more"></i>
+        </span>
       </div>
     </div>
-
-    <!--<div class="activity-filter-wrap ion-wrap">
-      <span class="project-filter" on-tap="PanelHomeCtrl.openMembersFilterModal()">
-        {{PanelHomeCtrl.selectedMembers.text}}<i class="icon icon-chevron-down"></i>
-       </span>
-      <span class="project-filter" on-tap="PanelHomeCtrl.openTasksFilterModal()">
-        {{PanelHomeCtrl.selectedTypes.text}}
-        <i class="icon icon-chevron-down"></i>
-      </span>
-    </div>-->
 
     <div class="ion-wrap" ng-if="PanelHomeCtrl.noneExecutorTasks.length">
       <div class="list ionic list-none-executor">

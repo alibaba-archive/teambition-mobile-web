@@ -8,7 +8,7 @@
                  ng-model="EditDuedateCtrl.hasDueDate"
                  ng-change="EditDuedateCtrl.resetDueDate()">
           <div class="track">
-          <div class="handle"></div>
+            <div class="handle"></div>
           </div>
         </label>
       </li>
@@ -17,13 +17,25 @@
         <div class="date-wrap">
           <span ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'll'"
                 ng-if="EditDuedateCtrl.displayDuedate"></span>
+          <span class="label-date-hour"
+                ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'HH:MM'"
+                ng-if="EditDuedateCtrl.displayDuedate"></span>
           <span ng-if="!EditDuedateCtrl.displayDuedate">暂未设置截止日期</span>
           <input type="date"
-                ng-model="EditDuedateCtrl.displayDuedate"
-                ng-model-options="{ getterSetter: true }"
-                ng-disabled="!EditDuedateCtrl.hasDueDate">
+                 class="input-date-year"
+                 ng-model="EditDuedateCtrl.displayDuedate"
+                 ng-model-options="{ getterSetter: true }"
+                 ng-disabled="!EditDuedateCtrl.hasDueDate">
+          <input type="datetime-local"
+                 class="input-date-hour"
+                 ng-model="EditDuedateCtrl.displayDuedate"
+                 ng-model-options="{ getterSetter: true }">
         </div>
       </label>
+      <div class="button button-block button-positive"
+           on-tap="EditDuedateCtrl.updateDueDate()">
+           确认
+      </div>
     </ul>
   </ion-content>
 </ion-view>

@@ -1,7 +1,23 @@
 {
-  "host": "https://ding.teambition.com",
+  "hosts": {
+    "mobile": "https://m.teambition.com",
+    "ding": "https://ding.teambition.com/dingTalk",
+    "qqgroup": "https://qqgroup.teambition.com/qqgroup",
+    "wechat": "https://weixin.teambition.com"
+  },
   "apiHost": "https://api.teambition.com",
   "wsHost": "wss://push.teambition.com",
   "wxid": "wx3197516ac7a4c96b",
-  "dingApiHost": "https://ding.teambition.com/dingTalk"
+  "dingApiHost": "https://ding.teambition.com/dingTalk",
+  "cdnNames": {
+    "mobile": "tb-mobile",
+    "ding": "tb-ding",
+    "qqgroup": "tb-qqgroup",
+    "wechat": "tb-wechat"
+  },
+  "scripts": {
+    "ding": "<script src='https://g.alicdn.com/ilw/ding/0.6.6/scripts/dingtalk.js'></script>",
+    "qqgroup": "<script src='https://res.wx.qq.com/open/js/jweixin-1.0.0.js'></script>",
+    "wechat": "<script src='http://s.url.cn/qqweb/m/qunopen/component/sdk/opengroup.js'></script>"
+  }
 }

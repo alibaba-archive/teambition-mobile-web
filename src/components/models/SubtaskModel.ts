@@ -1,8 +1,39 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {ISubtaskData} from 'teambition';
+import TaskModel from './TaskModel';
+import {ISubtaskData, ITaskData} from 'teambition';
 
 class SubtaskModel extends BaseModel {
+
+  public getOne(subtaskId: string) {
+    return this._get<ISubtaskData>('subtask:detail', subtaskId);
+  }
+
+  public setOne(subtask: ISubtaskData) {
+    const cache = this.getOne(subtask._id);
+    if (cache) {
+      this.updateSubtask(subtask._id, subtask);
+    }else {
+      this._set('subtask:detail', subtask._id, subtask);
+    }
+  }
+
+  public transform(subtaskId: string, task: ITaskData) {
+    this.deleteOne(subtaskId);
+    TaskModel.addTask(task);
+  }
+
+  public deleteOne(subtaskId: string) {
+    const subtask = this.getOne(subtaskId);
+    const subtasks = this.getFromTask(subtask._taskId);
+    const tasksIndex = this._get<string[]>(`task:subtask:index`, subtask._taskId);
+    if (tasksIndex) {
+      const position = tasksIndex.indexOf(subtask._id);
+      subtasks.splice(position, 1);
+      tasksIndex.splice(position, 1);
+    }
+  }
+
   public getFromTask(taskId: string) {
     return this._get<ISubtaskData[]>('task:subtask', taskId);
   }
@@ -22,7 +53,7 @@ class SubtaskModel extends BaseModel {
 
   public setSubtask(subtask: ISubtaskData) {
     let index = this._get<string[]>('task:subtask:index', subtask._taskId);
-    if (index.indexOf(subtask._id) === -1) {
+    if (index && index.indexOf(subtask._id) === -1) {
       let subtasks = this.getFromTask(subtask._taskId);
       subtasks.push(subtask);
       index.push(subtask._id);

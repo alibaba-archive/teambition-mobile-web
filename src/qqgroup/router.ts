@@ -9,6 +9,10 @@ export default angular.module('teambition').config([
       url: '/project/:_id/tasklist',
       templateUrl: 'tasklist/index.html'
     })
+    .state('create_task', {
+      url: '/project/:_id/task/create',
+      templateUrl: 'create/task/index.html'
+    })
     .state('detail', {
       url: '/detail',
       templateUrl: 'detail/index.html'
@@ -41,6 +45,10 @@ export default angular.module('teambition').config([
     .state('subtask', {
       url: '/detail/task/:_id/subtasks',
       templateUrl: 'detail/task/subtask/index.html'
+    })
+    .state('subtask_detail', {
+      url: '/detail/task/:_id/subtasks/:subtaskId/detail',
+      templateUrl: 'detail/task/subtask/detail/index.html'
     })
     .state('create_subtask', {
       url: '/detail/task/:_id/subtasks/create',
