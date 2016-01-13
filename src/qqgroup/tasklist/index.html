@@ -35,7 +35,7 @@
              ng-class="{'icon-checkbox-thin': !task.isDone,
                         'icon-checkbox-ios-checked': task.isDone}"></i>
           <div class="task-content"
-               ng-class="{'task-has-due': task.dueDate}">
+               ng-class="{'task-has-bage': (task.dueDate || task.attachmentsCount || task.objectlinksCount)}">
             <div class="task-title">{{task.content}}</div>
             <div class="bages">
               <time ng-if="task.dueDate"
