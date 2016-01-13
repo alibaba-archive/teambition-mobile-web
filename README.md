@@ -2,27 +2,25 @@ Teambition Mobile Web App(TMWA)
 ======================================
 
 ## global dependency
+
 ```
 npm i -g gulp
 npm i -g ionic
 ```
 ## Compile
+
 ```
-gulp
+gulp wechat
+gulp ding
+gulp qqgroup
 ```
 ## Build
+
 ```
-gulp build
+gulp wechat.release
+gulp ding.release
+gulp qqgroup.release
 ```
-## Env variable
-```
-BUILD_TARGET=default/ding/wechat
-```
-undefined as default
-```
-BUILD_ENV=default/beta/release
-```
-undefined as default
 
 ## deployment
 ### DingDing in ci
