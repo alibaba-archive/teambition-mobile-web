@@ -4,6 +4,7 @@ import * as sourcemaps from 'gulp-sourcemaps'
 import * as merge2 from 'merge2'
 import * as concat from 'gulp-concat'
 import * as less from 'gulp-less'
+import * as gutil from 'gulp-util'
 import * as autoprefixer from 'gulp-autoprefixer'
 import {logError} from '../../gulpfile'
 
@@ -23,34 +24,28 @@ export default (target: string) => {
 
   const stream = merge2(
     gulp.src(paths.tbui)
-      .pipe(sourcemaps.init({
-        loadMaps: true
-      }))
       .pipe(concat('tbui.less'))
-      .pipe(logError(less()))
-      .pipe(autoprefixer({
-        browsers: ['last 2 versions']
-      }))
-      .pipe(sourcemaps.write()),
+      .pipe(logError(less())),
     gulp.src(paths.less)
       .pipe(sourcemaps.init({
         loadMaps: true
       }))
       .pipe(logError(less()))
-      .pipe(autoprefixer({
-        browsers: ['last 2 versions']
-      }))
       .pipe(sourcemaps.write())
   )
   .pipe(sourcemaps.init({
     loadMaps: true
   }))
   .pipe(concat('app.css'))
+  .pipe(autoprefixer({
+    browsers: ['last 2 versions']
+  }))
   .pipe(sourcemaps.write())
   .pipe(gulp.dest(`www/css/`))
 
   return new Promise((resolve, reject) => {
     stream.on('end', () => {
+      gutil.log(gutil.colors.yellow('complete less'))
       resolve()
     })
   })

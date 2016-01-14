@@ -54,7 +54,7 @@ export class CreateSubtaskView extends View {
 
   public getExecutorName() {
     if (this.members) {
-      if (this.executorId) {
+      if (this.executorId !== '0') {
         return this.members[this.executorId].name;
       }else {
         return '设置一个执行者';

@@ -3,6 +3,7 @@
 
 .detail-view {
   background: #f7f7f7;
+  border-top: 1px solid #ddd;
   .involve-wrap {
     color: @grayDarker;
     overflow: hidden;
@@ -32,6 +33,7 @@
   }
   .detail-footer {
     box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.15);
+    border: none;
     .detail-footer-wrap {
       width: 100%;
       .detail-button {
@@ -46,7 +48,7 @@
         &:last-child {
           border-right: none;
           i {
-            color: #fff;
+            color: white;
             background-color: #aaaaaa;
             width: 20px;
             height: 20px;
@@ -75,28 +77,29 @@
 }
 
 .button.button-positive {
-  background-color: #03a9f4;
+  background-color: @blue;
 }
 
 .comment-modal {
-  background: transparent;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: white;
   .item-comment {
     width: 100%;
     position: absolute;
     bottom: 0;
-    height: 75%;
+    height: 100%;
     background-color: white;
     transition: all 218ms;
+    top: 1px;
+    border: 1px solid #ddd;
     .button-cancel-comment {
-      color: #03a9f4;
+      color: @blue;
     }
     .button-send-comment{
       color: @gray;
       font-size: 16px;
       float: right;
       &.btnActive{
-        color: #03A9F4;
+        color: @blue;
       }
     }
   }
@@ -104,11 +107,18 @@
     color: @gray;
     width: 100%;
     background: white;
+    .divider {
+      top: 0;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      width: 100%;
+    }
     textarea {
       resize: none;
       width: 100%;
-      height: 120px;
-      padding: 8px 0 0 8px;
+      height: 150px;
+      padding: 0 0 0 8px;
       overflow-y: scroll;
     }
   }
@@ -232,7 +242,7 @@
       .progress-bar {
         width: 0%;
         height: 100%;
-        background: #03a6f4;
+        background: @blue;
       }
     }
   }

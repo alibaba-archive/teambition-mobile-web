@@ -93,6 +93,7 @@ export class CreateTaskView extends View {
 
   public tasklist: ITasklistData;
   public stage: IStageData;
+  public showMore = false;
 
 
   private tasklists: ITasklistData[];
@@ -334,6 +335,10 @@ export class CreateTaskView extends View {
 
   public blur() {
     this.height = 'auto';
+  }
+
+  public showMoreInfo() {
+    this.showMore = true;
   }
 
   private shareToQQgroup(taskId: string) {

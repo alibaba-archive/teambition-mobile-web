@@ -25,10 +25,8 @@ export default (
         except: ['$super', '$', 'exports', 'require']
       }
     }))
-    webpackConfig.output.filename = path.join(process.cwd(), `dist/js/app.js`)
-  }else {
-    webpackConfig.output.filename = path.join(process.cwd(), `www/js/app.js`)
   }
+  webpackConfig.output.filename = path.join(process.cwd(), '.tmp/app.js')
   webpackConfig.watch = !!watch
   return new Promise((resolve, reject) => {
     webpack(webpackConfig, (err, stats) => {

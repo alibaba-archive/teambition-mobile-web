@@ -6,12 +6,12 @@
     border-top: solid 1px #DDD;
     .task-title {
       height: 100px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       margin-bottom: 1px;
       textarea {
         font-size: 20px;
-        line-height: 34px;
+        line-height: 50px;
         resize: none;
+        padding-top: 0;
       }
     }
     .task-info-wrap{
@@ -25,7 +25,7 @@
       .task-time {
         float: left;
         margin: 0 20px 0 0;
-        color: @grayDark;
+        color: @grayDarker;
         input {
           position: absolute;
           opacity: 0;
@@ -40,7 +40,7 @@
     }
     .more-info-wrap {
       .item {
-        color: @grayDark;
+        color: @grayDarker;
         &.item-input {
           i {
             margin-left: 2px;
@@ -50,6 +50,20 @@
             padding-left: 18px;
           }
         }
+      }
+    }
+  }
+  .more-placeholder {
+    .icon-more {
+      height: 22px;
+      width: 22px;
+      margin-top: 12px;
+      margin-left: 5px;
+      background: @iconDark;
+      border-radius: 50%;
+      &:before {
+        color: white;
+        font-size: 16px;
       }
     }
   }
