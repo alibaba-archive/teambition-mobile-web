@@ -4,8 +4,9 @@ import * as path from 'path'
 import * as merge2 from 'merge2'
 import * as rimraf from 'rimraf'
 import * as concat from 'gulp-concat'
+import * as sourcemaps from 'gulp-sourcemaps'
 import libjs from './lib'
-import replace from './replace'
+import {replaceConfig, replaceHtml} from './replace'
 import bundle from './bundle'
 import less from './less'
 import et from './build.et'
@@ -29,17 +30,21 @@ const clean = () => {
   })
 }
 
-export const concatApp = (env: string, target: string) => {
+export const concatApp = async function (env: string, target: string): Promise<NodeJS.ReadWriteStream> {
+  await replaceConfig(env, target)
   const stream = gulp.src([
     './.tmp/scripts/**/*.js',
-    `./www/js/app.js`
+    `./.tmp/app.js`
   ])
+    .pipe(sourcemaps.init({
+      loadMaps: true
+    }))
     .pipe(concat('app.js'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(`www/js/`))
-  return new Promise((resolve, reject) => {
-    stream.on('end', async function () {
-      await replace(env, target)
-      resolve()
+  return await new Promise<NodeJS.ReadWriteStream>((resolve, reject) => {
+    stream.on('end', function () {
+      resolve(stream)
     })
   })
 }
@@ -53,7 +58,6 @@ export const webpack = async function(
   const entry = [
     path.join(process.cwd(), `src/${target}/index.ts`)
   ]
-  const output = path.join(process.cwd(), `www/js`)
   return bundle(entry, target, null, false, watch, callback)
 }
 
@@ -65,14 +69,14 @@ export const buildBundle = async function(
   const entry = [
     path.join(process.cwd(), `src/${target}/index.ts`)
   ]
-  const output = path.join(process.cwd(), `www/js`)
-  await clean()
+  // await clean()
   await Promise.all([
     libjs(target),
     et(),
     bundle(entry, target),
     less(target),
-    statics(target)
+    statics(target),
+    replaceHtml(env, target)
   ])
   const promise = await concatApp(env, target)
   callback ? callback() : null

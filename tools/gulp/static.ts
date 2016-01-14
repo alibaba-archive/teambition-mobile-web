@@ -6,7 +6,7 @@ import * as merge2 from 'merge2'
 const minifyHtml = require('gulp-htmlmin')
 const ngTemplate = require('gulp-ng-template')
 
-export const minHtml = (target: string) => {
+export const minHtml = (target: string): NodeJS.ReadWriteStream => {
   return gulp.src([
     `./src/${target}/**/*.html`,
     './src/components/directives/**/*.html'
@@ -17,7 +17,7 @@ export const minHtml = (target: string) => {
       standalone: true,
       filePath: 'templates.js'
     }))
-    .pipe(gulp.dest('.tmp/scripts/template/'))
+    .pipe(gulp.dest('./.tmp/scripts/template/'))
 }
 
 export const statics = (target: string) => {

@@ -20,22 +20,27 @@
            ng-repeat="stage in PanelTaskCtrl.stages track by stage._id">
         <div class="item item-divider"
              ng-class="{'half-divider': !$last}"
-             ng-if="$last || $first">
+             ng-if="$last || $first"
+             on-tap="PanelTaskCtrl.toogleCompleted()">
             <span ng-if="$last">{{stage.name}} · {{PanelTaskCtrl.tasks[stage._id].length}}项</span>
-            <i ng-if="$last" class="icon icon-chevron-down"></i>
+            <i ng-if="$last"
+               class="icon"
+               ng-class="{'icon-chevron-up': PanelTaskCtrl.showCompleted, 'icon-chevron-down': !PanelTaskCtrl.showCompleted}">
+            </i>
         </div>
-        <a class="item item-icon-left task-item"
+        <a class="item item-icon-left task-item animated"
            ng-class="{'task-has-done': task.isDone,
                       'task-priority': task.priority > 0,
                       'task-priority-high': task.priority == 1,
                       'task-priority-urgent': task.priority == 2}"
            on-tap="PanelTaskCtrl.openTaskDetail(task._id)"
-           ng-repeat="task in PanelTaskCtrl.tasks[stage._id] track by task._id">
+           ng-repeat="task in PanelTaskCtrl.tasks[stage._id] track by task._id"
+           ng-if="PanelTaskCtrl.displayTask(task)">
           <i class="icon task-icon"
              ng-class="{'icon-checkbox-thin': !task.isDone,
                         'icon-checkbox-ios-checked': task.isDone}"></i>
           <div class="task-content"
-               ng-class="{'task-has-due': task.dueDate}">
+               ng-class="{'task-has-bage': (task.dueDate || task.attachmentsCount || task.objectlinksCount)}">
             <div class="task-title">{{task.content}}</div>
             <div class="bages">
               <time ng-if="task.dueDate"

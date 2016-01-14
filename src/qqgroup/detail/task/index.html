@@ -17,6 +17,7 @@
     <a class="item item-detail-avatar" on-tap="DetailCtrl.openEdit('executor')">
       <img ng-src="{{TaskCtrl.getExecutorAvatar()}}" class="task-executor-avatar">
       <span class="task-executor-name" ng-bind="TaskCtrl.getExecutorName()"></span>
+      <div class="divider"></div>
     </a>
     <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('duedate')">
       <i class="icon icon-calendar2"></i>
@@ -30,8 +31,9 @@
       更多
     </div-title>
     <a class="item item-icon-left item-taks-note" on-tap="DetailCtrl.openEdit('note')">
-      <i class="icon icon-wall"></i>
+      <i class="icon icon-book"></i>
       <span ng-bind-html="TaskCtrl.task.parsedNote || '添加备注'" class="task-note"></span>
+      <div class="divider"></div>
     </a>
     <a class="item item-icon-left"
        on-tap="DetailCtrl.openEdit('subtasks')">
@@ -45,14 +47,17 @@
       <span ng-if="!TaskCtrl.task.subtaskCount.total">
         添加子任务
       </span>
+      <div class="divider"></div>
     </a>
     <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('priority')">
       <i class="icon icon-circle-bold priority-{{TaskCtrl.task.priority || 0}}"></i>
       <span>{{TaskCtrl.task.priority | priorityStr}}</span>
+      <div class="divider"></div>
     </a>
     <a class="item item-icon-left" on-tap="DetailCtrl.openEdit('recurrence')">
       <i class="icon icon-repeat"></i>
       <span>{{TaskCtrl.task.recurrenceTime | recurrenceStr}}</span>
+      <div class="divider" ng-if="TaskCtrl.task.linked.length"></div>
     </a>
     <a class="item item-icon-left"
        on-tap="DetailCtrl.openLinked()"

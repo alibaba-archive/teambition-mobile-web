@@ -12,11 +12,11 @@
         <img class="subtask-avatar" ng-src="{{subtask.executor.avatarUrl || SubtaskCtrl.nobodyUrl}}">
         <div class="divider" ng-if="!$last"></div>
       </div>
+      <div ng-if="!SubtaskCtrl.subtasks.length" class="empty-warn subtask"></div>
     </div>
     <div class="button button-block button-positive"
          on-tap="SubtaskCtrl.openCreate()">
       添加子任务
     </div>
   </ion-content>
-  <div ng-if="!SubtaskCtrl.subtasks.length" class="empty-warn subtask"></div>
 </ion-view>

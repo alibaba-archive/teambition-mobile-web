@@ -29,12 +29,13 @@ a {
       border-bottom: none;
     }
     .popup-body {
+      background: white;
+      border-radius: 10px;
       .bar-header {
         border-radius: 10px;
-        background: transparent;
       }
       .item {
-        background: transparent;
+        padding: 8px 16px 0 16px;
         .task-executor-avatar {
           width: 40px;
           height: 40px;
@@ -111,7 +112,7 @@ a {
 }
 
 i.positive.icon:before {
-  color: #03a9f4;
+  color: @blue !important;
 }
 
 .loading {
@@ -130,6 +131,10 @@ i.positive.icon:before {
   background: #f2f2f2;
 }
 
+.toggle.toggle-positive input:checked + .track {
+  border-color: @blue;
+  background-color: @blue;
+}
 
 .ion-loading-d{
   font-family: "Ionicons" !important;
@@ -141,7 +146,7 @@ i.positive.icon:before {
 
 .buttons{
   .button{
-    color:#03A9F4;
+    color: @blue;
     font-weight: 500;
     z-index: 100;
   }
@@ -151,7 +156,7 @@ i.positive.icon:before {
 }
 
 .positive {
-  color: #03a9f4 !important;
+  color: @blue !important;
 }
 
 .nav-mytasks-buttons{
@@ -160,7 +165,7 @@ i.positive.icon:before {
   .nav-mytasks-button{
     width: 50%;
     border-radius: 0;
-    border: solid #03A9F4;
+    border: solid @blue;
   }
   .button-pos-left{
     border-width: 1px 0px 1px 1px;
@@ -169,7 +174,7 @@ i.positive.icon:before {
     border-width: 1px 1px 1px 0;
   }
   .mytasks-button-positive{
-    background: #387ef5;
+    background: @blue;
     color: #fff;
   }
 }
@@ -221,7 +226,7 @@ i.positive.icon:before {
     }
     .icon:before {
       font-size: 20px;
-      color: #929292;
+      color: @iconDark;
     }
     .icon-circle-bold {
       &.priority-2:before {
@@ -233,7 +238,7 @@ i.positive.icon:before {
       }
 
       &.priority-0:before {
-        color: @grayDark;
+        color: @iconDark;
       }
     }
   }

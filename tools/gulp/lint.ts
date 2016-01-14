@@ -4,9 +4,8 @@ import * as lint from 'gulp-tslint'
 
 const stylish = require('gulp-tslint-stylish')
 
-export default (files? : any) => {
-  const source = files ? files : './src/**/*.ts'
-  return gulp.src(source)
+export default () => {
+  return gulp.src('./src/**/*.ts')
     .pipe(lint())
     .pipe(lint.report(stylish, {
       emitError: false

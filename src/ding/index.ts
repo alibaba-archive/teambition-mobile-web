@@ -9,7 +9,7 @@ angular.module('teambition', [
 ]);
 
 import {app} from '../components/config';
-import DingService from '../components/bases/DingService'
+import DingService from '../components/bases/DingService';
 import {RunFn} from './run';
 import {
   Notify,

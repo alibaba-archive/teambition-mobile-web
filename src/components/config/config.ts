@@ -14,4 +14,4 @@ export const app = {
   socket: null
 };
 
-export const nobodyUrl = `${app.cdnHost}/tb-ding/images/nobody-avator@2x.png`;
+export const nobodyUrl = `/images/nobody-avator@2x.png`;

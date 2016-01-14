@@ -2,9 +2,11 @@
 @import "../../../less/reference.less";
 
 .task-detail.list {
-  margin-bottom: 0;
-  border-top: solid 1px #DDD;
-  .task-name-wrap{
+  padding: 0;
+  .divider {
+    width: 86%;
+  }
+  .task-name-wrap {
     overflow: hidden;
     background-color: @dropdownBackgroundHover;
     margin-top: 20px;
@@ -47,7 +49,7 @@
     color: @grayDarker;
     overflow: hidden;
   }
-  .task-info-wrap{
+  .task-info-wrap {
     margin-top: 20px;
     .item-detail-avatar{
       padding:12px 16px;
@@ -55,6 +57,11 @@
     }
   }
   .item {
+    i.icon {
+      &.icon-circle-bold:before {
+        font-size: 21px;
+      }
+    }
     border: none;
     .item-value {
       float: right;
@@ -89,16 +96,16 @@
     }
   }
 }
-.item-detail-avatar{
-  .task-executor-avatar{
-    width: 24px;
-    height: 24px;
+.item-detail-avatar {
+  .task-executor-avatar {
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
   }
-  .task-executor-name{
+  .task-executor-name {
     position: relative;
     bottom: 5px;
-    left: 15px;
-    color: @grayDark;
+    left: 18px;
+    color: @grayDarker;
   }
 }

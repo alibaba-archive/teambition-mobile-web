@@ -2,9 +2,6 @@
           ng-controller="CreateTaskView as CreateTaskCtrl">
   <ion-content ng-class="{'height': CreateTaskCtrl.height}">
     <div class="list ionic">
-      <!--<a class="task-belong item" on-tap="DetailCtrl.openEdit('position')">
-        <span>{{CreateTaskCtrl.project.name}}</span><span>,&nbsp;</span><span>{{CreateTaskCtrl.tasklist.title}}<span>,&nbsp;</span><span>{{CreateTaskCtrl.stage.name}}</span></span>
-      </a>-->
       <div-item class="item item-input task-title">
         <textarea type="text"
                   placeholder="任务标题"
@@ -20,6 +17,7 @@
         <a class="item item-detail-avatar" on-tap="CreateTaskCtrl.openExecutor()">
           <img ng-src="{{CreateTaskCtrl.getExecutorAvatar()}}" class="task-executor-avatar">
           <span class="task-executor-name">{{CreateTaskCtrl.getExecutorName()}}</span>
+          <div class="divider"></div>
         </a>
         <div class="item item-icon-left">
           <i class="icon icon-calendar2"></i>
@@ -39,6 +37,7 @@
                      ng-model="CreateTaskCtrl.dueDate"
                      ng-model-options="{ getterSetter: true }">
             </div>
+            <div class="divider"></div>
           </div>
         </div>
       </div>
@@ -56,14 +55,22 @@
       <div-title class="item list-title">
         更多
       </div-title>
-      <div class="ionic more-info-wrap">
+      <div class="more-placeholder" ng-show="!CreateTaskCtrl.showMore">
+        <div-item class="item item-icon-left" on-tap="CreateTaskCtrl.showMoreInfo()">
+          <i class="icon icon-more"></i>
+          <span>备忘，优先级，重复</span>
+        </div-item>
+      </div>
+      <div class="ionic more-info-wrap" ng-show="CreateTaskCtrl.showMore">
         <a class="item item-icon-left" on-tap="CreateTaskCtrl.openNote()">
           <i class="icon icon-book"></i>
           <span>{{CreateTaskCtrl.note}}<span ng-if="!CreateTaskCtrl.note">添加备注</span></span>
+          <div class="divider"></div>
         </a>
         <a class="item item-icon-left" on-tap="CreateTaskCtrl.openPriority()">
           <i class="icon icon-circle-bold priority-{{CreateTaskCtrl.priority || 0}}"></i>
           <span>{{CreateTaskCtrl.getPriorityName()}}</span>
+          <div class="divider"></div>
         </a>
         <a class="item item-icon-left" on-tap="CreateTaskCtrl.openRecurrence()">
           <i class="icon icon-review"></i>

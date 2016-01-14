@@ -37,6 +37,7 @@ export class PanelTasklistView extends View {
 
   public taskLength: number;
   public showNotify = false;
+  public showCompleted = false;
 
   private TasklistAPI: TasklistAPI;
   private StageAPI: StageAPI;
@@ -100,8 +101,15 @@ export class PanelTasklistView extends View {
     const search = window.location.search;
     const appid = getParam(search, 'appid');
     this.shareOptions['appid'] = appid;
-    console.log(this.shareOptions);
     window['openGroup'].share(this.shareOptions);
+  }
+
+  public toogleCompleted() {
+    this.showCompleted = !this.showCompleted;
+  }
+
+  public displayTask(task: ITaskData) {
+    return !task.isDone || !this.showCompleted;
   }
 
   private initFetch() {

@@ -7,12 +7,19 @@ import lint from './lint'
 import * as watch from 'gulp-watch'
 import * as gutil from 'gulp-util'
 
-export default (env: string, target: string) => {
+export default async function (env: string, target: string) {
   watch([
-    `src/${target}/**/*.html`
-  ], async function (event) {
-    minHtml(target)
+    `./src/${target}/**/*.html`,
+    '!./src/index.html'
+  ], async function(event) {
+    minHtml(target).on('end', () => {
+      gutil.log(gutil.colors.green('minHtml complete'))
+    })
+  })
+
+  watch(['./.tmp/scripts/**/*.js'], async function (event) {
     await concatApp(env, target)
+    gutil.log(gutil.colors.blue('concat complete'))
   })
 
   watch([
@@ -25,11 +32,12 @@ export default (env: string, target: string) => {
 
   watch('./src/components/et/**/*.html', async function (event) {
     await et()
-    await concatApp(env, target)
+    gutil.log(gutil.colors.cyan('et compile complete'))
   })
 
-  watch('./src/**/*.ts')
-  .pipe(lint())
+  watch('./src/**/*.ts', (event) => {
+    lint()
+  })
   .on('error', function (error) {
     gutil.log(error)
     this.emit('end')
@@ -38,6 +46,7 @@ export default (env: string, target: string) => {
   webpack(env, target, true, async function (resolve) {
     await concatApp(env, target)
     resolve()
+    gutil.log(gutil.colors.yellow('webpack complete'))
   })
 
 }
