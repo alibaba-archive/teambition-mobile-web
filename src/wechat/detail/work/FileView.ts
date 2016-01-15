@@ -9,6 +9,8 @@ class FileView extends View {
 
   public file: IFileData;
 
+  public clicked = false;
+
   constructor() {
     super();
     this.zone.run(angular.noop);
@@ -16,6 +18,10 @@ class FileView extends View {
 
   public onAllChangesDone() {
     this.file = this.parent.detail;
+  }
+
+  public download() {
+    this.clicked = true;
   }
 }
 

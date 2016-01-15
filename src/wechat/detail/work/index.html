@@ -16,8 +16,17 @@
     </div>
     <div class="item item-preview">
       <p class="file-name">{{FileCtrl.file.fileName}}</p>
-      <a class="positive" on-tap="DetailCtrl.previewFile()" ng-if="FileCtrl.file.fileCategory === 'image'">
+      <a class="positive"
+         on-tap="DetailCtrl.previewFile()"
+         ng-if="FileCtrl.file.fileCategory === 'image'">
         预览
+      </a>
+      <a class="positive"
+         ng-if="FileCtrl.file.fileCategory !== 'image'"
+         ng-href="{{FileCtrl.file.downloadUrl}}"
+         on-tap="FileCtrl.download()">
+        <span ng-if="!FileCtrl.clicked">下载</span>
+        <span ng-if="FileCtrl.clicked">点击右上角在浏览器中打开并下载</span>
       </a>
     </div>
   </div>
