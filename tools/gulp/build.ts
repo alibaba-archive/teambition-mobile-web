@@ -1,7 +1,6 @@
 'use strict'
 import * as gulp from 'gulp'
 import * as path from 'path'
-import * as merge2 from 'merge2'
 import * as rimraf from 'rimraf'
 import * as concat from 'gulp-concat'
 import * as sourcemaps from 'gulp-sourcemaps'
@@ -69,15 +68,15 @@ export const buildBundle = async function(
   const entry = [
     path.join(process.cwd(), `src/${target}/index.ts`)
   ]
-  // await clean()
+  await clean()
   await Promise.all([
     libjs(target),
     et(),
     bundle(entry, target),
     less(target),
-    statics(target),
-    replaceHtml(env, target)
+    statics(target)
   ])
+  await replaceHtml(env, target)
   const promise = await concatApp(env, target)
   callback ? callback() : null
   return promise

@@ -40,9 +40,9 @@ let RestCallback = function(path: string, callback?: Function) {
   };
 };
 
-let replaceCallback = (args: any[], path: string): any[] => {
-  let length = args.length;
-  let _args = [];
+const replaceCallback = (args: any[], path: string): any[] => {
+  const length = args.length;
+  const _args = [];
   let callbacksCount = 0;
   for (let i = 0; i < length; i++) {
     let ele = args[i];
@@ -57,7 +57,7 @@ let replaceCallback = (args: any[], path: string): any[] => {
   };
   switch (callbacksCount) {
     case 0:
-      let callback = RestCallback(path);
+      const callback = RestCallback(path);
       _args.push(callback, callback);
       break;
     case 1:
@@ -70,7 +70,7 @@ let replaceCallback = (args: any[], path: string): any[] => {
 let request = (target: any, key: string, value: any) => {
   return {
     value: function (...args: any[]) {
-      let arg: string = args.map((a: any) => {
+      const arg: string = args.map((a: any) => {
         if (typeof(a) !== 'function') {
           return JSON.stringify(a);
         }

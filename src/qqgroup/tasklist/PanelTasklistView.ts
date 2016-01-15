@@ -108,8 +108,8 @@ export class PanelTasklistView extends View {
     this.showCompleted = !this.showCompleted;
   }
 
-  public displayTask(task: ITaskData) {
-    return !task.isDone || !this.showCompleted;
+  public displayTask(stageId: string) {
+    return !(stageId === this.stages[this.stages.length - 1]._id) || !this.showCompleted;
   }
 
   private initFetch() {

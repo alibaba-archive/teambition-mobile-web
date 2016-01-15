@@ -43,10 +43,11 @@ export default async function (env: string, target: string) {
     this.emit('end')
   })
 
-  webpack(env, target, true, async function (resolve) {
-    await concatApp(env, target)
-    resolve()
+  return await webpack(env, target, true, async function (resolve) {
     gutil.log(gutil.colors.yellow('webpack complete'))
+    await concatApp(env, target)
+    gutil.log(gutil.colors.cyan('concat app complete'))
+    resolve()
   })
 
 }
