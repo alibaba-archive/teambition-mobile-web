@@ -163,7 +163,6 @@ export class DetailView extends View {
   }
 
   public cancelComment() {
-    console.log(123);
     this.cancelModal();
   }
 

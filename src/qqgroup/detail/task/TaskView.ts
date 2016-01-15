@@ -40,6 +40,7 @@ export class TaskView extends View {
     this.task = this.parent.detail;
     this.content = this.task.content;
     this.project = this.parent.project;
+    this.$rootScope.global.title = '任务详情';
   }
 
   public getExecutorAvatar() {
