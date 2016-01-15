@@ -4,206 +4,233 @@
 ion-content.has-bottom-bar {
   bottom: 50px;
 }
-
-.tasks-list {
-
-  .item.item-divider.half-divider {
-    height: 15px;
-    min-height: 15px;
-
-    &.icon-right:before {
-      content: '';
-      position: absolute;
-      height: 1px;
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: @paginationBorder;
-    }
-
-    .icon {
-      position: absolute;
-      right: 20px;
-      &:before {
-        font-size: 16px;
-        color: @gray;
-      }
-    }
-    .notify-text {
-      font-size: 14px;
-      margin-left: 40px;
-    }
-  }
-
-  .task-create-btn {
-    padding: 8px;
-    color: #03A9F4;
-    text-align: center;
-    font-size: 15px;
-    height: 50px;
-    line-height: 36px;
-
-    i.icon-plus {
-      vertical-align: top;
-      &:before {
-        color: @blue;
-        font-size: 15px;
-      }
-    }
-  }
-
-  .task-list {
-    margin-bottom: -2px;
-    padding-bottom: 0;
-
-    .item-divider {
-      height: 32px;
-      font-size: 14px;
-      color: @grayDark;
-      padding-top: 5px;
-      margin-bottom: 1px;
-      // font-weight: normal;
-      background-color: @dropdownBackgroundHover;
-
-      .icon-chevron-down, .icon-chevron-up {
-        float: right;
-        margin-right: 8px;
-        &:before {
-          font-size: 12px;
-        }
-      }
-    }
-
-    .task-item {
-      height: 50px;
-      &:after {
+.tasklist-view {
+  border-top: 1px solid @tableBorder;
+  .tasks-list {
+    .item.item-notify {
+      min-height: 40px;
+      height: 40px;
+      background: @blue;
+      color: white;
+      padding: 0;
+      position: relative;
+      top: -2px;
+      &.icon-right:before {
         content: '';
-        left: 15px;
-        right: 0;
-        bottom: 1px;
+        position: absolute;
         height: 1px;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: @paginationBorder;
+      }
+
+      .icon {
         position: absolute;
-        background-color: @navTabBackground;
+        right: 20px;
+        top: 10px;
+        &:before {
+          font-size: 16px;
+          color: @grayLight;
+        }
       }
-
-      &.task-priority:before {
-        content: '';
-        width: 5px;
-        height: 50px;
+      .notify-text {
+        font-size: 14px;
+        margin-left: 40px;
+        line-height: 40px;
         position: absolute;
-        left: 0px;
-        top: 0px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        text-align: center;
+        .send-notify {
+          font-weight: 700;
+        }
       }
+    }
 
-      &.task-priority.task-priority-high:before {
-        background-color: @orange;
-      }
+    .task-create-btn {
+      padding: 8px;
+      color: #03A9F4;
+      text-align: center;
+      font-size: 15px;
+      height: 50px;
+      line-height: 36px;
 
-      &.task-priority.task-priority-urgent:before {
-        background-color: @red;
-      }
-
-      &.task-has-done {
-        opacity: 0.7;
-        font-weight: lighter;
-        color: @grayDark;
-      }
-
-      .task-icon:before {
-        color: #929292;
-      }
-
-      .task-content {
-        margin-top: 2px;
-        margin-right: 40px;
-
-        .task-title {
-          max-width: 90%;
+      i.icon-plus {
+        vertical-align: top;
+        &:before {
+          color: @blue;
           font-size: 15px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          position: relative;
-          bottom: 2px;
+        }
+      }
+    }
+
+    .task-list {
+      margin-bottom: -2px;
+      padding-bottom: 0;
+
+      .item-divider {
+        height: 32px;
+        font-size: 14px;
+        color: @grayDark;
+        padding-top: 5px;
+        margin-bottom: 1px;
+        // font-weight: normal;
+        background-color: @dropdownBackgroundHover;
+
+        .icon-chevron-down, .icon-chevron-up {
+          float: right;
+          margin-right: 8px;
+          &:before {
+            font-size: 12px;
+          }
+        }
+      }
+
+      .item-wrap {
+        &.last-stage {
+          z-index: -10;
+          &.ng-enter {
+            animation-name: slideInDown;
+          }
+          &.ng-leave {
+            animation-name: slideOutUp;
+          }
+        }
+      }
+
+      .task-item {
+        height: 50px;
+        &:after {
+          content: '';
+          left: 15px;
+          right: 0;
+          bottom: 1px;
+          height: 1px;
+          position: absolute;
+          background-color: @navTabBackground;
         }
 
-        &.task-has-bage {
-          margin-top: -5px;
+        &.task-priority:before {
+          content: '';
+          width: 5px;
+          height: 50px;
+          position: absolute;
+          left: 0px;
+          top: 0px;
+        }
+
+        &.task-priority.task-priority-high:before {
+          background-color: @orange;
+        }
+
+        &.task-priority.task-priority-urgent:before {
+          background-color: @red;
+        }
+
+        &.task-has-done {
+          opacity: 0.7;
+          font-weight: lighter;
+          color: @grayDark;
+        }
+
+        .task-icon:before {
+          color: #929292;
+        }
+
+        .task-content {
+          margin-top: 2px;
+          margin-right: 40px;
 
           .task-title {
-            margin-bottom: -6px;
+            max-width: 90%;
+            font-size: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            bottom: 2px;
           }
 
-          .bages {
-            position: relative;
-            time {
-              font-size: 11px;
-              color: @blue;
+          &.task-has-bage {
+            margin-top: -5px;
 
-              &.task-over-due {
-                color: @red;
-              }
+            .task-title {
+              margin-bottom: -6px;
             }
 
-            i.icon {
-              display: inline-block;
+            .bages {
               position: relative;
-              margin-left: -12px;
-              margin-right: -5px;
-              line-height: 12px;
-              top: 2px;
+              time {
+                font-size: 11px;
+                color: @blue;
 
-              &:before {
-                font-size: 13px;
+                &.task-over-due {
+                  color: @red;
+                }
               }
 
-              &:first-child {
-                margin-left: -20px;
+              i.icon {
+                display: inline-block;
+                position: relative;
+                margin-left: -12px;
+                margin-right: -5px;
+                line-height: 12px;
+                top: 2px;
+
+                &:before {
+                  font-size: 13px;
+                }
+
+                &:first-child {
+                  margin-left: -20px;
+                }
               }
             }
           }
         }
       }
-    }
 
-    .task-avatar {
-      top: 10px;
-      left: auto;
-      right: 15px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background-size: cover;
+      .task-avatar {
+        top: 10px;
+        left: auto;
+        right: 15px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-size: cover;
+      }
     }
   }
-}
 
-.bottom-bar {
-  position: absolute;
-  height: 50px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  border-top: 1px solid @grayLight;
-  background-color: @dropdownBackgroundHover;
+  .bottom-bar {
+    position: absolute;
+    height: 50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-top: 1px solid @grayLight;
+    background-color: @dropdownBackgroundHover;
 
-  .container {
-    float: right;
+    .container {
+      float: right;
 
-    & > * {
-      display: inline-block;
-      height: 50px;
-      font-size: 15px;
-      color: @gray;
-      padding: 14px;
+      & > * {
+        display: inline-block;
+        height: 50px;
+        font-size: 15px;
+        color: @gray;
+        padding: 14px;
 
-      &:not(:last-child):after {
-        content: '';
-        width: 1px;
-        height: 28px;
-        position: absolute;
-        background-color: @grayLight;
-        bottom: 11px;
-        margin-left: 15px;
+        &:not(:last-child):after {
+          content: '';
+          width: 1px;
+          height: 28px;
+          position: absolute;
+          background-color: @grayLight;
+          bottom: 11px;
+          margin-left: 15px;
+        }
       }
     }
   }

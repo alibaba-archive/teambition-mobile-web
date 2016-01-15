@@ -11,12 +11,7 @@ export default angular.module('teambition').config(
   ) => {
 
     $httpProvider.defaults.withCredentials = true;
-
     $ionicConfigProvider.views.forwardCache(false);
-
-    $ionicConfigProvider.views.transition('none');
-
-    $ionicConfigProvider.views.maxCache(0);
 
     $ionicConfigProvider.tabs.position('bottom');
 

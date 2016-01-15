@@ -1,9 +1,14 @@
+// Global reference
+@import "../../../../less/reference.less";
+
 .subtaskView {
   border-top: solid 1px #DDD;
   background-color: #f7f7f7;
   .subtasks-wrap {
     margin-top: 15px;
-    min-height: 270px;
+    &.has-min-height {
+      min-height: 200px;
+    }
     .subtask-avatar {
       width: 24px;
       height: 24px;
@@ -19,7 +24,18 @@
     margin-left: 2%;
   }
 
-  .empty-warn.subtask {
-    margin-bottom: 0;
+  .empty-warn {
+    &.subtask {
+      width: 65px;
+      height: 65px;
+    }
+    &.empty-warn-text {
+      top: 230px;
+      text-align: center;
+      p {
+        color: @gray;
+        margin: 0;
+      }
+    }
   }
 }

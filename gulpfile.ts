@@ -31,15 +31,15 @@ gulp.task('lint', () => {
 })
 
 gulp.task('watch.wechat', () => {
-  watch('default', 'wechat')
+  return watch('default', 'wechat')
 })
 
 gulp.task('watch.ding', () => {
-  watch('default', 'ding')
+  return watch('default', 'ding')
 })
 
 gulp.task('watch.qqgroup', () => {
-  watch('default', 'qqgroup')
+  return watch('default', 'qqgroup')
 })
 
 gulp.task('wechat', async function () {

@@ -14,12 +14,12 @@
         <div class="divider"></div>
       </li>
       <label class="item item-input">
-        <span class="input-label">日期</span>
+        <span ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'll'"
+              ng-if="EditDuedateCtrl.displayDuedate"
+              class="input-label"></span>
         <div class="date-wrap">
-          <span ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'll'"
-                ng-if="EditDuedateCtrl.displayDuedate"></span>
           <span class="label-date-hour"
-                ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'HH:MM'"
+                ng-bind="EditDuedateCtrl.displayDuedate | formatDate : 'a HH:MM'"
                 ng-if="EditDuedateCtrl.displayDuedate"></span>
           <span ng-if="!EditDuedateCtrl.displayDuedate">暂未设置截止日期</span>
           <input type="date"

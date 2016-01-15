@@ -1,4 +1,24 @@
+// Global reference
+@import "../../../less/reference.less";
+
 .edit-involve-view {
+  border-top: 1px solid @tableBorder;
+  .divider {
+    margin-left: 60px;
+  }
+  .item-avatar {
+    min-height: 50px;
+    padding: 0 54px 0 60px;
+    .item-image {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      top: 10px;
+    }
+    h2 {
+      line-height: 50px;
+    }
+  }
   .has-footer {
     bottom: 65px;
   }
@@ -8,7 +28,7 @@
       width: 100%;
       .choose-text {
         position: relative;
-        top: 5px;
+        top: 4px;
       }
       .button {
         float: right;

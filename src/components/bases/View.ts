@@ -70,6 +70,10 @@ export class View {
     return this.$rootScope.pending;
   }
 
+  public onChange() {
+    angular.noop();
+  }
+
   public onAllChangesDone() {
     angular.noop();
   }
@@ -86,7 +90,9 @@ export class View {
     if (this.$rootScope.loaded) {
       loadingZone = loadingZone || rootZone.fork();
       loadingZone.run(() => {
-        this.$ionicLoading.show({});
+        this.$ionicLoading.show({
+          noBackdrop: true
+        });
       });
     }
   }
@@ -145,6 +151,7 @@ export class View {
     this.zone = parentZone.fork({
       'afterTask': () => {
         View.afterTaskHook(this.project);
+        this.onChange();
       },
       'beforeTask': () => {
         let $$id: string;
@@ -193,7 +200,7 @@ export class View {
       pending = pending || this.$rootScope.pending || this.$q.resolve();
       return pending
       .then(() => {
-        let _pending = this.onInit();
+        const _pending = this.onInit();
         if (_pending !== this.$rootScope.pending) {
           pending = _pending;
         }

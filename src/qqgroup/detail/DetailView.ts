@@ -3,18 +3,13 @@ import {
   inject,
   View,
   DetailAPI,
-  ActivityAPI,
-  StrikerAPI,
   ProjectsAPI,
-  WorkAPI,
   LikeAPI,
-  MemberAPI,
-  InputComponments
+  MemberAPI
 } from '../index';
 import {
   IProjectData,
-  IMemberData,
-  IStrikerRes,
+  IMemberData
 } from 'teambition';
 
 interface IImagesData {
@@ -51,18 +46,13 @@ const objectTpls = {
 
 let popup: ionic.popup.IonicPopupPromise;
 let boundToObjectId: string;
-let fileContent = [];
 
 @inject([
   'DetailAPI',
-  'ActivityAPI',
   'ProjectsAPI',
   'MemberAPI',
   'EntryAPI',
-  'WorkAPI',
-  'LikeAPI',
-  'StrikerAPI',
-  'InputComponments'
+  'LikeAPI'
 ])
 export class DetailView extends View {
 
@@ -71,14 +61,10 @@ export class DetailView extends View {
   public ViewName = 'DetailView';
 
   public title: string;
-  public comment: string;
   public project: IProjectData;
   public projectMembers: {
     [index: string]: IMemberData
   };
-  public textareaHeight: string;
-  public transformY: string;
-  public fileContent: any[];
 
   protected _boundToObjectId: string;
   protected _boundToObjectType: string;
@@ -86,23 +72,15 @@ export class DetailView extends View {
   protected detail: any;
 
   private DetailAPI: DetailAPI;
-  private ActivityAPI: ActivityAPI;
-  private StrikerAPI: StrikerAPI;
   private ProjectsAPI: ProjectsAPI;
-  private WorkAPI: WorkAPI;
   private LikeAPI: LikeAPI;
   private MemberAPI: MemberAPI;
-  private InputComponments: InputComponments;
-  private files: string[];
 
   constructor(
     $scope: angular.IScope
   ) {
     super();
     this.$scope = $scope;
-    this.comment = '';
-    this.fileContent = [];
-    this.files = [];
     this.zone.run(angular.noop);
   }
 
@@ -157,76 +135,11 @@ export class DetailView extends View {
   }
 
   public openComment() {
-    this.openModal('detail/comment.html', {
-      scope: this.$scope
-    });
+    window.location.hash = `/projects/${this.project._id}/detail/${this._boundToObjectType}/${this._boundToObjectId}/comment`;
   }
 
   public cancelComment() {
     this.cancelModal();
-  }
-
-  public chooseFiles() {
-    this.InputComponments.show(this);
-  }
-
-  public uploadFile() {
-    let contents = fileContent;
-    angular.forEach(this.fileContent, (file: any, index: number) => {
-      file.fileType = file.name.split('.').pop();
-      if (file.fileType.length > 4) {
-        file.fileType = file.fileType.substr(0, 1);
-        file.class = 'bigger-bigger';
-      }
-      if (
-        file.fileType.indexOf('png') !== -1 ||
-        file.fileType.indexOf('jpg') !== -1 ||
-        file.fileType.indexOf('jpeg') !== -1 ||
-        file.fileType.indexOf('gif') !== -1 ||
-        file.fileType.indexOf('bmp') !== -1
-      ) {
-        file.thumbnail = URL.createObjectURL(file);
-      }
-      let content = {
-        progress: '0',
-        request: null,
-        content: file,
-        index: index
-      };
-      content.request = this.StrikerAPI.upload([file], content).then((res: IStrikerRes) => {
-        return this.WorkAPI.uploads(this.project._defaultCollectionId, this.project._id, [res]);
-      })
-      .then((data: any) => {
-        let $index: number;
-        this.files.push(data[0]._id);
-        angular.forEach(this.fileContent, (_content: any, i: number) => {
-          if (_content.index === content.index) {
-            $index = i;
-          }
-        });
-      })
-      .catch((reason: any) => {
-        let message = this.getFailureReason(reason);
-        this.showMsg('error', '上传出错', message);
-        let $index: number;
-        angular.forEach(this.fileContent, (_content: any, i: number) => {
-          if (_content.index === content.index) {
-            $index = i;
-          }
-        });
-      });
-      contents.push(content);
-    });
-    this.fileContent = contents;
-    fileContent = contents;
-  }
-
-  public removeFile($index: number) {
-    this.fileContent.splice($index, 1);
-  }
-
-  public hasContent() {
-    return !!(this.fileContent.length || this.comment.length);
   }
 
   public like() {
@@ -267,30 +180,6 @@ export class DetailView extends View {
   public openLinked() {
     if (this.detail.linked) {
       window.location.hash = `/detail/${this._boundToObjectType}/${this._boundToObjectId}/link`;
-    }
-  }
-
-  public addComment() {
-    if (!this.comment && !this.fileContent.length) {
-      return ;
-    }
-    this.showLoading();
-    if (!this.fileContent.length) {
-      return this.addTextComment()
-      .then(() => {
-        this.hideLoading();
-      });
-    }else {
-      return this.addTextComment(this.files)
-      .then(() => {
-        this.cancelModal();
-      })
-      .catch((reason: any) => {
-        const message = this.getFailureReason(reason);
-        this.showMsg('error', '评论失败', message);
-        this.hideLoading();
-        this.cancelModal();
-      });
     }
   }
 
@@ -335,26 +224,6 @@ export class DetailView extends View {
     };
   }
 
-  private addTextComment(attachments?: string[]) {
-    attachments = (attachments && attachments.length) ? attachments : [];
-    return this.ActivityAPI.save({
-      _boundToObjectId: this._boundToObjectId,
-      attachments: attachments,
-      boundToObjectType: this._boundToObjectType,
-      content: this.comment
-    })
-    .then(() => {
-      this.comment = '';
-      this.fileContent = [];
-      this.hideLoading();
-    })
-    .catch((reason: any) => {
-      const message = this.getFailureReason(reason);
-      this.showMsg('error', '评论失败', message);
-      this.hideLoading();
-    });
-  }
-
 }
 
 angular.module('teambition').controller('DetailView', DetailView);
@@ -363,3 +232,4 @@ export * from './activities/ActivityView';
 export * from './task/TaskView';
 export * from './work/FileView';
 export * from './involve/EditInvolveView';
+export * from './comment/CommentView';
