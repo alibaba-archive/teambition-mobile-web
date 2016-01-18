@@ -91,7 +91,8 @@ export class View {
       loadingZone = loadingZone || rootZone.fork();
       loadingZone.run(() => {
         this.$ionicLoading.show({
-          noBackdrop: true
+          noBackdrop: true,
+          delay: 800
         });
       });
     }

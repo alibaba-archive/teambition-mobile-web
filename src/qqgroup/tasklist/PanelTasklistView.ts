@@ -57,6 +57,7 @@ export class PanelTasklistView extends View {
     $scope.$on('new:task', (event, ...args) => {
       this.showNotify = true;
       this.shareOptions = args[0][1];
+      this.onInit();
     });
     this.zone.run(() => {
       this.stages = stages;

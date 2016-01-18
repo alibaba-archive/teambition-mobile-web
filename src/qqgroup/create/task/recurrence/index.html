@@ -1,0 +1,13 @@
+<ion-view class="create-task-recurrence" ng-controller="CreatetaskRecurrenceView as CreatetaskRecurrenceCtrl">
+  <ion-content>
+    <div class="list">
+      <div class="item item-icon-right"
+           ng-repeat="item in CreatetaskRecurrenceCtrl.recurrence track by $index"
+           on-tap="CreatetaskRecurrenceCtrl.chooseRecurrence($index)">
+        <span class="recurrence-name">{{item.name}}</span>
+        <i ng-if="item.isSelected" class="icon icon-tick-thin positive"></i>
+        <div class="divider" ng-if="!$last"></div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

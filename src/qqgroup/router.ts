@@ -21,6 +21,46 @@ export default angular.module('teambition').config([
         }
       }
     })
+    .state('create_task_executor', {
+      url: '/project/:_id/task/create/executor',
+      views: {
+        main: {
+          templateUrl: 'create/task/executor/executor.html'
+        }
+      }
+    })
+    .state('create_task_involve', {
+      url: '/project/:_id/task/create/involve',
+      views: {
+        main: {
+          templateUrl: 'create/task/involve/index.html'
+        }
+      }
+    })
+    .state('create_task_note', {
+      url: '/project/:_id/task/create/note',
+      views: {
+        main: {
+          templateUrl: 'create/task/note/index.html'
+        }
+      }
+    })
+    .state('create_task_priority', {
+      url: '/project/:_id/task/create/priority',
+      views: {
+        main: {
+          templateUrl: 'create/task/priority/index.html'
+        }
+      }
+    })
+    .state('create_task_recurrence', {
+      url: '/project/:_id/task/create/recurrence',
+      views: {
+        main: {
+          templateUrl: 'create/task/recurrence/index.html'
+        }
+      }
+    })
     .state('detail', {
       url: '/detail',
       views: {

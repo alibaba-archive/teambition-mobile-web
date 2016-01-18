@@ -48,26 +48,23 @@ a {
         border: 1px solid rgba(0, 0, 0, 0.1);
       }
     }
-    .popup-buttons {
-      padding: 10px 0 0 0;
-      .button {
-        background-color: transparent;
-        margin-right: -1px;
-        padding: 0;
-        border-style: rgba(0, 0, 0, 0.1);
-        &:first-child {
-          border-bottom-left-radius: 10px;
-        }
-        &:last-child {
-          margin-right: 0px;
-          border-bottom-right-radius: 10px;
-        }
-        &.button-positive {
-          color: #03a9f4;
-        }
-        &.button-assertive {
-          color: #ef473a;
-        }
+    .button {
+      background-color: transparent;
+      margin-right: -1px;
+      padding: 0;
+      border-style: rgba(0, 0, 0, 0.1);
+      &:first-child {
+        border-bottom-left-radius: 10px;
+      }
+      &:last-child {
+        margin-right: 0px;
+        border-bottom-right-radius: 10px;
+      }
+      &.button-positive {
+        color: @blue;
+      }
+      &.button-assertive {
+        color: @red;
       }
     }
   }

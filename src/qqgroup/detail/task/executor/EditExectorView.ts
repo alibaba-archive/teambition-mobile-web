@@ -61,14 +61,18 @@ export class EditExectorView extends View {
       }
       this.members[id].isSelected = true;
       this.lastSelected = id;
-      this.showMsg('success', '更新成功', '已成功更新任务执行者');
       this.hideLoading();
+      setTimeout(() => {
+        this.showMsg('success', '更新成功', '已成功更新任务执行者');
+      }, 500);
       window.history.back();
     })
     .catch((reason: any) => {
-      let message = this.getFailureReason(reason);
-      this.showMsg('error', '网络错误', message);
+      const message = this.getFailureReason(reason);
       this.hideLoading();
+      setTimeout(() => {
+        this.showMsg('error', '网络错误', message);
+      }, 500);
       window.history.back();
     });
   }

@@ -17,8 +17,67 @@ import {
   ITaskData
 } from 'teambition';
 
+export const recurrence = [
+  {
+    name: '从不',
+    recurrence: null,
+    isSelected: true
+  },
+  {
+    name: '每天',
+    recurrence: 'RRULE:FREQ=DAILY;INTERVAL=1',
+    isSelected: false
+  },
+  {
+    name: '每周',
+    recurrence: 'RRULE:FREQ=WEEKLY;INTERVAL=1',
+    isSelected: false
+  },
+  {
+    name: '每两周',
+    recurrence: 'RRULE:FREQ=WEEKLY;INTERVAL=2',
+    isSelected: false
+  },
+  {
+    name: '每月',
+    recurrence: 'RRULE:FREQ=MONTHLY;INTERVAL=1',
+    isSelected: false
+  }
+];
+
+export const PRIORITY = [
+  {
+    priority: 0,
+    name: '普通',
+    isSelected: false
+  },
+  {
+    priority: 1,
+    name: '紧急',
+    isSelected: false
+  },
+  {
+    priority: 2,
+    name: '非常紧急',
+    isSelected: false
+  }
+];
+
+export const createTemptask = {
+  content: '',
+  priority: 0,
+  _executorId: '0',
+  involveMembers: [],
+  dueDate: undefined,
+  showMore: false,
+  note: '',
+  recurrenceStr: '',
+  recurrenceName: '从不',
+  isVisiable: false,
+  visiable: 'members'
+};
+
 @inject([
-  '$timeout',
   'DetailAPI',
   'MemberAPI',
   'ProjectsAPI',
@@ -30,82 +89,24 @@ export class CreateTaskView extends View {
 
   public ViewName = 'CreateTaskView';
 
-  public _executorId: string;
-  public dueDate: any;
-  public involveMembers: string[];
-  public content: string;
-  public note: string;
-
-  public isVisiable = false;
   public members: {
     [index: string]: IMemberData;
   };
-  public visiable = 'members';
 
-  public recurrenceStr: string;
-  public recurrenceName: string;
-  public recurrence = [
-    {
-      name: '从不',
-      recurrence: null,
-      isSelected: false
-    },
-    {
-      name: '每天',
-      recurrence: 'RRULE:FREQ=DAILY;INTERVAL=1',
-      isSelected: false
-    },
-    {
-      name: '每周',
-      recurrence: 'RRULE:FREQ=WEEKLY;INTERVAL=1',
-      isSelected: false
-    },
-    {
-      name: '每两周',
-      recurrence: 'RRULE:FREQ=WEEKLY;INTERVAL=2',
-      isSelected: false
-    },
-    {
-      name: '每月',
-      recurrence: 'RRULE:FREQ=MONTHLY;INTERVAL=1',
-      isSelected: false
-    }
-  ];
-
-  public priority: number;
-  public PRIORITY = [
-    {
-      priority: 0,
-      name: '普通',
-      isSelected: false
-    },
-    {
-      priority: 1,
-      name: '紧急',
-      isSelected: false
-    },
-    {
-      priority: 2,
-      name: '非常紧急',
-      isSelected: false
-    }
-  ];
+  public PRIORITY = PRIORITY;
 
   public tasklist: ITasklistData;
   public stage: IStageData;
-  public showMore = false;
+  public task: any;
 
 
   private tasklists: ITasklistData[];
 
-  private state: string;
-  private height: string;
   private projectId: string;
   private DetailAPI: DetailAPI;
   private MemberAPI: MemberAPI;
   private ProjectsAPI: ProjectsAPI;
   private TasklistAPI: TasklistAPI;
-  private lastRecurrneceIndex: number;
 
   // @ngInject
   constructor(
@@ -113,10 +114,7 @@ export class CreateTaskView extends View {
   ) {
     super();
     this.$scope = $scope;
-    this.priority = 0;
-    this._executorId = '0';
-    this.involveMembers = [];
-    this.state = 'origin';
+    this.task = createTemptask;
     this.zone.run(() => {
       this.projectId = this.$state.params._id;
     });
@@ -140,8 +138,10 @@ export class CreateTaskView extends View {
   }
 
   public onAllChangesDone() {
-    let userid = this.$rootScope.userMe._id;
-    this.involveMembers.push(userid);
+    const userid = this.$rootScope.userMe._id;
+    if (!this.task.involveMembers.length) {
+      this.task.involveMembers.push(userid);
+    }
     angular.forEach(this.members, (member: IMemberData) => {
       if (member._id === userid) {
         member.isSelected = true;
@@ -154,103 +154,58 @@ export class CreateTaskView extends View {
   }
 
   public openNote() {
-    this.openModal('create/task/note.html', {
-      scope: this.$scope,
-      animation: 'slide-in-left'
-    });
-  }
-
-  public confirmNote() {
-    this.cancelModal();
-  }
-
-  public cancelNote() {
-    this.note = '';
-    this.cancelModal();
+    window.location.hash = `/project/${this.projectId}/task/create/note`;
   }
 
   // executor
   public getExecutorAvatar() {
-    let avatar = this.members ? this.members[this._executorId].avatarUrl : nobodyUrl;
+    const avatar = this.members ? this.members[this.task._executorId].avatarUrl : nobodyUrl;
     return avatar;
   }
 
   public getExecutorName() {
-    let name =  this.members ? this.members[this._executorId].name : '选择执行者';
+    const name =  this.members ? this.members[this.task._executorId].name : '选择执行者';
     return name;
   }
 
   public openExecutor() {
-    this.openModal('create/task/executor.html', {
-      scope: this.$scope,
-      animation: 'slide-in-left'
-    });
+    window.location.hash = `/project/${this.projectId}/task/create/executor`;
   }
-
-  public chooseExecutor(id: string) {
-    if (id === this._executorId) {
-      return ;
-    }
-    this._executorId = id;
-    this.cancelModal();
-  }
-
 
   public openRecurrence() {
-    this.openModal('create/task/recurrence.html', {
-      scope: this.$scope,
-      animation: 'slide-in-left'
-    });
+    window.location.hash = `/project/${this.projectId}/task/create/recurrence`;
+  }
+
+  public openPriority() {
+    window.location.hash = `/project/${this.projectId}/task/create/priority`;
   }
 
   public openInvolve() {
-    this.openModal('create/task/involve-modal.html', {
-      scope: this.$scope
-    });
+    window.location.hash = `/project/${this.projectId}/task/create/involve`;
   }
 
   public getInvolveNames() {
-    let names = [];
-    angular.forEach(this.members, (member: IMemberData) => {
-      if (member.isSelected && member._id !== '0') {
-        names.push(member.name);
-      }
+    const names = [];
+    angular.forEach(this.task.involveMembers, (memberId: string) => {
+      const name = this.members[memberId].name;
+      names.push(name);
     });
     return names.join('、');
   }
 
-
-  public chooseRecurrence($index: number) {
-    if (this.lastRecurrneceIndex) {
-      this.recurrence[this.lastRecurrneceIndex || 0].isSelected = false;
-    }
-    this.lastRecurrneceIndex = $index;
-    this.recurrence[$index].isSelected = true;
-    this.recurrenceStr = this.recurrence[$index].recurrence;
-    this.recurrenceName = this.recurrence[$index].name;
-    this.cancelModal();
-  }
-
   // priority
   public getPriorityName() {
-    return this.PRIORITY[this.priority].name;
-  }
-
-  public openPriority() {
-    this.openModal('create/task/priority.html', {
-      scope: this.$scope,
-      animation: 'slide-in-left'
-    });
+    return this.PRIORITY[this.task.priority].name;
   }
 
   public choosePriority($index: number) {
-    if ($index === this.priority) {
+    if ($index === this.task.priority) {
       return ;
     }
     angular.forEach(this.PRIORITY, (obj: any, index: number) => {
       if (index === $index) {
         obj.isSelected = true;
-        this.priority = $index;
+        this.task.priority = $index;
       } else {
         obj.isSelected = false;
       }
@@ -258,70 +213,46 @@ export class CreateTaskView extends View {
     this.cancelModal();
   }
 
-  public selectInvolveMember(_id: string) {
-    this.members[_id].isSelected = !this.members[_id].isSelected;
-  }
-
-  public selectPriority(priority: number) {
-    if (priority === this.priority) {
-      return ;
-    }
-    this.priority = priority;
-    this.cancelModal();
-  }
-
-  public getMemberSelectedLength() {
-    let length = 0;
-    if (this.members) {
-      angular.forEach(this.members, (member: IMemberData) => {
-        if (member.isSelected) {
-          length ++;
-        }
-      });
-    }
-    return length;
-  }
-
-  // involve
-  public selectInvolve() {
-    let involve = [];
-    angular.forEach(this.members, (member: IMemberData) => {
-      if (member.isSelected) {
-        involve.push(member._id);
-      }
-    });
-    this.involveMembers = involve;
-    this.visiable = this.isVisiable ? 'involves' : 'members';
-    this.cancelModal();
-  }
-
   public createTask() {
-    if (typeof this.content !== 'undefined') {
+    if (typeof this.task.content !== 'undefined') {
       this.showLoading();
       let recurrence: string[];
-      let dateNow = new Date();
+      const dateNow = new Date();
       dateNow.setMilliseconds(0);
       dateNow.setSeconds(0);
-      if (this.recurrenceStr) {
-        let nowStr = 'DTSTART=' + Rrule.timeToUntilString(dateNow);
-        recurrence = [this.recurrenceStr.replace(';', `;${nowStr};`)];
+      if (this.task.recurrenceStr) {
+        const nowStr = 'DTSTART=' + Rrule.timeToUntilString(dateNow);
+        recurrence = [this.task.recurrenceStr.replace(';', `;${nowStr};`)];
       }
       return this.DetailAPI.create('task', {
         _tasklistId: this.tasklist._id,
-        content: this.content,
-        note: this.note,
-        _executorId: this._executorId === '0' ? null : this._executorId,
-        dueDate: this.dueDate,
-        priority: this.priority,
-        involveMembers: this.involveMembers,
+        content: this.task.content,
+        note: this.task.note,
+        _executorId: this.task._executorId === '0' ? null : this.task._executorId,
+        dueDate: this.task.dueDate,
+        priority: this.task.priority,
+        involveMembers: this.task.involveMembers,
         recurrence: recurrence,
-        visiable: this.visiable
+        visiable: this.task.visiable
       })
       .then((task: ITaskData) => {
         this.showMsg('success', '创建成功', '已成功创建任务', `#/detail/task/${task._id}`);
         this.hideLoading();
         const options = this.shareToQQgroup(task._id);
         this.$scope.$emit('transfer', 'new:task', options);
+        angular.extend(createTemptask, {
+          content: '',
+          priority: 0,
+          _executorId: '0',
+          involveMembers: [],
+          dueDate: undefined,
+          showMore: false,
+          note: '',
+          recurrenceStr: '',
+          recurrenceName: '从不',
+          isVisiable: false,
+          visiable: 'members'
+        });
         window.history.back();
       })
       .catch((reason: any) => {
@@ -333,19 +264,15 @@ export class CreateTaskView extends View {
     }
   }
 
-  public blur() {
-    this.height = 'auto';
-  }
-
   public showMoreInfo() {
-    this.showMore = true;
+    this.task.showMore = true;
   }
 
   private shareToQQgroup(taskId: string) {
-    const executorName = this.members[this._executorId].name || '暂无执行者';
-    const dueDate = this.dueDate ? `,截止日期: ${moment(this.dueDate).calendar()}` : '';
+    const executorName = this.members[this.task._executorId].name || '暂无执行者';
+    const dueDate = this.task.dueDate ? `,截止日期: ${moment(this.task.dueDate).calendar()}` : '';
     return {
-      title: `我创建了任务: ${this.content}`,
+      title: `我创建了任务: ${this.task.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
       share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=task&_boundToObjectId=${taskId}`,
       image_url: `http://${window.location.host}/images/teambition.png`,
@@ -359,3 +286,9 @@ export class CreateTaskView extends View {
 }
 
 angular.module('teambition').controller('CreateTaskView', CreateTaskView);
+
+export * from './executor/CreatetaskExecutorView';
+export * from './involve/CreatetaskInvolveView';
+export * from './note/CreatetaskNoteView';
+export * from './priority/CreatetaskPriorityView';
+export * from './recurrence/CreatetaskRecurrenceView';

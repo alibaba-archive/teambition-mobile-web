@@ -51,7 +51,6 @@ angular.module('teambition').factory('ngConsumer', ['$rootScope', 'RestAPI',
   };
   consumer.join = (_id: string) => {
     if (joined.indexOf(_id) === -1) {
-      console.log('join');
       join.call(consumer, _id);
       joined.push(_id);
     }
@@ -72,20 +71,23 @@ angular.module('teambition').factory('ngConsumer', ['$rootScope', 'RestAPI',
         }
       }
     }else {
-      let params = event.data ? event.data.params : '';
-      let results = [];
+      const params = event.data ? event.data.params : '';
+      const results = [];
       if (params instanceof Array) {
         angular.forEach(params, (data: any, index: number) => {
-          let result = JSON.parse(data);
-          let e: string = result.e;
-          let d = result.d;
-          let namespace = e.split('/')[0];
+          const result = JSON.parse(data);
+          const e: string = result.e;
+          const d = result.d;
+          const namespace = e.split('/')[0];
           if (e.indexOf('message') !== -1 && typeof d === 'object') {
-            let _id = e.split('/')[1];
+            const _id = e.split('/')[1];
             d.msgId = _id;
-            return fireListener(listener[namespace], d);
+            fireListener(listener[namespace], d);
+          }else if (namespace.indexOf('new') !== -1) {
+            fireListener(listener[namespace], d);
+          }else {
+            fireListener(listener[e], d);
           }
-          fireListener(listener[e], d);
         });
       }
       if (results.length) {

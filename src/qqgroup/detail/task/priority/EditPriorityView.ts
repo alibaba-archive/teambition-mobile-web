@@ -59,13 +59,17 @@ export class EditPriorityView extends View {
     .then(() => {
       this.priority[this.lastSelected].isSelected = false;
       this.priority[priority].isSelected = true;
-      this.showMsg('success', '更新成功', '已更新任务优先级');
       this.hideLoading();
+      setTimeout(() => {
+        this.showMsg('success', '更新成功', '已更新任务优先级');
+      }, 500);
       window.history.back();
     })
     .catch((reason: any) => {
-      let message = this.getFailureReason(reason);
-      this.showMsg('error', '更新失败', message);
+      const message = this.getFailureReason(reason);
+      setTimeout(() => {
+        this.showMsg('error', '更新失败', message);
+      }, 500);
       this.hideLoading();
       window.history.back();
     });

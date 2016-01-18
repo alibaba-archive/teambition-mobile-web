@@ -11,15 +11,17 @@ export class StrikerAPI extends BaseAPI {
 
   public upload (blobs: File[], scope?: any) {
     return this.strikerAuth().then((strikerAuth: string) => {
-      return this.Upload.upload({
+      return this.Upload.upload(<any>{
         url: `${app.strikerHost}/upload`,
         headers: {
           'Authorization': strikerAuth,
           'Content-Type': 'multipart/form-data'
         },
-        file: blobs,
-        withCredentials: true,
-        method: 'POST'
+        data: {
+          filesize: blobs[0].size,
+          file: blobs
+        },
+        withCredentials: true
       })
       .then((res: any) => {
         return res.data;

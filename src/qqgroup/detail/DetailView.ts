@@ -80,8 +80,9 @@ export class DetailView extends View {
     $scope: angular.IScope
   ) {
     super();
-    this.$scope = $scope;
-    this.zone.run(angular.noop);
+    this.zone.run(() => {
+      this.$scope = $scope;
+    });
   }
 
   public onInit(): angular.IPromise<any> {

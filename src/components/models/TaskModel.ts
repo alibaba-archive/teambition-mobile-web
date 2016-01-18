@@ -1,6 +1,7 @@
 'use strict';
 import BaseModel from '../bases/BaseModel';
-import {taskParser} from '../services';
+import DetailModel from './DetailModel';
+import {taskParser, socketListener} from '../services';
 import {ITaskData} from 'teambition';
 
 const TaskCollections = [
@@ -71,7 +72,10 @@ class TaskModel extends BaseModel {
   }
 
   public setTasklistCollection(tasklistId: string, collection: ITaskData[]) {
-    let cache = this.getTasklistCollection(tasklistId);
+    const cache = this.getTasklistCollection(tasklistId);
+    socketListener('new', 'tasks', (namespace: string, data: ITaskData) => {
+      DetailModel.setDetail(`task:detail:${data._id}`, data);
+    });
     if (!cache) {
       let results: ITaskData[] = [];
       let $index: string[] = [];
