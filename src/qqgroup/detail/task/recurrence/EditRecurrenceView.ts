@@ -80,14 +80,18 @@ export class EditRecurrenceView extends View {
       this.recurrence[this.lastIndex].isSelected = false;
       this.recurrence[$index].isSelected = true;
       this.lastIndex = $index;
-      this.showMsg('success', '更新成功', '已更新任务重复规则');
       this.hideLoading();
+      setTimeout(() => {
+        this.showMsg('success', '更新成功', '已更新任务重复规则');
+      }, 500);
       window.history.back();
     })
     .catch((reason: any) => {
-      let message = this.getFailureReason(reason);
-      this.showMsg('error', '更新失败', message);
+      const message = this.getFailureReason(reason);
       this.hideLoading();
+      setTimeout(() => {
+        this.showMsg('error', '更新失败', message);
+      }, 500);
       window.history.back();
     });
   }

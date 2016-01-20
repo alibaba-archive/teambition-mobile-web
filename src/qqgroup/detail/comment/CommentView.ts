@@ -130,13 +130,18 @@ export class CommentView extends View {
       return this.addTextComment()
       .then(() => {
         this.hideLoading();
+        window.history.back();
       });
     }else {
       return this.addTextComment(this.files)
+      .then(() => {
+        window.history.back();
+      })
       .catch((reason: any) => {
         const message = this.getFailureReason(reason);
         this.showMsg('error', '评论失败', message);
         this.hideLoading();
+        window.history.back();
       });
     }
   }

@@ -1,18 +1,19 @@
 'use strict';
 import {app} from '../../config/config';
 
-let listener = [];
+const listener = [];
+export const cacheListener = [];
 const typeMap = [
   'new',
   'change',
   'refresh',
   'remove'
 ];
-export let socketListener = (type: string, namespace: string, callback?: Function) => {
+export const socketListener = (type: string, namespace: string, callback?: Function) => {
   if (!type || !namespace || !app.socket || typeMap.indexOf(type) === -1) {
     return;
   }
-  let socket = app.socket;
+  const socket = app.socket;
   if (listener.indexOf(`:${type}:${namespace}`) !== -1) {
     return ;
   }
@@ -66,8 +67,20 @@ export let socketListener = (type: string, namespace: string, callback?: Functio
   };
 
   if (name !== 'project') {
-    socket.on('change:isArchived', buildCallback('change'));
+    if (!socket) {
+      cacheListener.push(() => {
+        socket.on('change:isArchived', buildCallback('change'));
+      });
+    }else {
+      socket.on('change:isArchived', buildCallback('change'));
+    }
   }
 
-  socket.on(`:${type}:${namespace}`, buildCallback(type));
+  if (!socket) {
+    cacheListener.push(() => {
+      socket.on(`:${type}:${namespace}`, buildCallback(type));
+    });
+  }else {
+    socket.on(`:${type}:${namespace}`, buildCallback(type));
+  }
 };

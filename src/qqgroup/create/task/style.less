@@ -11,7 +11,7 @@
         font-size: 20px;
         line-height: 20px;
         resize: none;
-        padding-top: 0;
+        padding-top: 4px;
         position: relative;
         top: -20px;
       }
@@ -33,16 +33,37 @@
           opacity: 0;
           display: inline-block;
           bottom: 10px;
-          width: 50%;
+          width: 40%;
           &.date-yy-mm-dd {
             left: 0;
+          }
+          &.date-dd-mm-ss {
+            left: 160px;
           }
         }
       }
     }
     .more-info-wrap {
+      .animate-item-wrap {
+        z-index: -10;
+        &.ng-enter {
+          animation-name: slideInDown;
+        }
+      }
       .item {
         color: @grayDarker;
+        .icon-more {
+          height: 22px;
+          width: 22px;
+          margin-top: 12px;
+          margin-left: 5px;
+          background: @iconDark;
+          border-radius: 50%;
+          &:before {
+            color: white;
+            font-size: 16px;
+          }
+        }
         &.item-input {
           i {
             margin-left: 2px;
@@ -55,22 +76,15 @@
       }
     }
   }
-  .more-placeholder {
-    .icon-more {
-      height: 22px;
-      width: 22px;
-      margin-top: 12px;
-      margin-left: 5px;
-      background: @iconDark;
-      border-radius: 50%;
-      &:before {
-        color: white;
-        font-size: 16px;
-      }
-    }
-  }
   .button-block {
-    width: 96%;
-    margin-left: 2%;
+    width: 94%;
+    margin-left: 3%;
+  }
+}
+
+.create-task-recurrence {
+  background: #f7f7f7;
+  .list {
+    margin-top: 15px;
   }
 }

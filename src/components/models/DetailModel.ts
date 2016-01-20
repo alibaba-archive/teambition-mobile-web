@@ -19,7 +19,7 @@ import {IMemberData, IActivityData} from 'teambition';
 class DetailModel extends BaseModel {
 
   public setDetail(namespace: string, content: any) {
-    let type = namespace.split(':')[0];
+    const type = namespace.split(':')[0];
     socketListener('new', `activities/${content._id}`, (type: string, data: IActivityData) => {
       console.log('type: new activities, ', 'data: ', data);
       ActivityModel.addActivity(content._id, data);
@@ -28,14 +28,14 @@ class DetailModel extends BaseModel {
       console.log('change, detail: ', data);
       this.updateDetail(namespace, data);
     });
-    let result = this.parseDetail(namespace, content);
+    const result = this.parseDetail(namespace, content);
     this._set(namespace, null, result);
     this._updateObj(namespace, null, content);
     return result;
   }
 
   public updateDetail(namespace: string, patch: any) {
-    let patched = this._updateObj(namespace, null, patch);
+    const patched = this._updateObj(namespace, null, patch);
     if (patched) {
       return this.parseDetail(namespace, patched);
     }
@@ -46,9 +46,9 @@ class DetailModel extends BaseModel {
   }
 
   public removeObject(type: string, id: string) {
-    let detail = this._get<any>(`${type}:detail`, id);
+    const detail = this._get<any>(`${type}:detail`, id);
     if (detail) {
-      let projectId = detail._projectId;
+      const projectId = detail._projectId;
       switch (type) {
         case 'task':
           TaskModel.removeTask(id);
@@ -67,9 +67,9 @@ class DetailModel extends BaseModel {
   }
 
   private parseDetail(namespace: string, detail: any): any {
-    let type = namespace.split(':')[0];
-    let members = detail.detailInfos ? detail.detailInfos.members : null;
-    let involveMembers = [];
+    const type = namespace.split(':')[0];
+    const members = detail.detailInfos ? detail.detailInfos.members : null;
+    const involveMembers = [];
     if (members) {
       angular.forEach(members, (member: IMemberData, index: number) => {
         if (detail.involveMembers.indexOf(member._id) !== -1) {

@@ -1,0 +1,15 @@
+<ion-view class="edit-note-view" ng-controller="CreatetaskNoteView as CreatetaskNoteCtrl">
+  <ion-content>
+    <div class="list">
+      <div class="item item-input">
+        <textarea class="task-content"
+                  ng-model="CreatetaskNoteCtrl.note">
+        </textarea>
+      </div>
+    </div>
+    <div class="button button-block button-positive"
+          on-tap="CreatetaskNoteCtrl.confirmNote()">
+      确定
+    </div>
+  </ion-content>
+</ion-view>
