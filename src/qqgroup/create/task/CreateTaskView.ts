@@ -275,11 +275,7 @@ export class CreateTaskView extends View {
       title: `我创建了任务: ${this.task.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
       share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=task&_boundToObjectId=${taskId}`,
-      image_url: `http://${window.location.host}/images/teambition.png`,
-      debug: 1,
-      onError: function() {
-        alert(JSON.stringify(arguments));
-      }
+      image_url: `http://${window.location.host}/images/teambition.png`
     };
   }
 

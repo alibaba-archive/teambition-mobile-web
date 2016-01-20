@@ -19,7 +19,6 @@ angular.module('et.template')
 .service('InputComponments', InputComponments);
 
 angular.module('teambition')
-.constant('app', app)
 .run(RunFn);
 
 rootZone.run(() => {

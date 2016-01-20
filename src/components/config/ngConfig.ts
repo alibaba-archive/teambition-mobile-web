@@ -1,10 +1,9 @@
 'use strict';
-export default angular.module('teambition').config(
-  // @ngInject
+export default angular.module('teambition').config([
+  '$ionicConfigProvider',
+  '$compileProvider',
+  '$httpProvider',
   (
-    $stateProvider: angular.ui.IStateProvider,
-    $urlRouterProvider: angular.ui.IUrlRouterProvider,
-    $locationProvider: angular.ILocationProvider,
     $ionicConfigProvider: ionic.utility.IonicConfigProvider,
     $compileProvider: angular.ICompileProvider,
     $httpProvider: angular.IHttpProvider
@@ -22,4 +21,4 @@ export default angular.module('teambition').config(
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|wxlocalresource):|data:image\//);
   }
-);
+]);

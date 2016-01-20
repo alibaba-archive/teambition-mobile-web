@@ -122,6 +122,7 @@ export class DetailView extends View {
 
   public onAllChangesDone() {
     this.title = objectTpls[this._boundToObjectType].title;
+    this.$rootScope.global.title = this.title;
   }
 
   public showLikes() {
@@ -217,11 +218,7 @@ export class DetailView extends View {
       title: `我创建了任务: ${this.detail.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
       share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}`,
-      image_url: `http://${window.location.host}/images/teambition.png`,
-      debug: 1,
-      onError: function() {
-        alert(JSON.stringify(arguments));
-      }
+      image_url: `http://${window.location.host}/images/teambition.png`
     };
   }
 

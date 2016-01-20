@@ -35,7 +35,7 @@
     "zone.js": "^0.5.10"
   },
   "devDependencies": {
-    "cdn-uploader": "^0.1.1",
+    "cdn-uploader": "^0.1.2",
     "chalk": "^1.1.1",
     "et-template": "^0.3.7",
     "gulp": "^3.9.0",
