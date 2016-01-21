@@ -11,7 +11,7 @@ export default (target: string) => {
       './node_modules/et-dependency/ng/index.js',
       './node_modules/marked/lib/marked.js',
       './node_modules/angular-resource/angular-resource.js',
-      './node_modules/gta/lib/index.js',
+      './node_modules/teambition-gta/lib/index.js',
       './node_modules/ng-file-upload/dist/ng-file-upload-all.js',
       './node_modules/engine.io-client/engine.io.js',
       './node_modules/jsonrpc-lite/jsonrpc.js',

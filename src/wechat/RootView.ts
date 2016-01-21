@@ -2,6 +2,7 @@
 import WechatService from '../components/bases/WechatService';
 import {
   inject,
+  app,
   getParam,
   View,
   RestAPI,
@@ -15,7 +16,6 @@ declare let wx: any;
 export let spider: any;
 
 @inject([
-  'app',
   '$http',
   'socket',
   'RestAPI',
@@ -30,7 +30,6 @@ export class RootView extends View {
 
   public $state: angular.ui.IStateService;
 
-  public app: Iapp;
   public $http: angular.IHttpService;
   public socket: any;
   public RestAPI: RestAPI;
@@ -87,7 +86,7 @@ export class RootView extends View {
       title: 'Teambition'
     };
     $rootScope.userMe = userMe;
-    this.app.socket = this.socket(userMe.snapperToken);
+    app.socket = this.socket(userMe.snapperToken);
   }
 
   private initUser(userMe: IUserMe) {
@@ -105,7 +104,7 @@ export class RootView extends View {
         let spiderOptions = {
           _userId: userMe._id,
           client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
-          host: this.app.spiderhost
+          host: app.spiderHost
         };
         spider = new Spiderjs(spiderOptions);
       } catch (error) {

@@ -6,6 +6,7 @@ import {buildBundle} from './build'
 const RevAll = require('gulp-rev-all')
 const cssNano = require('gulp-cssnano')
 const cdnUploader = require('cdn-uploader')
+const stripDebug = require('gulp-strip-debug')
 
 export default async function (env: string, target: string, callback?: Function) {
   await buildBundle(env, target)
@@ -15,7 +16,7 @@ export default async function (env: string, target: string, callback?: Function)
   const revall = new RevAll({
     prefix: cdnPrefix,
     dontGlobal: [/\/favicon\.ico$/],
-    dontRenameFile: [/\.html$/, /images\/nobody-avator@2x\.png/],
+    dontRenameFile: [/\.html$/],
     dontUpdateReference: [/\.html$/],
     dontSearchFile: [/lib.js/, /images/]
   })
@@ -29,6 +30,7 @@ export default async function (env: string, target: string, callback?: Function)
     gulp.src([
       `www/js/**`
     ])
+      .pipe(stripDebug())
       .pipe(uglify())
       .pipe(greplace('/weixin/dev/signature', '/weixin/signature'))
       .pipe(greplace('/weixin/dev/tpl/message', '/weixin/tpl/message'))

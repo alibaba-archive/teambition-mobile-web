@@ -47,7 +47,7 @@ export class TabsView extends View {
     if (this.tabTypes[selectedIndex] !== lastSelected) {
       lastSelected = type;
       window.location.hash = `/project/${_projectId}/${type}`;
-      if (typeof(Gta) !== undefined) {
+      if (typeof(Gta) !== 'undefined') {
         Gta.event('tab-nav', type, 'click tab-nav');
       }
     }
