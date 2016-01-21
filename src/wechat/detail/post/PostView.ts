@@ -14,6 +14,10 @@ export class PostView extends View {
     this.zone.run(angular.noop);
   }
 
+  public onInit() {
+    return this.parent.onInit();
+  }
+
   public onAllChangesDone() {
     this.post = this.parent.detail;
   }

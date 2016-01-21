@@ -14,6 +14,10 @@ export class EntryView extends View {
     this.zone.run(angular.noop);
   }
 
+  public onInit() {
+    return this.parent.onInit();
+  }
+
   public onAllChangesDone() {
     this.entry = this.parent.detail;
   }
