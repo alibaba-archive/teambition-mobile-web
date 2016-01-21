@@ -15,7 +15,7 @@ export const RunFn = function(
   $rootScope: IRootScope
 ) {
 
-  let initWechat = () => {
+  const initWechat = () => {
     return $http.get('/weixin/dev/signature');
   };
 

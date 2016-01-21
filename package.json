@@ -8,7 +8,9 @@
     "locald": "gulp ding && scp -r www/** node4@192.168.0.21:/home/node4/apps/ding-ding/source/views",
     "betad": "gulp ding.beta && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views",
     "localqq": "gulp qqgroup&& scp -r www/** node4@192.168.0.21:/home/node4/apps/qqgroup/source/views",
-    "betaqq": "gulp qqgroup.beta && scp -r www/** iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views"
+    "betaqq": "gulp qqgroup.beta && scp -r www/** iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views",
+    "betaqqdep": "gulp qqgroup.beta.deploy && scp dist/index.html iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views",
+    "releasewechat": "gulp deploy.wechat && scp -P 11122 dist/index.html builder@120.26.37.146:/teambition/server/account-wx-service-release/source/views"
   },
   "repository": {
     "type": "git",
@@ -49,6 +51,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-rev-all": "^0.8.21",
     "gulp-sourcemaps": "^1.5.2",
+    "gulp-strip-debug": "^1.1.0",
     "gulp-tslint": "^3.2.0",
     "gulp-tslint-stylish": "^1.0.4",
     "gulp-typescript": "^2.8.3",

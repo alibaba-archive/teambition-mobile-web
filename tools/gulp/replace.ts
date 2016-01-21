@@ -1,8 +1,7 @@
 'use strict'
 import * as gulp from 'gulp'
 import * as merge2 from 'merge2'
-
-const greplace = require('gulp-replace')
+import * as greplace from 'gulp-replace'
 
 export const replaceConfig = (env: string, target: string) => {
   const envConfig = require(`../../config/${env}.json`)
@@ -31,10 +30,13 @@ export const replaceConfig = (env: string, target: string) => {
 export const replaceHtml = (env: string, target: string) => {
   const envConfig = require(`../../config/${env}.json`)
   const thirdLib = envConfig.scripts[target]
-  return new Promise((resolve, reject) => {
-    gulp.src(`www/index.html`)
+  const stream = gulp.src(`www/index.html`)
       .pipe(greplace('{{__third.lib.script}}', thirdLib))
-      .pipe(gulp.dest(`www/`))
+  if (target !== 'qqgroup') {
+    stream.pipe(greplace('name="main"', ''))
+  }
+  return new Promise((resolve, reject) => {
+    stream.pipe(gulp.dest(`www/`))
       .on('end', () => {
         resolve()
       })

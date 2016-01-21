@@ -213,6 +213,10 @@ export class View {
           this.$ionicScrollDelegate.resize();
         }
         return this.onAllChangesDone();
+      })
+      .catch((reason: any) => {
+        const message = this.getFailureReason(reason);
+        this.showMsg('error', '初始化失败', message);
       });
     });
     console.log(this.ViewName, 'run', Date.now());

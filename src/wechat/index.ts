@@ -21,9 +21,6 @@ angular.module('et.template')
 .service('ProjectHomeActivity', ProjectHomeActivity);
 
 angular.module('teambition')
-.constant('app', app)
-.constant('moment', moment)
-.constant('marked', marked)
 .run(RunFn);
 
 rootZone.run(() => {
