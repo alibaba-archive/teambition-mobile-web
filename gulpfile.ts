@@ -13,6 +13,23 @@ export const logError = (stream) => {
   })
 }
 
+const distDir = [
+  [
+    './dist/**/*.js',
+    './dist/**/*.css'
+  ],
+  [
+    './dist/**/*.png',
+    './dist/**/*.jpg'
+  ],
+  [
+    './dist/**/*.ttf',
+    './dist/**/*.svg',
+    './dist/**/*.woff',
+    './dist/**/*.eof'
+  ]
+]
+
 const CDNs = [
   {
     host: 'v0.ftp.upyun.com',
@@ -25,6 +42,14 @@ const CDNs = [
     password: process.env.CDN_UPYUN_PWD
   }
 ]
+
+const cdnUpload = (env: string, target: string) => {
+  const config = require(`./config/${env}.json`)
+  distDir.forEach((path: string []) => {
+    gulp.src(path)
+      .pipe(cdnUploader(config.cdnNames[target], CDNs))
+  })
+}
 
 gulp.task('lint', () => {
   return lint()
@@ -62,6 +87,11 @@ gulp.task('qqgroup.beta', async function () {
   return await buildBundle('beta', 'qqgroup')
 })
 
+gulp.task('qqgroup.beta.deploy', async function () {
+  await release('beta', 'qqgroup')
+  cdnUpload('beta', 'qqgroup')
+})
+
 gulp.task('qqgroup.release', async function() {
   return await release('release', 'qqgroup')
 })
@@ -81,20 +111,17 @@ gulp.task('ding.release', async function() {
 gulp.task('deploy.wechat', async function () {
   const config = require('./config/release.json')
   await release('release', 'wechat')
-  return gulp.src(['dist/**', '!dist/index.html'])
-    .pipe(cdnUploader(config.cdnNames['wechat'], CDNs))
+  cdnUpload('release', 'wechat')
 })
 
 gulp.task('deploy.qqgroup', async function () {
   const config = require('./config/release.json')
   await release('release', 'qqgroup')
-  return gulp.src(['dist/**', '!dist/index.html'])
-      .pipe(cdnUploader(config.cdnNames['qqgroup'], CDNs))
+  cdnUpload('release', 'qqgroup')
 })
 
 gulp.task('deploy.ding', async function () {
   const config = require('./config/release.json')
   await release('release', 'ding')
-  return gulp.src(['dist/**', '!dist/index.html'])
-      .pipe(cdnUploader(config.cdnNames['ding'], CDNs))
+  cdnUpload('release', 'ding')
 })

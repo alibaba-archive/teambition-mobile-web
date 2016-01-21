@@ -17,7 +17,7 @@ export default async function (env: string, target: string, callback?: Function)
     dontGlobal: [/\/favicon\.ico$/],
     dontRenameFile: [/\.html$/, /images\/nobody-avator@2x\.png/],
     dontUpdateReference: [/\.html$/],
-    dontSearchFile: [/\.js$/, /images/]
+    dontSearchFile: [/lib.js/, /images/]
   })
 
   const stream = merge2([
@@ -32,6 +32,7 @@ export default async function (env: string, target: string, callback?: Function)
       .pipe(uglify())
       .pipe(greplace('/weixin/dev/signature', '/weixin/signature'))
       .pipe(greplace('/weixin/dev/tpl/message', '/weixin/tpl/message'))
+      .pipe(greplace('http://"+window.location.host+"/images/teambition.png', '/images/teambition.png'))
       .pipe(greplace('/weixin/dev/', '/weixin/')),
     gulp.src([
       `www/css/**`

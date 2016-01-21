@@ -11,6 +11,10 @@ import less from './less'
 import et from './build.et'
 import {statics} from './static'
 
+process.on('unhandledRejection', (reason: any, P: Promise<any>) => {
+  console.error(reason)
+})
+
 const clean = () => {
   let count = 0
   return new Promise((resolve, reject) => {
