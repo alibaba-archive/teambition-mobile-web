@@ -59,6 +59,8 @@ let popup: ionic.popup.IonicPopupPromise;
 ])
 export class DetailView extends View {
 
+  public static $inject = ['$scope'];
+
   public ViewName = 'DetailView';
 
   public objectTpl: string;
@@ -81,7 +83,6 @@ export class DetailView extends View {
   private LikeAPI: LikeAPI;
   private images: IImagesData[];
 
-  // @ngInject
   constructor(
     $scope: angular.IScope
   ) {
