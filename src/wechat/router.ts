@@ -78,6 +78,19 @@ export default angular.module('teambition').config([
         }
       }
     })
+    .state('detail.conjunction', {
+      url: '/:type/conjunction/:_id?linkedId',
+      views: {
+        'object': {
+          templateUrl: ($stateParams: any) => {
+            return `detail/${$stateParams.type}/index.html`;
+          }
+        },
+        'detail-activities': {
+          templateUrl: 'detail/activities/index.html'
+        }
+      }
+    })
     .state('subtask', {
       url: '/detail/task/:_id/subtasks',
       templateUrl: 'detail/task/subtask/index.html'
