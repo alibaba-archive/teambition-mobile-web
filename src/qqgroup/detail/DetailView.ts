@@ -214,10 +214,19 @@ export class DetailView extends View {
   private shareToQQgroup() {
     const executorName = this.projectMembers[this.detail._executorId].name || this.detail.executorName || '暂无执行者';
     const dueDate = this.detail.dueDate ? `,截止日期: ${moment(this.detail.dueDate).calendar()}` : '';
+    let shareUrl: string;
+    switch (this._boundToObjectType) {
+      case 'task':
+        shareUrl = `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}&_projectId=${this.project._id}&_tasklistId=${this.detail._tasklistId}`;
+        break;
+      default:
+        shareUrl = `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}&_projectId=${this.project._id}`;
+        break;
+    }
     return {
       title: `我创建了任务: ${this.detail.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
-      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}`,
+      share_url: shareUrl,
       image_url: `http://${window.location.host}/images/teambition.png`
     };
   }

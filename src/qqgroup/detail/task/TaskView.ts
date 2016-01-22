@@ -97,7 +97,7 @@ export class TaskView extends View {
     return {
       title: `我完成了任务: ${this.task.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
-      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=task&_boundToObjectId=${this.task._id}`,
+      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=task&_boundToObjectId=${this.task._id}&_projectId=${this.project._id}&_tasklistId=${this.task._tasklistId}`,
       image_url: `http://${window.location.host}/images/teambition.png`
     };
   }

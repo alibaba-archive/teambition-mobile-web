@@ -1,7 +1,6 @@
 <ion-view class="padding tasklist-view" ng-controller="PanelTasklistView as PanelTaskCtrl">
   <ion-content>
     <div class="list tasks-list">
-      <div class="item-divider half-divider"></div>
       <div class="item item-notify icon-right"
            ng-if="PanelTaskCtrl.showNotify">
         <span class="notify-text">
@@ -11,6 +10,7 @@
         <i class="icon icon-circle-remove"
            on-tap="PanelTaskCtrl.hideNotify()"></i>
       </div>
+      <div class="item-divider half-divider"></div>
       <a class="item task-create-btn" on-tap="PanelTaskCtrl.openCreate()">
         <i class="icon icon-plus"></i>
         <span>添加任务</span>

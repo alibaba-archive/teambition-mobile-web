@@ -1,5 +1,5 @@
 'use strict';
-import {View, getParam} from '../index';
+import {View, getParam} from '../';
 
 export class LoginView extends View {
   public ViewName = 'LoginView';
