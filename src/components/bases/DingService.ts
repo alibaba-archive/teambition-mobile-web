@@ -202,7 +202,7 @@ class DingService {
   }
 
   private _init() {
-    let dingConf = {
+    const dingConf = {
       agentId: this.agentId,
       corpId: this.corpId,
       timeStamp: this.timeStamp,

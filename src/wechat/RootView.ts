@@ -42,7 +42,7 @@ export class RootView extends View {
 
   public onInit(): angular.IPromise<any> {
     let visible = getParam(window.location.hash, 'visible');
-    if (!visible) {
+    if (!visible && this.$state.current.name !== 'login' && this.$state.current.name !== 'wx_login') {
       this.zone.hasCreated = true;
       if (this.userMe && this.$rootScope.pending) {
         return this.$rootScope.pending;
@@ -58,6 +58,10 @@ export class RootView extends View {
       .catch((reason: any) => {
         this.goHome();
       });
+    }else {
+      const defer = this.$q.defer();
+      defer.resolve();
+      return defer.promise;
     }
   }
 

@@ -9,6 +9,10 @@ export default angular.module('teambition').config([
       url: '/login',
       templateUrl: 'login/index.html'
     })
+    .state('wx_login', {
+      url: '/wx_login',
+      templateUrl: 'login/index.html'
+    })
     .state('projects', {
       url: '/projects',
       templateUrl: 'project/index.html'

@@ -57,10 +57,10 @@ export class RootView extends View {
         this.initUser(userMe);
       })
       .catch((reason: any) => {
-        let defer = this.$q.defer();
+        const defer = this.$q.defer();
         if (Ding) {
           Ding.getCode((code: string) => {
-            let DingCorpid = Ding.corpId;
+            const DingCorpid = Ding.corpId;
             this.$http.get(`${app.dingApiHost}/getAccess?code=${code}&corpId=${DingCorpid}`)
             .then((result: any) => {
               defer.resolve();
