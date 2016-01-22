@@ -9,7 +9,7 @@ import {
   socketListener,
   MessageAPI
 } from './';
-import {IUserMe, Iapp, IMessageData, IRootScope, IProjectData} from 'teambition';
+import {IUserMe, IMessageData, IRootScope, IProjectData} from 'teambition';
 
 declare let Spiderjs: any;
 declare let wx: any;

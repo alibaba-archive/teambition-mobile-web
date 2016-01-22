@@ -8,7 +8,6 @@ angular.module('teambition', [
   'et.template'
 ]);
 
-import {app} from '../components/config/config';
 import {RunFn} from './run';
 import {
   Notify,
