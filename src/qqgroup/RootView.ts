@@ -9,7 +9,7 @@ import {
   MessageAPI,
   app
 } from './';
-import {IUserMe, Iapp, IMessageData, IRootScope} from 'teambition';
+import {IUserMe, IMessageData, IRootScope} from 'teambition';
 
 declare let Spiderjs: any;
 export let spider: any;

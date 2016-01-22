@@ -4,7 +4,7 @@
   "description": "Teambition mobile web application",
   "main": "index.js",
   "scripts": {
-    "test": "gulp lint && gulp && gulp test",
+    "test": "gulp lint",
     "locald": "gulp ding && scp -r www/** node4@192.168.0.21:/home/node4/apps/ding-ding/source/views",
     "betad": "gulp ding.beta && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views",
     "localqq": "gulp qqgroup&& scp -r www/** node4@192.168.0.21:/home/node4/apps/qqgroup/source/views",
