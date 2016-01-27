@@ -2,7 +2,6 @@
   "name": "teambition-mobile-web",
   "version": "0.9.5",
   "description": "Teambition mobile web application",
-  "main": "index.js",
   "scripts": {
     "test": "gulp lint",
     "locald": "gulp ding && scp -r www/** node4@192.168.0.21:/home/node4/apps/ding-ding/source/views",
@@ -40,6 +39,7 @@
   "devDependencies": {
     "cdn-uploader": "^0.1.2",
     "chalk": "^1.1.1",
+    "del": "^2.2.0",
     "et-template": "^0.3.7",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
@@ -60,7 +60,6 @@
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "merge2": "^0.3.6",
-    "rimraf": "^2.5.0",
     "through2": "^2.0.0",
     "ts-loader": "^0.7.2",
     "ts-node": "^0.5.5",

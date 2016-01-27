@@ -1,7 +1,7 @@
 'use strict'
 import * as gulp from 'gulp'
 import * as path from 'path'
-import * as rimraf from 'rimraf'
+import * as del from 'del'
 import * as concat from 'gulp-concat'
 import * as sourcemaps from 'gulp-sourcemaps'
 import libjs from './lib'
@@ -15,21 +15,14 @@ process.on('unhandledRejection', (reason: any, P: Promise<any>) => {
   console.error(reason)
 })
 
-const clean = () => {
-  let count = 0
-  return new Promise((resolve, reject) => {
-    rimraf('www', () => {
-      count ++
-      count === 3 ? resolve() : null
-    })
-    rimraf('dist', () => {
-      count ++
-      count === 3 ? resolve() : null
-    })
-    rimraf('.tmp', () => {
-      count ++
-      count === 3 ? resolve(): null
-    })
+const clean = (): Promise<string[]> => {
+  return del([
+    './www',
+    './dist',
+    './.tmp'
+  ]).then((value) => {
+    console.log(value)
+    return value
   })
 }
 

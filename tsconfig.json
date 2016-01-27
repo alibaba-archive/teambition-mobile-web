@@ -9,7 +9,8 @@
     "noImplicitAny": false
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "tools/build"
   ],
   "compileOnSave": false
 }
