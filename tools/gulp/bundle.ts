@@ -7,7 +7,7 @@ import config from './webpack.config'
 const webpack = require('webpack')
 
 export default (
-  entry: any,
+  entry: string[],
   target: string,
   buildConfig?: string,
   minify?: boolean,

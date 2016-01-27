@@ -11,7 +11,7 @@
     "noLib": false
   },
   "files" : [
-    "../typings/teambition.d.ts"
+    "./typings.d.ts"
   ],
   "exclude": [
     "node_modules"
