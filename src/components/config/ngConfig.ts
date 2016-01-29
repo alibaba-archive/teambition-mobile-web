@@ -1,5 +1,5 @@
 'use strict';
-export default angular.module('teambition').config([
+export const ngConfig = angular.module('teambition').config([
   '$ionicConfigProvider',
   '$compileProvider',
   '$httpProvider',
@@ -15,9 +15,15 @@ export default angular.module('teambition').config([
 
     $ionicConfigProvider.views.maxCache(0);
 
-    $ionicConfigProvider.tabs.position('bottom');
+    $ionicConfigProvider.views.transition('ios');
 
     $ionicConfigProvider.tabs.style('standard');
+
+    $ionicConfigProvider.tabs.position('bottom')
+
+    $ionicConfigProvider.navBar.alignTitle('center');
+
+    $ionicConfigProvider.navBar.positionPrimaryButtons('left');
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|wxlocalresource):|data:image\//);
   }

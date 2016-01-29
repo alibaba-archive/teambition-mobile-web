@@ -8,9 +8,9 @@
     "betad": "gulp ding.beta && scp -r www/** iojs@115.29.230.208:/home/iojs/dingTalk-Service/source/views",
     "localqq": "gulp qqgroup&& scp -r www/** node4@192.168.0.21:/home/node4/apps/qqgroup/source/views",
     "betaqq": "gulp qqgroup.beta && scp -r www/** iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views",
-    "betaqqdep": "gulp qqgroup.beta.deploy && scp dist/index.html iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views",
-    "release.wechat": "gulp deploy.wechat && scp -P 11122 dist/index.html builder@120.26.37.146:/teambition/server/account-wx-service-release/source/views",
-    "ga.wechat": "gulp deploy.wechat && scp -P 11122 dist/index.html builder@120.26.37.146:/teambition/server/account-wx-service-ga/source/views"
+    "betaqqdep": "gulp qqgroup.beta.deploy && scp dist/index.html iojs@115.29.230.208:/home/iojs/qqGroup-Service/source/views/",
+    "release.wechat": "gulp deploy.wechat && scp -P 11122 dist/index.html builder@120.26.37.146:/teambition/server/account-wx-service-release/source/views/",
+    "ga.wechat": "gulp deploy.wechat && scp -P 11122 dist/index.html builder@120.26.37.146:/teambition/server/account-wx-service-ga/source/views/"
   },
   "repository": {
     "type": "git",
