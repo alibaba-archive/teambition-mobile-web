@@ -21,7 +21,6 @@ const clean = (): Promise<string[]> => {
     './dist',
     './.tmp'
   ]).then((value) => {
-    console.log(value)
     return value
   })
 }
