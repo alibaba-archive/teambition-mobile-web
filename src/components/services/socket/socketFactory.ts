@@ -1,7 +1,7 @@
 'use strict';
 import {app} from '../../config/config';
 
-angular.module('teambition').factory('socket', ['ngConsumer', (
+export const socket = angular.module('teambition').factory('socket', ['ngConsumer', (
   ngConsumer: any
 ) => {
   return (token: string) => {

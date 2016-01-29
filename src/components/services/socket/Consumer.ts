@@ -14,7 +14,7 @@ export interface IConsumer {
 let joined = [];
 let listener = {};
 
-angular.module('teambition').factory('ngConsumer', ['$rootScope', 'RestAPI',
+export const ngConsumer = angular.module('teambition').factory('ngConsumer', ['$rootScope', 'RestAPI',
 (
   $rootScope: IRootScope,
   RestAPI: RestAPI
