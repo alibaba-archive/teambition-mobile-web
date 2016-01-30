@@ -156,10 +156,10 @@ export class DetailView extends View {
     let thisButtons: IonicOptionsButtonsOption[] = [];
     let deleteIndex: number;
     let shareIndex: number;
-    thisButtons.push({text: '<font color="red">删除</font>'});
-    deleteIndex = ++index;
     thisButtons.push({text: '分享'});
     shareIndex = ++index;
+    thisButtons.push({text: '<font color="red">删除</font>'});
+    deleteIndex = ++index;
     this.$ionicActionSheet.show({
       buttons: thisButtons,
       cancelText: '取消',
