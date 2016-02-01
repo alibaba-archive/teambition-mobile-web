@@ -6,7 +6,7 @@ import {IProjectData} from 'teambition';
   '$window',
   'ProjectsAPI'
 ])
-class InvitedView extends View {
+export class InvitedView extends View {
 
   private ProjectsAPI: ProjectsAPI;
   private $window: angular.IWindowService;
