@@ -5,7 +5,8 @@ import {
   DetailAPI,
   ProjectsAPI,
   LikeAPI,
-  MemberAPI
+  MemberAPI,
+  host
 } from '../index';
 import {
   IProjectData,
@@ -217,17 +218,17 @@ export class DetailView extends View {
     let shareUrl: string;
     switch (this._boundToObjectType) {
       case 'task':
-        shareUrl = `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}&_projectId=${this.project._id}&_tasklistId=${this.detail._tasklistId}`;
+        shareUrl = `${host}?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}&_projectId=${this.project._id}&_tasklistId=${this.detail._tasklistId}`;
         break;
       default:
-        shareUrl = `http://${window.location.host}/qqgroup?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}&_projectId=${this.project._id}`;
+        shareUrl = `${host}?_boundToObjectType=${this._boundToObjectType}&_boundToObjectId=${this._boundToObjectId}&_projectId=${this.project._id}`;
         break;
     }
     return {
       title: `我创建了任务: ${this.detail.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
       share_url: shareUrl,
-      image_url: `http://${window.location.host}/images/teambition.png`
+      image_url: `${host}/images/teambition.png`
     };
   }
 

@@ -7,7 +7,8 @@ import {
   MemberAPI,
   ProjectsAPI,
   TasklistAPI,
-  Rrule
+  Rrule,
+  host
 } from '../../index';
 import {
   IMemberData,
@@ -274,8 +275,8 @@ export class CreateTaskView extends View {
     return {
       title: `我创建了任务: ${this.task.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
-      share_url: `http://${window.location.host}/qqgroup?_boundToObjectType=task&_boundToObjectId=${taskId}&_projectId=${this.project._id}&_tasklistId=${this.tasklist._id}`,
-      image_url: `http://${window.location.host}/images/teambition.png`
+      share_url: `${host}?_boundToObjectType=task&_boundToObjectId=${taskId}&_projectId=${this.project._id}&_tasklistId=${this.tasklist._id}`,
+      image_url: `${host}/images/teambition.png`
     };
   }
 
