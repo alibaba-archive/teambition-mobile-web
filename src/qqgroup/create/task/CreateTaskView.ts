@@ -109,7 +109,6 @@ export class CreateTaskView extends View {
   private ProjectsAPI: ProjectsAPI;
   private TasklistAPI: TasklistAPI;
 
-  // @ngInject
   constructor(
     $scope: angular.IScope
   ) {
@@ -270,13 +269,13 @@ export class CreateTaskView extends View {
   }
 
   private shareToQQgroup(taskId: string) {
-    const executorName = this.members[this.task._executorId].name || '暂无执行者';
+    const executorName = this.members[this.task._executorId || 0].name || '暂无执行者';
     const dueDate = this.task.dueDate ? `,截止日期: ${moment(this.task.dueDate).calendar()}` : '';
     return {
       title: `我创建了任务: ${this.task.content}`,
       desc: `执行者: ${executorName} ${dueDate}`,
       share_url: `${host}?_boundToObjectType=task&_boundToObjectId=${taskId}&_projectId=${this.project._id}&_tasklistId=${this.tasklist._id}`,
-      image_url: `${host}/images/teambition.png`
+      image_url: `/images/teambition.png`
     };
   }
 
