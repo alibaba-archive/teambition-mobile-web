@@ -78,12 +78,13 @@ export const ngConsumer = angular.module('teambition').factory('ngConsumer', ['$
           const result = JSON.parse(data);
           const e: string = result.e;
           const d = result.d;
-          const namespace = e.split('/')[0];
+          const socketParams =  e.split('/');
+          const namespace = socketParams[0];
           if (e.indexOf('message') !== -1 && typeof d === 'object') {
             const _id = e.split('/')[1];
             d.msgId = _id;
             fireListener(listener[namespace], d);
-          }else if (namespace.indexOf('new') !== -1) {
+          }else if (namespace.indexOf('new') !== -1 && namespace.indexOf('activities') === -1) {
             fireListener(listener[namespace], d);
           }else {
             fireListener(listener[e], d);

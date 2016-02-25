@@ -1,10 +1,9 @@
 import * as gulp from 'gulp'
+import * as cdnUploader from 'cdn-uploader'
 import {buildBundle} from './tools/gulp/build'
 import watch from './tools/gulp/watch'
 import lint from './tools/gulp/lint'
 import release from './tools/gulp/release'
-
-const cdnUploader = require('cdn-uploader')
 
 export const logError = (stream) => {
   return stream.on('error', function(err: any) {
@@ -124,4 +123,8 @@ gulp.task('deploy.ding', async function () {
   const config = require('./config/release.json')
   await release('release', 'ding')
   cdnUpload('release', 'ding')
+})
+
+gulp.task('cdn.qqgroup', () => {
+  return cdnUpload('release', 'qqgroup')
 })

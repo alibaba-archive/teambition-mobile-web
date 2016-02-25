@@ -19,7 +19,7 @@ export const ngConfig = angular.module('teambition').config([
 
     $ionicConfigProvider.tabs.style('standard');
 
-    $ionicConfigProvider.tabs.position('bottom')
+    $ionicConfigProvider.tabs.position('bottom');
 
     $ionicConfigProvider.navBar.alignTitle('center');
 
