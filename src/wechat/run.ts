@@ -21,14 +21,15 @@ export const RunFn = function(
 
   if (typeof wx === 'object') {
     $rootScope.pending = initWechat()
-    .then((data: IWxSignature) => {
+    .then(resp => {
+      const data: IWxSignature = resp.data;
       WechatService.init(app.wxid, data.noncestr, data.timestamp, data.signature);
     })
     .catch((reason: any) => {
       console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
     });
   }else {
-    let defer = $q.defer();
+    const defer = $q.defer();
     defer.resolve();
     $rootScope.pending = defer.promise;
   }

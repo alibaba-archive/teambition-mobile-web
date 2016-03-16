@@ -193,22 +193,22 @@ export class DetailView extends View {
       .then(() => {
         return this.ProjectsAPI.fetchById(_projectId);
       })
-      .then((project: IProjectData) => {
+      .then(project => {
         let collectionId = project._defaultCollectionId;
         console.log(strikerRes);
         return this.WorkAPI.uploads(collectionId, _projectId, strikerRes);
       })
-      .then((resp: IFileData[]) => {
+      .then(resp => {
         let attachments = [];
         angular.forEach(resp, (file: IFileData, index: number) => {
           attachments.push(file._id);
         });
         return attachments;
       })
-      .then((attachments: string[]) => {
+      .then(attachments => {
         return this.addTextComment(attachments);
       })
-      .catch((reason: any) => {
+      .catch(reason => {
         this.hideLoading();
       });
     }
@@ -225,12 +225,12 @@ export class DetailView extends View {
     .then(() => {
       this.comment = '';
       this.images = [];
-      this.hideLoading();
     })
-    .catch((reason: any) => {
-      let msg = '网络错误';
-      msg = (reason && typeof(reason.data) === 'object') ? reason.data.message : msg;
-      this.showMsg('error', '评论失败', msg);
+    .catch(reason => {
+      const message = this.getFailureReason(reason);
+      this.showMsg('error', '评论失败', message);
+    })
+    .then(() => {
       this.hideLoading();
     });
   }

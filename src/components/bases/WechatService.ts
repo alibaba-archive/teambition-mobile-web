@@ -13,11 +13,11 @@ const jsApiList = [
   'hideMenuItems'
 ];
 
-const wxShareMsgConfig = {
+export const wxShareMsgConfig = {
   title: '分享一个超赞的协作工具给你',
   desc: 'Teambition 是一个超赞的全平台覆盖的协作工具，让你享受你的工作',
   link: 'https://www.teambition.com',
-  imgUrl: 'https://dn-st.teambition.net/tb-weixin/images/teambition.a9debe2c.png'
+  imgUrl: '/images/teambition.png'
 };
 
 class WechatService {
@@ -35,7 +35,7 @@ class WechatService {
   }
 
   public reconfigShare(user: IUserMe, project: IProjectData) {
-    let newConfig = angular.extend({}, wxShareMsgConfig);
+    const newConfig = angular.extend({}, wxShareMsgConfig);
     let url = `${host}/#/invited/${project._id}/${project.signCode}/${user.name}`;
     url = this.buildWechatShareLink(url);
     newConfig.title = project.name;

@@ -3,7 +3,7 @@ import {parentView, View} from '../../index';
 import {IFileData} from 'teambition';
 
 @parentView('DetailView')
-class FileView extends View {
+export class FileView extends View {
 
   public ViewName = 'FileView';
 
