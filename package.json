@@ -35,7 +35,7 @@
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
     "snapper-consumer": "^1.0.0",
-    "tb.zone.js": "^0.5.10"
+    "zone.js": "^0.5.10"
   },
   "devDependencies": {
     "cdn-uploader": "^0.1.2",
