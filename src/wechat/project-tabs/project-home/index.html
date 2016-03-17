@@ -56,18 +56,16 @@
             ng-repeat="event in PanelHomeCtrl.eventGroup track by event._id"
             on-tap="PanelHomeCtrl.openDetail('/detail/event/{{event._id}}', 'event')">
           <i class="icon icon-calendar2"></i>
-          <span class="task-content">
-            <p ng-bind="event.title"></p>
-            <p class="event-date"><span ng-bind="event.startDate | eventDateFormat: event.endDate : event.title"></span></p>
-          </span>
+          <span class="task-content" ng-bind="event.title"></span>
+          <span class="event-date" ng-bind="event.startDate | eventDateFormat: event.endDate : event.title"></span>
         </div-item>
         <div-item class="item item-task"
            ng-repeat="task in PanelHomeCtrl.dueTasks track by task._id"
            on-tap="PanelHomeCtrl.openDetail('/detail/task/{{task._id}}', 'task')">
           <i class="icon icon-checkbox-thin"></i>
-          <span class="task-content">
-            <p ng-bind="task.content"></p>
-            <p class="task-duedate" ng-class="{'badge-assertive': task.overDue, 'badge-energized': task.oneDay}"><span class="due-date-display" ng-bind="task.dueDate | formatDate: 'calendar'"></span></p>
+          <span class="task-content" ng-bind="task.content"></span>
+          <span class="task-duedate" ng-class="{'badge-assertive': task.overDue, 'badge-energized': task.oneDay}">
+            <span class="due-date-display" ng-bind="task.dueDate | formatDate: 'calendar'"></span>
           </span>
         </div-item>
         <div-item class="item item-icon-left item-more" ng-if="PanelHomeCtrl.dueTasks.length !== PanelHomeCtrl._dueTasks.length" on-tap="PanelHomeCtrl.loadDue()">
