@@ -58,9 +58,8 @@
       margin-bottom: 15px;
 
       .task-type-title {
-        position: relative;
-        bottom: 2px;
-        margin-left: 2px;
+        display: inline-block;
+        padding: 10px 0 10px 34px;
       }
 
       .list.list-today,
@@ -71,8 +70,10 @@
           padding-bottom: 0;
           .task-content {
             display: inline-block;
-            padding-top: 9px;
-            padding-bottom: 9px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 9px 54px 9px 30px;
           }
           .event-date {
             position: absolute;
@@ -82,8 +83,8 @@
             color: @grayDark;
           }
           i.icon {
-            position: relative;
-            top: 2px;
+            position: absolute;
+            top: 8px;
             padding: 0 4px 0 2px;
           }
         }
@@ -92,37 +93,33 @@
           padding-bottom: 0;
           .task-content {
             display: inline-block;
-            padding-top: 9px;
-            padding-bottom: 9px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 9px 54px 9px 30px;
           }
           i.icon {
-            position: relative;
-            top: 2px;
+            position: absolute;
+            top: 8px;
             padding: 0 4px 0 2px;
           }
           .task-duedate {
             position: absolute;
             right: 16px;
-            top: 6px;
+            top: 9px;
             padding: 0;
             font-size: 14px;
             color: @grayDark;
-            &.badge-assertive {
-              color: @red;
-              background-color: transparent;
-            }
-          }
-          .task-duedate {
-            border-radius: 2px;
-            padding-left: 25px;
-            position: absolute;
-            right: 16px;
             i.icon {
               left: -2px;
               &::before {
                 color: white;
                 font-size: 14px;
               }
+            }
+            &.badge-assertive {
+              color: @red;
+              background-color: transparent;
             }
           }
         }
@@ -145,11 +142,10 @@
           }
         }
       }
-      .list-none-executor {
+      .list.list-none-executor {
         .item-task {
           .task-content {
-            max-width: 100%;
-            margin-left: 0;
+            padding-right: 20px;
             &:after {
               content: none;
             }
@@ -329,20 +325,20 @@
                 margin-left: 5px;
               }
               .title {
-                margin-left: 36px;
-                font-size: 15px;
                 color: black;
                 padding: 1px 0;
+                font-size: 15px;
+                margin-left: 36px;
               }
             }
           }
           .icon-chevron-right {
             position: absolute;
-            right: 12px;
             top: 10px;
+            right: 12px;
             &:before {
-              font-size: 12px;
               color: #aaaaaa;
+              font-size: 12px;
             }
           }
         }
@@ -351,13 +347,12 @@
       .item-title {
         padding: 0 0 0 12px;
         font-size: 15px;
-        line-height: 44px;
         z-index: 3;
 
         .icon-chevron-right {
           position: absolute;
-          right: 8px;
           top: 16px;
+          right: 8px;
           &:before {
             font-size: 12px;
           }
@@ -373,19 +368,18 @@
       }
 
       i.icon-alert-clock {
-        position: relative;
-        top: 10px;
+        position: absolute;
+        top: 8px;
         width: 22px;
         height: 22px;
-        margin-right: 1px;
         border-radius: 50%;
         background-color: @grayDark;
         &:before {
           position: relative;
+          top: 0;
           left: 5px;
-          color: #ffffff;
           height: 14px;
-          top: -12px;
+          color: #ffffff;
           font-size: 12px;
         }
       }
