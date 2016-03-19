@@ -36,7 +36,7 @@ class WechatService {
 
   public reconfigShare(user: IUserMe, project: IProjectData) {
     const newConfig = angular.extend({}, wxShareMsgConfig);
-    let url = `${host}/#/invited/${project._id}/${project.signCode}/${user.name}`;
+    let url = `${host}/#/invited/${project._id}/${project.signCode}/${user._id}`;
     url = this.buildWechatShareLink(url);
     newConfig.title = project.name;
     newConfig.desc = `你的好友${user.name}邀请你加入「${project.name}」, 点击加入该项目`;

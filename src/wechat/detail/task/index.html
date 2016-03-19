@@ -30,7 +30,7 @@
     </div-title>
     <div-item class="item item-icon-left item-taks-note" ng-if='TaskCtrl.task.note'>
       <i class="icon icon-wall"></i>
-      <span ng-bind-html="TaskCtrl.task.note" class="task-note"></span>
+      <span ng-bind-html="TaskCtrl.task.parsedNote" class="task-note"></span>
     </div-item>
     <a class="item item-icon-left" on-tap="TaskCtrl.openSubtasks()" ng-if="TaskCtrl.task.subtaskCount.total">
       <i class="icon icon-sub-task"></i>
