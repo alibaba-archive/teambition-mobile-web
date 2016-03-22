@@ -31,10 +31,10 @@
           <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
 
           <p>{{project.name}}</p>
-          <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore(project)">更多</ion-option-button>
-          <ion-option-button class="project-item-star" on-tap="ProjectCtrl.starProject(project)"
+          <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore($event, project)">更多</ion-option-button>
+          <ion-option-button class="project-item-star" on-tap="ProjectCtrl.starProject($event, project)"
                              ng-hide="project.isStar">星标项目</ion-option-button>
-          <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject(project)"
+          <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject($event, project)"
                              ng-show="project.isStar">取消星标</ion-option-button>
         </ion-item>
       </ion-list>
@@ -52,10 +52,10 @@
             <i class="icon icon-circle-remove project-edit-icon" ng-show="editing"></i>
 
             <p>{{project.name}}</p>
-            <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore(project)">更多</ion-option-button>
-            <ion-option-button class="project-item-star" on-tap="ProjectCtrl.starProject(project)"
+            <ion-option-button class="project-item-more" on-tap="ProjectCtrl.showMore($event, project)">更多</ion-option-button>
+            <ion-option-button class="project-item-star" on-tap="ProjectCtrl.starProject($event, project)"
                               ng-hide="project.isStar">星标项目</ion-option-button>
-            <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject(project)"
+            <ion-option-button class="project-item-star" on-tap="ProjectCtrl.unStarProject($event, project)"
                               ng-show="project.isStar">取消星标</ion-option-button>
           </ion-item>
         </ion-list>

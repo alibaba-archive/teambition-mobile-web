@@ -45,20 +45,8 @@ export class ProjectView extends View {
     return this.getProjects();
   }
 
-  public wxQrcode() {
-    wx.scanQRCode({
-      needResult: 1,
-      scanType: ['qrCode'],
-      success: (res: IWxScanRes) => {
-        this.checkUrlValid(res.resultStr)
-        .then((data: IProjectInviteData) => {
-          window.location.hash = `/invited/${data.projectId}/${data.signCode}/${data.invitorId}`;
-        });
-      }
-    });
-  }
-
-  public starProject(project: IProjectData) {
+  public starProject($e: angular.IAngularEvent, project: IProjectData) {
+    $e.stopPropagation();
     if (!project.isStar) {
       this.ProjectsAPI.starProject(project._id)
       .then((data: IProjectData) => {
@@ -79,7 +67,8 @@ export class ProjectView extends View {
     this.$ionicListDelegate.closeOptionButtons();
   }
 
-  public unStarProject(project: IProjectData) {
+  public unStarProject($e: angular.IAngularEvent, project: IProjectData) {
+    $e.stopPropagation();
     if (project.isStar) {
       this.ProjectsAPI.unStarProject(project._id)
       .then((data: IProjectData) => {
@@ -101,7 +90,8 @@ export class ProjectView extends View {
     this.$ionicListDelegate.closeOptionButtons();
   }
 
-  public showMore(project: IProjectData) {
+  public showMore($e: angular.IAngularEvent, project: IProjectData) {
+    $e.stopPropagation();
     let index: number = -1;
     let thisButtons: IonicOptionsButtonsOption[] = [];
     let archiveIndex: number;
