@@ -64,7 +64,8 @@ export class ProjectView extends View {
     }
   }
 
-  public starProject(project: IProjectData): any {
+  public starProject($e: angular.IAngularEvent, project: IProjectData): any {
+    $e.stopPropagation();
     if (!project.isStar) {
       return this.ProjectsAPI.starProject(project._id)
       .then((data: IProjectData) => {
@@ -86,7 +87,8 @@ export class ProjectView extends View {
     return false;
   }
 
-  public unStarProject(project: IProjectData): any {
+  public unStarProject($e: angular.IAngularEvent, project: IProjectData): any {
+    $e.stopPropagation();
     if (project.isStar) {
       return this.ProjectsAPI.unStarProject(project._id)
       .then((data: IProjectData) => {
@@ -109,7 +111,8 @@ export class ProjectView extends View {
     return false;
   }
 
-  public showMore(project: IProjectData) {
+  public showMore($event: angular.IAngularEvent,  project: IProjectData) {
+    $event.stopPropagation();
     let index: number = -1;
     let thisButtons: IonicOptionsButtonsOption[] = [];
     let archiveIndex: number;
