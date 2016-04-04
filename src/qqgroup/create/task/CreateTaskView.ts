@@ -86,10 +86,6 @@ export const createTemptask = {
 ])
 export class CreateTaskView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'CreateTaskView';
-
   public members: {
     [index: string]: IMemberData;
   };
@@ -98,7 +94,7 @@ export class CreateTaskView extends View {
 
   public tasklist: ITasklistData;
   public stage: IStageData;
-  public task: any;
+  public task: any = createTemptask;
 
 
   private tasklists: ITasklistData[];
@@ -109,18 +105,8 @@ export class CreateTaskView extends View {
   private ProjectsAPI: ProjectsAPI;
   private TasklistAPI: TasklistAPI;
 
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.task = createTemptask;
-    this.zone.run(() => {
-      this.projectId = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.projectId = this.$state.params._id;
     return this.$q.all([
       this.MemberAPI.fetch(this.projectId)
       .then((members: {[index: string]: IMemberData}) => {

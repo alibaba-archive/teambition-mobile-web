@@ -8,21 +8,13 @@ import {IEventData} from 'teambition';
 ])
 export class EventView extends View {
 
-  public ViewName = 'EventView';
-
   public event: IEventData;
 
   private DetailAPI: DetailAPI;
   private id: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.id = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.id = this.$state.params._id;
     return this.parent.onInit();
   }
 

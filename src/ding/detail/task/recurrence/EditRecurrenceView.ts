@@ -7,8 +7,6 @@ import {ITaskData} from 'teambition';
   '$filter'
 ])
 export class EditRecurrenceView extends View {
-  public ViewName = 'EditRecurrenceView';
-
   public detail: any;
   public recurrence = [
     {
@@ -43,15 +41,10 @@ export class EditRecurrenceView extends View {
   private boundToObjectType: string;
   private lastIndex: number;
   private $filter: any;
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
 
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
     .then((task: ITaskData) => {
       this.detail = task;

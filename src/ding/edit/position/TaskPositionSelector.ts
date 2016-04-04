@@ -8,8 +8,6 @@ import {IProjectData} from 'teambition';
 ])
 export class TaskPositionSelectorView extends View {
 
-  public ViewName = 'TaskPositionSelectorView';
-
   public detail: any;
   public project: IProjectData;
 
@@ -18,15 +16,9 @@ export class TaskPositionSelectorView extends View {
   private boundToObjectType: string;
   private boundToObjectId: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
-
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
     .then((detail: any) => {
       this.detail = detail;

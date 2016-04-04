@@ -16,10 +16,6 @@ import {ITaskData, IMemberData} from 'teambition';
 ])
 export class CreateSubtaskView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'CreateSubtaskView';
-
   public content: string;
   public executorId = '0';
   public dueDate: Date;
@@ -33,17 +29,8 @@ export class CreateSubtaskView extends View {
     [index: string]: IMemberData;
   };
 
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.zone.run(() => {
-      this.taskid = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.taskid = this.$state.params._id;
     return this.DetailAPI.fetch(this.taskid, 'task')
     .then((task: ITaskData) => {
       this.task = task;

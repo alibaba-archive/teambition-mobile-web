@@ -10,16 +10,9 @@ let projectId: string;
 ])
 export class PanelPostView extends View {
 
-  public ViewName = 'PanelPostView';
-
   public posts: IPostData[];
 
   private PostAPI: PostAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     projectId = this.$state.params._id;

@@ -7,8 +7,6 @@ import {ITaskData, IStageData, ITasklistData} from 'teambition';
   'TasklistAPI'
 ])
 export class ChooseStageView extends View {
-  public ViewName = 'ChooseStageView';
-
   public detail: ITaskData;
   public stages: IStageData[];
 
@@ -17,15 +15,9 @@ export class ChooseStageView extends View {
   private boundToObjectType: string;
   private boundToObjectId: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
-
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
     .then((detail: ITaskData) => {
       this.detail = detail;

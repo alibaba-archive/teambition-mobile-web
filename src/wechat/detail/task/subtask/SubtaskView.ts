@@ -8,15 +8,9 @@ import {ISubtaskData} from 'teambition';
 ])
 export class SubtaskView extends View {
 
-  public ViewName = 'SubtaskView';
   public subtasks: ISubtaskData[];
 
   private SubtasksAPI: SubtasksAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     let taskId: string;

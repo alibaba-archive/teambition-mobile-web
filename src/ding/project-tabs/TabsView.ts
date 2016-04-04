@@ -12,18 +12,12 @@ let projectId: string;
 ])
 export class TabsView extends View {
 
-  public ViewName = 'TabsView';
   public project: IProjectData;
 
   private projectName: string;
   private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
   private ProjectsAPI: ProjectsAPI;
   private tabTypes: string[] = ['home', 'tasklist', 'post', 'work', 'event'];
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     projectId = this.$state.params._id;

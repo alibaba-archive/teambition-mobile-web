@@ -7,9 +7,6 @@ import {ISubtaskData, IMemberData, ITaskData} from 'teambition';
 ])
 export class SubtaskDetailView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'SubtaskDetailView';
   public subtask: ISubtaskData;
   public members: {
     [index: string]: IMemberData;
@@ -20,17 +17,9 @@ export class SubtaskDetailView extends View {
   private subtaskId: string;
   private MemberAPI: MemberAPI;
   private SubtasksAPI: SubtasksAPI;
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.zone.run(() => {
-      this.subtaskId = this.$state.params.subtaskId;
-    });
-  }
 
   public onInit() {
+    this.subtaskId = this.$state.params.subtaskId;
     return this.SubtasksAPI.fetchOne(this.subtaskId)
     .then((subtask: ISubtaskData) => {
       this.subtask = subtask;

@@ -34,8 +34,6 @@ let tasklistSelected: ITasklistData;
 ])
 export class PanelTasklistView extends View {
 
-  public ViewName = 'PanelTasklistView';
-
   public stages: IStageData[];
   public tasklists: ITasklistData[];
   public tasklistSelected: ITasklistData;
@@ -56,15 +54,9 @@ export class PanelTasklistView extends View {
     [index: string]: IMemberData;
   };
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.stages = stages;
-      this.tasklistSelected = tasklistSelected;
-    });
-  }
-
   public onInit() {
+    this.stages = stages;
+    this.tasklistSelected = tasklistSelected;
     projectId = this.$state.params._id;
     return this.initFetch()
     .catch((reason: any) => {

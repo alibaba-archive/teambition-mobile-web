@@ -25,8 +25,6 @@ let tasklistSelected: ITasklistData;
 ])
 export class PanelTasklistView extends View {
 
-  public ViewName = 'PanelTasklistView';
-
   public tasklists: ITasklistData[];
   public tasklist: {
     title: string;
@@ -44,11 +42,6 @@ export class PanelTasklistView extends View {
   private TagsAPI: TagsAPI;
   private TasklistAPI: TasklistAPI;
   private StageAPI: StageAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     projectId = this.$state.params._id;

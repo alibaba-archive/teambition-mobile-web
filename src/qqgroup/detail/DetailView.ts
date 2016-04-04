@@ -57,10 +57,6 @@ let boundToObjectId: string;
 ])
 export class DetailView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'DetailView';
-
   public title: string;
   public project: IProjectData;
   public projectMembers: {
@@ -76,15 +72,6 @@ export class DetailView extends View {
   private ProjectsAPI: ProjectsAPI;
   private LikeAPI: LikeAPI;
   private MemberAPI: MemberAPI;
-
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.zone.run(() => {
-      this.$scope = $scope;
-    });
-  }
 
   public onInit(): angular.IPromise<any> {
     this._boundToObjectId = this.$state.params._id;

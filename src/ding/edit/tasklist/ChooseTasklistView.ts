@@ -7,8 +7,6 @@ import {ITasklistData} from 'teambition';
   'TasklistAPI'
 ])
 export class ChooseTasklistView extends View {
-  public ViewName = 'ChooseTasklistView';
-
   public detail: any;
   public tasklists: ITasklistData[];
 
@@ -16,15 +14,10 @@ export class ChooseTasklistView extends View {
   private TasklistAPI: TasklistAPI;
   private boundToObjectType: string;
   private boundToObjectId: string;
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
 
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
     .then((detail: any) => {
       this.detail = detail;

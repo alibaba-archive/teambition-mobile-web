@@ -47,10 +47,6 @@ const typeMap = {
 ])
 export class PanelHomeView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'PanelHomeView';
-
   public selectedMembers = {
     all: true,
     text: '全部成员',
@@ -90,13 +86,6 @@ export class PanelHomeView extends View {
   private eventGroup: IEventData[];
   private ProjectHomeActivity: ProjectHomeActivity;
   private state: string;
-
-  constructor($scope: angular.IScope) {
-    super();
-    this.$scope = $scope;
-    this.infinite = true;
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     projectId = this.$state.params._id;

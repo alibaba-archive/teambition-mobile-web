@@ -8,8 +8,6 @@ import {IMemberData, IPostData} from 'teambition';
 ])
 export class CreatePostView extends View {
 
-  public ViewName = 'CreatePostView';
-
   public title: string;
   public content: string;
   public involveMembers: string[];
@@ -24,19 +22,9 @@ export class CreatePostView extends View {
   private DetailAPI: DetailAPI;
   private MemberAPI: MemberAPI;
 
-  // @ngInject
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.state = 'origin';
-    this.zone.run(() => {
-      this.projectId = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.projectId = this.$state.params._id;
+    this.state = 'origin';
     return this.MemberAPI.fetch(this.projectId)
     .then((members: any) => {
       this.members = members;

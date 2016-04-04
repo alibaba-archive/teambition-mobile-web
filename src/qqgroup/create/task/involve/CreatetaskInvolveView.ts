@@ -6,7 +6,6 @@ import {IMemberData} from 'teambition';
   'MemberAPI'
 ])
 export class CreatetaskInvolveView extends View {
-  public ViewName = 'CreatetaskInvolveView';
   public task: typeof createTemptask;
   public members: {
     [index: string]: IMemberData;
@@ -15,15 +14,9 @@ export class CreatetaskInvolveView extends View {
   private MemberAPI: MemberAPI;
   private projectId: string;
 
-  constructor() {
-    super();
-    this.task = createTemptask;
-    this.zone.run(() => {
-      this.projectId = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.task = createTemptask;
+    this.projectId = this.$state.params._id;
     return this.MemberAPI.fetch(this.projectId)
     .then((members: {[index: string]: IMemberData}) => {
       this.members = members;

@@ -15,8 +15,6 @@ import {ITaskData, IMemberData, IProjectData} from 'teambition';
 ])
 export class TaskView extends View {
 
-  public ViewName = 'TaskView';
-
   public task: ITaskData;
   public project: IProjectData;
   public members: {
@@ -26,11 +24,6 @@ export class TaskView extends View {
   public content: string;
 
   private DetailAPI: DetailAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     return this.parent.onInit();

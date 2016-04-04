@@ -11,11 +11,6 @@ export class InvitedView extends View {
   private ProjectsAPI: ProjectsAPI;
   private $window: angular.IWindowService;
 
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
-
   public onInit() {
     const _projectId = this.$state.params.projectId;
     const _signCode = this.$state.params.signCode;

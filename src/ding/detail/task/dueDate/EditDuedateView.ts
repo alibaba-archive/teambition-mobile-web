@@ -6,21 +6,15 @@ import {ITaskData} from 'teambition';
   'DetailAPI'
 ])
 export class EditDuedateView extends View {
-  public ViewName = 'EditDuedateView';
   public task: ITaskData;
 
   private DetailAPI: DetailAPI;
   private taskid: string;
   private displayDuedate: Date;
   private hasDueDate: boolean;
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.taskid = this.$state.params._id;
-    });
-  }
 
   public onInit() {
+    this.taskid = this.$state.params._id;
     return this.DetailAPI.fetch(this.taskid, 'task')
     .then((task: ITaskData) => {
       this.task = task;

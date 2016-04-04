@@ -33,8 +33,6 @@ fileUploadQueue = [];
 ])
 export class PanelWorkView extends View {
 
-  public ViewName = 'PanelWorkView';
-
   public works: IFileData[];
   public collections: ICollectionData[];
 
@@ -46,18 +44,8 @@ export class PanelWorkView extends View {
   private InputComponments: InputComponments;
   private fileContent: any[];
 
-  // @ngInject
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.zone.run(() => {
-      this.fileContent = fileContent;
-    });
-  }
-
   public onInit() {
+    this.fileContent = fileContent;
     projectId = this.$state.params._id;
     return this.initFetch();
   }

@@ -15,19 +15,12 @@ let projectId: string;
   'EventAPI'
 ])
 export class PanelEventView extends View {
-  public ViewName = 'PanelEventView';
-
   public eventGroup: {
     [index: string]: IEventData[];
   };
   public counter: number;
 
   private EventAPI: EventAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     projectId = this.$state.params._id;

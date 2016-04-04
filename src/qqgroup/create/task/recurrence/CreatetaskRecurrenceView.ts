@@ -4,19 +4,15 @@ import {createTemptask, recurrence} from '../CreateTaskView';
 let lastRecurrneceIndex: number;
 
 export class CreatetaskRecurrenceView extends View {
-  public ViewName = 'CreatetaskRecurrenceView';
   public task: typeof createTemptask;
   public recurrence = recurrence;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.task = createTemptask;
-      angular.forEach(this.recurrence, (val: any, index: number) => {
-        if (val.isSelected) {
-          lastRecurrneceIndex = index;
-        }
-      });
+  public onAllChangesDone() {
+    this.task = createTemptask;
+    angular.forEach(this.recurrence, (val: any, index: number) => {
+      if (val.isSelected) {
+        lastRecurrneceIndex = index;
+      }
     });
   }
 

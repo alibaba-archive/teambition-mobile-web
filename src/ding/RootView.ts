@@ -24,9 +24,6 @@ export let spider: any;
 ])
 export class RootView extends View {
 
-  public ViewName = 'RootView';
-  public $$id = 'RootView';
-
   public userMe: IUserMe;
 
   public $state: angular.ui.IStateService;
@@ -35,11 +32,6 @@ export class RootView extends View {
   public socket: any;
   public RestAPI: RestAPI;
   public MessageAPI: MessageAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit(): angular.IPromise<any> {
     let visible = getParam(window.location.hash, 'visible');

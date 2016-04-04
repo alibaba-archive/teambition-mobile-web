@@ -23,10 +23,6 @@ let tasklistSelected: ITasklistData;
 ])
 export class PanelTasklistView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'PanelTasklistView';
-
   public stages: IStageData[];
   public tasklists: ITasklistData[];
   public tasklistSelected: ITasklistData;
@@ -49,23 +45,14 @@ export class PanelTasklistView extends View {
 
   private shareOptions: any;
 
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    $scope.$on('new:task', (event, ...args) => {
+  public onInit() {
+    this.$scope.$on('new:task', (event, ...args) => {
       this.showNotify = true;
       this.shareOptions = args[0][1];
       this.onInit();
     });
-    this.zone.run(() => {
-      this.stages = stages;
-      this.tasklistSelected = tasklistSelected;
-    });
-  }
-
-  public onInit() {
+    this.stages = stages;
+    this.tasklistSelected = tasklistSelected;
     projectId = this.$state.params._id;
     return this.initFetch()
     .catch((reason: any) => {

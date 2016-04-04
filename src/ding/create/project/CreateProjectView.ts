@@ -18,10 +18,6 @@ let lastIndex: number;
 ])
 export class CreateProjectView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'CreateProjectView';
-
   public organizations: IOrganizationData[];
 
   public projectName: string;
@@ -29,12 +25,6 @@ export class CreateProjectView extends View {
   private OrganizationAPI: OrganizationAPI;
   private ProjectsAPI: ProjectsAPI;
   private state: string;
-
-  constructor($scope: angular.IScope) {
-    super();
-    this.$scope = $scope;
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     return this.OrganizationAPI.fetch()

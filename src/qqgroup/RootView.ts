@@ -22,11 +22,6 @@ export let spider: any;
 ])
 export class RootView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'RootView';
-  public $$id = 'RootView';
-
   public userMe: IUserMe;
 
   public $state: angular.ui.IStateService;
@@ -35,14 +30,6 @@ export class RootView extends View {
   public socket: any;
   public RestAPI: RestAPI;
   public MessageAPI: MessageAPI;
-
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.zone.run(angular.noop);
-  }
 
   public onInit(): angular.IPromise<any> {
     this.zone.hasCreated = true;

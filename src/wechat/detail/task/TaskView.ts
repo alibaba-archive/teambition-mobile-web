@@ -5,15 +5,8 @@ import {ITaskData, IProjectData} from 'teambition';
 @parentView('DetailView')
 export class TaskView extends View {
 
-  public ViewName = 'TaskView';
-
   public task: ITaskData;
   public project: IProjectData;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     return this.parent.onInit();

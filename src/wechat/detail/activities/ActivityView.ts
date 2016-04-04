@@ -10,16 +10,9 @@ declare const wx: any;
 ])
 export class ActivityView extends View {
 
-  public ViewName = 'ActivityView';
   public activities: IActivityData[];
 
   private ActivityAPI: ActivityAPI;
-
-  constructor(
-  ) {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     let _boundToObjectType = this.parent._boundToObjectType;

@@ -10,17 +10,10 @@ let projectId: string;
 ])
 export class PanelWorkView extends View {
 
-  public ViewName = 'PanelWorkView';
-
   public works: IFileData[];
   public collections: ICollectionData[];
 
   private WorkAPI: WorkAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     projectId = this.$state.params._id;

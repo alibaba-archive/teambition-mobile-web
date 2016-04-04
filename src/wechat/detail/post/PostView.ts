@@ -5,14 +5,7 @@ import {IPostData} from 'teambition';
 @parentView('DetailView')
 export class PostView extends View {
 
-  public ViewName = 'PostView';
-
   public post: IPostData;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     return this.parent.onInit();

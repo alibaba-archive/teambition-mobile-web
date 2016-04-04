@@ -8,8 +8,6 @@ import {IProjectData, ITasklistData} from 'teambition';
   'TasklistAPI'
 ])
 export class ChooseProjectsView extends View {
-  public ViewName = 'ChooseProjectsView';
-
   public detail: any;
   public personalProjects: IProjectData[] = [];
   public projects: IProjectData[] = [];
@@ -27,15 +25,9 @@ export class ChooseProjectsView extends View {
     }
   } = {};
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
-
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.$q.all([
       this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
       .then((detail: any) => {

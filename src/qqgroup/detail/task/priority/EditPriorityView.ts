@@ -7,8 +7,6 @@ import {ITaskData} from 'teambition';
 ])
 export class EditPriorityView extends View {
 
-  public ViewName = 'EditPriorityView';
-
   public task: ITaskData;
   public priority = [
     {
@@ -32,14 +30,8 @@ export class EditPriorityView extends View {
   private DetailAPI: DetailAPI;
   private lastSelected: number;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.taskid = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.taskid = this.$state.params._id;
     return this.DetailAPI.fetch(this.taskid, 'task')
     .then((task: ITaskData) => {
       this.task = task;

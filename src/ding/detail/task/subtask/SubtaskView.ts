@@ -13,7 +13,6 @@ import {ISubtaskData} from 'teambition';
 ])
 export class SubtaskView extends View {
 
-  public ViewName = 'SubtaskView';
   public subtasks: ISubtaskData[];
 
   public nobodyUrl = nobodyUrl;
@@ -21,14 +20,8 @@ export class SubtaskView extends View {
   private SubtasksAPI: SubtasksAPI;
   private taskid: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.taskid = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.taskid = this.$state.params._id;
     return this.SubtasksAPI.fetch(this.taskid)
     .then((data: ISubtaskData[]) => {
       this.subtasks = data;

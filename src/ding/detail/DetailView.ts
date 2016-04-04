@@ -66,12 +66,9 @@ let actionSheet: any;
   'StrikerAPI'
 ])
 export class DetailView extends View {
-
-  public ViewName = 'DetailView';
-
   public title: string;
   public fixWebkit = false;
-  public comment: string;
+  public comment: string = '';
   public project: IProjectData;
   public projectMembers: {
     [index: string]: IMemberData
@@ -91,23 +88,12 @@ export class DetailView extends View {
   private EntryAPI: EntryAPI;
   private LikeAPI: LikeAPI;
   private MemberAPI: MemberAPI;
-  private images: IImagesData[];
+  private images: IImagesData[] = [];
   private name: string;
   private forms: {
     key: string;
     value: string;
   }[];
-
-  // @ngInject
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.comment = '';
-    this.images = [];
-    this.zone.run(angular.noop);
-  }
 
   public onInit(): angular.IPromise<any> {
     this._boundToObjectId = this.$state.params._id;

@@ -4,16 +4,12 @@ import {inject, View, ReportAPI} from '../index';
   'ReportAPI'
 ])
 class ReportView extends View {
-  public organizationId = this.$state.params._id;
+  public organizationId: string;
 
   private ReportAPI: ReportAPI;
 
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
-
   public onInit() {
+    this.organizationId = this.$state.params._id;
     const data = this.$state.params.data;
     return this.ReportAPI.fetch(this.organizationId, data);
   }

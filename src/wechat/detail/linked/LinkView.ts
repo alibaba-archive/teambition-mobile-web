@@ -14,16 +14,9 @@ const iconMap = {
 ])
 export class LinkView extends View {
 
-  public ViewName = 'LinkView';
-
   public linked: ILinkedData[];
 
   private DetailAPI: DetailAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     let id = this.$state.params._id;
@@ -39,9 +32,7 @@ export class LinkView extends View {
   }
 
   public openDetail(item: ILinkedData) {
-    if (!item) {
-      return;
-    }
+    if (!item) return;
     this.DetailAPI.fetch(item._linkedId, item.linkedType, item._id)
     .then((data: any) => {
       window.location.hash = `/detail/${item.linkedType}/${data._id}?linkedId=${item._id}`;

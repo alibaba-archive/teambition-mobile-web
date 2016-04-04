@@ -59,13 +59,9 @@ let popup: ionic.popup.IonicPopupPromise;
 ])
 export class DetailView extends View {
 
-  public static $inject = ['$scope'];
-
-  public ViewName = 'DetailView';
-
   public objectTpl: string;
   public fixWebkit = false;
-  public comment: string;
+  public comment: string = '';
   public project: IProjectData;
 
   protected _boundToObjectId: string;
@@ -81,17 +77,7 @@ export class DetailView extends View {
   private WorkAPI: WorkAPI;
   private EntryAPI: EntryAPI;
   private LikeAPI: LikeAPI;
-  private images: IImagesData[];
-
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.comment = '';
-    this.images = [];
-    this.zone.run(angular.noop);
-  }
+  private images: IImagesData[] = [];
 
   public onInit(): angular.IPromise<any> {
     this._boundToObjectId = this.$state.params._id;

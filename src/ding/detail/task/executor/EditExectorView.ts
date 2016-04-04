@@ -7,8 +7,6 @@ import {ITaskData, IMemberData} from 'teambition';
   'MemberAPI'
 ])
 export class EditExectorView extends View {
-  public ViewName = 'EditExectorView';
-
   public members: any;
   public detail: ITaskData;
 
@@ -17,14 +15,8 @@ export class EditExectorView extends View {
   private boundToObjectId: string;
   private lastSelected: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-    });
-  }
-
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
     return this.DetailAPI.fetch(this.boundToObjectId, 'task')
     .then((detail: ITaskData) => {
       this.detail = detail;

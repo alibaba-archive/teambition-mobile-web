@@ -2,16 +2,13 @@ import {View} from '../../../';
 import {createTemptask} from '../CreateTaskView';
 
 export class CreatetaskNoteView extends View {
-  public ViewName = 'CreatetaskNoteView';
   public task: typeof createTemptask;
 
   private note: string;
 
-  constructor() {
-    super();
+  public onAllChangesDone() {
     this.task = createTemptask;
     this.note = createTemptask.note;
-    this.zone.run(angular.noop);
   }
 
   public confirmNote() {

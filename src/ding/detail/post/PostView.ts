@@ -8,8 +8,6 @@ import {IPostData} from 'teambition';
 ])
 export class PostView extends View {
 
-  public ViewName = 'PostView';
-
   public postTitle: string;
   public postContent: string;
   public post: IPostData;
@@ -18,19 +16,9 @@ export class PostView extends View {
   private id: string;
   private state: string;
 
-  // @ngInject
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
-    this.zone.run(() => {
-      this.id = this.$state.params._id;
-      this.state = 'origin';
-    });
-  }
-
   public onInit() {
+    this.id = this.$state.params._id;
+    this.state = 'origin';
     return this.parent.onInit();
   }
 

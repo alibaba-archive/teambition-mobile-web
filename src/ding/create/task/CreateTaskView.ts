@@ -26,8 +26,6 @@ import {
 ])
 export class CreateTaskView extends View {
 
-  public ViewName = 'CreateTaskView';
-
   public _executorId: string;
   public dueDate: any;
   public involveMembers: string[];
@@ -103,22 +101,12 @@ export class CreateTaskView extends View {
   private TasklistAPI: TasklistAPI;
   private lastRecurrneceIndex: number;
 
-  // @ngInject
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
+  public onInit() {
+    this.projectId = this.$state.params._id;
     this.priority = 0;
     this._executorId = '0';
     this.involveMembers = [];
     this.state = 'origin';
-    this.zone.run(() => {
-      this.projectId = this.$state.params._id;
-    });
-  }
-
-  public onInit() {
     return this.$q.all([
       this.MemberAPI.fetch(this.projectId)
       .then((members: {[index: string]: IMemberData}) => {

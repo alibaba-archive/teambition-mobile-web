@@ -21,35 +21,24 @@ let fileContent = [];
 ])
 export class CommentView extends View {
 
-  public ViewName = 'CommentView';
-
-  public fileContent: any[];
-  public comment: string;
+  public fileContent: any[] = [];
+  public comment: string = '';
   public project: IProjectData;
 
   private _boundToObjectId: string;
   private _boundToObjectType: string;
   private projectId: string;
   private InputComponments: InputComponments;
-  private files: string[];
+  private files: string[] = [];
   private StrikerAPI: StrikerAPI;
   private WorkAPI: WorkAPI;
   private ActivityAPI: ActivityAPI;
   private ProjectsAPI: ProjectsAPI;
 
-  constructor() {
-    super();
-    this.files = [];
-    this.comment = '';
-    this.fileContent = [];
-    this.zone.run(() => {
-      this._boundToObjectId = this.$state.params._id;
-      this._boundToObjectType = this.$state.params.type;
-      this.projectId = this.$state.params.projectId;
-    });
-  }
-
   public onInit() {
+    this._boundToObjectId = this.$state.params._id;
+    this._boundToObjectType = this.$state.params.type;
+    this.projectId = this.$state.params.projectId;
     return this.ProjectsAPI
     .fetchById(this.projectId)
     .then((project: IProjectData) => {

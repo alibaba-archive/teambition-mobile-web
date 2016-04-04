@@ -13,8 +13,6 @@ import {IMemberData} from 'teambition';
   'MemberAPI'
 ])
 export class EditInvolveView extends View {
-  public ViewName = 'EditInvolveView';
-
   public detail: any;
   public members: {
     [index: string]: any
@@ -26,15 +24,9 @@ export class EditInvolveView extends View {
   private boundToObjectType: string;
   private boundToObjectId: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
-
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
     .then((detail: any) => {
       this.detail = detail;

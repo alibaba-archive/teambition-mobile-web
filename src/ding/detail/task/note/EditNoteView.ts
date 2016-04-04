@@ -5,8 +5,6 @@ import {Ding, inject, View, DetailAPI} from '../../../index';
   'DetailAPI'
 ])
 export class EditNoteView extends View {
-  public ViewName = 'EditNoteView';
-
   public detail: any;
 
   public note: string;
@@ -15,15 +13,9 @@ export class EditNoteView extends View {
   private boundToObjectId: string;
   private boundToObjectType: string;
 
-  constructor() {
-    super();
-    this.zone.run(() => {
-      this.boundToObjectId = this.$state.params._id;
-      this.boundToObjectType = this.$state.params.type;
-    });
-  }
-
   public onInit() {
+    this.boundToObjectId = this.$state.params._id;
+    this.boundToObjectType = this.$state.params.type;
     return this.DetailAPI.fetch(this.boundToObjectId, this.boundToObjectType)
     .then((detail: any) => {
       this.detail = detail;

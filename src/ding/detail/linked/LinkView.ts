@@ -14,16 +14,9 @@ const iconMap = {
 ])
 export class LinkView extends View {
 
-  public ViewName = 'LinkView';
-
   public linked: ILinkedData[];
 
   private DetailAPI: DetailAPI;
-
-  constructor() {
-    super();
-    this.zone.run(angular.noop);
-  }
 
   public onInit() {
     let id = this.$state.params._id;

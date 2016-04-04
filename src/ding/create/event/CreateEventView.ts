@@ -15,8 +15,6 @@ import {IMemberData, IEventData} from 'teambition';
 ])
 export class CreateEventView extends View {
 
-  public ViewName = 'CreateEventView';
-
   public title: string;
   public startDate: any;
   public endDate: any;
@@ -66,21 +64,11 @@ export class CreateEventView extends View {
   private MemberAPI: MemberAPI;
   private lastRecurrneceIndex: number;
 
-  // @ngInject
-  constructor(
-    $scope: angular.IScope
-  ) {
-    super();
-    this.$scope = $scope;
+  public onInit() {
+    this.projectId = this.$state.params._id;
     this.startDate = new Date();
     this.endDate = new Date(Date.now() + 3600000);
     this.state = 'origin';
-    this.zone.run(() => {
-      this.projectId = this.$state.params._id;
-    });
-  }
-
-  public onInit() {
     return this.MemberAPI.fetch(this.projectId)
     .then((members: any) => {
       this.members = members;

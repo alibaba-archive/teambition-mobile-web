@@ -17,6 +17,10 @@ let pending: any;
 
 let currentModal: ionic.modal.IonicModalController;
 
+export interface ViewZone extends Zone {
+  hasCreated: boolean;
+}
+
 @inject([
   '$rootScope',
   '$q',
@@ -33,7 +37,9 @@ let currentModal: ionic.modal.IonicModalController;
 ])
 export class View {
 
-  public zone;
+  public static $inject = ['$scope'];
+
+  public zone: ViewZone;
   public hasFetched = false;
   public ViewName: string;
   public $$id: string;
@@ -55,10 +61,11 @@ export class View {
   protected loading = false;
   protected notify: Notify;
 
-  constructor() {
+  constructor($scope: angular.IScope) {
     if (this.parentName) {
       this.parent = viewsMap[this.parentName];
     }
+    this.$scope = $scope;
     this.initZone();
   }
 
@@ -177,6 +184,7 @@ export class View {
         }
       }
     });
+    this.zone.run(angular.noop);
   }
 
   private _onInit() {
@@ -214,7 +222,8 @@ export class View {
         }
         return this.onAllChangesDone();
       })
-      .catch((reason: any) => {
+      .catch(reason => {
+        pending = this.$q.resolve();
         const message = this.getFailureReason(reason);
         this.showMsg('error', '初始化失败', message);
       });
