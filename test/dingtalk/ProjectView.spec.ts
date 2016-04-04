@@ -106,11 +106,11 @@ export default describe('ProjectView test', () => {
         isStar: false,
         starsCount: 0
       });
-      return ProjectView.starProject(project);
+      return ProjectView.starProject(null, project);
     })
     .then(() => {
       expect(project.isStar).to.equal(!isStar);
-      return ProjectView.unStarProject(project);
+      return ProjectView.unStarProject(null, project);
     })
     .then(() => {
       expect(project.isStar).to.equal(isStar);

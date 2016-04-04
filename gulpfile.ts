@@ -12,42 +12,21 @@ export const logError = (stream) => {
   })
 }
 
-const distDir = [
-  [
-    './dist/**/*.js',
-    './dist/**/*.css'
-  ],
-  [
-    './dist/**/*.png',
-    './dist/**/*.jpg'
-  ],
-  [
-    './dist/**/*.ttf',
-    './dist/**/*.svg',
-    './dist/**/*.woff',
-    './dist/**/*.eof'
-  ]
-]
-
 const CDNs = [
   {
     host: 'v0.ftp.upyun.com',
     user: 'teambition/dn-st',
-    password: process.env.CDN_UPYUN_PWD
-  },
-  {
-    host: 'ftp.keycdn.com',
-    user: 'teambition',
     password: process.env.CDN_UPYUN_PWD
   }
 ]
 
 const cdnUpload = (env: string, target: string) => {
   const config = require(`./config/${env}.json`)
-  distDir.forEach((path: string []) => {
-    gulp.src(path)
-      .pipe(cdnUploader(config.cdnNames[target], CDNs))
-  })
+  return gulp.src([
+    '!./dist/index.html',
+    './dist/**'
+  ])
+    .pipe(cdnUploader(config.cdnNames[target], CDNs))
 }
 
 gulp.task('lint', () => {
@@ -88,7 +67,7 @@ gulp.task('qqgroup.beta', async function () {
 
 gulp.task('qqgroup.beta.deploy', async function () {
   await release('beta', 'qqgroup')
-  cdnUpload('beta', 'qqgroup')
+  return cdnUpload('beta', 'qqgroup')
 })
 
 gulp.task('qqgroup.release', async function() {
@@ -110,21 +89,25 @@ gulp.task('ding.release', async function() {
 gulp.task('deploy.wechat', async function () {
   const config = require('./config/release.json')
   await release('release', 'wechat')
-  cdnUpload('release', 'wechat')
+  return cdnUpload('release', 'wechat')
 })
 
 gulp.task('deploy.qqgroup', async function () {
   const config = require('./config/release.json')
   await release('release', 'qqgroup')
-  cdnUpload('release', 'qqgroup')
+  return cdnUpload('release', 'qqgroup')
 })
 
 gulp.task('deploy.ding', async function () {
   const config = require('./config/release.json')
   await release('release', 'ding')
-  cdnUpload('release', 'ding')
+  return cdnUpload('release', 'ding')
 })
 
 gulp.task('cdn.qqgroup', () => {
   return cdnUpload('release', 'qqgroup')
+})
+
+gulp.task('cdn.wechat', () => {
+  return cdnUpload('release', 'wechat')
 })
