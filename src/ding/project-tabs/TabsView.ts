@@ -17,11 +17,13 @@ export class TabsView extends View {
   private projectName: string;
   private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
   private ProjectsAPI: ProjectsAPI;
+  private hasFetched = false;
   private tabTypes: string[] = ['home', 'tasklist', 'post', 'work', 'event'];
 
   public onInit() {
     projectId = this.$state.params._id;
-    return this.fetchProject(projectId);
+    return this.fetchProject(projectId)
+      .then(() => this.hasFetched = true);
   }
 
   public openView(type: string) {
@@ -43,7 +45,7 @@ export class TabsView extends View {
     }
   }
 
-  public fetchProject(projectId: string) {
+  public fetchProject(projectId: string): angular.IPromise<IProjectData[]> {
     return this.ProjectsAPI.fetchById(projectId)
     .then((project: IProjectData) => {
       this.project = project;
