@@ -47,7 +47,7 @@ export class TabsView extends View {
     }
   }
 
-  public fetchProject(projectId: string) {
+  private  fetchProject(projectId: string): angular.IPromise<IProjectData[]> {
     return this.ProjectsAPI.fetchById(projectId)
     .then((project: IProjectData) => {
       this.project = project;
