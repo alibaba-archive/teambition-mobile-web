@@ -17,14 +17,14 @@ export class TabsView extends View {
   private projectName: string;
   private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
   private ProjectsAPI: ProjectsAPI;
+  private hasFetched = false;
   private tabTypes: string[] = ['home', 'tasklist', 'post', 'work', 'event'];
 
   public onInit() {
     projectId = this.$state.params._id;
     this.projectId = projectId;
-    return this.$rootScope.pending = this.$rootScope.pending.then(() => {
-      return this.fetchProject(projectId);
-    });
+    return this.fetchProject(projectId)
+      .then(() => this.hasFetched = true);
   }
 
   public openView(type: string) {

@@ -106,10 +106,6 @@ export class RootView extends View {
       } catch (error) {
         console.error(error);
       }
-      let hash = window.location.hash;
-      if (!hash) {
-        this.$state.go('projects');
-      }
     }
   }
 

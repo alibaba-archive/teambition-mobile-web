@@ -1,8 +1,10 @@
 'use strict';
 export default angular.module('teambition').config([
   '$stateProvider',
+  '$urlRouterProvider',
   (
-    $stateProvider: angular.ui.IStateProvider
+    $stateProvider: angular.ui.IStateProvider,
+    $urlRouterProvider: angular.ui.IUrlRouterProvider
   ) => {
     $stateProvider
     .state('login', {
@@ -107,5 +109,7 @@ export default angular.module('teambition').config([
       url: '/invited/:projectId/:signCode/:inviterId',
       controller: 'InvitedView as InvitedCtrl'
     });
+
+    $urlRouterProvider.otherwise('projects');
   }
 ]);
