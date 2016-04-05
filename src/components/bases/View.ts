@@ -17,8 +17,12 @@ let pending: any;
 
 let currentModal: ionic.modal.IonicModalController;
 
-export interface ViewZone extends Zone {
+export interface IViewZone extends Zone {
   hasCreated: boolean;
+}
+
+export interface IScope extends angular.IScope {
+  ViewName: string;
 }
 
 @inject([
@@ -39,8 +43,7 @@ export class View {
 
   public static $inject = ['$scope'];
 
-  public zone: ViewZone;
-  public hasFetched = false;
+  public zone: IViewZone;
   public ViewName: string;
   public $$id: string;
   public parentName: string;
@@ -48,7 +51,7 @@ export class View {
   public project: IProjectData;
 
   protected $rootScope: IRootScope;
-  protected $scope: angular.IScope;
+  protected $scope: IScope;
   protected $q: angular.IQService;
   protected $location: angular.ILocationService;
   protected $state: angular.ui.IStateService | angular.ui.IState;
@@ -61,11 +64,12 @@ export class View {
   protected loading = false;
   protected notify: Notify;
 
-  constructor($scope: angular.IScope) {
+  constructor($scope: IScope) {
     if (this.parentName) {
       this.parent = viewsMap[this.parentName];
     }
     this.$scope = $scope;
+    this.ViewName = this.$scope.ViewName;
     this.initZone();
   }
 
@@ -166,7 +170,6 @@ export class View {
         $$id = this.$$id || this.$state.params._id;
         if (!initedViews[this.ViewName + $$id]) {
           this._onInit().then(() => {
-            this.hasFetched = true;
             if ((pending && pending.$$state.status === 0) || this.ViewName === 'RootView') {
               return ;
             }else {
@@ -228,7 +231,7 @@ export class View {
         this.showMsg('error', '初始化失败', message);
       });
     });
-    console.log(this.ViewName, 'run', Date.now());
+    console.log(this.$scope['ViewName'], 'run', Date.now());
     return bindPromise();
   }
 

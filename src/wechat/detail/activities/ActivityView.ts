@@ -34,7 +34,7 @@ export class ActivityView extends View {
       wx.previewImage({
         current: atta.downloadUrl,
         urls: [atta.downloadUrl]
-      })
+      });
     }else {
       window.location.hash = `/detail/work/${atta._id}`;
     }

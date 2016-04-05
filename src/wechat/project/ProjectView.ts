@@ -1,6 +1,6 @@
 'use strict';
 import {inject, View, ProjectsAPI} from '../index';
-import {IProjectData, IProjectInviteData} from 'teambition';
+import {IProjectData} from 'teambition';
 
 declare var wx: any;
 
@@ -255,15 +255,6 @@ export class ProjectView extends View {
       }
     });
   }
-
-  private checkUrlValid(url: string): angular.IPromise<any> {
-    return this.ProjectsAPI.checkProjectsInviteUrl(url)
-    .then(function(data: string | IProjectInviteData) {
-      if (data === 'notValid') {
-        this.showMsg('error', '扫描失败', '不合法的二维码');
-      }
-      return data;
-    });
-  }
 }
-angular.module('teambition').controller('ProjectView', [ProjectView]);
+
+angular.module('teambition').controller('ProjectView', ProjectView);
