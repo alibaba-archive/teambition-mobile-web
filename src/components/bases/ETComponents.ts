@@ -14,7 +14,7 @@ const notPatched = ['constructor', 'zone'];
 
 export class ETComponent {
 
-  public zone: Zone;
+  public zone: any;
   public parentDOM: Element;
   public template: IETProto;
   public element: DocumentFragment;
@@ -61,7 +61,8 @@ export class ETComponent {
       scope.ETtemplate = this;
       this.template = new Constructor(scope);
       let zone = rootZone.fork({
-        afterTask: () => {
+        name: 'et-zone',
+        'onInvokeTask': () => {
           this.template.update();
         }
       });
@@ -111,7 +112,8 @@ export function Component(conf: IComponentConfig) {
     proto.parentDOM = document.querySelector(conf.selector);
     if (!conf.lazy) {
       let zone = rootZone.fork({
-        beforeTask: () => {
+        'name': 'et-zone-${target-name}',
+        onInvoke: () => {
           if (!hasInit) {
             let ETConstructor = getDeps(instanceName);
             targetTmp = zone['targetTmp'];
@@ -122,7 +124,7 @@ export function Component(conf: IComponentConfig) {
             hasInit = true;
           }
         },
-        afterTask: () => {
+        onInvokeTask: () => {
           template = targetTmp.template || template;
           if (template) {
             template.update();

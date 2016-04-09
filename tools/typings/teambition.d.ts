@@ -1,6 +1,5 @@
 /// <reference path="./tsd.d.ts" />
 /// <reference path="./et.d.ts" />
-/// <reference path="./zone.d.ts" />
 declare module 'teambition' {
   interface Iapp {
     NAME: string;
@@ -20,7 +19,7 @@ declare module 'teambition' {
   interface IRootScope extends angular.IScope {
     global: IGlobal;
     loaded: boolean;
-    zone: Zone;
+    zone: any;
     userMe: IUserMe;
     pending: any;
   }

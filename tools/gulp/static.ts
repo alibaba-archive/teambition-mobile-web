@@ -20,41 +20,35 @@ export const minHtml = (target: string): NodeJS.ReadWriteStream => {
     .pipe(gulp.dest('./.tmp/scripts/template/'))
 }
 
-export const statics = (target: string) => {
-  let count = 0
+export const Promiseify = (stream: NodeJS.ReadWriteStream) => {
   return new Promise((resolve, reject) => {
-    gulp.src('src/index.html')
-      .pipe(gulp.dest(`www`))
-      .on('end', () => {
-        count ++
-        count === 5 ? resolve() : null
-      })
-    gulp.src(['./src/images/*'])
-      .pipe(gulp.dest(`www/images/`))
-      .on('end', () => {
-        count ++
-        count === 5 ? resolve() : null
-      })
-    minHtml(target)
-    .on('end', () => {
-      count ++
-      count === 5 ? resolve() : null
+    stream.on('end', e => {
+      resolve()
     })
-    gulp.src([
+    .on('error', e => {
+      reject(e)
+    })
+  })
+}
+
+export const statics = (target: string) => {
+  return Promise.all([
+    Promiseify( gulp.src('src/index.html')
+      .pipe(gulp.dest(`www`))
+    ),
+    Promiseify(gulp.src(['./src/images/*'])
+      .pipe(gulp.dest(`www/images/`))
+    ),
+    Promiseify(minHtml(target)),
+    Promiseify( gulp.src([
       'node_modules/ionic-release/fonts/*',
       'tools/libs/fonts/teambition*'
-    ])
-      .pipe(gulp.dest(`www/fonts/`))
-      .on('end', () => {
-        count ++
-        count === 5 ? resolve() : null
-      })
-    gulp.src('node_modules/ionic-release/css/ionic.css')
+      ])
+        .pipe(gulp.dest(`www/fonts/`))
+    ),
+    Promiseify(gulp.src('node_modules/ionic-release/css/ionic.css')
       .pipe(concat('lib.css'))
       .pipe(gulp.dest(`www/css/`))
-      .on('end', () => {
-        count ++
-        count === 5 ? resolve() : null
-      })
-  })
+    )
+  ])
 }

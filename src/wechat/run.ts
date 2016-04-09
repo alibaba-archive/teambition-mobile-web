@@ -7,7 +7,6 @@ import {
 } from 'teambition';
 
 declare let wx;
-declare let zone: Zone;
 
 export const RunFn = function(
   $http: any,

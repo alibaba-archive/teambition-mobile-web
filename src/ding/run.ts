@@ -8,7 +8,7 @@ import {
 } from 'teambition';
 
 declare let dd;
-declare let zone: Zone;
+declare let zone: any;
 
 export const RunFn = function(
   $http: any,
