@@ -86,21 +86,15 @@ gulp.task('ding.release', async function() {
   return await release('release', 'ding')
 })
 
-gulp.task('deploy.wechat', async function () {
-  const config = require('./config/release.json')
-  await release('release', 'wechat')
+gulp.task('deploy.wechat', ['wechat.release'], function () {
   return cdnUpload('release', 'wechat')
 })
 
-gulp.task('deploy.qqgroup', async function () {
-  const config = require('./config/release.json')
-  await release('release', 'qqgroup')
+gulp.task('deploy.qqgroup', ['qqgroup.release'], function () {
   return cdnUpload('release', 'qqgroup')
 })
 
-gulp.task('deploy.ding', async function () {
-  const config = require('./config/release.json')
-  await release('release', 'ding')
+gulp.task('deploy.ding', ['ding.release'], function () {
   return cdnUpload('release', 'ding')
 })
 
