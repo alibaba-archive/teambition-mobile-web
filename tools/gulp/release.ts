@@ -44,7 +44,7 @@ export default async function (env: string, target: string, callback?: Function)
     .pipe(gulp.dest(`dist`), callback)
 
   return new Promise((resolve, reject) => {
-    stream.on('end', async function() {
+    stream.on('end', function() {
       resolve()
     })
   })
