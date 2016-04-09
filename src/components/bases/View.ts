@@ -7,19 +7,14 @@ import {
 } from 'teambition';
 import {Notify} from '../et';
 
-let viewsMap = {};
+const viewsMap = {};
 
-let initedViews = {};
-
-let loadingZone: Zone;
+const initedViews = {};
 
 let pending: any;
 
 let currentModal: ionic.modal.IonicModalController;
 
-export interface IViewZone extends Zone {
-  hasCreated: boolean;
-}
 
 export interface IScope extends angular.IScope {
   ViewName: string;
@@ -43,7 +38,7 @@ export class View {
 
   public static $inject = ['$scope'];
 
-  public zone: IViewZone;
+  public zone: any;
   public ViewName: string;
   public $$id: string;
   public parentName: string;
@@ -99,21 +94,15 @@ export class View {
 
   protected showLoading() {
     if (this.$rootScope.loaded) {
-      loadingZone = loadingZone || rootZone.fork();
-      loadingZone.run(() => {
-        this.$ionicLoading.show({
-          noBackdrop: true,
-          delay: 800
-        });
+      this.$ionicLoading.show({
+        noBackdrop: true,
+        delay: 500
       });
     }
   }
 
   protected hideLoading() {
-    loadingZone = loadingZone || rootZone.fork();
-    loadingZone.run(() => {
-      this.$ionicLoading.hide();
-    });
+    this.$ionicLoading.hide();
   }
 
   protected openModal(templateUrl: string, options: ionic.modal.IonicModalOptions) {
@@ -161,11 +150,14 @@ export class View {
   private initZone() {
     let parentZone = (this.parent) ? this.parent.zone : rootZone;
     this.zone = parentZone.fork({
-      'afterTask': () => {
+      'name': `${this.ViewName}-zone`,
+      'onInvokeTask': () => {
+        console.log('afterTask');
         View.afterTaskHook(this.project);
         this.onChange();
       },
-      'beforeTask': () => {
+      'onInvoke': () => {
+        console.log('on invoke');
         let $$id: string;
         $$id = this.$$id || this.$state.params._id;
         if (!initedViews[this.ViewName + $$id]) {
@@ -208,7 +200,7 @@ export class View {
         currentModal.hide();
       }
     });
-    bindPromise = Zone.bindPromiseFn<any>(() => {
+    bindPromise = () => {
       pending = pending || this.$rootScope.pending || this.$q.resolve();
       return pending
       .then(() => {
@@ -230,8 +222,8 @@ export class View {
         const message = this.getFailureReason(reason);
         this.showMsg('error', '初始化失败', message);
       });
-    });
-    console.log(this.$scope['ViewName'], 'run', Date.now());
+    };
+    console.log(this.ViewName, 'run', moment().format('HH:MM:SS'));
     return bindPromise();
   }
 

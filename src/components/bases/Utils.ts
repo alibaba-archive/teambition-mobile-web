@@ -1,5 +1,7 @@
 'use strict';
 
+declare const Zone: any;
+
 let $$injector;
 
 export let getDeps = (name: string) => {
@@ -52,4 +54,6 @@ export const getParam = (search: string, name: string) => {
   }
 };
 
-export const rootZone = zone.fork();
+export const rootZone = Zone.current.fork({
+  name: 'root-zone'
+});
