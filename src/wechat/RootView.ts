@@ -13,6 +13,7 @@ import {IUserMe, IMessageData, IRootScope, IProjectData} from 'teambition';
 
 declare let Spiderjs: any;
 declare let wx: any;
+declare const Gta: any;
 export let spider: any;
 
 @inject([
@@ -33,6 +34,7 @@ export class RootView extends View {
   public MessageAPI: MessageAPI;
 
   public onInit(): angular.IPromise<any> {
+    Gta.setUser();
     let visible = getParam(window.location.hash, 'visible');
     if (!visible && this.$state.current.name !== 'login' && this.$state.current.name !== 'wx_login') {
       this.zone.hasCreated = true;
