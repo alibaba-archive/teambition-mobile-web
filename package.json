@@ -24,7 +24,7 @@
     "chai": "^3.4.1",
     "engine.io-client": "^1.6.4",
     "et-dependency": "^0.3.3",
-    "gta": "github:teambition/gta",
+    "gta": "github:teambition/gta#v0.9.1",
     "ionic-release": "^1.2.4",
     "jsonrpc-lite": "^1.1.1",
     "marked": "^0.3.5",
