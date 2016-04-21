@@ -34,7 +34,6 @@ export class RootView extends View {
   public MessageAPI: MessageAPI;
 
   public onInit(): angular.IPromise<any> {
-    Gta.setUser();
     let visible = getParam(window.location.hash, 'visible');
     if (!visible && this.$state.current.name !== 'login' && this.$state.current.name !== 'wx_login') {
       this.zone.hasCreated = true;
@@ -99,6 +98,7 @@ export class RootView extends View {
         }
       };
       try {
+        Gta.setUser(userMe._id);
         let spiderOptions = {
           _userId: userMe._id,
           client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
