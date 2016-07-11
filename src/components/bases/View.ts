@@ -59,6 +59,10 @@ export class View {
   protected loading = false;
   protected notify: Notify;
 
+  public static afterTaskHook(project: IProjectData) {
+    angular.noop();
+  }
+
   constructor($scope: IScope) {
     if (this.parentName) {
       this.parent = viewsMap[this.parentName];
@@ -66,10 +70,6 @@ export class View {
     this.$scope = $scope;
     this.ViewName = this.$scope.ViewName;
     this.initZone();
-  }
-
-  public static afterTaskHook(project: IProjectData) {
-    angular.noop();
   }
 
   public onInit(): angular.IPromise<any> {

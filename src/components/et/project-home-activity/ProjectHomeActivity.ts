@@ -1,6 +1,6 @@
+'use strict';
 import {Component, ETComponent} from '../../bases/ETComponents';
 import {inject} from '../../bases/Utils';
-'use strict';
 
 @Component({
   templateUrl: 'et/project-home-activity/index',

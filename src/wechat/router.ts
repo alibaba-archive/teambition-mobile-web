@@ -97,6 +97,23 @@ export default angular.module('teambition').config([
         }
       }
     })
+    .state('projectcontainer', {
+      url: '/project',
+      templateUrl : 'detail/index.html',
+    })
+    .state('projectcontainer.detail', {
+      url: '/:projectId/:type/:_id?linkedId',
+      views: {
+        'object': {
+          templateUrl: ($stateParams: any) => {
+            return `detail/${$stateParams.type}/index.html`;
+          }
+        },
+        'detail-activities': {
+          templateUrl: 'detail/activities/index.html'
+        }
+      }
+    })
     .state('subtask', {
       url: '/detail/task/:_id/subtasks',
       templateUrl: 'detail/task/subtask/index.html'

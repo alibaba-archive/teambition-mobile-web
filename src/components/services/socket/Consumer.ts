@@ -1,7 +1,7 @@
 'use strict';
 
 import {IRootScope} from 'teambition';
-import {RestAPI} from '../apis/RESTFul';
+import {RestAPI} from '../index';
 
 declare let Consumer: any;
 

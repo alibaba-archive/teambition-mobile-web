@@ -1,6 +1,6 @@
-import {inject} from './Utils';
-
 'use strict';
+
+import {inject} from './Utils';
 const __notPatch = ['$promise', '_id'];
 
 @inject([

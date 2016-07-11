@@ -98,7 +98,9 @@ export class RootView extends View {
         }
       };
       try {
-        Gta.setUser(userMe._id);
+        if (typeof Gta !== 'undefined') {
+          Gta.setUser(userMe._id);
+        }
         let spiderOptions = {
           _userId: userMe._id,
           client: 'c6a5c100-73b3-11e5-873a-57bc512acffc',
