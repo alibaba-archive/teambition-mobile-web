@@ -1,6 +1,5 @@
-import {Component, ETComponent} from '../../bases/ETComponents';
-
 'use strict';
+import {Component, ETComponent} from '../../bases/ETComponents';
 
 @Component({
   templateUrl: 'et/input/file',

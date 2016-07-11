@@ -1,5 +1,5 @@
-import {Component, ETComponent} from '../../bases/ETComponents';
 'use strict';
+import {Component, ETComponent} from '../../bases/ETComponents';
 
 let fadeOutAnimate: number;
 let removeFn: number;

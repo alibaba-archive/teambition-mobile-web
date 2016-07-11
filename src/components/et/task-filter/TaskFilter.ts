@@ -1,7 +1,7 @@
+'use strict';
 import {Component, ETComponent} from '../../bases/ETComponents';
 import {inject} from '../../bases/Utils';
 import {ITasklistData} from 'teambition';
-'use strict';
 
 let dropDownTimer: number;
 let removeTimer: number;
