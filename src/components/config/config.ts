@@ -4,6 +4,8 @@ export const app = {
   NAME: 'teambition-mobile-web',
   VERSION: '{{__version}}',
   LANGUAGE: 'zh',
+  ENV: '{{__ENV}}',
+  PLATFORM: '{{__PLATFORM}}',
   apiHost: 'http://api.project.ci',
   strikerHost: 'https://striker.teambition.net',
   cdnHost: 'https://dn-st.teambition.net',

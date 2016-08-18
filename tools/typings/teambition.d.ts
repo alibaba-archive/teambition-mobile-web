@@ -36,16 +36,25 @@ declare module 'teambition' {
     email: string;
     name: string;
     avatarUrl: string;
+    created: string;
     title: string;
-    birthday: string;
-    location: string;
+    birthday?: string;
+    location?: string;
     phone: string;
-    isActive: boolean;
-    website: string;
+    isActive?: boolean;
+    website?: string;
     pinyin: string;
     py: string;
-    isNew: boolean;
-    notification: {
+    isNew?: boolean;
+    plan: {
+      status: 'paid' | 'trial';
+      expired: string;
+      paidCount: number;
+      membersCount: number;
+      days: number;
+      objectType: 'free' | 'organization' | 'professional' | 'user';
+    }
+    notification?: {
       comment: {
         mobile: boolean;
         email: boolean;
@@ -82,26 +91,41 @@ declare module 'teambition' {
         mobile: boolean;
         email: boolean;
       }
+    }
+    lastEntered: {
+      web?: string;
+      ios?: string;
+      android?: string;
+      third: string;
+    }
+    locationByIP: {
+      country: string;
+      region: string;
+      city: string;
     };
-    aliens: any[];
+    aliens?: any[];
     strikerAuth: string;
-    phoneForLogin: string;
-    enabledGoogleTwoFactor: boolean;
-    emails: IUserEmail[];
+    phoneForLogin?: string;
+    enabledGoogleTwoFactor?: boolean;
+    emails: {
+      email: string
+      state: number
+      _id: string
+      id: string
+    }[];
     snapperToken: string;
-    hasNew: boolean;
     badge: number;
+    normal?: number;
+    ated?: number;
+    later?: number;
+    private?: number;
     inbox: number;
-    normal: number;
-    ated: number;
-    later: number;
-    private: number;
-    hasNormal: boolean;
-    hasAted: boolean;
-    hasLater: boolean;
-    hasPrivate: boolean;
-    calLink: string;
-    taskCalLink: string;
+    hasNormal?: boolean;
+    hasAted?: boolean;
+    hasLater?: boolean;
+    hasPrivate?: boolean;
+    calLink?: string;
+    taskCalLink?: string;
     joinedProjectsCount: number;
   }
 

@@ -9,6 +9,7 @@ import {
   socketListener,
   MessageAPI
 } from './';
+import {getGtaUser} from './gta';
 import {IUserMe, IMessageData, IRootScope, IProjectData} from 'teambition';
 
 declare let Spiderjs: any;
@@ -99,7 +100,7 @@ export class RootView extends View {
       };
       try {
         if (typeof Gta !== 'undefined') {
-          Gta.setUser(userMe._id);
+          Gta.setUser(userMe._id, getGtaUser(userMe));
         }
         let spiderOptions = {
           _userId: userMe._id,

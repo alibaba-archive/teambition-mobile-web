@@ -19,7 +19,9 @@ export const replaceConfig = (env: string, target: string) => {
   })
   return new Promise((resolve, reject) => {
     source.pipe(greplace('{{__version}}', version))
+      .pipe(greplace('{{__ENV}}', env === 'default' ? 'ci' : env))
       .pipe(greplace('{{__apphost}}', apphost))
+      .pipe(greplace('{{__PLATFORM}}', target))
       .pipe(gulp.dest(`./.tmp/`))
       .on('end', () => {
         resolve()
