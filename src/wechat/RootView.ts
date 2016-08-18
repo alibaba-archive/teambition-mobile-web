@@ -89,7 +89,7 @@ export class RootView extends View {
   private initUser(userMe: IUserMe) {
     if (!userMe) {
       this.goHome();
-    }else {
+    } else {
       this.initRootscope(userMe);
       this.userMe = userMe;
       View.afterTaskHook = (project: IProjectData) => {

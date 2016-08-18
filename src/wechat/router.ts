@@ -47,11 +47,11 @@ export default angular.module('teambition').config([
         }
       }
     })
-    .state('project.work', {
-      url: '/work?visible',
+    .state('project.collections', {
+      url: '/collections?visible',
       views: {
-        'project-work': {
-          templateUrl: 'project-tabs/project-work/index.html'
+        'project-collections': {
+          templateUrl: 'project-tabs/project-collections/index.html'
         }
       }
     })
@@ -64,8 +64,8 @@ export default angular.module('teambition').config([
       }
     })
     .state('collections', {
-      url: '/project/:_id/work/:_collectionId',
-      templateUrl: 'project-tabs/project-work/index.html'
+      url: '/project/:_id/collections/:_collectionId',
+      templateUrl: 'project-tabs/project-collections/index.html'
     })
     .state('detail', {
       url: '/detail',
