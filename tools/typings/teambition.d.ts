@@ -22,6 +22,7 @@ declare module 'teambition' {
     zone: any;
     userMe: IUserMe;
     pending: any;
+    showTip: boolean;
   }
 
   interface IUserEmail {

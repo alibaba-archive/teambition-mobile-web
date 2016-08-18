@@ -1,5 +1,10 @@
 <ion-view ng-controller="PanelHomeView as PanelHomeCtrl" class="project-avtivities-pane">
   <ion-content class="panel-content has-tabs" on-scroll="PanelHomeCtrl.scrollHandler()">
+    <div class="banner" ng-controller="BannerView as BannerCtrl">
+      <div class="banner-logo"></div>
+      <h2>用 Teambition App 打开</h2>
+      <div class="button button-positive" on-tap="BannerCtrl.openUniversalLink()">打开</div>
+    </div>
     <div class="project-header">
       <div class="project-header-img"
            ng-style="{'background-image': 'url(' + PanelHomeCtrl.project.logo + ')'}">

@@ -141,7 +141,7 @@ i.positive.icon:before {
   background-color: #fff;
 }
 
-.buttons{
+.buttons {
   .button{
     color: @blue;
     font-weight: 500;
@@ -149,6 +149,12 @@ i.positive.icon:before {
   }
   .button-positive{
     color: #fff !important;
+  }
+}
+
+.button {
+  &.button-positive {
+    background-color: @blue;
   }
 }
 

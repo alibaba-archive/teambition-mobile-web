@@ -128,3 +128,4 @@ export * from './project/ProjectView';
 export * from './login/LoginView';
 export * from './invited/InviteView';
 export * from './detail/DetailView';
+export * from './banner/BannerView';
