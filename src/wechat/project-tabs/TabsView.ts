@@ -18,7 +18,7 @@ export class TabsView extends View {
   private $ionicTabsDelegate: ionic.tabs.IonicTabsDelegate;
   private ProjectsAPI: ProjectsAPI;
   private hasFetched = false;
-  private tabTypes: string[] = ['home', 'tasklist', 'post', 'work', 'event'];
+  private tabTypes: string[] = ['home', 'tasklist', 'post', 'collections', 'event'];
 
   public onInit() {
     projectId = this.$state.params._id;
@@ -59,7 +59,7 @@ export class TabsView extends View {
 
 angular.module('teambition').controller('TabsView', TabsView);
 
-export * from './project-work/PanelWorkView';
+export * from './project-collections/PanelCollectionsView';
 export * from './project-tasklist/PanelTasklistView';
 export * from './project-post/PanelPostView';
 export * from './project-home/PanelHomeView';

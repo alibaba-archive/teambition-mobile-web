@@ -8,7 +8,7 @@ let projectId: string;
 @inject([
   'WorkAPI'
 ])
-export class PanelWorkView extends View {
+export class PanelCollectionsView extends View {
 
   public works: IFileData[];
   public collections: ICollectionData[];
@@ -48,4 +48,4 @@ export class PanelWorkView extends View {
   }
 }
 
-angular.module('teambition').controller('PanelWorkView', PanelWorkView);
+angular.module('teambition').controller('PanelCollectionsView', PanelCollectionsView);
