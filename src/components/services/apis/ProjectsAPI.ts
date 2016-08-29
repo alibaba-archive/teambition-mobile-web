@@ -131,7 +131,8 @@ export class ProjectsAPI extends BaseAPI {
       Path1: 'joinByCode',
       Path2: _signCode
     }, {
-      _invitorId: _invitorId
+      _invitorId: _invitorId,
+      source: 'weixin'
     }, (data: IProjectData) => {
       ProjectModel.set(data);
     })
