@@ -22,7 +22,21 @@ export const wxShareMsgConfig = {
 
 class WechatService {
 
-  public init(appid: string, noncestr: string, timestamp: number, signature: string) {
+  public appid: string;
+  public clientId: string;
+  public accountApiToken: string;
+
+  public init(
+    appid: string,
+    noncestr: string,
+    timestamp: number,
+    signature: string,
+    clientId: string,
+    accountApiToken: string
+  ) {
+    this.appid = appid;
+    this.clientId = clientId;
+    this.accountApiToken = accountApiToken;
     wx.config({
       debug: false,
       appId: appid,
@@ -45,7 +59,7 @@ class WechatService {
     console.log(newConfig);
   }
 
-  private buildWechatShareLink(redirect: string) {
+  public buildWechatShareLink(redirect: string) {
     let redirectString = encodeURIComponent(redirect);
     let link = `${host}/weixin/dev/tpl/message?share=true&state=mp_share&next=${redirectString}`;
     return link;

@@ -134,6 +134,9 @@ declare module 'teambition' {
     noncestr: string;
     signature: string;
     timestamp: number;
+    accountApiToken: string;
+    clientId: string;
+    appid: string;
   }
 
   interface IDingSignature {

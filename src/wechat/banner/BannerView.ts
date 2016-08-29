@@ -1,9 +1,6 @@
 'use strict';
-import { getGtaUser } from '../gta';
 import { View } from '../index';
 import { isWechatBrowser } from '../../components/services/utils/isWechat';
-
-export type ObjectType = 'task' | 'post' | 'event' | 'file'
 
 export class BannerView extends View {
 
@@ -20,8 +17,9 @@ export class BannerView extends View {
   private _href: string;
 
   onAllChangesDone() {
-    this._browserVersion = getGtaUser(this.$rootScope.userMe).$browser_version;
     // 项目页面
+    const browserVersion = navigator.userAgent.match(/\b[0-9]+_[0-9]+(?:_[0-9]+)?\b/);
+    this._browserVersion = browserVersion ? browserVersion[0].split('_')[0] : '';
     const id = this.$state.params['_id'];
     const type = this.$state.params['type'];
     if (!type && this.$state.current.name.indexOf('project') !== -1 && id) {
@@ -31,7 +29,7 @@ export class BannerView extends View {
     } else if (this.$state.current.name === 'subtask') {
       this._tail = `subtask:${id}`;
     } else if (this.$state.current.name === 'collections') {
-      this._tail = `collection:${id}`;
+      this._tail = `collecti on:${id}`;
     }
     if (this._isAndroid) {
       this._android();
@@ -41,7 +39,6 @@ export class BannerView extends View {
     if (!this._isWechat) {
       this._href = this._urlSchema + this._tail;
     }
-    console.log(this._href);
   }
 
   public openUniversalLink() {

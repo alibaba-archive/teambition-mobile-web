@@ -37,6 +37,10 @@ gulp.task('watch.wechat', () => {
   return watch('default', 'wechat')
 })
 
+gulp.task('watch.wechat.release', () => {
+  return watch('release', 'wechat')
+})
+
 gulp.task('watch.ding', () => {
   return watch('default', 'ding')
 })
