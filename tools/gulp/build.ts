@@ -37,7 +37,7 @@ export const concatApp = async function (env: string, target: string): Promise<N
     .pipe(concat('app.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(`www/js/`))
-  return await new Promise<NodeJS.ReadWriteStream>((resolve, reject) => {
+  return await new Promise<NodeJS.ReadWriteStream>(resolve => {
     stream.on('end', function () {
       resolve(stream)
     })

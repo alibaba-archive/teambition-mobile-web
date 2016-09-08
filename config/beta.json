@@ -9,6 +9,7 @@
   "wsHost": "wss://push.teambition.com",
   "wxid": "wx3197516ac7a4c96b",
   "dingApiHost": "http://ding.beta.teambition.com/dingTalk",
+  "accountsHost": "http://accounts.beta.teambition.com",
   "cdnNames": {
     "mobile": "tb-mobile",
     "ding": "tb-ding",
