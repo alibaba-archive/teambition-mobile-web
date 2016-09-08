@@ -61,6 +61,9 @@ export class BannerView extends View {
         this._href = `${this._urlSchema}${this._tail}`;
       }
     }
+    setTimeout(() => {
+      window.location.href = `https://itunes.apple.com/cn/app/teambition/id656664814?l=en&mt=8`
+    }, 20)
   }
 }
 

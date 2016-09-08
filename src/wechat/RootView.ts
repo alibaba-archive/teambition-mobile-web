@@ -120,7 +120,7 @@ export class RootView extends View {
     if (isWechatBrowser()) {
       window.location.href = WechatService.buildWechatShareLink(thisHost);
     } else {
-      window.location.href = app.accountHost + `/?next_url=${thisHost}`;
+      window.location.href = app.accountHost + `?next_url=${thisHost}`;
     }
   }
 

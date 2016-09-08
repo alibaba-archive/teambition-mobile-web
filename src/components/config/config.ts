@@ -6,7 +6,7 @@ export const app = {
   LANGUAGE: 'zh',
   ENV: '{{__ENV}}',
   PLATFORM: '{{__PLATFORM}}',
-  accountHost: 'http://accounts.project.ci',
+  accountHost: '{{__ACCOUNTSHOST}}',
   apiHost: 'http://api.project.ci',
   strikerHost: 'https://striker.teambition.net',
   cdnHost: 'https://dn-st.teambition.net',

@@ -9,7 +9,7 @@
   "wsHost": "ws://snapper.project.bi",
   "wxid": "wx48744c9444d9824a",
   "dingApiHost": "http://ding.project.ci/dingTalk",
-  "accountsHost": "http://accounts.project.ci",
+  "accountsHost": "http://accounts.project.ci/signup",
   "cdnNames": {
     "mobile": "tb-mobile",
     "ding": "tb-ding",
