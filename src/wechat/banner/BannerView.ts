@@ -1,14 +1,16 @@
 'use strict';
-import { View } from '../index';
+import { View, IScope } from '../index';
 import { isWechatBrowser } from '../../components/services/utils/isWechat';
 
 export class BannerView extends View {
+
+  public static $inject = ['$scope'];
 
   protected $state: angular.ui.IStateService;
 
   private _isWechat = isWechatBrowser();
   private _isAndroid = navigator.platform !== 'iPhone' && navigator.userAgent.indexOf('Android') !== -1;
-  private _isIPhone = navigator.platform === 'iPhone';
+  private _isIPhone = navigator.platform === 'iPhone' || navigator.platform === 'iPad';
   private _browserVersion: string;
   private _magicLink = 'https://magiclink.teambition.com/share/';
   private _urlSchema = 'teambition://';
@@ -16,7 +18,23 @@ export class BannerView extends View {
   private _tail = '';
   private _href: string;
 
-  onAllChangesDone() {
+  constructor($scope: IScope) {
+    super($scope);
+    this.configUrl();
+  }
+
+  openUniversalLink() {
+    window.location.href = this._href;
+    if (this._isIPhone && this._isWechat) {
+      setTimeout(() => {
+        this.$rootScope.showTip = true;
+      }, 20);
+    } else if (this._isIPhone && parseInt(this._browserVersion) === 8) {
+      window.location.href = 'https://itunes.apple.com/cn/app/teambition/id656664814';
+    }
+  }
+
+  private configUrl() {
     // 项目页面
     const browserVersion = navigator.userAgent.match(/\b[0-9]+_[0-9]+(?:_[0-9]+)?\b/);
     this._browserVersion = browserVersion ? browserVersion[0].split('_')[0] : '';
@@ -29,7 +47,7 @@ export class BannerView extends View {
     } else if (this.$state.current.name === 'subtask') {
       this._tail = `subtask:${id}`;
     } else if (this.$state.current.name === 'collections') {
-      this._tail = `collecti on:${id}`;
+      this._tail = `collection:${id}`;
     }
     if (this._isAndroid) {
       this._android();
@@ -41,30 +59,15 @@ export class BannerView extends View {
     }
   }
 
-  public openUniversalLink() {
-    if (this._isWechat && this._isIPhone && parseInt(this._browserVersion) < 9) {
-      this.$rootScope.showTip = true;
-    } else {
-      window.location.href = this._href;
-      if (this._isWechat && this._isIPhone) {
-        setTimeout(() => {
-          window.location.href = `https://itunes.apple.com/cn/app/teambition/id656664814?l=en&mt=8`;
-        }, 20);
-      }
-    }
-  }
-
   private _android() {
     this._href = `${this._androidSchema}${encodeURIComponent(this._urlSchema + this._tail)}`;
   }
 
   private _ios() {
-    if (this._isWechat) {
-      if (this._browserVersion === '9') {
-        this._href = `${this._magicLink}${this._tail}`;
-      } else {
-        this._href = `${this._urlSchema}${this._tail}`;
-      }
+    if (parseInt(this._browserVersion) >= 9) {
+      this._href = `${this._magicLink}${this._tail}`;
+    } else {
+      this._href = `${this._urlSchema}${this._tail}`;
     }
   }
 }
