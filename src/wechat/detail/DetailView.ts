@@ -64,6 +64,7 @@ export class DetailView extends View {
   public comment: string = '';
   public project: IProjectData;
 
+  protected $state: angular.ui.IStateService & ng.ui.IState;
   protected _boundToObjectId: string;
   protected _boundToObjectType: string;
   protected _linkedId: string;
@@ -94,6 +95,16 @@ export class DetailView extends View {
           this.project = project;
           deferred.resolve(project);
         });
+      })
+      .catch(error => {
+        if (error.status === 403) {
+          return this.noAccess();
+        }
+        this.showMsg(
+          'error',
+          '数据加载失败',
+          this.getFailureReason(error)
+        );
       });
       return deferred.promise;
     }else {
@@ -221,6 +232,28 @@ export class DetailView extends View {
     });
   }
 
+  // 用户不是项目成员
+  private noAccess() {
+    this.cancelPending();
+    const nextUrl = encodeURIComponent(this.$location.absUrl());
+    const {
+      projectId,
+      projectName,
+      inviterId,
+      inviterName,
+      signCode
+    } = this.$state.params;
+    this.$state.go('detail403', {
+      projectId,
+      projectName,
+      inviterId,
+      inviterName,
+      signCode,
+      nextUrl
+    }, {
+      location: 'replace'
+    });
+  }
 }
 
 angular.module('teambition').controller('DetailView', DetailView);
@@ -232,3 +265,4 @@ export * from './linked/LinkView';
 export * from './event/EventView';
 export * from './entry/EntryView';
 export * from './activities/ActivityView';
+export * from './403/Detail403View';

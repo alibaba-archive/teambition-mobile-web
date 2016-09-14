@@ -1,0 +1,26 @@
+<ion-view class="detail-403-view"
+    ng-controller="Detail403View as Detail403Ctrl"
+    ng-switch="Detail403Ctrl.invited">
+  <ion-content>
+
+    <div class="bgimg"></div>
+
+    <section class="content invited" ng-switch-when="true">
+      <div class="title">接受 {{
+            Detail403Ctrl.inviterName
+          }} 邀请并加入 {{
+            Detail403Ctrl.projectName
+          }} 项目</div>
+      <button class="button button-positive"
+          on-tap="Detail403Ctrl.join()">加入项目</button>
+    </section>
+
+    <section class="content" ng-switch-when="false">
+      <i class="icon"></i>
+      <div class="text">
+        <div class="sorry">抱歉，您没有访问该内容的权限</div>
+        <div class="tooltip">请联系管理员调整访问权限或邀请您进入项目</div>
+      </div>
+    </section>
+  </ion-content>
+</ion-view>

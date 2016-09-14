@@ -1,0 +1,68 @@
+@import "../../../less/reference.less";
+
+.detail-403-view {
+
+  @title-font-size: 20px;
+  @button-height: 44px;
+
+  color: @grayDarker;
+
+  .bgimg {
+    margin: 64px auto;
+    width: 558px / 3;
+    height: 195px / 3;
+    background: url('../../../images/make-work-enjoyable.png');
+    background-size: cover;
+  }
+
+  .content.invited {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+
+    .title {
+      margin: 0 35px 70px;
+      text-align: center;
+      font-size: @title-font-size;
+      line-height: @title-font-size + 6;
+    }
+
+    .button {
+      margin: auto;
+      padding: 0;
+      width: 100%;
+      max-width: 320px;
+      border: 0;
+      min-height: auto;
+      height: @button-height;
+      line-height: @button-height;
+    }
+  }
+
+  .content:not(.invited) {
+    margin: 84px 46px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      flex-shrink: 0;
+      margin-right: 10px;
+      width: 96px / 3;
+      height: 96px / 3;
+      background: url('../../../images/error.png');
+      background-size: cover;
+    }
+
+    .sorry {
+      font-size: @fontSizeLarge;
+      line-height: @fontSizeLarge + 4;
+    }
+
+    .tooltip {
+      font-size: @fontSizeSmall;
+      line-height: @fontSizeSmall + 4;
+      margin-top: 5px;
+    }
+  }
+}
