@@ -23,15 +23,18 @@ export class BannerView extends View {
     this.configUrl();
   }
 
-  openUniversalLink() {
-    window.location.href = this._href;
-    if (this._isIPhone && this._isWechat) {
-      setTimeout(() => {
-        this.$rootScope.showTip = true;
-      }, 20);
-    } else if (this._isIPhone && parseInt(this._browserVersion) === 8) {
-      window.location.href = 'https://itunes.apple.com/cn/app/teambition/id656664814';
+  openUniversalLink(): any {
+    if (this._isIPhone && parseInt(this._browserVersion) === 8) {
+      if (!this._isWechat) {
+        window.location.href = this._href;
+        return setTimeout(() => {
+          window.location.href = 'https://itunes.apple.com/cn/app/teambition/id656664814';
+        }, 30)
+      } else {
+        return this.$rootScope.showTip = true;
+      }
     }
+    window.location.href = this._href;
   }
 
   private configUrl() {
