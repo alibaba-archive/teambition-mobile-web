@@ -1,5 +1,10 @@
 <ion-view class="detail-view" ng-class="{'big-footer': DetailCtrl.images.length}" ng-controller="DetailView as DetailCtrl">
   <ion-content>
+    <div class="banner" ng-controller="BannerView as BannerCtrl">
+      <div class="banner-logo"></div>
+      <h2>用 Teambition App 打开</h2>
+      <div class="button button-positive" on-tap="BannerCtrl.openUniversalLink()">打开</div>
+    </div>
     <div ui-view="object"></div>
     <div ui-view="detail-activities"></div>
   </ion-content>

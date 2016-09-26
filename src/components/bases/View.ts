@@ -12,6 +12,7 @@ const viewsMap = {};
 const initedViews = {};
 
 let pending: any;
+let firstPending = true;
 
 let currentModal: ionic.modal.IonicModalController;
 
@@ -147,6 +148,10 @@ export class View {
     return message;
   }
 
+  protected cancelPending() {
+    pending = null;
+  }
+
   private initZone() {
     let parentZone = (this.parent) ? this.parent.zone : rootZone;
     this.zone = parentZone.fork({
@@ -201,9 +206,23 @@ export class View {
       }
     });
     bindPromise = () => {
-      pending = pending || this.$rootScope.pending || this.$q.resolve();
+      if (!pending) {
+        const _pending = this.$rootScope.pending || this.$q.resolve();
+        if (firstPending) {
+          pending = _pending.then(() => {
+            // 等 RootView 先执行完
+            return this.$rootScope.pending = this.onInit();
+          });
+        } else {
+          pending = _pending;
+        }
+      }
       return pending
       .then(() => {
+        if (firstPending) {
+          firstPending = false;
+          return;
+        }
         const _pending = this.onInit();
         if (_pending !== this.$rootScope.pending) {
           pending = _pending;

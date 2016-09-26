@@ -22,6 +22,7 @@ export const replaceConfig = (env: string, target: string) => {
       .pipe(greplace('{{__ENV}}', env === 'default' ? 'ci' : env))
       .pipe(greplace('{{__apphost}}', apphost))
       .pipe(greplace('{{__PLATFORM}}', target))
+      .pipe(greplace('{{__ACCOUNTSHOST}}', envConfig.accountsHost))
       .pipe(gulp.dest(`./.tmp/`))
       .on('end', () => {
         resolve()

@@ -71,7 +71,6 @@
                 transform: rotate(0deg);
       }
       100% {
-        -webkit-transform: rotate(360deg);
                 transform: rotate(360deg);
       }
     }
@@ -79,19 +78,7 @@
   </head>
   <body ng-controller="RootView as RootCtrl">
     <ion-nav-view name="main"></ion-nav-view>
-    <script id="tabs.html" type="text/ng-template">
-      <ion-tabs class="tabs-light tabs-icon-top tabs-item-hide tabs-bottom app-tab">
-        <ion-tab title="项目" icon="icon-project">
-          <ion-nav-view name="main-projects"></ion-nav-view>
-        </ion-tab>
-        <ion-tab title="我" icon="icon-user">
-          <ion-nav-view name="main-me"></ion-nav-view>
-        </ion-tab>
-        <ion-tab title="收件箱" icon="icon-inbox">
-          <ion-nav-view name="main-inbox"></ion-nav-view>
-        </ion-tab>
-      </ion-tabs>
-    </script>
+    <div id="tip" ng-if="showTip" on-tap="showTip = false"></div>
     <img src="/images/teambition.png" id="wechat-share-img" width="400" height="400"/>
     <div class="loading-init" ng-if="!loaded">
       <div class="init-logo"></div>

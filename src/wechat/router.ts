@@ -7,14 +7,6 @@ export default angular.module('teambition').config([
     $urlRouterProvider: angular.ui.IUrlRouterProvider
   ) => {
     $stateProvider
-    .state('login', {
-      url: '/login',
-      templateUrl: 'login/index.html'
-    })
-    .state('wx_login', {
-      url: '/wx_login',
-      templateUrl: 'login/index.html'
-    })
     .state('projects', {
       url: '/projects',
       templateUrl: 'project/index.html'
@@ -71,8 +63,12 @@ export default angular.module('teambition').config([
       url: '/detail',
       templateUrl: 'detail/index.html'
     })
+    .state('detail403', {
+      url: '/detail403?projectId&projectName&inviterId&inviterName&signCode&nextUrl',
+      templateUrl: 'detail/403/index.html'
+    })
     .state('detail.views', {
-      url: '/:type/:_id?linkedId',
+      url: '/:type/:_id?linkedId&projectId&projectName&inviterId&inviterName&signCode',
       views: {
         'object': {
           templateUrl: ($stateParams: any) => {

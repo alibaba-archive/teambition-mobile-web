@@ -1,5 +1,6 @@
 'use strict';
 import WechatService from '../components/bases/WechatService';
+import { isWechatBrowser } from '../components/services/utils/isWechat';
 import {
   inject,
   app,
@@ -52,7 +53,7 @@ export class RootView extends View {
       .catch((reason: any) => {
         this.goHome();
       });
-    }else {
+    } else {
       const defer = this.$q.defer();
       defer.resolve();
       return defer.promise;
@@ -115,7 +116,12 @@ export class RootView extends View {
   }
 
   private goHome(): void {
-    window.location.hash = '/login';
+    const thisHost = encodeURIComponent(location.href);
+    if (isWechatBrowser()) {
+      window.location.href = WechatService.buildWechatShareLink(thisHost);
+    } else {
+      window.location.href = app.accountHost + `?next_url=${thisHost}`;
+    }
   }
 
 }
@@ -125,6 +131,6 @@ angular.module('teambition').controller('RootView', RootView);
 export * from './report/ReportView';
 export * from './project-tabs/TabsView';
 export * from './project/ProjectView';
-export * from './login/LoginView';
 export * from './invited/InviteView';
 export * from './detail/DetailView';
+export * from './banner/BannerView';

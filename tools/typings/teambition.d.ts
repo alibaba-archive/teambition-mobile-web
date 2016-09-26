@@ -22,6 +22,7 @@ declare module 'teambition' {
     zone: any;
     userMe: IUserMe;
     pending: any;
+    showTip: boolean;
   }
 
   interface IUserEmail {
@@ -133,6 +134,9 @@ declare module 'teambition' {
     noncestr: string;
     signature: string;
     timestamp: number;
+    accountApiToken: string;
+    clientId: string;
+    appid: string;
   }
 
   interface IDingSignature {
