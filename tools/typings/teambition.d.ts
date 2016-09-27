@@ -23,6 +23,7 @@ declare module 'teambition' {
     userMe: IUserMe;
     pending: any;
     showTip: boolean;
+    hideTip: Function
   }
 
   interface IUserEmail {

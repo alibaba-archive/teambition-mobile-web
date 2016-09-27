@@ -28,14 +28,18 @@ export class BannerView extends View {
       if (!this._isWechat) {
         setTimeout(() => {
           window.location.href = 'https://itunes.apple.com/cn/app/teambition/id656664814';
-        }, 30);
+        }, 300);
       } else {
-        return this.$rootScope.showTip = true;
+        this.$rootScope.showTip = true;
+        if (!this.$rootScope.$$phase) {
+          this.$rootScope.$digest();
+        }
+        return null;
       }
     } else if (this._isAndroid && !this._isWechat) {
       setTimeout(() => {
         window.location.href = 'https://www.teambition.com/apps';
-      }, 30);
+      }, 300);
     }
     window.location.href = this._href;
   }
@@ -59,8 +63,7 @@ export class BannerView extends View {
       this._android();
     } else if (this._isIPhone) {
       this._ios();
-    }
-    if (!this._isWechat) {
+    } else if (!this._isWechat) {
       this._href = this._urlSchema + this._tail;
     }
   }
@@ -77,7 +80,7 @@ export class BannerView extends View {
     if (parseInt(this._browserVersion) >= 9) {
       this._href = `${this._magicLink}${this._tail}`;
     } else {
-      this._href = `${this._urlSchema}${this._tail}`;
+      this._href = this._urlSchema;
     }
   }
 }

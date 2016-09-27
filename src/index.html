@@ -78,7 +78,7 @@
   </head>
   <body ng-controller="RootView as RootCtrl">
     <ion-nav-view name="main"></ion-nav-view>
-    <div id="tip" ng-if="showTip" on-tap="showTip = false"></div>
+    <div id="tip" ng-if="showTip" on-tap="hideTip()" ng-style="{'display': showTip ? 'block' : 'none' }"></div>
     <img src="/images/teambition.png" id="wechat-share-img" width="400" height="400"/>
     <div class="loading-init" ng-if="!loaded">
       <div class="init-logo"></div>
