@@ -26,13 +26,16 @@ export class BannerView extends View {
   openUniversalLink(): any {
     if (this._isIPhone && parseInt(this._browserVersion) === 8) {
       if (!this._isWechat) {
-        window.location.href = this._href;
-        return setTimeout(() => {
+        setTimeout(() => {
           window.location.href = 'https://itunes.apple.com/cn/app/teambition/id656664814';
-        }, 30)
+        }, 30);
       } else {
         return this.$rootScope.showTip = true;
       }
+    } else if (this._isAndroid && !this._isWechat) {
+      setTimeout(() => {
+        window.location.href = 'https://www.teambition.com/apps';
+      }, 30);
     }
     window.location.href = this._href;
   }
@@ -63,7 +66,11 @@ export class BannerView extends View {
   }
 
   private _android() {
-    this._href = `${this._androidSchema}${encodeURIComponent(this._urlSchema + this._tail)}`;
+    if (this._isWechat) {
+      this._href = `${this._androidSchema}${encodeURIComponent(this._urlSchema + this._tail)}`;
+    } else {
+      this._href = this._urlSchema + this._tail;
+    }
   }
 
   private _ios() {
