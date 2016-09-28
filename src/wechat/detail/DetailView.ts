@@ -236,13 +236,19 @@ export class DetailView extends View {
   private noAccess() {
     this.cancelPending();
     const nextUrl = encodeURIComponent(this.$location.absUrl());
-    const {
+    const search = this.$location.url().split(this.$location.path())[1];
+    const params = search ?
+        search.substr(1)
+          .split('&')
+          .map(param => decodeURIComponent(param)) :
+        [];
+    const [
       projectId,
       projectName,
       inviterId,
       inviterName,
       signCode
-    } = this.$state.params;
+    ] = params;
     this.$state.go('detail403', {
       projectId,
       projectName,
