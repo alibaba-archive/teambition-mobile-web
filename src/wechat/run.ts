@@ -27,11 +27,15 @@ export const RunFn = function(
       .catch((reason: any) => {
         console.log('error', '微信SDK初始化失败', '您不能正常使用分享项目给好友功能');
       });
-  }else {
+  } else {
     const defer = $q.defer();
     defer.resolve();
     $rootScope.pending = defer.promise;
   }
+
+  $rootScope.hideTip = () => {
+    $rootScope.showTip = false;
+  };
 
   MomentLocale(app.LANGUAGE, moment);
 };

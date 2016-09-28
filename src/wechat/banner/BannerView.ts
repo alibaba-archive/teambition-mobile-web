@@ -26,13 +26,20 @@ export class BannerView extends View {
   openUniversalLink(): any {
     if (this._isIPhone && parseInt(this._browserVersion) === 8) {
       if (!this._isWechat) {
-        window.location.href = this._href;
-        return setTimeout(() => {
+        setTimeout(() => {
           window.location.href = 'https://itunes.apple.com/cn/app/teambition/id656664814';
-        }, 30)
+        }, 300);
       } else {
-        return this.$rootScope.showTip = true;
+        this.$rootScope.showTip = true;
+        if (!this.$rootScope.$$phase) {
+          this.$rootScope.$digest();
+        }
+        return null;
       }
+    } else if (this._isAndroid && !this._isWechat) {
+      setTimeout(() => {
+        window.location.href = 'https://www.teambition.com/apps';
+      }, 300);
     }
     window.location.href = this._href;
   }
@@ -56,21 +63,24 @@ export class BannerView extends View {
       this._android();
     } else if (this._isIPhone) {
       this._ios();
-    }
-    if (!this._isWechat) {
+    } else if (!this._isWechat) {
       this._href = this._urlSchema + this._tail;
     }
   }
 
   private _android() {
-    this._href = `${this._androidSchema}${encodeURIComponent(this._urlSchema + this._tail)}`;
+    if (this._isWechat) {
+      this._href = `${this._androidSchema}${encodeURIComponent(this._urlSchema + this._tail)}`;
+    } else {
+      this._href = this._urlSchema + this._tail;
+    }
   }
 
   private _ios() {
     if (parseInt(this._browserVersion) >= 9) {
       this._href = `${this._magicLink}${this._tail}`;
     } else {
-      this._href = `${this._urlSchema}${this._tail}`;
+      this._href = this._urlSchema;
     }
   }
 }
