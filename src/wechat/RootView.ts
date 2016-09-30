@@ -116,10 +116,10 @@ export class RootView extends View {
   }
 
   private goHome(): void {
-    const thisHost = encodeURIComponent(location.href);
     if (isWechatBrowser()) {
-      window.location.href = WechatService.buildWechatShareLink(thisHost);
+      window.location.href = WechatService.buildWechatShareLink(location.href);
     } else {
+      const thisHost = encodeURIComponent(location.href);
       window.location.href = app.accountHost + `?next_url=${thisHost}`;
     }
   }
