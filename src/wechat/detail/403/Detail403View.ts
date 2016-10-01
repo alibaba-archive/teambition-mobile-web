@@ -61,7 +61,8 @@ export class Detail403View extends View {
         // 路由跳转
         if (this.nextUrl) {
           // 进入详情页面
-          this.$window.location.replace(this.nextUrl);
+          const nextUrl = decodeURIComponent(this.nextUrl);
+          this.$window.location.replace(nextUrl);
         } else {
           // 进入项目首页
           this.$state.go('project.home', {
